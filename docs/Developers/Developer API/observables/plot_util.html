@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>plot_util &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -108,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="plot-util">
-<h1>plot_util<a class="headerlink" href="#plot-util" title="Permalink to this headline"></a></h1>
+<h1>plot_util<a class="headerlink" href="#plot-util" title="Permalink to this heading"></a></h1>
 <p>Short description</p>
 <span class="target" id="module-pyrid.observables.plot_util"></span><p>&#64;author: Moritz F P Becker</p>
 <dl class="py function">
@@ -116,7 +117,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">cuboid_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#cuboid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.cuboid_data" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the vertex array of a cuboid given an origin vector.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>origin</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Origin of the cuboid</p>
 </dd>
@@ -132,7 +133,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">draw_cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgealpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#draw_cuboid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.draw_cuboid" title="Permalink to this definition"></a></dt>
 <dd><p>Draws a cuboid of a given size at a given position.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>positions</strong><span class="classifier"><cite>float[:]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -148,7 +149,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>tuple(object, object)</cite></dt><dd><p>Poly3DCollection, Line3DCollection</p>
 </dd>
@@ -162,7 +163,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">draw_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#draw_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.draw_sphere" title="Permalink to this definition"></a></dt>
 <dd><p>Draws a sphere of given radius and centered at a given position vector.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>ax</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Axis object of a matplotlib figure</p>
 </dd>
@@ -174,7 +175,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float[2,3]</cite></dt><dd><p>Lower left and upper right sphere vertices (Used to set figure aspect ratio).</p>
 </dd>
@@ -188,7 +189,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_cell_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_cell_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_cell_grid" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -196,13 +197,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -216,7 +217,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_compartment_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_traj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'orthographic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_cube</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-xz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_compartment_0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_compartment_0" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -224,13 +225,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -244,7 +245,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_compartments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_traj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'orthographic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_cube</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-xz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_compartments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_compartments" title="Permalink to this definition"></a></dt>
 <dd><p>Plots the compartment meshes and highlights any face groups and borders/edges using the plotly library. Also plots the triangle normal vectors.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class</p>
 </dd>
@@ -284,7 +285,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_concentration_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_concentration_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_concentration_profile" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -292,13 +293,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -312,7 +313,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_mobility_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'colored'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_mobility_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_mobility_matrix" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -320,13 +321,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -340,7 +341,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_path" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -348,13 +349,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -368,7 +369,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_path_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_path_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_path_mesh" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -376,13 +377,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -396,7 +397,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Potentials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yU_limits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yF_limits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_potential" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -404,13 +405,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -424,7 +425,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'orthographic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-xz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_scene" title="Permalink to this definition"></a></dt>
 <dd><p>Plots the simulation scence with all its compartments and molecule positions. Molecule positions are represented by a scatter plot.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class</p>
 </dd>
@@ -450,7 +451,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_sphere_packing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment_Number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_sphere_packing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_sphere_packing" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -458,13 +459,13 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -478,7 +479,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_triangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_triangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_triangle" title="Permalink to this definition"></a></dt>
 <dd><p>Plots a triangle in 3D.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>

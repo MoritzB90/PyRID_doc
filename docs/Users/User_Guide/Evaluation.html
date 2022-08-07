@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evaluation &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -106,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="evaluation">
-<h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline"></a></h1>
+<h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this heading"></a></h1>
 <p>There are many ways in which one could want to analyze the data gathered during a simulation.
 Via the Evaluation class, PyRID offers a straight forward way to read the data from the hdf5 files and even to do some analysis on these or do basic plots (Fig. <a class="reference internal" href="#fig-evaluation"><span class="std std-ref">Plots of various observables.</span></a>).
 We can create an instance of the Evaluation class by</p>
@@ -119,7 +120,7 @@ We can create an instance of the Evaluation class by</p>
 </pre></div>
 </div>
 <section id="reading-and-plotting-data">
-<h2>Reading and plotting data<a class="headerlink" href="#reading-and-plotting-data" title="Permalink to this headline"></a></h2>
+<h2>Reading and plotting data<a class="headerlink" href="#reading-and-plotting-data" title="Permalink to this heading"></a></h2>
 <p>Now, we can do several things, such as reading certain observables from the file, e.g., molecule numbers:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="s1">&#39;stepwise&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">)</span>
 </pre></div>
@@ -170,7 +171,7 @@ We can also plot any of the other measures, such as the number of bonds between 
 </div>
 </section>
 <section id="analyzing-data">
-<h2>Analyzing data<a class="headerlink" href="#analyzing-data" title="Permalink to this headline"></a></h2>
+<h2>Analyzing data<a class="headerlink" href="#analyzing-data" title="Permalink to this heading"></a></h2>
 <p>Currently, PyRID does not support many methods for analyzing the data.</p>
 <p><strong>Concentration profile</strong></p>
 <p>You can, e.g., plot a concentration profile:</p>

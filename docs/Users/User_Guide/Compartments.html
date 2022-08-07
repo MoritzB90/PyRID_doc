@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compartments &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -106,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="compartments">
-<span id="userguide-compartments"></span><h1>Compartments<a class="headerlink" href="#compartments" title="Permalink to this headline"></a></h1>
+<span id="userguide-compartments"></span><h1>Compartments<a class="headerlink" href="#compartments" title="Permalink to this heading"></a></h1>
 <p>In order for cells to be able to organize or even be able to execute the uncountable number of different processes it needs to be able to compartmentalize these processes. By far the most common method of compartmentalization is the phospholipid bilayer from which cell membranes are formed. Cell membrane serves various functions:</p>
 <ol class="arabic simple">
 <li><p>It forms a diffusive barrier for ions and molecules, such as proteins,</p></li>
@@ -123,7 +124,7 @@
 </ol>
 <p>Processes such as exocytosis can be accounted for by ‘release events’ (see <a class="reference internal" href="Molecule_Distribution.html#userguide-distribution"><span class="std std-ref">Molecule distribution</span></a>).</p>
 <section id="meshes">
-<h2>Meshes<a class="headerlink" href="#meshes" title="Permalink to this headline"></a></h2>
+<h2>Meshes<a class="headerlink" href="#meshes" title="Permalink to this heading"></a></h2>
 <p>PyRID only supports triangulated meshes in the .obj format but does not support all features of the .obj format. Therefore, I recommend to use the PyRID add-on for Blender that can be used to export meshes to .obj files that PyRID can handle. Your mesh can be a 3D scan or modeled by hand. However, the mesh should be a manifold-mesh, i.e., it should not contain any holes.
 The .obj file may contain several meshes. Each will be handled as a separate compartment by PyRID.
 In addition, you can define face groups, which are groups of mesh triangles. These can be used, e.g., to distributed molecules in specific regions of the mesh surface.</p>
@@ -150,7 +151,7 @@ PyRID allows us to visualize the individual compartments using the 3D capabiliti
 </figure>
 </section>
 <section id="molecule-collision-types">
-<h2>Molecule collision types<a class="headerlink" href="#molecule-collision-types" title="Permalink to this headline"></a></h2>
+<h2>Molecule collision types<a class="headerlink" href="#molecule-collision-types" title="Permalink to this heading"></a></h2>
 <p>PyRID somehow needs to resolve the collision of molecules with the mesh. If the expected displacement of a molecule per time step is small compared to the particles radii, collisions can be resolved by a repulsive interaction potential. This approach is relatively accurate. However, PyRID uses a fairly simple approach in order to calculate the repulsive forces between molecules an meshes and more accurate solutions exists. More complex methods are mainly developed and used for discrete element method simulations.
 For fast moving molecules or atoms, however, the force approach does not work. Instead, PyRID uses a ray tracing approach similar to what is used in, e.g., <a class="reference external" href="https://mcell.org/">MCell</a>. Thereby, the displacement vector is traced through the simualtion volume and any collisions are resolved via reflection. However, PyRID does not automatically decide whether to use the force, or the ray tracing approach. Instead, we can set the collision type when adding a new molecule type:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">C_pos</span><span class="p">,</span> <span class="n">C_types</span><span class="p">,</span> <span class="n">collision_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>

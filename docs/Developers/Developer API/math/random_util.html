@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>random_util &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -106,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="random-util">
-<h1>random_util<a class="headerlink" href="#random-util" title="Permalink to this headline"></a></h1>
+<h1>random_util<a class="headerlink" href="#random-util" title="Permalink to this heading"></a></h1>
 <p>Short description</p>
 <span class="target" id="module-pyrid.math.random_util"></span><p>&#64;author: Moritz F P Becker</p>
 <dl class="py function">
@@ -120,7 +121,7 @@ insert just after the rightmost x already there.</p>
 slice of a to be searched.</p>
 <p>Reduced copy from Cpython library: <a class="reference external" href="https://github.com/python/cpython/blob/3.10/Lib/bisect.py">https://github.com/python/cpython/blob/3.10/Lib/bisect.py</a></p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>a</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Array which to bisect</p>
 </dd>
@@ -128,7 +129,7 @@ slice of a to be searched.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>int64</cite></dt><dd><p>Index where to isnert x</p>
 </dd>
@@ -142,19 +143,19 @@ slice of a to be searched.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.math.random_util.</span></span><span class="sig-name descname"><span class="pre">dx_cum_prob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/random_util.html#dx_cum_prob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.random_util.dx_cum_prob" title="Permalink to this definition"></a></dt>
 <dd><p>Cumulative probability distribution for the distance away from a plane of a diffusing particle after it crossing the plane <span id="id1">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>x</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Normalized distance</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Probability of a diffusing particle being x (normalized by the diffusion length coefficient) away from a plane after it crossing the plane.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -168,13 +169,13 @@ slice of a to be searched.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.math.random_util.</span></span><span class="sig-name descname"><span class="pre">erfc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/random_util.html#erfc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.random_util.erfc" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the complementary error function of all elements in the 1D Array x using the erfc fucntion from the math library, which, hwoever, only works on scalars.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>x</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Array of whose elements to calculate erfc.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64[:]</cite></dt><dd><p>Complementary error function of array x.</p>
 </dd>
@@ -188,7 +189,7 @@ slice of a to be searched.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.math.random_util.</span></span><span class="sig-name descname"><span class="pre">random_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cum_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/random_util.html#random_choice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.random_util.random_choice" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a weighted random element from a given list if population is passed, othewise returns the respective index.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>population</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>population from which to pick an element.</p>
 </dd>
@@ -198,13 +199,13 @@ slice of a to be searched.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>int64</cite></dt><dd><p>Random element from the population or its index.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>TypeError(“random_choice() missing required argument ‘weight’ or ‘cum_weight’”)</dt><dd><p>Error raised if neither a weight nor a cumulative weight is passed.</p>
 </dd>

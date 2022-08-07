@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Molecules &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -105,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="molecules">
-<span id="userguide-molecules"></span><h1>Molecules<a class="headerlink" href="#molecules" title="Permalink to this headline"></a></h1>
+<span id="userguide-molecules"></span><h1>Molecules<a class="headerlink" href="#molecules" title="Permalink to this heading"></a></h1>
 <p>In PyRID, molecules are represented by rigid bead models. In the following, bead and particle are synonymous and used interchangeably. Each rigid bead molecule consists of a number of Particles with fixed positions relative to the local coordinate frame of the molecule. In PyRID, molecules can be either located in the volume of a compartment (in the following called volume molecules) or on the surface of a mesh compartment (surface molecules).
 Before we can define molecules, we need to register the corresponding particle types. As an example, let us construct two toy molecules named A and B. We will use the name ‘core particle’ for particles that represent the excluded volume of the molecule and which interact with each other by repulsive forces. We will use the name ‘patchy particle’ for particles that represent attractive interaction sites via which molecule pairs can form bonds.
 Let molecule A consists of 1 core particle ‘core_1’ and 3 patchy particles ‘patch_1’, and molecule B out of two core particles ‘core_2’, ‘core_3’ and two patchy particles ‘patch_2’.
@@ -165,7 +166,7 @@ Let us assume that molecule A should represent some protein, for which the trans
 </figcaption>
 </figure>
 <section id="fixed-concentration-boundary-conditions">
-<h2>Fixed concentration boundary conditions<a class="headerlink" href="#fixed-concentration-boundary-conditions" title="Permalink to this headline"></a></h2>
+<h2>Fixed concentration boundary conditions<a class="headerlink" href="#fixed-concentration-boundary-conditions" title="Permalink to this heading"></a></h2>
 <p>In the case that we set the boundary condition to ‘fixed concentration’, we also need to define the concentration of the different molecule types outside the simulation box. By default, the concentration is zero. We need to set concentration separately for the volume and for the surface:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">fixed_concentration_at_boundary</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">)</span>
 

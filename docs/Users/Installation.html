@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -89,7 +90,7 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>PyRID is still in early development!</p>
@@ -103,20 +104,22 @@
 </li>
 <li><p>Open Anaconda Prompt on your computer.</p></li>
 <li><p>Go to the directory to which you downloaded PyRID-0.0.1.tar.gz:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; $ cd &lt;your directory&gt;
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">directory</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Create a new environment:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">pyrid</span><span class="o">-</span><span class="n">env</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">pyrid</span><span class="o">-</span><span class="n">env</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.9</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">activate</span> <span class="n">pyrid</span><span class="o">-</span><span class="n">env</span>
 </pre></div>
 </div>
 </li>
-<li><p>Pip install PyRID:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; $ pip install PyRID-0.0.1.tar.gz
+<li><p>Pip install PyRID and install numba and h5py via conda:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">PyRID</span><span class="o">-</span><span class="mf">0.0.1</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">install</span> <span class="n">numba</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">install</span> <span class="n">h5py</span>
 </pre></div>
 </div>
 </li>

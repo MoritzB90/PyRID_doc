@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reactions &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -103,7 +104,7 @@
            <div itemprop="articleBody">
              
   <section id="reactions">
-<h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this headline"></a></h1>
+<h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this heading"></a></h1>
 <p>The usage of rigid bead models to represent molecules already enables much larger simulations compared to atomistic models. However, what such a model cannot account for are the reactions that occur between proteins and other molecules, for example, post-translational modifications such as phosphorylation or ubiquitination or binding of ligands and ATP. This list could be continued.
 In PyRID, reactions are described on several different levels. At the top, we have the molecule level and below the particle level. In addition, reactions are categorized into bi-molecular (second order) and uni-molecular (first order) reactions. Each uni- and bi-molecular reaction can consist of several different reaction paths, each belonging to a different reaction type (for an overview see Fig. <a class="reference internal" href="#fig-reactionsgraph"><span class="std std-numref">Fig. 14</span></a>).
 Uni-molecular reactions are divided into the following categories:</p>
@@ -128,7 +129,7 @@ In the following sections I will describe the methods by which reactions are eva
 </figcaption>
 </figure>
 <section id="unimolecular-reactions">
-<h2>Unimolecular reactions<a class="headerlink" href="#unimolecular-reactions" title="Permalink to this headline"></a></h2>
+<h2>Unimolecular reactions<a class="headerlink" href="#unimolecular-reactions" title="Permalink to this heading"></a></h2>
 <p>Unimolecular reactions include fission, conversion, and decay reactions. These can be efficiently simulated using a variant of the Gillespie Stochastic Simulation Algorithm (SSA) cite{Erban2007, Gillespie1977}. Thereby, the time point of the next reaction is sampled from the probability distribution of expected molecule lifetimes, assuming that in between two time points no interfering event occurs. An interfering event could, e.g., be a bi-molecular reaction. The naive way of simulating uni-molecular reactions would be to check each time step whether the reaction will occur depending on its reaction rate. The Gillespie SSA has the benefit of being exact (partially true since the simulation evolves in finite, discrete time steps) and far more efficient, because we only need to evaluate a reaction once and not each time step.
 For a single molecule having <span class="math notranslate nohighlight">\(n\)</span> possible reaction paths each with a reaction rate <span class="math notranslate nohighlight">\(k_i\)</span>, let <span class="math notranslate nohighlight">\(k_t = \sum_i^n k_i\)</span> be the total reaction rate.
 Let <span class="math notranslate nohighlight">\(\rho(\tau) d\tau\)</span> be the probability that the next reaction occurs within <span class="math notranslate nohighlight">\([t+\tau,t+\tau+d\tau)\)</span>, which can be split into <span class="math notranslate nohighlight">\(g(\tau)\)</span>, the probability that no reaction occurs within <span class="math notranslate nohighlight">\([t,t+\tau)\)</span> and probability that a reaction occurs within the time interval <span class="math notranslate nohighlight">\(d\tau\)</span>, which is given by <span class="math notranslate nohighlight">\(k_t d\tau\)</span>. Thereby,</p>
@@ -170,7 +171,7 @@ newline</p>
 <p>emph{release reaction}: PyRID also allows for a fission type reaction to be defined on particles, which is called a release reaction. Release reactions are limited to one particle and one molecule product. When a release reaction is executed, the particle is converted to the product particle type while releasing a product molecule either into the simulation volume or the surface of a mesh compartment. The latter is only possible if the rigid bead molecule the educt particle belongs to is also a surface molecule. Release reactions can, e.g., be used to simulate the release of a ligand from a specific binding site of a rigid bead molecule. The release reaction is introduced as the counter part to the particle absorption reaction (see next section on bi-molecular reactions).</p>
 </section>
 <section id="bi-molecular-reactions">
-<h2>Bi-molecular reactions<a class="headerlink" href="#bi-molecular-reactions" title="Permalink to this headline"></a></h2>
+<h2>Bi-molecular reactions<a class="headerlink" href="#bi-molecular-reactions" title="Permalink to this heading"></a></h2>
 <p>Bi-molecular reactions cannot be evaluated the same way as uni-molecular reactions since we cannot sample from the corresponding probability space as we have done for the uni-molecular reactions, because we do not know when two molecules meet in advance. Here, we use a reaction scheme introduced by <span id="id3">Doi [<a class="reference internal" href="../../References.html#id29" title="M Doi. Stochastic theory of diffusion-controlled reaction. Journal of Physics A: Mathematical and General, 9(9):1479–1495, sep 1976. doi:10.1088/0305-4470/9/9/009.">22</a>]</span>, which is also used in the Brownian dynamics simulation tool ReaDDy <span id="id4">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>, <a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">51</a>]</span>. In this scheme, two molecules can only react if the inter-molecular distance <span class="math notranslate nohighlight">\(|\boldsymbol{r}_{ij}|\)</span> is below a reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>. The probability of having at least one reaction is then given by</p>
 <div class="math notranslate nohighlight">
 \[p = 1-\exp\Big(-\sum_i^n k_i \Delta t \Big),\]</div>

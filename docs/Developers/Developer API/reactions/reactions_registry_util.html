@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>reactions_registry_util &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -110,10 +111,10 @@
            <div itemprop="articleBody">
              
   <section id="reactions-registry-util">
-<h1>reactions_registry_util<a class="headerlink" href="#reactions-registry-util" title="Permalink to this headline"></a></h1>
+<h1>reactions_registry_util<a class="headerlink" href="#reactions-registry-util" title="Permalink to this heading"></a></h1>
 <p>Short description</p>
 <section id="reaction">
-<h2>Reaction<a class="headerlink" href="#reaction" title="Permalink to this headline"></a></h2>
+<h2>Reaction<a class="headerlink" href="#reaction" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.reactions.reactions_registry_util.</span></span><span class="sig-name descname"><span class="pre">Reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction" title="Permalink to this definition"></a></dt>
@@ -143,7 +144,7 @@ A very nice introduction/overview to the kind of data structures used here has b
 <div class="line"><br /></div>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>educts</strong><span class="classifier"><cite>nb.int32[:]</cite></span></dt><dd><p>Educt type ids.</p>
 </dd>
@@ -169,10 +170,6 @@ A very nice introduction/overview to the kind of data structures used here has b
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 21%" />
-<col style="width: 79%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>add_path(products, rate)</strong></p></td>
 <td><p>Adds a reaction path to the reaction.</p></td>
@@ -216,7 +213,7 @@ A very nice introduction/overview to the kind of data structures used here has b
 <span class="sig-name descname"><span class="pre">add_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_surf_vol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.add_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.add_path" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a new reaction path to the reaction class instance.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
 </dd>
@@ -234,7 +231,7 @@ A very nice introduction/overview to the kind of data structures used here has b
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>ValueError(‘Number of reaction products must not be larger than 1000!’)</dt><dd><p>PyRID limits the number of product moelcules to 1000, otherwise a value error is raised. The user may rayise this limit at any time by changing the size of the structured array of dtype item_t_paths.</p>
 </dd>
@@ -250,7 +247,7 @@ A very nice introduction/overview to the kind of data structures used here has b
 <span class="sig-name descname"><span class="pre">append_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.append_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.append_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Appends a new reaction to the current reactions list.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of educt 1</p>
 </dd>
@@ -272,7 +269,7 @@ A very nice introduction/overview to the kind of data structures used here has b
 <span class="sig-name descname"><span class="pre">delete_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.delete_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.delete_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Deletes the reaction from the list by its index.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the reaction which to delete</p>
 </dd>
@@ -290,7 +287,7 @@ Element k also needs to be deleted from the index array. The index array is a dy
 <span class="sig-name descname"><span class="pre">delete_reaction_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.delete_reaction_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.delete_reaction_all" title="Permalink to this definition"></a></dt>
 <dd><p>Delete all reactions educt i (molecule or particle) is involved in.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the educt</p>
 </dd>
@@ -304,13 +301,13 @@ Element k also needs to be deleted from the index array. The index array is a dy
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.get" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the data array of the reaction at index k, which contains the educt indices.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the reaction whose educt indices to return</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>array_like</dt><dd><p>Array containing the educt indices and other information.</p>
 </dd>
@@ -329,7 +326,7 @@ To get a list of all items which are not holes, use the occupied attribute!</p>
 <span class="sig-name descname"><span class="pre">get_random</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.get_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.get_random" title="Permalink to this definition"></a></dt>
 <dd><p>Return a random reaction from the list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>int64</dt><dd><p>Index of the random reaction.</p>
 </dd>
@@ -343,13 +340,13 @@ To get a list of all items which are not holes, use the occupied attribute!</p>
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with new_cap capacity</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>array_like</dt><dd><p>array with dtype = self.item_t</p>
 </dd>
@@ -363,7 +360,7 @@ To get a list of all items which are not holes, use the occupied attribute!</p>
 <span class="sig-name descname"><span class="pre">reactions_left_pointer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.reactions_left_pointer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.reactions_left_pointer" title="Permalink to this definition"></a></dt>
 <dd><p>Prints out all reactions left in the reactions list for educt of index i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Educt index</p>
 </dd>
@@ -377,7 +374,7 @@ To get a list of all items which are not holes, use the occupied attribute!</p>
 <span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.set" title="Permalink to this definition"></a></dt>
 <dd><p>Inserts the given values into the array at the position correspnding to the reaction of index k.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the reaction</p>
 </dd>

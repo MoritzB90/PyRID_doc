@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rigid bead molecules &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -99,7 +100,7 @@
            <div itemprop="articleBody">
              
   <section id="rigid-bead-molecules">
-<h1>Rigid bead molecules<a class="headerlink" href="#rigid-bead-molecules" title="Permalink to this headline"></a></h1>
+<h1>Rigid bead molecules<a class="headerlink" href="#rigid-bead-molecules" title="Permalink to this heading"></a></h1>
 <p>Proteins and other molecules are not point like particles. Especially the interactions between proteins are not accurately described by isotropic energy potentials. Instead, the physical properties of bio-molecular systems emerge from an-isotropic multivalent interactions <span id="id1">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>, <a class="reference internal" href="../../References.html#id62" title="Gregory L. Dignon, Wenwei Zheng, Young C. Kim, Robert B. Best, and Jeetain Mittal. Sequence determinants of protein phase behavior from a coarse-grained model. PLOS Computational Biology, 14(1):e1005941, jan 2018. doi:10.1371/journal.pcbi.1005941.">36</a>]</span>. Protein-protein interaction can be accurately simulated in atomistic molecular dynamics simulations. However, even modern computers and algorithms are not efficient enough to simulate systems with more than a few molecules. Therefore, coarse graining methods are needed <span id="id2">[<a class="reference internal" href="../../References.html#id53" title="Valentina Tozzini. Coarse-grained models for proteins. Current Opinion in Structural Biology, 15(2):144–150, apr 2005. doi:10.1016/j.sbi.2005.02.005.">37</a>]</span>. Rigid bead models are a method of minimal coarse graining that have some important benefits. Strong and short ranged interactions between atoms are replaced by a rigid bead topology. This allows for integration time steps several orders larger than in atomistic simulations. Usually, the beads of a rigid bead model do not represent single atoms but pattern the geometry of the molecule of interest <span id="id3">[<a class="reference internal" href="../../References.html#id63" title="J Garcia de la Torre. Building hydrodynamic bead–shell models for rigid bioparticles of arbitrary shape. Biophysical Chemistry, 94(3):265–274, dec 2001. doi:10.1016/s0301-4622(01)00244-7.">1</a>]</span>, significantly reducing the overall number of particles that need to be simulated. In addition, experimentally or theoretically estimated diffusion tensors can be used to accurately describe the diffusive motion of molecules. Importantly, multivalent protein-protein interactions can be described by patches located on the bead model surface. On the downside, the properties of coarse grained model systems strongly depend on the choice of interaction potentials and other model parameters. The estimation of these model parameters is fairly involved and is out of the scope of this work.</p>
 <p>The position of each bead i of molecule j can be characterized by</p>
 <div class="math notranslate nohighlight">

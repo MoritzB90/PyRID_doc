@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Molecule distribution &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -107,10 +108,10 @@
            <div itemprop="articleBody">
              
   <section id="molecule-distribution">
-<span id="userguide-distribution"></span><h1>Molecule distribution<a class="headerlink" href="#molecule-distribution" title="Permalink to this headline"></a></h1>
+<span id="userguide-distribution"></span><h1>Molecule distribution<a class="headerlink" href="#molecule-distribution" title="Permalink to this heading"></a></h1>
 <p>Before we can start a simulation, we need to initialize the system by distributing the molecules in the simulation volume and on the compartment surfaces.</p>
 <section id="distribute-in-volume">
-<h2>Distribute in volume<a class="headerlink" href="#distribute-in-volume" title="Permalink to this headline"></a></h2>
+<h2>Distribute in volume<a class="headerlink" href="#distribute-in-volume" title="Permalink to this heading"></a></h2>
 <p>For the distribution of molecules in the volume of a compartment, PyRID offers three approaches.</p>
 <ol class="arabic simple">
 <li><p>Specify molecule positions and orientations manually:</p></li>
@@ -147,7 +148,7 @@
 </div>
 </section>
 <section id="distribute-on-surface">
-<h2>Distribute on surface<a class="headerlink" href="#distribute-on-surface" title="Permalink to this headline"></a></h2>
+<h2>Distribute on surface<a class="headerlink" href="#distribute-on-surface" title="Permalink to this heading"></a></h2>
 <p>To distribute molecules on the surface of a mesh compartment, PyRID also offers a Poisson disc sampling method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">face_idx</span>  <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS&#39;</span><span class="p">,</span> <span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="mi">1000</span><span class="p">],</span> <span class="n">facegroup</span> <span class="o">=</span> <span class="s1">&#39;active_zone&#39;</span><span class="p">)</span>
 
@@ -173,7 +174,7 @@
 </figure>
 </section>
 <section id="release-events">
-<h2>Release events<a class="headerlink" href="#release-events" title="Permalink to this headline"></a></h2>
+<h2>Release events<a class="headerlink" href="#release-events" title="Permalink to this heading"></a></h2>
 <p>It is also possible to distribute new molecules during the simulation (apart from molecular reactions) by what we here call release events. A release event can occur in the volume of on a mesh surface.
 To define a release event in the volume of a Compartment call:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_release_site</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="n">Types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">],</span> <span class="n">jitter</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span>

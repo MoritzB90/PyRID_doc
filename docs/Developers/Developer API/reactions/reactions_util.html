@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>reactions_util &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -107,7 +108,7 @@
            <div itemprop="articleBody">
              
   <section id="reactions-util">
-<h1>reactions_util<a class="headerlink" href="#reactions-util" title="Permalink to this headline"></a></h1>
+<h1>reactions_util<a class="headerlink" href="#reactions-util" title="Permalink to this heading"></a></h1>
 <p>Short description</p>
 <span class="target" id="module-pyrid.reactions.reactions_util"></span><p>&#64;author: Moritz F P Becker</p>
 <dl class="py function">
@@ -115,7 +116,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.reactions.reactions_util.</span></span><span class="sig-name descname"><span class="pre">k_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_micro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_react</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_util.html#k_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_util.k_macro" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the macroscopic reaction rate for a bimolecular reaction from the educts diffusion coefficients, the reaction radius and the microscopic reaction rate.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>D1</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Translational diffusion coefficient of educt 1.</p>
 </dd>
@@ -127,7 +128,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Macroscopic reaction rate</p>
 </dd>
@@ -141,7 +142,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.reactions.reactions_util.</span></span><span class="sig-name descname"><span class="pre">k_micro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_macro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_react</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Volume'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_util.html#k_micro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_util.k_micro" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the microscopic reaction rate for a bimolecular reaction given the educts diffusion coefficients, the reaction radius and the macroscopic reaction rate.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class.</p>
 </dd>
@@ -157,7 +158,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Microscopic reaction rate</p>
 </dd>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mesh_util &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -108,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="mesh-util">
-<h1>mesh_util<a class="headerlink" href="#mesh-util" title="Permalink to this headline"></a></h1>
+<h1>mesh_util<a class="headerlink" href="#mesh-util" title="Permalink to this heading"></a></h1>
 <p>Short description</p>
 <span class="target" id="module-pyrid.geometry.mesh_util"></span><p>&#64;author: Moritz F P Becker</p>
 <dl class="py function">
@@ -116,7 +117,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.mesh_util.</span></span><span class="sig-name descname"><span class="pre">closest_boundary_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AABB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System_AABB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/mesh_util.html#closest_boundary_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.mesh_util.closest_boundary_point" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the closest point on a boundary of an axis aligned bounding box (AABB) to a position vector.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector.</p>
 </dd>
@@ -126,7 +127,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64[3]</cite></dt><dd><p>Point on the AABB boundary that is closest to the position vector.</p>
 </dd>
@@ -140,7 +141,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.mesh_util.</span></span><span class="sig-name descname"><span class="pre">mesh_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/mesh_util.html#mesh_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.mesh_util.mesh_volume" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the volume of a mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangles</strong><span class="classifier"><cite>int64[:,3]</cite></span></dt><dd><p>List of vertex indices that make up the trinagles of the mesh</p>
 </dd>
@@ -148,7 +149,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Mesh volume</p>
 </dd>
@@ -162,7 +163,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.mesh_util.</span></span><span class="sig-name descname"><span class="pre">point_triangle_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_tri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/mesh_util.html#point_triangle_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.mesh_util.point_triangle_distance" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the distance between a point and a triangle. Based on <span id="id1">[<a class="reference internal" href="../../../References.html#id39" title="David Eberly. 3D Game Engine Design. Morgan Kaufmann Publishers, 2001.">7</a>]</span>: 3D Game Engine Design, Eberly D. H., Chapter: 14.3 Point to triangle. <a class="reference external" href="https://www.geometrictools.com/Documentation/DistancePoint3triangle3.pdf">https://www.geometrictools.com/Documentation/DistancePoint3triangle3.pdf</a></p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>
@@ -174,7 +175,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>tuple(float64, int64)</cite></dt><dd><p>Distance to triangle, triangle region</p>
 </dd>
@@ -188,7 +189,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.mesh_util.</span></span><span class="sig-name descname"><span class="pre">triangle_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/mesh_util.html#triangle_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.mesh_util.triangle_area" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the area of a triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>
@@ -198,7 +199,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Triangle area</p>
 </dd>
@@ -212,7 +213,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.mesh_util.</span></span><span class="sig-name descname"><span class="pre">triangle_centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/mesh_util.html#triangle_centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.mesh_util.triangle_centroid" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the centroid of a triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>
@@ -222,7 +223,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Triangle centroid</p>
 </dd>
@@ -236,7 +237,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.mesh_util.</span></span><span class="sig-name descname"><span class="pre">triangle_volume_signed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/mesh_util.html#triangle_volume_signed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.mesh_util.triangle_volume_signed" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the signed volume of a the tetraeder represented by a triangle and the coordinate system origin. PyRID uses the signed tetraeder volume to calculate the volume of a mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>
@@ -246,7 +247,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Signed tetraeder volume</p>
 </dd>

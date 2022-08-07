@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mesh compartments &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -104,10 +105,10 @@
            <div itemprop="articleBody">
              
   <section id="mesh-compartments">
-<h1>Mesh compartments<a class="headerlink" href="#mesh-compartments" title="Permalink to this headline"></a></h1>
+<h1>Mesh compartments<a class="headerlink" href="#mesh-compartments" title="Permalink to this heading"></a></h1>
 <p>Compartmentalization is believed to play an important role in cell processes. Therefore, we would like to be able to restrict diffusion and reactions to the volume and surface of arbitrarily shaped compartments. Here, we follow the route of MCell cite{Kerr2008} and represent compartments by triangulated meshes. This approach has several benefits over alternative approaches, such as representing compartments via force fields or other particles. However, the particle approach is highly inefficient. For example, it does not straightforwardly allow for surface diffusion, while the force field approach, in practice, strongly limits the compartment shape complexity. On the other hand, triangulated meshes are heavily used in computer graphics. Therefore, a large number of highly optimized algorithms exist. Also, triangulated meshes are very well suited to represent arbitrary complex compartment geometries.</p>
 <section id="volume-molecules">
-<h2>Volume molecules<a class="headerlink" href="#volume-molecules" title="Permalink to this headline"></a></h2>
+<h2>Volume molecules<a class="headerlink" href="#volume-molecules" title="Permalink to this heading"></a></h2>
 <p>The collision response of a molecule with the mesh is calculated in two different ways. For large rigid bead molecules, each triangle exerts a repulsive force on the individual beads; for small, isotropic molecules or atoms, we use a ray tracing algorithm.</p>
 <p><strong>Contact forces</strong></p>
 <p>Contact detection generally consists of two phases, 1) neighbor searching and 2) contact resolution.
@@ -124,7 +125,7 @@ A bead is said to be in contact with a mesh element (which can be a vertex, edge
 Collision tests are done using the “Fast Voxel Traversal Algorithm for Ray Tracing” introduced by <span id="id5">Amanatides and Woo [<a class="reference internal" href="../../References.html#id38" title="John Amanatides and Andrew Woo. A fast voxel traversal algorithm for ray tracing. In In Eurographics ’87, 3–10. 1987.">3</a>]</span>.</p>
 </section>
 <section id="surface-molecules">
-<h2>Surface molecules<a class="headerlink" href="#surface-molecules" title="Permalink to this headline"></a></h2>
+<h2>Surface molecules<a class="headerlink" href="#surface-molecules" title="Permalink to this heading"></a></h2>
 <p>Surface molecules laterally diffuse within the mesh surface and can represent any transmembrane molecules such as receptors. Here, I take a similar approach to MCell. Thereby, a molecule diffuses in the plane of a triangle until it crosses a triangle edge. In this case, the molecule’s displacement vector is advanced until that edge and then rotated into the plane of the neighboring triangle. The rotation axis is given by the triangle edge. Thereby, the molecule will move in a strait line on the mesh surface (Figure <a class="reference internal" href="#fig-gedodesic-stanfordbunny"><span class="std std-numref">Fig. 17</span></a>). This method is equivalent to unfolding the triangles over the shared edge such that they end up in a common tangent space, i.e. such they are co-planar, advancing the position vector, and folding/rotating back. From the latter method it becomes intuitively clear that the molecule will indeed move in a straight line on the mesh surface.
 As PyRID supports anisotropic rigid bead molecules, the orientation of the molecule needs to be updated as well for each triangle that is crossed. It is not sufficient, however, to rotate the molecule only after it has reached its final position, because the final orientation depends on the exact path that is taken (in case multiple triangles are crossed) and not only on the normal vector/orientation of the target triangle plane. To the best of my knowledge there does not exist a published reference implementation for propagating a position vector on a mesh surface. Therefore, in the following, I will present the method in a bit more detail.
 The triangle edge intersection test can be made efficient by the use of barycentric coordinates. Let <span class="math notranslate nohighlight">\(\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2\)</span> be the three vertices of a triangle. Also, the vertices are numbered in counter clockwise order and the triangle origin is at <span class="math notranslate nohighlight">\(\boldsymbol{p}_0\)</span>. Then, the center of the molecule <span class="math notranslate nohighlight">\(R_0\)</span> can be described in barycentric coordinates by</p>
@@ -171,7 +172,7 @@ Afterward, we advance <span class="math notranslate nohighlight">\(\boldsymbol{R
 </figure>
 </section>
 <section id="distribution-of-molecules">
-<h2>Distribution of molecules<a class="headerlink" href="#distribution-of-molecules" title="Permalink to this headline"></a></h2>
+<h2>Distribution of molecules<a class="headerlink" href="#distribution-of-molecules" title="Permalink to this heading"></a></h2>
 <p><strong>Volume molecules</strong></p>
 <p>The distribution of molecules in the simulation volume becomes a special problem when we have mesh compartments and account for the excluded volume of the molecules. A standard approach from molecular dynamics first loosely distributes the molecules in the simulation box and then shrinks the simulation volume until a target density is reached. This approach could be transferred to a system with mesh compartments. However, here, we might also care about the compartment size. As such, we would need to choose a larger than target compartment size and shrink it until we reach the target size. If the density is too large, we may randomly delete molecules until the target density is also reached. A second approach would be to utilize the Monte Carlo method to distribute the molecules. However, this approach is more time-consuming. A third approach, which is the one we use in PyRID, uses a so-called Poisson-Disc sampling algorithm <span id="id6">[<a class="reference internal" href="../../References.html#id36" title="Robert Bridson. Fast poisson disk sampling in arbitrary dimensions. In ACM SIGGRAPH 2007 sketches on - SIGGRAPH \textquotesingle 07. ACM Press, 2007. doi:10.1145/1278780.1278807.">25</a>]</span>. This approach has the benefit of being computationally efficient and relatively simple to implement. It, however, has the disadvantage of not reaching densities above 30% and is only well suited for approximately spherical molecules. To distribute highly aspherical molecules, currently, the only useful method that works well with PyRID is to distribute the molecules using Monte-Carlo sampling and then resolve overlaps via a soft repulsive interaction potential.
 The Poison-disc asmpling algorithm consists of 3 steps. 1) A grid is initialized, where the cell size is set to <span class="math notranslate nohighlight">\(r/\sqrt{3}\)</span>. 2) A sample point is created and inserted into a list of active elements. 3) While the active list is not empty, new random points around the annulus (r-2r) of the active sample points are created. If no other sample points exist within the radius r, the new sample point is accepted and inserted into the grid and the active list. If, after k trials, no new sample point is found, the active sample point is removed from the active list. For PyRID, this algorithm has been extended to account for polydisperse particle distributions. The details of the new algorithm can be found in the appendix.</p>

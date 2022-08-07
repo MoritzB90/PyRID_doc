@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blender Add-on &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -102,7 +103,7 @@
            <div itemprop="articleBody">
              
   <section id="blender-add-on">
-<span id="userguide-blender-addon"></span><h1>Blender Add-on<a class="headerlink" href="#blender-add-on" title="Permalink to this headline"></a></h1>
+<span id="userguide-blender-addon"></span><h1>Blender Add-on<a class="headerlink" href="#blender-add-on" title="Permalink to this heading"></a></h1>
 <p>PyRID writes the molecule trajectories to a .xyz file. To visualize the molecule dynamics of a simulation you could use, e.g., VMD. However, VMD is not able to visualize the mesh compartments. Also, to get nice looking renders or even animations difficult.
 Therefore, I have written an add-on for Blender. In addition to the .xyz file containing the molecule trajectories, the Blender addon also needs a .prop file that PyRID writes to the same directory as the .xyz file. The .prop file simply contains information about the moelcule properties such as particle radii. In addition, you can load an .obj file of the mesh compartments and a .box file that contains the size of the simulation box, in case you would like to visualize the fluctuations of the box size when having added a Berendsen barostat.
 The add-on in addition helps you to create nice looking renders and animations by the click of a button.</p>

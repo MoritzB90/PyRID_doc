@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data structures &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -98,7 +99,7 @@
            <div itemprop="articleBody">
              
   <section id="data-structures">
-<h1>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this headline"></a></h1>
+<h1>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this heading"></a></h1>
 <p>In PyRID, molecules and particles constantly enter or leave the system due to reactions and other events. Therefore, we need a data structure that can efficiently handle this constant change in the number of objects we need to keep track of in our simulation. The same holds true for the molecular reactions occurring at each time step. These need to be listed and evaluated efficiently. Fortunately, variants of dynamic array data structures are tailored for such tasks, of which we use two kinds, the tightly packed dynamic array and the dynamic array with holes.</p>
 <p><strong>The tightly packed dynamic array (dense array)</strong></p>
 <p>A tightly packed dynamic array is a dynamic array (similar to lists in python or vectors in C++) where elements can be quickly deleted via a pop and swap mechanism. The problem with standard numpy arrays but also lists and C++ vectors is that deletion of elements is very expensive. For example, if we want to delete an element at index m of a numpy array of size n, numpy would create a new array that is one element smaller and copies all the data from the original array to the new array. Also, if we want to increase the size of a numpy array by appending an element, again, a new array will need to be created, and all data needs to be copied. This is extremely computationally expensive. One way to create a dynamic array (and python lists work in that way) is to not increase the array size each time an element is added but increase the array size by some multiplicative factor (usually 2). This consumes more memory but saves us from creating new arrays all the time. Now we simply need to keep track of the number of elements in the array (the length of the array) and the actual capacity, which can be much larger. One straightforward method to delete elements from the array is just to take the last element of the array and copy its data to wherever we want to delete an element (swapping). Next, we pop out the last element by decreasing the array length by 1. We call this type of array a ‘tightly packed array’ because it keeps the array tightly packed. One issue with this method is that elements move around. Thereby, to find an element by its original insertion index, we need to keep track of where elements move. One can easily solve this issue by keeping a second array that saves for each index the current location in the tightly packed array.</p>

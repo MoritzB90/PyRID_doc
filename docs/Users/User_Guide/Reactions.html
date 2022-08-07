@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reactions &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -110,7 +111,7 @@
            <div itemprop="articleBody">
              
   <section id="reactions">
-<span id="userguide-reactions"></span><h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this headline"></a></h1>
+<span id="userguide-reactions"></span><h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this heading"></a></h1>
 <p>PyRID supports various uni- and bimolecular reactions. For bimolecular reactions, PyRID uses the Doi scheme. Thereby, two particles/molecules react with some rate <span class="math notranslate nohighlight">\(k\)</span> if the inter-particle distance is below a certain reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>. Unimolecular reactions are handled using a variant of the Gillespie stochastic simulation algorithm, i.e. the time point of the next reaction is sampled from the expected lifetime distribution of the particle/molecule. Figure <a class="reference internal" href="#fig-reactions-graph"><span class="std std-numref">Fig. 3</span></a> gives an overview over the possible reactions that are supported by PyRID.</p>
 <figure class="align-default" id="fig-reactions-graph">
 <a class="reference internal image-reference" href="../../_images/Reactions_Graph1.png"><img alt="../../_images/Reactions_Graph1.png" src="../../_images/Reactions_Graph1.png" style="width: 70%;" /></a>
@@ -119,7 +120,7 @@
 </figcaption>
 </figure>
 <section id="binding-reactions">
-<h2>Binding reactions<a class="headerlink" href="#binding-reactions" title="Permalink to this headline"></a></h2>
+<h2>Binding reactions<a class="headerlink" href="#binding-reactions" title="Permalink to this heading"></a></h2>
 <p>We can, e.g., define a binding reactions between particles belonging to different molecules. A binding reaction is a biparticle reaction (bp). Therefore, we call the add_bp_reaction() method. We can link a binding reaction to any interaction potential (even solely repulsive). In addition, we need to set the educt particle types, the reaction radius and the reaction rate. We can also pass two product particle types, in case we want the particle types to change upon binding. Changing the particle types, e.g., allows us to also define an unbinding reaction. Therefore, we define a conversion reaction for the product particles. Any bond between particles will be removed as soon as a particle or a molecule changes its type. Type changes can occur via conversion reactions or by enzymatic reactions. Of no such unbinding reaction has been defined, bonds are removed as soon as the inter-particle distance crosses the cutoff radius of the interaction potential. For the weak piecwise harmonic potential (harmonic_attraction), the cutoff radius is, e.g., <span class="math notranslate nohighlight">\(d_1+d_2+r_c\)</span> (see <a class="reference internal" href="Interaction_Potentials.html#userguide-potentials"><span class="std std-ref">Interaction potentials</span></a>).
 Let us define a binding reaction between the particle types ‘patch_1’ and ‘patch_2’:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">=</span><span class="mf">100.0</span>
@@ -136,7 +137,7 @@ Let us define a binding reaction between the particle types ‘patch_1’ and �
 <p>There are many other reactions we can define on our two molecules and the respective particles. The system we have defined so far is to small to be able to account for all. Therefore, in the following I will give an example for each type of reaction defined on the two molecules, however, all these reactions should not be applied at ones.</p>
 </section>
 <section id="fusion-reactions">
-<h2>Fusion reactions<a class="headerlink" href="#fusion-reactions" title="Permalink to this headline"></a></h2>
+<h2>Fusion reactions<a class="headerlink" href="#fusion-reactions" title="Permalink to this heading"></a></h2>
 <p><strong>Molecule fusion</strong></p>
 <p>For the fusion reaction we need to define a third molecule for the fusion product:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_particle_type</span><span class="p">(</span><span class="s1">&#39;core_4&#39;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
@@ -190,7 +191,7 @@ Another thing to keep in mind is that not all bimolecular reactions are allowed.
 <p>The reaction is be executed as follows: particle ‘patch_1’ is converted to ‘patch_2’ and the molecule belonging to the particle ‘core_2’ is deleted. Note, that PyRID does in general not test to which type of molecule a particle belongs. Therefore, a reaction will be executed on all molecule types, where a specific particle type is used. To ensure that bimolecular reactions are unique to a specific molecule type, currently one should use different particle types for every molecule type. This is, however, a bit inconvenient and should be changed in future iteration of PyRID.</p>
 </section>
 <section id="enzymatic-reactions">
-<h2>Enzymatic reactions<a class="headerlink" href="#enzymatic-reactions" title="Permalink to this headline"></a></h2>
+<h2>Enzymatic reactions<a class="headerlink" href="#enzymatic-reactions" title="Permalink to this heading"></a></h2>
 <p><strong>Molecules</strong></p>
 <p>Enzymatic reactions can be defined on multiple particle pairs, analog to the molecule fusion reaction. Enzymatic reactions defined on rigid bead molecules are named ‘enzymatic_mol’ to differentiate from enzymatic reactions defined on particles:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
@@ -215,7 +216,7 @@ Another thing to keep in mind is that not all bimolecular reactions are allowed.
 </div>
 </section>
 <section id="fission-reactions">
-<h2>Fission reactions<a class="headerlink" href="#fission-reactions" title="Permalink to this headline"></a></h2>
+<h2>Fission reactions<a class="headerlink" href="#fission-reactions" title="Permalink to this heading"></a></h2>
 <p><strong>Molecule fission</strong></p>
 <p>A fission reaction is the inverse of the molecule fusion reaction and thereby limited to two products.
 Also, if the educt is a surface molecule, we need to define whether to place the product on the surface or in the volume. If the product is placed in the volume, we also need to define for each product, if it is placed inside or outside the compartment. For volume molecules the situation is a bit easier as PyRID only allows for the products to also be volume molecules.
@@ -258,7 +259,7 @@ The fission reaction <span class="math notranslate nohighlight">\(\ce{C-&gt;[\ce
 <p>Here, the particle ‘patch_2’, belonging to some surface molecule, is converted to ‘patch_1’ while releasing a molecule B into the compartment.</p>
 </section>
 <section id="conversion-reactions">
-<h2>Conversion reactions<a class="headerlink" href="#conversion-reactions" title="Permalink to this headline"></a></h2>
+<h2>Conversion reactions<a class="headerlink" href="#conversion-reactions" title="Permalink to this heading"></a></h2>
 <p><strong>Molecule conversion</strong></p>
 <p>For molecules, a conversion reaction can be setup by:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;conversion_mol&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">])</span>

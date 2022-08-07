@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diffusion tensor &mdash; PyRID 15.06.2022 documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -105,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="diffusion-tensor">
-<h1>Diffusion tensor<a class="headerlink" href="#diffusion-tensor" title="Permalink to this headline"></a></h1>
+<h1>Diffusion tensor<a class="headerlink" href="#diffusion-tensor" title="Permalink to this heading"></a></h1>
 <p>For validating the propagator functions in the last section, I used a given diffusion tensor. Diffusion tensors have been estimated experimentally <span id="id1">[<a class="reference internal" href="../../References.html#id22" title="Marc Niethammer, Raul San Jose Estepar, Sylvain Bouix, Martha Shenton, and Carl-Fredrik Westin. On diffusion tensor estimation. In 2006 International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE, aug 2006. doi:10.1109/iembs.2006.259826.">12</a>]</span> or using molecular dynamics simulations <span id="id2">[<a class="reference internal" href="../../References.html#id52" title="Guillaume Chevrot, Konrad Hinsen, and Gerald R. Kneller. Model-free simulation approach to molecular diffusion tensors. The Journal of Chemical Physics, 139(15):154110, oct 2013. doi:10.1063/1.4823996.">46</a>]</span>. However, for many proteins, the diffusion tensor is unknown. Therefore, it would often be more convenient to calculate the diffusion tensor directly from the coarse-grained representation of a molecule in terms of the rigid bead model. Pioneering work in this direction has been done by <span id="id3">Bloomfield <em>et al.</em> [<a class="reference internal" href="../../References.html#id31" title="V. Bloomfield, W. O. Dalton, and K. E. Van Holde. Frictional coefficients of multisubunit structures. i. theory. Biopolymers, 5(2):135–148, feb 1967. doi:10.1002/bip.1967.360050202.">47</a>]</span> and <span id="id4">Torre and Bloomfield [<a class="reference internal" href="../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">16</a>]</span>.</p>
 <p>In general, the mobility and/or diffusion tensor of an anisotropic rigid body can be calculated from the inverse of the rigid body’s friction supermatrix <span id="id5">[<a class="reference internal" href="../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-difftensor">
@@ -128,7 +129,7 @@
 PyRID uses a method based on a modified Oseen tensor <span id="id6">[<a class="reference internal" href="../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>, <a class="reference internal" href="../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">16</a>]</span> to account for the hydrodynamic interaction between the beads of a rigid bead molecule in a first order approximation.
 Since the method goes beyond what is found in most textbooks, I will give an introduction to the method in the following. However, I will not derive the methods in detail since this has been done in various publications.</p>
 <section id="the-oseen-tensor-and-hydrodynamic-interaction-between-beads">
-<h2>The Oseen tensor and hydrodynamic interaction between beads<a class="headerlink" href="#the-oseen-tensor-and-hydrodynamic-interaction-between-beads" title="Permalink to this headline"></a></h2>
+<h2>The Oseen tensor and hydrodynamic interaction between beads<a class="headerlink" href="#the-oseen-tensor-and-hydrodynamic-interaction-between-beads" title="Permalink to this heading"></a></h2>
 <p>The Oseen tensor has first been introduced by Oseen in 1927 (for reference also see <span id="id7">[<a class="reference internal" href="../../References.html#id12" title="J K G Dhont. An Introduction to Dynamics of Colloids. Elsevier, 1996. doi:10.1016/s1383-7303(96)x8001-3.">15</a>]</span>). The Oseen tensor emerges from the solution of the Stokes equations (linearization of the Navier-Stokes equations) for the flow velocity field in case of a force acting on a point-like particle (<span class="math notranslate nohighlight">\(\boldsymbol{F}(\boldsymbol{r}) = \boldsymbol{F}_0 \delta(\boldsymbol{r}-\boldsymbol{r}_p)\)</span>) which is immersed in a viscous liquid.
 In this case, the solution to the Stokes equation can be written as a linear transformation (due to its linearity, any solution to the Stokes equation has to be a linear transformation):</p>
 <div class="math notranslate nohighlight">
@@ -168,7 +169,7 @@ The mobility tensor for rotation, however, not correcting for the bead radii, is
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> is the Levi-Civita tensor. <span class="math notranslate nohighlight">\(\boldsymbol{\mu}^{tt}, \boldsymbol{\mu}^{rr}, \boldsymbol{\mu}^{rt}\)</span> describe the mobility of a multi-sphere system with hydrodynamic interactions. The above can be extended to account for rigid bead molecules <span id="id17">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span> as outlined in the next section.</p>
 </section>
 <section id="the-friction-tensor-for-rigid-bead-molecules">
-<h2>The friction tensor for rigid bead molecules<a class="headerlink" href="#the-friction-tensor-for-rigid-bead-molecules" title="Permalink to this headline"></a></h2>
+<h2>The friction tensor for rigid bead molecules<a class="headerlink" href="#the-friction-tensor-for-rigid-bead-molecules" title="Permalink to this heading"></a></h2>
 <p>Here, we closely follow <span id="id18">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>. To get an expression for the friction tensor of a rigid bead molecule, we start by considering a system of <span class="math notranslate nohighlight">\(N\)</span> free spherical beads in a fluid with viscosity <span class="math notranslate nohighlight">\(\eta_0\)</span>. Each sphere laterally moves at some velocity :math:` boldsymbol{u}_i` and rotates with some angular velocity :math:` boldsymbol{omega}_i`. The spheres will experience a frictional force and torque :math:` boldsymbol{F}_i,  boldsymbol{T}_i`. In the non-inertial regime (Stokes regime), the relationship between the force/torque and the velocities is linear:</p>
 <div class="math notranslate nohighlight" id="equation-eq-eq-frictionforce">
 <span class="eqno">(39)<a class="headerlink" href="#equation-eq-eq-frictionforce" title="Permalink to this equation"></a></span>\[\boldsymbol{F}_i = \sum_{j=1}^N  \boldsymbol{\xi}_{ij}^{tt} \cdot \boldsymbol{u}_j +  \boldsymbol{\xi}_{ij}^{tr} \cdot \boldsymbol{\omega}_j\]</div>
@@ -285,7 +286,7 @@ D_{tr}^{yx}-D_{tr}^{xy}
 \end{split}.\end{split}\]</div>
 </section>
 <section id="validation">
-<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline"></a></h2>
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this heading"></a></h2>
 <p>The methods outlined in this sections have so far (to my knowledge) only been implemented in the freely available tool Hydro++. The source code for Hydro++ is, however, not publicly available. To efficiently set up a system of rigid bead molecules, the method has now also been implemented directly into PyRID. The implementation is tested against Hydro++ using a model of the protein igG3 that comes with the documentation of Hydro++. The results are in good agreement at up to 4 digits ref{tab:igG3}. The slight difference is probably due to numerical errors that accumulate when numerically inverting the large supermatrices.</p>
 <figure class="align-default" id="fig-difftensor-igg3">
 <a class="reference internal image-reference" href="../../_images/DiffTensor_igg3.png"><img alt="../../_images/DiffTensor_igg3.png" src="../../_images/DiffTensor_igg3.png" style="width: 50%;" /></a>
@@ -301,7 +302,7 @@ D_{tr}^{yx}-D_{tr}^{xy}
 </figure>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <p>As mentioned above, PyRID does not account for hydrodynamic interactions between molecules because, in this case, the kind of simulations for which PyRID has been developed would become unfeasible. Here, the 6Nx6N diffusion tensor of the entire system is needed to propagate the molecule positions. As the molecule positions change each time step, this diffusion tensor needs to be recalculated each iteration. A discussion on this topic in terms of many particle simulations can also be found in <span id="id23">[<a class="reference internal" href="../../References.html#id48" title="Tihamér Geyer. Many-particle brownian and langevin dynamics simulations with the brownmove package. BMC Biophysics, apr 2011. doi:10.1186/2046-1682-4-7.">50</a>]</span>. A new algorithm that scales <span class="math notranslate nohighlight">\(O(N^2)\)</span> has been introduced by <span id="id24">[<a class="reference internal" href="../../References.html#id49" title="Tihamér Geyer and Uwe Winter. An o(n2) approximation for hydrodynamic interactions in brownian dynamics simulations. The Journal of Chemical Physics, 130(11):114905, mar 2009. doi:10.1063/1.3089668.">38</a>]</span> making larger simulations with hydrodynamic interactions more feasible.</p>
 </section>
 </section>
