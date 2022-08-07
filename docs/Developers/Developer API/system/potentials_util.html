@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>potentials_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="system_util" href="system_util.html" />
+    <link rel="prev" title="distribute_vol_util" href="distribute_vol_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reactions.html">reactions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../system.html">system</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="distribute_surface_util.html">distribute_surface_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="distribute_vol_util.html">distribute_vol_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">potentials_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_util.html">system_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="update_force.html">update_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="update_pos.html">update_pos</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../system.html">system</a> &raquo;</li>
+      <li>potentials_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/system/potentials_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="potentials-util">
+<h1>potentials_util<a class="headerlink" href="#potentials-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<span class="target" id="module-pyrid.system.potentials_util"></span><p>&#64;author: Moritz F P Becker</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.CSW">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">CSW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#CSW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.CSW" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates potential energy and force for a Continuous Square-Well (CSW) potential.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>rw</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Radius of the attractive well</p>
+</dd>
+<dt><strong>eps_cw</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Interaction energy constant (units of kJ).</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Steepness of the attractive well (the larger alpha, the better the approximation to a square well).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>(float64, float64)</dt><dd><p>returns the potential energy and force of the interaction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The CSW potential has been introduced in <span id="id1">Espinosa <em>et al.</em> [<a class="reference internal" href="../../../References.html#id5" title="J. R. Espinosa, C. Vega, and E. Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. The Journal of Chemical Physics, 141(13):134709, oct 2014. doi:10.1063/1.4896621.">27</a>]</span> and is a continuous approximation of the square-well potential and thereby suited for moelcular dynamics simulations <span id="id2">Espinosa <em>et al.</em> [<a class="reference internal" href="../../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>]</span>.</p>
+<div class="math notranslate nohighlight">
+\[U_{CSW}(r) = - \frac{\epsilon_{CSW}}{2} \Big[1 - \tanh\Big(\frac{r-r_w}{\alpha}\Big)\Big]\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.FENE">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">FENE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#FENE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.FENE" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.Lennard_Jones">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">Lennard_Jones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#Lennard_Jones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.Lennard_Jones" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.PHS">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">PHS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#PHS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.PHS" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates potential energy and force for a Pseudo Hard Sphere (PHS) potential.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>EpsR</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Interaction energy constant (units of kJ).</p>
+</dd>
+<dt><strong>lr</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Exponent of the repulsive term.</p>
+</dd>
+<dt><strong>la</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Exponent of the attractive term.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>(float64, float64)</dt><dd><p>returns the potential energy and force of the interaction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Pseudo Hard Sphere interaction potential is a continuous approximation of the hard sphere and thereby suited for molecular dynamics simulations <span id="id3">Jover <em>et al.</em> [<a class="reference internal" href="../../../References.html#id3" title="J. Jover, A. J. Haslam, A. Galindo, G. Jackson, and E. A. Müller. Pseudo hard-sphere potential for use in continuous molecular-dynamics simulation of spherical and chain molecules. The Journal of Chemical Physics, 137(14):144505, oct 2012. doi:10.1063/1.4754275.">29</a>]</span>, <span id="id4">Espinosa <em>et al.</em> [<a class="reference internal" href="../../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>]</span>.</p>
+<div class="math notranslate nohighlight">
+\[U_{HS}
+=
+\Biggl \lbrace 
+{ 
+\lambda_r (\frac{\lambda_r}{\lambda_a})^{\lambda_a} \epsilon_R [(\frac{\sigma}{r})^{\lambda_r}-(\frac{\sigma}{r})^{\lambda_a}]+\epsilon_R,\text{ if } 
+   { r &lt; (\frac{\lambda_r}{\lambda_a}) \sigma }
+\atop 
+0, \text{ if } 
+   { r &lt; (\frac{\lambda_r}{\lambda_a}) \sigma }
+}\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.WLC_force">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">WLC_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#WLC_force"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.WLC_force" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.Weeks_Chandler_Anderson">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">Weeks_Chandler_Anderson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#Weeks_Chandler_Anderson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.Weeks_Chandler_Anderson" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.execute_force">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">execute_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#execute_force"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.execute_force" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.harmonic_repulsion">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">harmonic_repulsion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#harmonic_repulsion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.harmonic_repulsion" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.piecewise_harmonic">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">piecewise_harmonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#piecewise_harmonic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.piecewise_harmonic" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates potential energy and force for a weak piecewise harmonic potential.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>rc</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>cutoff radius</p>
+</dd>
+<dt><strong>k</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>force constant (units of kJ/length_unit^2).</p>
+</dd>
+<dt><strong>h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>depth of potential well (units of kJ).</p>
+</dd>
+<dt><strong>d</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>radius of the repulsive part!</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>(float64, float64)</dt><dd><p>returns the potential energy and force of the interaction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The weak piecewise harmonic interaction potential is also used in the particle-based reaction-diffusion simulator <a class="reference external" href="https://readdy.github.io/system.html#potentials">ReaDDy</a> <span id="id5">Hoffmann <em>et al.</em> [<a class="reference internal" href="../../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span> as it is well suited for brownian dynamics simulations, which allow larger time steps than conventional molecular dynamics simualtions, however forces acting on the particles must not change too much in bewteen two integration step. Therefore, soft potentials are used. Hard potentials like the PHS may also be used. In this case, however, the integration time step needs to be chosen much smaller, reducing the benefit of simulating overdamped langevin dynamics to a degree!</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U_{ha}(r)
+= 
+ \begin{cases}
+     \frac{1}{2}k(r-(d_1+d_2))^2-h,&amp; \text{if } r&lt;(d_1+d_2), \\
+     \frac{h}{2}(\frac{r_c-(d_1+d_2)}{2})^{-2}(r-(d_1+d_2))^2-h,&amp; \text{if } d \le r &lt; d + \frac{r_c-(d_1+d_2)}{2}, \\
+     -\frac{h}{2}(\frac{r_c-(d_1+d_2)}{2})^{-2}(r-r_c)^2,&amp; \text{if } d + \frac{r_c-(d_1+d_2)}{2} \le r &lt; r_c, \\
+     0,              &amp; \text{otherwise}
+ \end{cases}\end{split}\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.repulsive_membrane">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">repulsive_membrane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#repulsive_membrane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.repulsive_membrane" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.screened_electrostatics">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">screened_electrostatics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#screened_electrostatics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.screened_electrostatics" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.potentials_util.wall">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.potentials_util.</span></span><span class="sig-name descname"><span class="pre">wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/potentials_util.html#wall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.potentials_util.wall" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="distribute_vol_util.html" class="btn btn-neutral float-left" title="distribute_vol_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="system_util.html" class="btn btn-neutral float-right" title="system_util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

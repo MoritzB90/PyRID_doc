@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.system.potentials_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.system.potentials_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.system.potentials_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+
+
+<div class="viewcode-block" id="wall"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.wall">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">wall</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">force</span><span class="o">=-</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">k</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">force</span></div>
+
+
+<div class="viewcode-block" id="harmonic_repulsion"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.harmonic_repulsion">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">harmonic_repulsion</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">d</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">k</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">d</span><span class="p">:</span>
+        <span class="n">force</span><span class="o">=-</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">u</span><span class="o">=</span><span class="n">k</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">force</span><span class="o">=</span><span class="mf">0.0</span>
+        <span class="n">u</span><span class="o">=</span><span class="mf">0.0</span>
+        
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">force</span></div>
+
+<span class="nb">setattr</span><span class="p">(</span><span class="n">harmonic_repulsion</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="piecewise_harmonic"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.piecewise_harmonic">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">piecewise_harmonic</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates potential energy and force for a weak piecewise harmonic potential.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rc : `float`</span>
+<span class="sd">        cutoff radius</span>
+<span class="sd">    k : `float`</span>
+<span class="sd">        force constant (units of kJ/length_unit^2).</span>
+<span class="sd">    h : `float`</span>
+<span class="sd">        depth of potential well (units of kJ).</span>
+<span class="sd">    d : `float`</span>
+<span class="sd">        radius of the repulsive part!</span>
+<span class="sd">            </span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    The weak piecewise harmonic interaction potential is also used in the particle-based reaction-diffusion simulator `ReaDDy &lt;https://readdy.github.io/system.html#potentials&gt;`_ :cite:t:`Hoffmann2019` as it is well suited for brownian dynamics simulations, which allow larger time steps than conventional molecular dynamics simualtions, however forces acting on the particles must not change too much in bewteen two integration step. Therefore, soft potentials are used. Hard potentials like the PHS may also be used. In this case, however, the integration time step needs to be chosen much smaller, reducing the benefit of simulating overdamped langevin dynamics to a degree!</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">       U_{ha}(r)</span>
+<span class="sd">       = </span>
+<span class="sd">        \\begin{cases}</span>
+<span class="sd">            \\frac{1}{2}k(r-(d_1+d_2))^2-h,&amp; \\text{if } r&lt;(d_1+d_2), \\\\</span>
+<span class="sd">            \\frac{h}{2}(\\frac{r_c-(d_1+d_2)}{2})^{-2}(r-(d_1+d_2))^2-h,&amp; \\text{if } d \le r &lt; d + \\frac{r_c-(d_1+d_2)}{2}, \\\\</span>
+<span class="sd">            -\\frac{h}{2}(\\frac{r_c-(d_1+d_2)}{2})^{-2}(r-r_c)^2,&amp; \\text{if } d + \\frac{r_c-(d_1+d_2)}{2} \le r &lt; r_c, \\\\</span>
+<span class="sd">            0,              &amp; \\text{otherwise}</span>
+<span class="sd">        \\end{cases}</span>
+<span class="sd">    </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float64, float64)</span>
+<span class="sd">        returns the potential energy and force of the interaction</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   
+    <span class="n">k</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">h</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">d</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="o">&lt;</span><span class="n">d</span><span class="p">):</span>
+        <span class="n">force</span><span class="o">=-</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">u</span><span class="o">=</span><span class="n">k</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">h</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="n">d</span><span class="o">&lt;=</span><span class="n">r</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">r</span><span class="o">&lt;</span><span class="n">d</span><span class="o">+</span><span class="p">(</span><span class="n">rc</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="n">force</span><span class="o">=-</span><span class="n">h</span><span class="o">*</span><span class="p">((</span><span class="n">rc</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> 
+        <span class="n">u</span><span class="o">=</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">((</span><span class="n">rc</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">h</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="n">d</span><span class="o">+</span><span class="p">(</span><span class="n">rc</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">&lt;=</span><span class="n">r</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">r</span><span class="o">&lt;</span><span class="n">rc</span><span class="p">)):</span>
+        <span class="n">force</span><span class="o">=</span><span class="n">h</span><span class="o">*</span><span class="p">((</span><span class="n">rc</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">rc</span><span class="p">)</span>
+        <span class="n">u</span><span class="o">=-</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">((</span><span class="n">rc</span><span class="o">-</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">rc</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">force</span></div>
+
+<span class="nb">setattr</span><span class="p">(</span><span class="n">piecewise_harmonic</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;piecewise_harmonic&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="screened_electrostatics"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.screened_electrostatics">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">screened_electrostatics</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span></div>
+
+<div class="viewcode-block" id="Lennard_Jones"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.Lennard_Jones">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">Lennard_Jones</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+  
+    <span class="n">epsilon</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">sigma</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">exp_large</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>   
+    <span class="n">exp_small</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        
+    <span class="n">term_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="n">exp_large</span>
+    <span class="n">term_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="n">exp_small</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">epsilon</span> <span class="o">*</span> <span class="p">(</span><span class="n">term_1</span> <span class="o">-</span> <span class="n">term_2</span><span class="p">)</span>
+    <span class="n">force</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">epsilon</span> <span class="o">*</span> <span class="p">(</span><span class="n">exp_large</span> <span class="o">*</span> <span class="n">term_1</span> <span class="o">-</span> <span class="n">exp_small</span> <span class="o">*</span> <span class="n">term_2</span><span class="p">)</span> <span class="o">/</span> <span class="n">r</span>
+
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">force</span></div>
+
+
+<div class="viewcode-block" id="FENE"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.FENE">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">FENE</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span></div>
+
+<div class="viewcode-block" id="Weeks_Chandler_Anderson"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.Weeks_Chandler_Anderson">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">Weeks_Chandler_Anderson</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span></div>
+    
+<div class="viewcode-block" id="repulsive_membrane"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.repulsive_membrane">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">repulsive_membrane</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span></div>
+    
+<div class="viewcode-block" id="CSW"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.CSW">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span> 
+<span class="k">def</span> <span class="nf">CSW</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates potential energy and force for a Continuous Square-Well (CSW) potential.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rw : `float`</span>
+<span class="sd">        Radius of the attractive well</span>
+<span class="sd">    eps_cw : `float`</span>
+<span class="sd">        Interaction energy constant (units of kJ).</span>
+<span class="sd">    alpha : `float`</span>
+<span class="sd">        Steepness of the attractive well (the larger alpha, the better the approximation to a square well).</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The CSW potential has been introduced in :cite:t:`Espinosa2014` and is a continuous approximation of the square-well potential and thereby suited for moelcular dynamics simulations :cite:t:`Espinosa2019`.</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">       U_{CSW}(r) = - \\frac{\epsilon_{CSW}}{2} \Big[1 - \\tanh\Big(\\frac{r-r_w}{\\alpha}\Big)\Big]</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float64, float64)</span>
+<span class="sd">        returns the potential energy and force of the interaction</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">rw</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#cutoff</span>
+    <span class="n">eps_csw</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#depth</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#slope</span>
+    
+    
+    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">eps_csw</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">((</span><span class="n">r</span><span class="o">-</span><span class="n">rw</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">))</span>
+    <span class="n">force</span> <span class="o">=</span> <span class="o">-</span><span class="n">eps_csw</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">((</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">force</span></div>
+
+<span class="nb">setattr</span><span class="p">(</span><span class="n">CSW</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;CSW&#39;</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="PHS"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.PHS">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span> 
+<span class="k">def</span> <span class="nf">PHS</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates potential energy and force for a Pseudo Hard Sphere (PHS) potential.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    EpsR : `float`</span>
+<span class="sd">        Interaction energy constant (units of kJ).</span>
+<span class="sd">    lr : `float`</span>
+<span class="sd">        Exponent of the repulsive term.</span>
+<span class="sd">    la : `float`</span>
+<span class="sd">        Exponent of the attractive term.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The Pseudo Hard Sphere interaction potential is a continuous approximation of the hard sphere and thereby suited for molecular dynamics simulations :cite:t:`Jover2012`, :cite:t:`Espinosa2019`.</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">       U_{HS}</span>
+<span class="sd">       =</span>
+<span class="sd">       \\Biggl \\lbrace </span>
+<span class="sd">       { </span>
+<span class="sd">       \lambda_r (\\frac{\lambda_r}{\lambda_a})^{\lambda_a} \epsilon_R [(\\frac{\sigma}{r})^{\lambda_r}-(\\frac{\sigma}{r})^{\lambda_a}]+\epsilon_R,\\text{ if } </span>
+<span class="sd">          { r &lt; (\\frac{\lambda_r}{\lambda_a}) \sigma }</span>
+<span class="sd">       \\atop </span>
+<span class="sd">       0, \\text{ if } </span>
+<span class="sd">          { r &lt; (\\frac{\lambda_r}{\lambda_a}) \sigma }</span>
+<span class="sd">       }</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float64, float64)</span>
+<span class="sd">        returns the potential energy and force of the interaction</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#cutoff</span>
+    <span class="n">EpsR</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#depth</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#slope</span>
+    <span class="n">la</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#slope</span>
+    
+    <span class="k">if</span> <span class="n">r</span><span class="o">&lt;</span><span class="p">(</span><span class="n">lr</span><span class="o">/</span><span class="n">la</span><span class="p">)</span><span class="o">*</span><span class="n">sigma</span><span class="p">:</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">lr</span><span class="o">*</span><span class="p">(</span><span class="n">lr</span><span class="o">/</span><span class="n">la</span><span class="p">)</span><span class="o">**</span><span class="n">la</span><span class="o">*</span><span class="n">EpsR</span>
+        <span class="n">exp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span><span class="o">/</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">lr</span>
+        <span class="n">exp_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span><span class="o">/</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">la</span>
+        
+        <span class="n">u</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="p">(</span><span class="n">exp_r</span><span class="o">-</span><span class="n">exp_a</span><span class="p">)</span><span class="o">+</span><span class="n">EpsR</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="p">(</span><span class="n">lr</span><span class="o">*</span><span class="n">exp_r</span><span class="o">-</span><span class="n">la</span><span class="o">*</span><span class="n">exp_a</span><span class="p">)</span><span class="o">/</span><span class="n">r</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+    
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">force</span></div>
+
+<span class="nb">setattr</span><span class="p">(</span><span class="n">PHS</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;PHS&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WLC_force"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.WLC_force">[docs]</a><span class="k">def</span> <span class="nf">WLC_force</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">Lp</span><span class="p">,</span> <span class="n">L0</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">kbt</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">kbt</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Lp</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">z</span><span class="o">/</span><span class="n">L0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">z</span><span class="o">/</span><span class="n">L0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">F</span></div>
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="execute_force"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.execute_force">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">execute_force</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">ID</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">harmonic_repulsion</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">piecewise_harmonic</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">screened_electrostatics</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Lennard_Jones</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Weeks_Chandler_Anderson</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">repulsive_membrane</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">6</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CSW</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ID</span><span class="o">==</span><span class="mi">7</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PHS</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

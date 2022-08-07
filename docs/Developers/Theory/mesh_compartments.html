@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesh compartments &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Data structures" href="data_structures.html" />
+    <link rel="prev" title="Reactions" href="reactions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Theory</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rigid_bead_molecules.html">Rigid bead molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="anisotropic_diffusion.html">Anisotropic diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffusion_tensor.html">Diffusion tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactions.html">Reactions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mesh compartments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#volume-molecules">Volume molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#surface-molecules">Surface molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distribution-of-molecules">Distribution of molecules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data_structures.html">Data structures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Theory</a> &raquo;</li>
+      <li>Mesh compartments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Developers/Theory/mesh_compartments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mesh-compartments">
+<h1>Mesh compartments<a class="headerlink" href="#mesh-compartments" title="Permalink to this headline"></a></h1>
+<p>Compartmentalization is believed to play an important role in cell processes. Therefore, we would like to be able to restrict diffusion and reactions to the volume and surface of arbitrarily shaped compartments. Here, we follow the route of MCell cite{Kerr2008} and represent compartments by triangulated meshes. This approach has several benefits over alternative approaches, such as representing compartments via force fields or other particles. However, the particle approach is highly inefficient. For example, it does not straightforwardly allow for surface diffusion, while the force field approach, in practice, strongly limits the compartment shape complexity. On the other hand, triangulated meshes are heavily used in computer graphics. Therefore, a large number of highly optimized algorithms exist. Also, triangulated meshes are very well suited to represent arbitrary complex compartment geometries.</p>
+<section id="volume-molecules">
+<h2>Volume molecules<a class="headerlink" href="#volume-molecules" title="Permalink to this headline"></a></h2>
+<p>The collision response of a molecule with the mesh is calculated in two different ways. For large rigid bead molecules, each triangle exerts a repulsive force on the individual beads; for small, isotropic molecules or atoms, we use a ray tracing algorithm.</p>
+<p><strong>Contact forces</strong></p>
+<p>Contact detection generally consists of two phases, 1) neighbor searching and 2) contact resolution.
+Contact detection and update of contact forces can become fairly complex, depending on the required accuracy, the complexity, the type of geometries involved, and whether frictional forces need to be accounted for. Contact resolution of the more complex type is found primarily in discrete element method simulations <span id="id1">[<a class="reference internal" href="../../References.html#id34" title="L. Hu, G.M. Hu, Z.Q. Fang, and Y. Zhang. A new algorithm for contact detection between spherical particle and triangulated mesh boundary in discrete element method simulations. International Journal for Numerical Methods in Engineering, 94(8):787–804, mar 2013. doi:10.1002/nme.4487.">56</a>]</span>. Here, however, we will not require exact accuracy but instead use a relatively simple but for the purpose sufficiently accurate approach.
+A bead is said to be in contact with a mesh element (which can be a vertex, edge, or face) if the distance is smaller than the bead radius. In this case, a repulsive force is exerted on the bead:</p>
+<div class="math notranslate nohighlight">
+\[U_{wall, i} = \sum_j^N \frac{k}{2} (r_{ij}-d)^2 \Omega_{ij}.\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(N\)</span> is the number of neighboring mesh elements. <span class="math notranslate nohighlight">\(\Omega_{ij}\)</span> accounts for the amount of overlap of bead i with mesh element j and the type of mesh element. <span class="math notranslate nohighlight">\(\Omega_{ij}\)</span> can, in principle, become fairly complex; therefore, we here use a simple approximation, where <span class="math notranslate nohighlight">\(\sum_j^N \Omega_{ij} = 1/N\)</span> for <span class="math notranslate nohighlight">\(N \in \mathcal{F}\)</span> where <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is the set of all neighboring faces the bead is in contact with. Thereby, we assume that the bead overlaps by the same amount with each mesh element and only account for overlaps with faces as valid contacts but not edges or vertices. If <span class="math notranslate nohighlight">\(\mathcal{F} = \emptyset\)</span>, we take only the distance to the closest mesh element to calculate the repulsive force. To calculate the distance between the bead and a triangle, we use the “Point to Triangle” algorithm by <span id="id2">Eberly [<a class="reference internal" href="../../References.html#id39" title="David Eberly. 3D Game Engine Design. Morgan Kaufmann Publishers, 2001.">7</a>]</span>, which seems to be slightly faster than the algorithm by <span id="id3">Ericson [<a class="reference internal" href="../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">4</a>]</span>.</p>
+<p><strong>Ray tracing</strong></p>
+<p>Contact force calculations are disadvantageous for small, spherical molecules because they require a very small integration time step. Here, ray tracing is more convenient as it works independently of the chosen time step. In this approach, which is similar to the contact detection used in MCell <span id="id4">Kerr <em>et al.</em> [<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>, the displacement vector <span class="math notranslate nohighlight">\(\boldsymbol{\Delta R}\)</span> of the molecule is traced through the simulation volume and collisions with the compartment boundary or the mesh are resolved via reflection.</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\Delta R}_{refl} = \boldsymbol{\Delta R} - 2 (\boldsymbol{\Delta R} \cdot \hat{\boldsymbol{n}}) \hat{\boldsymbol{n}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}\)</span> is the normal vector of the mesh surface element.
+Collision tests are done using the “Fast Voxel Traversal Algorithm for Ray Tracing” introduced by <span id="id5">Amanatides and Woo [<a class="reference internal" href="../../References.html#id38" title="John Amanatides and Andrew Woo. A fast voxel traversal algorithm for ray tracing. In In Eurographics ’87, 3–10. 1987.">3</a>]</span>.</p>
+</section>
+<section id="surface-molecules">
+<h2>Surface molecules<a class="headerlink" href="#surface-molecules" title="Permalink to this headline"></a></h2>
+<p>Surface molecules laterally diffuse within the mesh surface and can represent any transmembrane molecules such as receptors. Here, I take a similar approach to MCell. Thereby, a molecule diffuses in the plane of a triangle until it crosses a triangle edge. In this case, the molecule’s displacement vector is advanced until that edge and then rotated into the plane of the neighboring triangle. The rotation axis is given by the triangle edge. Thereby, the molecule will move in a strait line on the mesh surface (Figure <a class="reference internal" href="#fig-gedodesic-stanfordbunny"><span class="std std-numref">Fig. 17</span></a>). This method is equivalent to unfolding the triangles over the shared edge such that they end up in a common tangent space, i.e. such they are co-planar, advancing the position vector, and folding/rotating back. From the latter method it becomes intuitively clear that the molecule will indeed move in a straight line on the mesh surface.
+As PyRID supports anisotropic rigid bead molecules, the orientation of the molecule needs to be updated as well for each triangle that is crossed. It is not sufficient, however, to rotate the molecule only after it has reached its final position, because the final orientation depends on the exact path that is taken (in case multiple triangles are crossed) and not only on the normal vector/orientation of the target triangle plane. To the best of my knowledge there does not exist a published reference implementation for propagating a position vector on a mesh surface. Therefore, in the following, I will present the method in a bit more detail.
+The triangle edge intersection test can be made efficient by the use of barycentric coordinates. Let <span class="math notranslate nohighlight">\(\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2\)</span> be the three vertices of a triangle. Also, the vertices are numbered in counter clockwise order and the triangle origin is at <span class="math notranslate nohighlight">\(\boldsymbol{p}_0\)</span>. Then, the center of the molecule <span class="math notranslate nohighlight">\(R_0\)</span> can be described in barycentric coordinates by</p>
+<div class="math notranslate nohighlight" id="equation-eq-barycentric-coord-1">
+<span class="eqno">(58)<a class="headerlink" href="#equation-eq-barycentric-coord-1" title="Permalink to this equation"></a></span>\[\boldsymbol{R}_0 = \boldsymbol{p}_0 + u(\boldsymbol{p}_1-\boldsymbol{p}_0) + v (\boldsymbol{p}_2-\boldsymbol{p}_0),\]</div>
+<p>and the molecule displacement vector by</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\Delta R} = du(\boldsymbol{p}_1-\boldsymbol{p}_0) + dv (\boldsymbol{p}_2-\boldsymbol{p}_0),\]</div>
+<p>Efficient algorithms to compute the barycentric coordinates <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> can, e.g., be found in cite{Ericson2004}.
+We may also number the triangle edges in counter clockwise order, starting from the triangle origin <span class="math notranslate nohighlight">\(\boldsymbol{p}_0\)</span>. As such, we are on the line <span class="math notranslate nohighlight">\(\boldsymbol{p}_0 + u(\boldsymbol{p}_1-\boldsymbol{p}_0)\)</span> (edge 0) if  <span class="math notranslate nohighlight">\(v=0\)</span>, on the line <span class="math notranslate nohighlight">\(\boldsymbol{p}_0 + v (\boldsymbol{p}_2-\boldsymbol{p}_0)\)</span> (edge 2) if <span class="math notranslate nohighlight">\(u = 0\)</span> and on the line <span class="math notranslate nohighlight">\(u \boldsymbol{p}_1 + v \boldsymbol{p}_2\)</span> (edge 1) if <span class="math notranslate nohighlight">\(u+v=1\)</span>.
+Thereby, the edge intersection test comes down to solving</p>
+<div class="math notranslate nohighlight" id="equation-eq-edge-intersection">
+<span class="eqno">(59)<a class="headerlink" href="#equation-eq-edge-intersection" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+&amp; u+t_{1}\cdot du = 0 \\
+&amp; v+t_{0}\cdot dv = 0 \\
+&amp; (u+t_{2} \cdot du) + (v+t_{2} \cdot dv) = 1 ,
+\end{split}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(t_{i}\)</span> with <span class="math notranslate nohighlight">\(i \in \{0,1,2\}\)</span> is the distances to the respective edge <span class="math notranslate nohighlight">\(i\)</span> along the displacement vector. We find that the intersections occur at</p>
+<div class="math notranslate nohighlight" id="equation-eq-edge-intersection-2">
+<span class="eqno">(60)<a class="headerlink" href="#equation-eq-edge-intersection-2" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+&amp; t_{1} = -\frac{u}{du} \,\, (\text{edge 1}) \\
+&amp; t_{0}=-\frac{v}{dv} \,\, (\text{edge 0})\\
+&amp; t_{2}=\frac{1-u-v}{du+dv} \,\, (\text{edge 2}) .
+\end{split}\end{split}\]</div>
+<p>To determine with which edge <span class="math notranslate nohighlight">\(\boldsymbol{R}+\boldsymbol{\Delta R}\)</span> intersects first, we simply need to check for the smallest positive value of <span class="math notranslate nohighlight">\(t_{i}\)</span>.
+Afterward, we advance <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> to the intersecting edge, reduce <span class="math notranslate nohighlight">\(\boldsymbol{\Delta R}\)</span> by the corresponding distance traveled and transform <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> to the local coordinate frame of the neighboring triangle. The rotation of <span class="math notranslate nohighlight">\(\boldsymbol{\Delta R}\)</span> into the plane of the neighboring triangle can be made efficiently using Rodrigues’ rotation formula</p>
+<div class="math notranslate nohighlight" id="equation-eq-rodrigues">
+<span class="eqno">(61)<a class="headerlink" href="#equation-eq-rodrigues" title="Permalink to this equation"></a></span>\[\Delta \boldsymbol{R}_{rot} = \Delta \boldsymbol{R} \cos(\phi) + (\boldsymbol{a}_n \times \Delta \boldsymbol{R}) \sin(\phi) + \boldsymbol{a}_n (\boldsymbol{a}_n \cdot \Delta \boldsymbol{R}) (1-\cos(\phi)),\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-eq-cos-sin-phi">
+<span class="eqno">(62)<a class="headerlink" href="#equation-eq-cos-sin-phi" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+&amp; \cos(\phi) = \frac{\hat{\boldsymbol{n}}_1 \cdot \hat{\boldsymbol{n}}_2}{|\hat{\boldsymbol{n}}_1| |\hat{\boldsymbol{n}}_2|} \\
+&amp; \sin(\phi) = \frac{\hat{\boldsymbol{n}}_1 \times \hat{\boldsymbol{n}}_2}{|\hat{\boldsymbol{n}}_1| |\hat{\boldsymbol{n}}_2|}
+\end{split},\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_1\)</span> and <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_2\)</span> are the normal vectors of the two neighboring triangles. The <span class="math notranslate nohighlight">\(\cos(\phi)\)</span> and <span class="math notranslate nohighlight">\(\sin(\phi)\)</span> can also be used to formulate the rotation quaternion to propagate the molecule orientation:</p>
+<div class="math notranslate nohighlight" id="equation-eq-quaternion-cos-sin-phi">
+<span class="eqno">(63)<a class="headerlink" href="#equation-eq-quaternion-cos-sin-phi" title="Permalink to this equation"></a></span>\[\boldsymbol{q} = \cos(\phi/2) + \boldsymbol{a}_{n} \sin(\phi/2),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sin(\phi/2)\)</span> and <span class="math notranslate nohighlight">\(\cos(\phi/2)\)</span> can be calculated from the half-angle formulas for sine and cosine. The molecule’s quaternion is than propagated by quaternion multiplication. The procedure is stopped if <span class="math notranslate nohighlight">\(\boldsymbol{R}_0 +\Delta \boldsymbol{R}\)</span> end up inside the triangle the molecule is currently located on (<span class="math notranslate nohighlight">\(0&lt;=u&lt;=1, 0&lt;=v&lt;=1, u+v&lt;=1\)</span>).</p>
+<figure class="align-default" id="fig-gedodesic-stanfordbunny">
+<a class="reference internal image-reference" href="../../_images/Fig_Geodesics.png"><img alt="../../_images/Fig_Geodesics.png" src="../../_images/Fig_Geodesics.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Geodesic path. <strong>(A)</strong> Geodesic paths of molecules (N=10) diffusing in only one direction on the mesh surface of the stanford bunny.</span><a class="headerlink" href="#fig-gedodesic-stanfordbunny" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="distribution-of-molecules">
+<h2>Distribution of molecules<a class="headerlink" href="#distribution-of-molecules" title="Permalink to this headline"></a></h2>
+<p><strong>Volume molecules</strong></p>
+<p>The distribution of molecules in the simulation volume becomes a special problem when we have mesh compartments and account for the excluded volume of the molecules. A standard approach from molecular dynamics first loosely distributes the molecules in the simulation box and then shrinks the simulation volume until a target density is reached. This approach could be transferred to a system with mesh compartments. However, here, we might also care about the compartment size. As such, we would need to choose a larger than target compartment size and shrink it until we reach the target size. If the density is too large, we may randomly delete molecules until the target density is also reached. A second approach would be to utilize the Monte Carlo method to distribute the molecules. However, this approach is more time-consuming. A third approach, which is the one we use in PyRID, uses a so-called Poisson-Disc sampling algorithm <span id="id6">[<a class="reference internal" href="../../References.html#id36" title="Robert Bridson. Fast poisson disk sampling in arbitrary dimensions. In ACM SIGGRAPH 2007 sketches on - SIGGRAPH \textquotesingle 07. ACM Press, 2007. doi:10.1145/1278780.1278807.">25</a>]</span>. This approach has the benefit of being computationally efficient and relatively simple to implement. It, however, has the disadvantage of not reaching densities above 30% and is only well suited for approximately spherical molecules. To distribute highly aspherical molecules, currently, the only useful method that works well with PyRID is to distribute the molecules using Monte-Carlo sampling and then resolve overlaps via a soft repulsive interaction potential.
+The Poison-disc asmpling algorithm consists of 3 steps. 1) A grid is initialized, where the cell size is set to <span class="math notranslate nohighlight">\(r/\sqrt{3}\)</span>. 2) A sample point is created and inserted into a list of active elements. 3) While the active list is not empty, new random points around the annulus (r-2r) of the active sample points are created. If no other sample points exist within the radius r, the new sample point is accepted and inserted into the grid and the active list. If, after k trials, no new sample point is found, the active sample point is removed from the active list. For PyRID, this algorithm has been extended to account for polydisperse particle distributions. The details of the new algorithm can be found in the appendix.</p>
+<p><strong>Surface molecules</strong></p>
+<p>The distribution of molecules on the surface of a mesh compartment is a little more involved. Here, we utilize an algorithm introduced by <span id="id7">Corsini <em>et al.</em> [<a class="reference internal" href="../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">23</a>]</span>.</p>
+<ol class="arabic simple">
+<li><p>Generate a sample pool S using Monte-Carlo-Distribution-2D().</p></li>
+<li><p>Divide space into cells and count the number of samples in each cell.</p></li>
+<li><p>Randomly select a cell weighted by the number of active samples in each cell
+(active sample: sample that is not yet occupied or deleted).</p></li>
+<li><p>Randomly select a sample from the selected cell.</p></li>
+<li><p>Randomly choose a particle type of radius Ri (weighted by the relative number of each type we want to distribute).</p></li>
+<li><p>Check whether the distance of the selected sample to the neighboring samples that are
+already occupied is larger or equal to Ri+Rj.</p></li>
+<li><p>If True, accept the sample and add the molecule type and position to an occupied sample list.
+Next, delete all other samples within radius Ri, as these won’t ever become occupied anyway.</p></li>
+<li><p>Update the number count of samples for the current cell.</p></li>
+<li><p>While the desired number of molecules is not reached, return to 3. However, set a maximum number
+of trials.</p></li>
+<li><p>If there are no active samples left before we reach the desired molecule number and the maximum number of trials, generate a new sample pool.</p></li>
+</ol>
+<figure class="align-default" id="fig-poisson-disc-sampling">
+<a class="reference internal image-reference" href="../../_images/Poisson-Disc-Sampling.png"><img alt="../../_images/Poisson-Disc-Sampling.png" src="../../_images/Poisson-Disc-Sampling.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text"><strong>Poisson Disc Sampling of polydisperse spheres.</strong> <strong>(A)**~Example distribution for three different sized particle types. **(B)</strong> Poisson Disc sampling confined to the volume of a mesh compartment.</span><a class="headerlink" href="#fig-poisson-disc-sampling" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reactions.html" class="btn btn-neutral float-left" title="Reactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data_structures.html" class="btn btn-neutral float-right" title="Data structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

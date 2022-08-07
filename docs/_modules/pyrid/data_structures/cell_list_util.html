@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.data_structures.cell_list_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.data_structures.cell_list_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.data_structures.cell_list_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">from</span> <span class="nn">..geometry.intersections_util</span> <span class="kn">import</span> <span class="n">triangle_cell_intersection_test</span><span class="p">,</span> <span class="n">point_inside_AABB_test</span>
+
+<span class="n">listtype_1</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">float64</span><span class="p">[:]</span>
+<span class="n">listtype_2</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span>
+<span class="n">listtype_3</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+<span class="n">listtype_4</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:]</span>
+<span class="n">listtype_5</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:])</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">item_t_CL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">spec_CL_array</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;capacity&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;item_t&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">item_t_CL</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_CL</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:]),</span>
+<span class="p">]</span>
+
+<span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_CL_array</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CellListMesh</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Dynamic array keeping a cell list for the triangles of a triangulated mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : `int64`</span>
+<span class="sd">        Number of elements in the dynamic array</span>
+<span class="sd">    capacity : `int64`</span>
+<span class="sd">        Capacity of the dynamic array</span>
+<span class="sd">    Data : `array_like`</span>
+<span class="sd">        Structured array with fields conatining a free linked list and the triangle ids.</span>
+<span class="sd">        dtype: np.dtype([(&#39;next&#39;, np.int64), (&#39;id&#39;, np.int64)],  align=True)</span>
+<span class="sd">    </span>
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    method_1(arguments)</span>
+<span class="sd">        Some general information about this method</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="CellListMesh.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/cell_list_util.html#pyrid.data_structures.cell_list_util.CellListMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Count actual elements (Default is 0)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_t</span> <span class="o">=</span> <span class="n">item_t_CL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return element at index k.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Set value of item at index k.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">allocate_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_resize</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span>      
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+
+<div class="viewcode-block" id="CellListMesh._resize"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/cell_list_util.html#pyrid.data_structures.cell_list_util.CellListMesh._resize">[docs]</a>    <span class="k">def</span> <span class="nf">_resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resize internal array to capacity new_cap</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+          
+        <span class="n">Data_resized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_array</span><span class="p">(</span><span class="n">new_cap</span><span class="p">)</span> <span class="c1"># New bigger array</span>
+          
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span> <span class="c1"># Reference all existing values</span>
+            <span class="n">Data_resized</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+              
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span> <span class="o">=</span> <span class="n">Data_resized</span> <span class="c1"># Call A the new bigger array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">new_cap</span> <span class="c1"># Reset the capacity</span></div>
+        
+    <span class="k">def</span> <span class="nf">make_head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ncell</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">Ncell</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+          
+<div class="viewcode-block" id="CellListMesh.make_array"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/cell_list_util.html#pyrid.data_structures.cell_list_util.CellListMesh.make_array">[docs]</a>    <span class="k">def</span> <span class="nf">make_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a new array with new_cap capacity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_cap</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_t</span><span class="p">)</span></div>
+    
+    <span class="k">def</span> <span class="nf">get_triangles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        
+        <span class="n">triangles_list</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typed</span><span class="o">.</span><span class="n">List</span><span class="p">()</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">head</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># print(&#39;id: &#39;, self.Data[head][&#39;id&#39;])</span>
+            <span class="n">triangles_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">head</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+            <span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">head</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+            
+            <span class="k">while</span> <span class="nb">next</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># for _ in range(5):</span>
+                <span class="c1"># print(&#39;id: &#39;, self.Data[next][&#39;id&#39;])</span>
+                <span class="n">triangles_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="nb">next</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+                <span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="nb">next</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+                
+        <span class="k">return</span> <span class="n">triangles_list</span>
+    
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="reverse_cell_mapping"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/cell_list_util.html#pyrid.data_structures.cell_list_util.reverse_cell_mapping">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">reverse_cell_mapping</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">cells_per_dim</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">cz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cell</span> <span class="o">/</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cell</span> <span class="o">/</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="n">cz</span><span class="o">*</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">cell</span><span class="o">-</span><span class="n">cy</span><span class="o">*</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">cz</span><span class="o">*</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span></div>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="create_cell_list_points"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/cell_list_util.html#pyrid.data_structures.cell_list_util.create_cell_list_points">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">create_cell_list_points</span><span class="p">(</span><span class="n">rc</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">,</span> <span class="n">Compartment</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">cells_per_dim</span> <span class="o">=</span> <span class="p">(</span><span class="n">Compartment</span><span class="o">.</span><span class="n">box_lengths</span> <span class="o">/</span> <span class="n">rc</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">cells_per_dim</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;error: Cell division &lt;3&#39;</span><span class="p">)</span>
+    <span class="n">cell_length_per_dim</span> <span class="o">=</span> <span class="n">Compartment</span><span class="o">.</span><span class="n">box_lengths</span> <span class="o">/</span> <span class="n">cells_per_dim</span>
+    
+    <span class="c1"># Total number of cells in volume</span>
+    <span class="n">Ncell</span> <span class="o">=</span> <span class="n">cells_per_dim</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+    <span class="c1"># print(Ncell)</span>
+    
+    <span class="n">cell_list_samples</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typed</span><span class="o">.</span><span class="n">List</span><span class="o">.</span><span class="n">empty_list</span><span class="p">(</span><span class="n">listtype_3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ncell</span><span class="p">):</span>
+        <span class="n">cell_list_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">typed</span><span class="o">.</span><span class="n">List</span><span class="o">.</span><span class="n">empty_list</span><span class="p">(</span><span class="n">listtype_2</span><span class="p">))</span>
+    
+    <span class="n">N_samples_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Ncell</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">nonempty_cells</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typed</span><span class="o">.</span><span class="n">List</span><span class="o">.</span><span class="n">empty_list</span><span class="p">(</span><span class="n">listtype_2</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">sample_index</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_points</span><span class="p">):</span>
+        <span class="n">cx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">Compartment</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">sample</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">Compartment</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">sample</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">Compartment</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="c1"># Determine cell in 3D volume for i-th particle</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">N_samples_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">cell_list_samples</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample_index</span><span class="p">)</span>
+                    
+        <span class="k">if</span> <span class="n">cell</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nonempty_cells</span><span class="p">:</span>
+            <span class="n">nonempty_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+            
+                        
+    <span class="k">return</span> <span class="n">cell_list_samples</span><span class="p">,</span> <span class="n">N_samples_cell</span><span class="p">,</span> <span class="n">nonempty_cells</span><span class="p">,</span> <span class="n">Ncell</span><span class="p">,</span> <span class="n">cells_per_dim</span></div>
+
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="create_cell_list_mesh"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/cell_list_util.html#pyrid.data_structures.cell_list_util.create_cell_list_mesh">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="c1">##(cache=True)</span>
+<span class="k">def</span> <span class="nf">create_cell_list_mesh</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Compartment</span><span class="p">,</span> <span class="n">cells_per_dim</span><span class="p">,</span> <span class="n">cell_length_per_dim</span><span class="p">,</span> <span class="n">triangle_ids</span><span class="p">,</span> <span class="n">centroid_in_box</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">loose_grid</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># box_lengths = Compartment.box_lengths</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">Compartment</span><span class="o">.</span><span class="n">origin</span>
+    
+    <span class="n">Ncell</span> <span class="o">=</span> <span class="n">cells_per_dim</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+
+    <span class="n">CellList</span> <span class="o">=</span> <span class="n">CellListMesh</span><span class="p">()</span>
+    <span class="n">CellList</span><span class="o">.</span><span class="n">make_head</span><span class="p">(</span><span class="n">Ncell</span><span class="p">)</span>
+    
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">triangle_ids</span><span class="p">:</span>
+        
+        <span class="n">triangle_index</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
+        
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle_index</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle_index</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        
+        <span class="n">triangle</span> <span class="o">=</span> <span class="p">[</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">]</span>
+        
+        <span class="n">c_tri</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">triangle</span><span class="p">):</span>
+            <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vertex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+                
+            <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vertex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+            
+            <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vertex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">&gt;</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">c_tri</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+                
+        <span class="n">cx_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">c_tri</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cx_start</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">cx_start</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">cx_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">c_tri</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cx_end</span><span class="o">&gt;</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">cx_end</span><span class="o">=</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+            
+        <span class="n">cy_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">c_tri</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cy_start</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">cy_start</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">cy_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">c_tri</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cy_end</span><span class="o">&gt;</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">cy_end</span><span class="o">=</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+            
+        <span class="n">cz_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">c_tri</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cz_start</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">cz_start</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">cz_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">c_tri</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cz_end</span><span class="o">&gt;</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">cz_end</span><span class="o">=</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+        
+        
+        <span class="k">for</span> <span class="n">cx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cx_start</span><span class="p">,</span> <span class="n">cx_end</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">cy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cy_start</span><span class="p">,</span> <span class="n">cy_end</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">cz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cz_start</span><span class="p">,</span> <span class="n">cz_end</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">AABB_extents</span> <span class="o">=</span> <span class="n">cell_length_per_dim</span><span class="o">/</span><span class="mi">2</span>
+                    <span class="n">AABB_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">cx</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">cy</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">cz</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+                    <span class="n">AABB_center</span> <span class="o">+=</span> <span class="n">origin</span>
+                    
+                    <span class="n">c</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    
+                    
+                    <span class="c1"># Currently, a fine grid is used. Here, we iterate over many cells for larger molecules. The fine grid is more performand for the fast voxel traversal algorithm. </span>
+                    <span class="c1">#TODO: However, a loose grid would still make sense for particle - Triangle interactions via an energy potential function!</span>
+                    <span class="k">if</span> <span class="n">loose_grid</span><span class="p">:</span>
+                        <span class="n">mult</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># We take 2*AABB_extents because we want to have a loose grid, such that cells overlap.</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">mult</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">triangle_cell_intersection_test</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">AABB_center</span><span class="p">,</span> <span class="n">mult</span><span class="o">*</span><span class="n">AABB_extents</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        
+                        <span class="n">inside_box</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">if</span> <span class="n">centroid_in_box</span><span class="p">:</span>
+                            <span class="n">inside_box</span> <span class="o">=</span> <span class="n">point_inside_AABB_test</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s1">&#39;triangle_centroid&#39;</span><span class="p">],</span> <span class="n">Compartment</span><span class="o">.</span><span class="n">AABB</span><span class="p">)</span>
+                            
+                        <span class="k">if</span> <span class="n">inside_box</span><span class="p">:</span>
+                            <span class="n">slot</span> <span class="o">=</span> <span class="n">CellList</span><span class="o">.</span><span class="n">allocate_slot</span><span class="p">()</span>
+                            <span class="n">CellList</span><span class="p">[</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CellList</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+                            <span class="n">CellList</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span>
+                            <span class="n">CellList</span><span class="p">[</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+                       
+    
+    <span class="n">AABB_centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Ncell</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">cx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">cy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">cz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="n">AABB_extents</span> <span class="o">=</span> <span class="n">cell_length_per_dim</span><span class="o">/</span><span class="mi">2</span>
+                <span class="n">AABB_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">cx</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">cy</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">cz</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+                <span class="n">AABB_center</span> <span class="o">+=</span> <span class="n">origin</span>
+                
+                <span class="n">c</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">AABB_centers</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">AABB_center</span>
+            
+            
+    <span class="k">return</span> <span class="n">CellList</span><span class="p">,</span> <span class="n">AABB_centers</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

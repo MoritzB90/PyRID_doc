@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>transform_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="molecules" href="../molecules.html" />
+    <link rel="prev" title="random_util" href="random_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../math.html">math</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="random_util.html">random_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">transform_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reactions.html">reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../math.html">math</a> &raquo;</li>
+      <li>transform_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/math/transform_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="transform-util">
+<h1>transform_util<a class="headerlink" href="#transform-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<span class="target" id="module-pyrid.math.transform_util"></span><p>&#64;author: Moritz F P Becker</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.axis_angle_parameters">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">axis_angle_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#axis_angle_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.axis_angle_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the normalized rotation axis and angle (sin(phi), cos(phi)) between two normalized vectors. Accounts for the two special cases where n0=n1 and n0=-n1.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector 1</p>
+</dd>
+<dt><strong>n1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector 2</p>
+</dd>
+<dt><strong>a_n</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Empty vector to be filled with values of the normalized rotation axis vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64, float64)</cite></dt><dd><p>sin(phi), cos(phi)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.axis_halfangle_parameters">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">axis_halfangle_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#axis_halfangle_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.axis_halfangle_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the normalized rotation axis and half-angle (sin(phi/2), cos(phi/2)) between two normalized vectors.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector 1</p>
+</dd>
+<dt><strong>n1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector 2</p>
+</dd>
+<dt><strong>a_n</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Empty vector to be filled with values of the normalized rotation axis vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64, float64)</cite></dt><dd><p>sin(phi), cos(phi)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.barycentric_coord">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">barycentric_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barycentric_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#barycentric_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.barycentric_coord" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the barycentric coordinates of a position vector with respect to the triangle represented by the vertices p0, p1, and p2. The algorithm from <span id="id1">Ericson [<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">4</a>]</span> is used.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
+</dd>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+<dt><strong>barycentric_params</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Precalculated parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64, float64)</cite></dt><dd><p>Barycentric coordinates u, v.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.barycentric_coord_projection_method">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">barycentric_coord_projection_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#barycentric_coord_projection_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.barycentric_coord_projection_method" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the barycentric coordinates of a position vector with respect to the triangle represented by the vertices p0, p1, and p2. The algorithm from <span id="id2">Ericson [<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">4</a>]</span> is used. The algorithm takes advantage of the fact that the barycentric coordinates remain invariant under projections. It projects the vertices to either of the planes xy, yz, xz and then calculates the barycentric coordinates from the sub-triangle areas.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
+</dd>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+<dt><strong>normal</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Unnormalized triangle normal vector.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64, float64)</cite></dt><dd><p>Barycentric coordinates u, v.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.barycentric_direction">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">barycentric_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barycentric_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#barycentric_direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.barycentric_direction" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the barycentric coordinates of a direction vector with respect to the triangle represented by the vertices p0, p1, and p2. The algorithm from <span id="id3">Ericson [<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">4</a>]</span> is used.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
+</dd>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+<dt><strong>barycentric_params</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Precalculated parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64, float64)</cite></dt><dd><p>Barycentric coordinates u, v.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.barycentric_params">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">barycentric_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#barycentric_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.barycentric_params" title="Permalink to this definition"></a></dt>
+<dd><p>Precalculates the fixed parameters for the barycentric coordinates of a triangle represented by the vertices p0, p1, and p2. The algorithm is taken from <span id="id4">Ericson [<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">4</a>]</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.cantor_pairing">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">cantor_pairing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#cantor_pairing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.cantor_pairing" title="Permalink to this definition"></a></dt>
+<dd><p>The Cantor pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>k1</strong><span class="classifier"><cite>uint64</cite></span></dt><dd><p>Natural number 1</p>
+</dd>
+<dt><strong>k3</strong><span class="classifier"><cite>uint64</cite></span></dt><dd><p>Natural number 2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>uint64</cite></dt><dd><p>Result of the Cantor pairing</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function is just needed when validating the reaction registry class against
+new implementations which may change the order in which reactions are evaluated. The Cantor pairing function enables to assign a unique id to each educt pair and thereby enables sorting the reactions by the educts! Educt order is not exchangeable!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.cartesian_coord">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">cartesian_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#cartesian_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.cartesian_coord" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the cartesian coordinates of a position vector given in barycentric coordinates.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>u</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Barycentric u coordinate</p>
+</dd>
+<dt><strong>v</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Barycentric v coordinate</p>
+</dd>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Position vector in cartesian coordiantes.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.cartesian_direction">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">cartesian_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#cartesian_direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.cartesian_direction" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the cartesian coordinates of a direction vector given in barycentric coordinates.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>du</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Barycentric u coordinate of the direction vector</p>
+</dd>
+<dt><strong>dv</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Barycentric v coordinate of the direction vector</p>
+</dd>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Direction vector in cartesian coordiantes.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.collision_response">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">collision_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_refl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#collision_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.collision_response" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the collision response of a ray colliding with a mesh triangle.
+The collision is resolved via reflection along the triangle plane.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>v</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Ray vector which to reflect</p>
+</dd>
+<dt><strong>normal</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normal vector of the triangle plane</p>
+</dd>
+<dt><strong>v_refl</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Empty array to be filled with the values of the reflected vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Reflection is calculated by</p>
+<div class="math notranslate nohighlight">
+\[\vec{v}_{ref} = \vec{v} - 2 (\vec{v} \cdot \hat{n}) \hat{n}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{n}\)</span> is the normal vector of the plane at which <span class="math notranslate nohighlight">\(\vec{v}\)</span> is reflected.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.cross">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">cross</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#cross"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.cross" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the cross product between vectors v1 and v2.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>v1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector 1</p>
+</dd>
+<dt><strong>v2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector 2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Cross product between v1 and v2.s</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.eij">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">eij</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#eij"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.eij" title="Permalink to this definition"></a></dt>
+<dd><p>Normalizes the edge represented by the vertices p0 and p1. This edge can be used as the first coordinate vector when constructing a triangle’s local coordinate frame.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Normalized edge vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.ek">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">ek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ej</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#ek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.ek" title="Permalink to this definition"></a></dt>
+<dd><p>Given the triangle vertices p0 and p2 and the normalized triangle edge norm(p1-p0), a vector that is orthogonal to the edge but lies in teh triangle plane is returned. Incombination with the triangle normal vector these 3 vector make up the triangle’s local coordinate frame.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+<dt><strong>ej</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normalized edge vector p1-p0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Normalized vector orhogonal to ej that lies within the plane of triangle p0, p1, p2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.half_angle">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">half_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cos_phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#half_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.half_angle" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the half angle cosine and sine functions (cos(phi/2), sin(phi/2)) given the full angle cosine function cos(phi).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>cos_phi</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>cos(phi).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64, float64)</cite></dt><dd><p>sin(phi/2), cos(phi/2)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.is_diagonal">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">is_diagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#is_diagonal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.is_diagonal" title="Permalink to this definition"></a></dt>
+<dd><p>Tests whether matrix x is diagonal.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>M</strong><span class="classifier"><cite>float[:,:]</cite></span></dt><dd><p>Matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.isclose">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">isclose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#isclose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.isclose" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a boolean array where two arrays are element-wise equal within a tolerance.
+Reduced copy of the numpy fucntion isclose(), which is, however, currently not supported by numba.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a, b</strong><span class="classifier">array_like</span></dt><dd><p>Input arrays to compare.</p>
+</dd>
+<dt><strong>rtol</strong><span class="classifier">float</span></dt><dd><p>The relative tolerance parameter.</p>
+</dd>
+<dt><strong>atol</strong><span class="classifier">float</span></dt><dd><p>The absolute tolerance parameter.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.local_coord">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">local_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#local_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.local_coord" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the local coordinate system of the triangle represented by the three vertices p0,p1 and p2.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>tuple(float64[3], float64[3], float64[3], float64[3])</cite></dt><dd><p>Local coordinate system of the triangle (origin, ex,ey,ez).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.normal_vector">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">normal_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#normal_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.normal_vector" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the normal vector of a triangle given its vertex vectors p0, p1 and p2.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+<dt><strong>.. note::</strong></dt><dd><p>The direction of the triangle normal vector depends on the vertex order (clockwise or counter-clockwise)!</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Normal vector of the triangle.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.normalize">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.normalize" title="Permalink to this definition"></a></dt>
+<dd><p>Normalizes a vector v.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>v</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[:]</cite></dt><dd><p>Normalized vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.orthogonal_vector">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">orthogonal_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_perp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#orthogonal_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.orthogonal_vector" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates a vector orthoginal to v.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.quat_mult">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">quat_mult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#quat_mult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.quat_mult" title="Permalink to this definition"></a></dt>
+<dd><p>Executes the quaternion multiplication between two quaternions q1 and q2.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>q1</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Quaternion 1</p>
+</dd>
+<dt><strong>q2</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Quaternion 2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[4]</cite></dt><dd><p>Quaternion product q1*q2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.quaternion_plane_to_plane">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">quaternion_plane_to_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#quaternion_plane_to_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.quaternion_plane_to_plane" title="Permalink to this definition"></a></dt>
+<dd><p>updates the quaternion corresponding to an orientation in plane n0 to the orientation in plane n1 and returns sin(phi) and cos(phi).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>quaternion</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Quaternion</p>
+</dd>
+<dt><strong>normal</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normal vector 1</p>
+</dd>
+<dt><strong>normal</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normal vector 2</p>
+</dd>
+<dt><strong>a_n</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Empty rotation axis vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[4]</cite></dt><dd><p>Rotation quaternion</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.quaternion_random_axis_rot">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">quaternion_random_axis_rot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#quaternion_random_axis_rot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.quaternion_random_axis_rot" title="Permalink to this definition"></a></dt>
+<dd><p>Updates an orientation quaternion by a random rotation around a given axis.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.quaternion_to_plane">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">quaternion_to_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#quaternion_to_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.quaternion_to_plane" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a rotation quaternion representing the rotation of a vector [0.0, 0.0, 1.0] to a given plane normal vector.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>normal</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normal vector</p>
+</dd>
+<dt><strong>quaternion</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Quaternion</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[4]</cite></dt><dd><p>Rotation quaternion</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.rodrigues_rot">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">rodrigues_rot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos_phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin_phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#rodrigues_rot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.rodrigues_rot" title="Permalink to this definition"></a></dt>
+<dd><p>Rotates vector v by an angle alpha around the axis vector a using the Rodriguez rotation formula.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>v</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vector which to rotate</p>
+</dd>
+<dt><strong>a_n</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normalized rotation axis vector.</p>
+</dd>
+<dt><strong>cos_phi</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Cosine of the angle phi by which to rotate vector v.</p>
+</dd>
+<dt><strong>sin_phi</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Sine of the angle phi by which to rotate vector v.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[3]</cite></dt><dd><p>Rotated vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.rot_quaternion">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">rot_quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#rot_quaternion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.rot_quaternion" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a quaternion, corresponding to a rotation about a given axis by a given angle. If no angle or axis is passed [1.0, 0.0, 0.0, 0.0] is returned, correpsonding to a rotation by zero degree.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>phi</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Angle, given in rad.</p>
+</dd>
+<dt><strong>a_n</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Rotation axis normal vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A rotation around the axis vector <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> is represented in quaternion form:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{q_{rot}} = \cos(\phi/2) + (u_x \boldsymbol{i} + u_y \boldsymbol{i} + u_z \boldsymbol{i}) \sin(\phi/2),\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.solid_angle">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">solid_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#solid_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.solid_angle" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the solid angle defined by the tetraeder that is represented by the triangle with vertices p0, p1, and p2 and the coordinate system origin. Is used by PyRID to determine whether a point sited inside or outside a mesh.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
+</dd>
+<dt><strong>p1</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 2</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64</cite></dt><dd><p>Solid angle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.geometry.mesh_util.point_inside_mesh_test</span></code></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.sqrt_matrix">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">sqrt_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#sqrt_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.sqrt_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the square root of a matrix by doing an eigenvalue decomposition and then taking the square root of the eigenvalues before reconstructing the matric form. Only works for diagonalzable matrices!</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>M</strong><span class="classifier"><cite>float[:,:]</cite></span></dt><dd><p>Matrix</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64[:,:]</cite></dt><dd><p>Square root of matric M</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#pyrid.math.transform_util.is_diagonal" title="pyrid.math.transform_util.is_diagonal"><code class="xref py py-func docutils literal notranslate"><span class="pre">is_diagonal</span></code></a></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.tri_area_2D">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">tri_area_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#tri_area_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.tri_area_2D" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the area of a triangle in 2D.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>x1</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>X value of vertex 1</p>
+</dd>
+<dt><strong>x2</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>X value of vertex 2</p>
+</dd>
+<dt><strong>x3</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>X value of vertex 3</p>
+</dd>
+<dt><strong>y1</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Y value of vertex 1</p>
+</dd>
+<dt><strong>y2</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Y value of vertex 2</p>
+</dd>
+<dt><strong>y3</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>y value of vertex 3</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64</cite></dt><dd><p>Triangle area</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.unique_pairing">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">unique_pairing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#unique_pairing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.unique_pairing" title="Permalink to this definition"></a></dt>
+<dd><p>The unique pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>k1</strong><span class="classifier"><cite>uint64</cite></span></dt><dd><p>Natural number 1</p>
+</dd>
+<dt><strong>k3</strong><span class="classifier"><cite>uint64</cite></span></dt><dd><p>Natural number 2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>uint64</cite></dt><dd><p>Result of the unique pairing</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function is just needed when validating the reaction handling functions against
+new implementations which may change the order in whcih reactions are resolved. The function enables to assign a unique id for each educt pair and thereby enables sorting the reactions by the educts! Educt order is exchangeable!</p>
+<p>from: <a class="reference external" href="https://math.stackexchange.com/questions/882877/produce-unique-number-given-two-integers">https://math.stackexchange.com/questions/882877/produce-unique-number-given-two-integers</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.math.transform_util.valid_mobility_tensor_test">
+<span class="sig-prename descclassname"><span class="pre">pyrid.math.transform_util.</span></span><span class="sig-name descname"><span class="pre">valid_mobility_tensor_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mu_sqrt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/math/transform_util.html#valid_mobility_tensor_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.math.transform_util.valid_mobility_tensor_test" title="Permalink to this definition"></a></dt>
+<dd><p>Tests whether a mobility tensor i a positive semidefinite matrix. For mobility tensors and diffusion tesnors to have proper physical meaning, they should be real positive semidefinite. .</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Mu</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Mobility tensor</p>
+</dd>
+<dt><strong>Mu_sqrt</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Square root of mobility tensor</p>
+</dd>
+<dt><strong>.. note::</strong></dt><dd><p>Experimentaly estimated diffusion tensors are, although non-physical, not always positive semidefinite (see e.g. :cite:t`Niethammer2006`).
+Also, in case of overlapping beads, the diffusion tensor calculated by PyRID is not necessarily positive semidefinite!</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Warning(‘Diffusion tensor should be a positive semidefinite matrix!’)</dt><dd><p>Warning is raised if the diffusion tensor and the mobility tensor respectively are not positive semidefinite.</p>
+</dd>
+<dt>ValueError(‘Error: complex square root of the mobility tensor detected. Square root must be real valued (Diffusion tensor should be a real positive semidefinite matrix).’)</dt><dd><p>Raised in case the square root of the mobility tensor contains complex values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="../molecules/hydro_util.html#module-pyrid.molecules.hydro_util" title="pyrid.molecules.hydro_util"><code class="xref py py-func docutils literal notranslate"><span class="pre">hydro_util</span></code></a></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="random_util.html" class="btn btn-neutral float-left" title="random_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../molecules.html" class="btn btn-neutral float-right" title="molecules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

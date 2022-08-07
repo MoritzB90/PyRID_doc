@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>distribute_vol_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="potentials_util" href="potentials_util.html" />
+    <link rel="prev" title="distribute_surface_util" href="distribute_surface_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reactions.html">reactions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../system.html">system</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="distribute_surface_util.html">distribute_surface_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">distribute_vol_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="potentials_util.html">potentials_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_util.html">system_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="update_force.html">update_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="update_pos.html">update_pos</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../system.html">system</a> &raquo;</li>
+      <li>distribute_vol_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/system/distribute_vol_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="distribute-vol-util">
+<h1>distribute_vol_util<a class="headerlink" href="#distribute-vol-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<span class="target" id="module-pyrid.system.distribute_vol_util"></span><p>&#64;author: Moritz F P Becker</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.add_molecule_single">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">add_molecule_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#add_molecule_single"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.add_molecule_single" title="Permalink to this definition"></a></dt>
+<dd><p>Places a single new molecule into a compartment, given its position, orientation and type.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>id of the compartment</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
+</dd>
+<dt><strong>pos</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Position of the molecul center</p>
+</dd>
+<dt><strong>quaternion</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Rotation quaternion of the molecule</p>
+</dd>
+<dt><strong>mol_type</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Molecule name</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.add_molecules">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">add_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#add_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.add_molecules" title="Permalink to this definition"></a></dt>
+<dd><p>Places new molecules into a compartment, given their positions, orientations and types.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>id of the compartment</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
+</dd>
+<dt><strong>pos</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Positions of the molecule centers</p>
+</dd>
+<dt><strong>quaternion</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Rotation quaternions of the molecules</p>
+</dd>
+<dt><strong>mol_type_ids</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Type ids of the molecules</p>
+</dd>
+<dt><strong>mol_types</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Array of strings of the molecule names</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.monte_carlo_distribution_3D">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">monte_carlo_distribution_3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_total</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#monte_carlo_distribution_3D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.monte_carlo_distribution_3D" title="Permalink to this definition"></a></dt>
+<dd><p>Does Monte Carlo sampling for N points inside a compartment.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>N_total</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Total number of points to distribute</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float64[:,3]</dt><dd><p>Array of positions</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.normal">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jitter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.normal" title="Permalink to this definition"></a></dt>
+<dd><p>Distributes molecules spherically around a point by a gaussian distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>origin</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Origin of the distribution</p>
+</dd>
+<dt><strong>jitter</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Standard deviation of the normal distribution</p>
+</dd>
+<dt><strong>number</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Number of molecules to distribute per type</p>
+</dd>
+<dt><strong>mol_types</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Array of strings of molecule names</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[N,3], float64[N,4], int64[N])</dt><dd><p>Positions, Quaternions, and Molecule ids</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.pds">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">pds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#pds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.pds" title="Permalink to this definition"></a></dt>
+<dd><p>Distributes a number of molecules of different types inside the volume of a compartment using a poisson disc sampling algorithm.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>mol_types</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Array of strings of molecule names</p>
+</dd>
+<dt><strong>number</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Number of molecules to distribute per given type</p>
+</dd>
+<dt><strong>clustering factor</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Determines how much the molecules are spread inside the compartment. Higher values are necessary for uniform distributions at low density. Default = 1</p>
+</dd>
+<dt><strong>max_trials</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Maximum number of trials to find a new position around a given active point in the poisson disc sampling algorithm.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[:,3], int64[:], float64[:,4])</dt><dd><p>Returns arrays of the positions, molecule types, and rotation quaternions of the distributed moelcules.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.pds_uniform">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">pds_uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#pds_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.pds_uniform" title="Permalink to this definition"></a></dt>
+<dd><p>Uniformly distributes molecules of different types inside a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id1">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">23</a>]</span> to distribute points on triangulated mesh surfaces but that has been adapted here for volume distributions. PyRID also uses a variant of the original algorithm to distribute molecules on mesh surfaces.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>mol_types</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Array of strings of molecule names</p>
+</dd>
+<dt><strong>N</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Number of molecules to distribute per given type</p>
+</dd>
+<dt><strong>multiplier</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Specifies the multiplication factor by which the algorithm upscales the target number for the Monte Carlo sampling. Default = 100</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[:,3], int64[:], float64[:,4])</dt><dd><p>Returns arrays of the positions, molecule types, and rotation quaternions of the distributed moelcules.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.point_in_sphere_simple">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">point_in_sphere_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#point_in_sphere_simple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.point_in_sphere_simple" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a random point uniformly distributed in the volume of a sphere with radius r.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>radius</strong><span class="classifier"><cite>float</cite></span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float, float, float)</dt><dd><p>Uniformly distributed random point in sphere volume</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.point_on_sphere">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">point_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#point_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.point_on_sphere" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a random point uniformly distributed on the surface of a sphere with radius r.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>radius</strong><span class="classifier"><cite>float</cite></span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float, float, float)</dt><dd><p>Uniformly distributed random point on sphere surface</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.poisson_disc_sampling">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">poisson_disc_sampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_trials</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#poisson_disc_sampling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.poisson_disc_sampling" title="Permalink to this definition"></a></dt>
+<dd><p>Poisson disc sampling algorithm for different sized spheres, accounting for different boundary conditions and mesh compartment boundaries. The algorithm is based on <span id="id2">Bridson [<a class="reference internal" href="../../../References.html#id36" title="Robert Bridson. Fast poisson disk sampling in arbitrary dimensions. In ACM SIGGRAPH 2007 sketches on - SIGGRAPH \textquotesingle 07. ACM Press, 2007. doi:10.1145/1278780.1278807.">25</a>]</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>radii</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Radii of the different sphere types</p>
+</dd>
+<dt><strong>mol_type_ids</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Type ids of the different spheres</p>
+</dd>
+<dt><strong>N</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Number of spheres to distribute per given type</p>
+</dd>
+<dt><strong>clustering factor</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Determines how much the spheres are spread inside the compartment. Higher values are necessary for uniform distributions at low density. Default = 1</p>
+</dd>
+<dt><strong>max_trials</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Maximum number of trials to find a new position around a given active point in the poisson disc sampling algorithm.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[:,3], int64[:], float64[:,4], int64)</dt><dd><p>Returns arrays of the positions, types and rotations quaternions. Also return the total count of distributed spheres.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError(‘There is no overlap of the Compartment with the Simulation box! Unable to distribute points in Compartment!’)</dt><dd><p>Raised if the selected compartment does not overlap with the simulation box.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.poisson_disc_sampling_uniform">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">poisson_disc_sampling_uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#poisson_disc_sampling_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.poisson_disc_sampling_uniform" title="Permalink to this definition"></a></dt>
+<dd><p>Uniformly distributes spheres of different radii inside a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id3">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">23</a>]</span> to distribute points on triangulated mesh surfaces but that has been adapted here for volume distributions. PyRID also uses a variant of the original algorithm to distribute molecules on mesh surfaces.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
+</dd>
+<dt><strong>radii</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>radii of the different sphere types</p>
+</dd>
+<dt><strong>mol_type_ids</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Array of molecule type ids</p>
+</dd>
+<dt><strong>weights</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Weights specifying how often the different sphere types are selected for distribution. Weights should be higher for large spheres since the probability of a successfull trial is lower than for small spheres.</p>
+</dd>
+<dt><strong>N</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Number of molecules to distribute per given type</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>multiplier</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Specifies the multiplication factor by which the algorithm upscales the target number for the Monte Carlo sampling. Default = 100</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[:,3], int64[:], float64[:,4], int64)</dt><dd><p>Returns arrays of the positions, types and rotations quaternions. Also return the total count of distributed spheres.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError(‘There is no overlap of the Compartment with the Simulation box! Unable to distribute points in Compartment!’)</dt><dd><p>Raised if the selected compartment does not overlap with the simulation box.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The algorithm is based on Corsini et al. 2012, Efficient and Flexible Sampling with Blue Noise Properties of Triangular Meshes.</p>
+<p>The algorithm consists of 10 steps:</p>
+<ol class="arabic simple">
+<li><p>Generate a sample pool S using monte_carlo_distribution_3D().</p></li>
+<li><p>Divide space into cells and count the number of samples in each cell.</p></li>
+<li><p>Randomly select a cell weighted by the number of active samples in each cell (active sample: sample that is not yet occupied or deleted).</p></li>
+<li><p>Randomly select a sample from the selected cell.</p></li>
+<li><p>Randomly choose a particle type of radius Ri (weighted by the relative number of each type that we want to distribute).</p></li>
+<li><p>Check whether the distance of the selected sample to the neighboring samples that are already occupied is larger or equal to Ri+Rj.</p></li>
+<li><p>If True, accept the sample and add the molecule type and position to an occupied sample list. Next, delete all other samples within radius Ri, as these wont ever become occupied anyway.</p></li>
+<li><p>Update the number count of samples for the current cell.</p></li>
+<li><p>While the desired number of molecules is not reached, return to 3. However, set a maximum number of trials.</p></li>
+<li><p>If their are no active samples left before we reach the desired molecule number and the maximum number of trials, generate a new sample pool.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.random_direction_Halfsphere">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">random_direction_Halfsphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sphere_radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#random_direction_Halfsphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.random_direction_Halfsphere" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a random direction vector uniformly distributed in the volume of a half-sphere with radius r, splitted in half in direction of a given plane normal vector.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>sphere_radius</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Radius of the sphere</p>
+</dd>
+<dt><strong>normal</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Normal vector of the plane splitting the sphere in half</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float64[3]</dt><dd><p>Direction vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>First a uniformly distributed random vector <span class="math notranslate nohighlight">\(d\boldsymbol{X}\)</span> that sites somewhere within the full sphere is drawn.
+Next, we test whether the vector points into the same direction as the plane normal vector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}\)</span> via their dot product.
+If the dot product is negative, the direction vector is reflected at the plane by <span class="math notranslate nohighlight">\(d\boldsymbol{X}_{refl} = d\boldsymbol{X} -2 d\boldsymbol{X} \cdot \hat{\boldsymbol{n}}\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.random_direction_sphere">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">random_direction_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sphere_radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#random_direction_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.random_direction_sphere" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a random direction vector uniformly distributed in the volume of a sphere with radius r.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>sphere_radius</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Radius of the sphere</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float64[3]</dt><dd><p>Direction vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.random_quaternion">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">random_quaternion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#random_quaternion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.random_quaternion" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a unit quaternion representing a uniformly distributed random rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>float64[4]</cite></dt><dd><p>Uniformly distributed, random rotation quaternion</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The method can be found in K. Shoemake, Graphics Gems III by D. Kirk, pages 124-132 <span id="id4">[<a class="reference internal" href="../../../References.html#id55" title="David Kirk. Graphics Gems III (IBM Version). Elsevier Science &amp; Techn., December 2012. URL: https://www.ebook.de/de/product/21119786/david_kirk_graphics_gems_iii_ibm_version.html.">26</a>]</span> and on <a class="reference external" href="http://planning.cs.uiuc.edu/node198.html">http://planning.cs.uiuc.edu/node198.html</a>:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\boldsymbol{q} = [\sqrt{1-u_1} \, \sin(2 \pi u_2), \sqrt{1-u_1} \, \cos(2 \pi u_2), \sqrt{u_1} \, \sin(2 \pi u_3), \sqrt{u_1} \, \cos(2 \pi u_3)] ,\]</div>
+</div></blockquote>
+<p>where <span class="math notranslate nohighlight">\(u_1,u_2,u_3 \in [0,1]\)</span> are uniformly distributed random numbers. <span class="math notranslate nohighlight">\(\boldsymbol{q}\)</span> is a uniformly distributed, random rotation quaternion.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.random_quaternion_tuple">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">random_quaternion_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#random_quaternion_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.random_quaternion_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a unit quaternion representing a uniformly distributed random rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>tuple[4]</cite></dt><dd><p>Uniformly distributed, random rotation quaternion</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The method can be found in K. Shoemake, Graphics Gems III by D. Kirk, pages 124-132 <span id="id5">[<a class="reference internal" href="../../../References.html#id55" title="David Kirk. Graphics Gems III (IBM Version). Elsevier Science &amp; Techn., December 2012. URL: https://www.ebook.de/de/product/21119786/david_kirk_graphics_gems_iii_ibm_version.html.">26</a>]</span> and on <a class="reference external" href="http://planning.cs.uiuc.edu/node198.html">http://planning.cs.uiuc.edu/node198.html</a>:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\boldsymbol{q} = [\sqrt{1-u_1} \, \sin(2 \pi u_2), \sqrt{1-u_1} \, \cos(2 \pi u_2), \sqrt{u_1} \, \sin(2 \pi u_3), \sqrt{u_1} \, \cos(2 \pi u_3)] ,\]</div>
+</div></blockquote>
+<p>where <span class="math notranslate nohighlight">\(u_1,u_2,u_3 \in [0,1]\)</span> are uniformly distributed random numbers. <span class="math notranslate nohighlight">\(\boldsymbol{q}\)</span> is a uniformly distributed, random rotation quaternion.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.release_molecules_boundary">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">release_molecules_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#release_molecules_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.release_molecules_boundary" title="Permalink to this definition"></a></dt>
+<dd><p>Releases molecules into the volume at the simulation box boundary given an outside concentration of the different molecule types.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The average number of molecules that hit a boundary of area <span class="math notranslate nohighlight">\(A\)</span> from one side within a time step <span class="math notranslate nohighlight">\(\Delta t\)</span> can be calculated from the molecule concentration <span class="math notranslate nohighlight">\(C\)</span> and the average distance a diffusing molecule travels normal to a plane <span class="math notranslate nohighlight">\(l_{n}\)</span> within <span class="math notranslate nohighlight">\(\Delta t\)</span> <span id="id6">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[N_{hits} = \frac{A l_{n}}{2 C},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[l_{n} = \sqrt{\frac{4D\Delta t}{\pi}}.\]</div>
+<p>Here <span class="math notranslate nohighlight">\(D = Tr(\boldsymbol{D}^{tt,b})/3\)</span> is the scalar translational diffusion constant.
+The boundary crossing of molecules can be described as a poisson process. As such, the number of molecules that cross the boundary each time step is drawn from a poisson distribution with a rate <span class="math notranslate nohighlight">\(N_{hits}\)</span>.</p>
+<p>The normalized distance that a crossing molecule ends up away from the plane/boundary follows the following distribution <span id="id7">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(d\tilde{x}) = 1-e^{-d\tilde{x}^2}+\sqrt{\pi}*dx*\text{erfc}(d\tilde{x})\]</div>
+<p>The distance vector normal to the plane after the crossing can then be calculated from the diffusion length constant <span class="math notranslate nohighlight">\(\lambda\)</span> and the plane’s normal vector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}\)</span> by <span class="math notranslate nohighlight">\(d\boldsymbol{x} = \lambda \, d\tilde{x} \, \hat{\boldsymbol{n}} = \sqrt{4Dt} \, d\tilde{x} \, \hat{\boldsymbol{n}}\)</span>.</p>
+<p>In the case that a molecule enters the simulation box near to another boundary, e.g. of a mesh compartment, we may also want to account for the distance traveled parallel to the plane in order to correctly resolve collision with the mesh. However, currently PyRID does not account for this. For small intregration time steps and meshes that are further than <span class="math notranslate nohighlight">\(\sqrt{4Dt}\)</span> away from the simulation box border, the error introduced should however be negligable.</p>
+<p>Now that the number of molecules and their distance away from the plane are determined, the molecules are distributed in the simualtion box. Since the diffusion along each dimension is independent we can simply pick a random point uniformly distributed on the respective plane. For triangulated mesh surfaces, triangles are picked randomly, weighted by their area. Sampling a uniformly distributed random point in a triangle is done by <span id="id8">[<a class="reference internal" href="../../../References.html#id54" title="Robert Osada, Thomas Funkhouser, Bernard Chazelle, and David Dobkin. Shape distributions. ACM Transactions on Graphics, 21(4):807–832, oct 2002. doi:10.1145/571647.571648.">24</a>]</span></p>
+<div class="math notranslate nohighlight">
+\[P(\boldsymbol{r}) = (1-\sqrt{\mu_1})*\boldsymbol{p}_0+(\sqrt{\mu_1}*(1-\mu_2))*\boldsymbol{p}_1+(\mu_2*\sqrt{\mu_1})*\boldsymbol{p}_2  ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu_1, \mu_2\)</span> are random numbers between 0 and 1. <span class="math notranslate nohighlight">\(\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2\)</span> are the three vertices of the triangle.</p>
+<p>Note that, in general, here we neglect any interactions between the virtual molecules. Therefore, fixed concentration boundary conditions only result in the same inside and outside concentrations if no molecular in teractions are simulated.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_vol_util.trace_direction_vector">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_vol_util.</span></span><span class="sig-name descname"><span class="pre">trace_direction_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_vol_util.html#trace_direction_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_vol_util.trace_direction_vector" title="Permalink to this definition"></a></dt>
+<dd><p>Traces the path along a direction vector, and, depending on the boundary conditions and the presence of mesh compartments updates the direction vector. If the direction vector hits an absorptive boundary (fixed concentration boundary conditions), returns False, indicating that the corresponding molecule needs to be deleted.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>dX</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Direction vector</p>
+</dd>
+<dt><strong>origin</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Origin of the molecule</p>
+</dd>
+<dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>New position/origin of the moelcule is saved in this array.</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Indicates whether the position tracing was successful or the molecule hit an absorptive boundary.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="distribute_surface_util.html" class="btn btn-neutral float-left" title="distribute_surface_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="potentials_util.html" class="btn btn-neutral float-right" title="potentials_util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

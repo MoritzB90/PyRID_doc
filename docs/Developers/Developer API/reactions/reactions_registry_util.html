@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reactions_registry_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="reactions_util" href="reactions_util.html" />
+    <link rel="prev" title="reactions" href="../reactions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../reactions.html">reactions</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">reactions_registry_util</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reaction">Reaction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="reactions_util.html">reactions_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="update_reactions.html">update_reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../reactions.html">reactions</a> &raquo;</li>
+      <li>reactions_registry_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/reactions/reactions_registry_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reactions-registry-util">
+<h1>reactions_registry_util<a class="headerlink" href="#reactions-registry-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<section id="reaction">
+<h2>Reaction<a class="headerlink" href="#reaction" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.reactions.reactions_registry_util.</span></span><span class="sig-name descname"><span class="pre">Reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction" title="Permalink to this definition"></a></dt>
+<dd><p>The reaction class stores all particle and molecule reactions of the current time step. At its core the Reaction class is a dense dynamic array (i.e. elements are deleted via a pop and swap mechanism). It also keeps another dynamic array with holes that keeps track of where a reaction moves during swaping. This is necessary, beacause we also store each reaction by its id in a doubly linked list that contains for each particle all its reactions. This doubly linked list is needed whenever we delete all reactions of a certain particle, in which case we need to be able to recover the position of a reaction id in the dynamic array. Also, the elements of the doubly linked list have shape (2,2), each for the next and prev pointer. The first dimension has two elements since a reaction can be assigned to at max two educts (for bimoelcular reactions). Therefore, these two integers point to the next (previous) reaction id belonging to each of the educts. The two elements of the second dimension are required, beacuse we need to be able to track the position of particles i and j in the linked list, which can in principle switch between two positions (to which reaction id should the next pointer go? There are always two possibilities). Thereby, the other two ints store, whether the next (prev) pointer target element 0 or 1.</p>
+<p class="rubric">Notes</p>
+<p>The data structure we need to organize the reactions is a little bit more complex than a simple dense dynamic array or one with holes as is used to keep track of all the rigid body molecules and particles in the sytsem. The Reaction class is a combination of different dynamic arrays and a hash table. Let  me motivate this: Our data structure needs to be able to do 4 things as efficient as possible:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Add reactions,</p></li>
+<li><p>Delete single reactions,</p></li>
+<li><p>Delete all reactions certain particle participates in,</p></li>
+<li><p>Return a random reaction from the list.</p></li>
+</ol>
+</div></blockquote>
+<p>We need to be able to delete a single reaction whenever this reaction was not successful.
+We need to delete all reactions of a particle whenever a reaction was successful, because this particle is no longer available since it either got deleted or changed its type (except in the case where the particle participates as an enzyme).
+We need to be able to request a random reaction from the list, because processing the reactions in the order they occur in the list will introduce a bias: Reactions of particles with a low index are added to the list first, at least in the beginning of a simulation when the indices of particles have not yet been swapped around (in case there are any decay reactions), beacuse particle distances are evaluated in the order particles occur in the corresponding list. Thereby particle 1 will always have a higher chance of having a successfull reactions when competing with other particles.
+Points 1. an 2. could be easily established with a simple dynamic array. However, point 3 is a bit more complicated but can be solved with a doubly linked list, embedded into a dynamic array with holes, that connects all reaction of a particle. We need a doubly linked list, because we need to be able to delete a single reaction (index k) fom the linked list (point 2). As such, we need to be able to reconnect the linked list’s ‘chain’. Therefore, we need to know the element in the linked list that pointed to k (prev) in addition to the element k points to (next). Another problem that needs to be solved is that a reaction can be linked to at max. 2 educts. Therefore, each next and prev pointer needs to be 4-dimensional. We need 1 integer for each educt to save the next (prev) reaction index and another integer {0,1} to keep track of whether in the next (prev) reaction the particle is the first or the second educt since this may change from reaction to reaction!
+Since the dynamic array, the doubly linked list is embedded in, has holes, picking a random reaction from the list becomes another issue. This can, however, easily be solved by adding another dynamic array (dense array), which keeps all the reactions that are left in a tightly packed format. Picking a random reaction is that as easy as drawing a uniformly distributed random interger between 0 and n, where n is the length of the dense array.
+A very nice introduction/overview to the kind of data structures used here has been written by Niklas Gray (see <a class="reference external" href="https://ourmachinery.com/post/data-structures-part-1-bulk-data/">https://ourmachinery.com/post/data-structures-part-1-bulk-data/</a>)</p>
+<a class="reference internal image-reference" href="../../../_images/Reactions_DynamicArray.png"><img alt="../../../_images/Reactions_DynamicArray.png" src="../../../_images/Reactions_DynamicArray.png" style="width: 60%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The figure depicts the data structure we use to keep track of the reactions.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>educts</strong><span class="classifier"><cite>nb.int32[:]</cite></span></dt><dd><p>Educt type ids.</p>
+</dd>
+<dt><strong>products</strong><span class="classifier"><cite>nb.int64[:]</cite></span></dt><dd><p>Product type ids.</p>
+</dd>
+<dt><strong>rate</strong><span class="classifier"><cite>nb.float64</cite></span></dt><dd><p>Reaction rate.</p>
+</dd>
+<dt><strong>radius</strong><span class="classifier"><cite>nb.float64</cite></span></dt><dd><p>Reaction radius.</p>
+</dd>
+<dt><strong>current_index</strong><span class="classifier"><cite>nb.uint64</cite></span></dt><dd><p>Current/last assigned slot of dynamic array (main -&gt; dense_array_react())</p>
+</dd>
+<dt><strong>reaction_type</strong><span class="classifier"><cite>nb.types.string</cite> {‘bind’, ‘enzymatic’, ‘conversion’, ‘decay’, ‘enzymatic_rb’, ‘conversion_rb’, ‘fusion’}</span></dt><dd><p>Name of reaction type</p>
+</dd>
+<dt><strong>reaction_type_id</strong><span class="classifier"><cite>nb.int64 {0,1,2,3,4,5,6,7}</cite></span></dt><dd><p>ID of reaction type</p>
+</dd>
+<dt><strong>paths</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Reaction path.</p>
+<p><cite>dtype = np.dtype([(‘rate’, np.float64), (‘products’, (np.int64, (100,3))), (‘n_products’, np.int64),],  align=True)</cite></p>
+</dd>
+<dt><strong>n_paths</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Number of reaction paths defined for this reaction.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>add_path(products, rate)</strong></p></td>
+<td><p>Adds a reaction path to the reaction.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>re_initialize()</strong></p></td>
+<td><p>Reinitializes the dense dynamic array saving all reactions occuring within a timestep, reseting the array size and deleting all linked lists containg reaction data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>append_reaction(i,j, Particle_Reaction)</strong></p></td>
+<td><p>Appends a new reaction to the reactions list.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>delete_reaction(k, Particle_Reaction)</strong></p></td>
+<td><p>Deletes reaction at index k.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>delete_reaction_all(i)</strong></p></td>
+<td><p>Deletes all reactions of Particle i assigned for the current time step.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_random()</strong></p></td>
+<td><p>Returns a random reaction id.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>getit(k)</strong></p></td>
+<td><p>Returns reaction data inserted at index k.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>setit(k, value)</strong></p></td>
+<td><p>Assigns anew value to reaction at index k.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>reactions_left()</strong></p></td>
+<td><p>Prints out all reactions left in list.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>reactions_left_pointer(Particles, i)</strong></p></td>
+<td><p>Prints out all reactions left for particle i.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">educts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_educt_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_educts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.add_path">
+<span class="sig-name descname"><span class="pre">add_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_surf_vol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.add_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.add_path" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new reaction path to the reaction class instance.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>path_type</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Type of reaction</p>
+</dd>
+<dt><strong>rate</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Reaction rate</p>
+</dd>
+<dt><strong>products_ids</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List of product ids. Default = None</p>
+</dd>
+<dt><strong>product_surf_vol</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List indicating whether a product is a volume (0) or a surface (1) molecule.</p>
+</dd>
+<dt><strong>product_direction</strong><span class="classifier"><cite>int64[:]</cite>. Default = None</span></dt><dd><p>In case of a surface moelcule having a volume moelcule product indicates whether the product is to be released into the simulation box volume (0) or the mesh compartment (1). Default = None</p>
+</dd>
+<dt><strong>radius</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Reaction radius in case of a bimolecular/biparticle reaction. Default = None</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError(‘Number of reaction products must not be larger than 1000!’)</dt><dd><p>PyRID limits the number of product moelcules to 1000, otherwise a value error is raised. The user may rayise this limit at any time by changing the size of the structured array of dtype item_t_paths.</p>
+</dd>
+<dt>ValueError(‘Reaction type unknown!’)</dt><dd><p>If a reaction type is passed that has not yet been implemented, a value error is raised.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.append_reaction">
+<span class="sig-name descname"><span class="pre">append_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.append_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.append_reaction" title="Permalink to this definition"></a></dt>
+<dd><p>Appends a new reaction to the current reactions list.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of educt 1</p>
+</dd>
+<dt><strong>j</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of educt 2. Default = None</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.clear" title="Permalink to this definition"></a></dt>
+<dd><p>clears the array by setting the number of currently inserted elements to 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.delete_reaction">
+<span class="sig-name descname"><span class="pre">delete_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.delete_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.delete_reaction" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the reaction from the list by its index.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the reaction which to delete</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Deletes an element from the array by a pop and swap mechanism.
+This is a dense dynamic array. As such, elements get swapped around by a pop and swap mechanism. Element k, which is trageted for deletion may no longer be at the place where it was originally inserted. Therefore, k does not refer to the element currently at index k in the dense array but needs to be looked up in the index array (self.index), which is an array with holes, preserving the location of its elements.
+Element k also needs to be deleted from the index array. The index array is a dynamic array with holes. Thereby, an element is removed from the index array by creating a hole that can be reused for the insertion of new elements. The index array also holds a doubly free linked list containing all reactions belonging to a certain particle. Therefore, the doubly free linked list is also updated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.delete_reaction_all">
+<span class="sig-name descname"><span class="pre">delete_reaction_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.delete_reaction_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.delete_reaction_all" title="Permalink to this definition"></a></dt>
+<dd><p>Delete all reactions educt i (molecule or particle) is involved in.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the educt</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.get" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the data array of the reaction at index k, which contains the educt indices.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the reaction whose educt indices to return</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>array_like</dt><dd><p>Array containing the educt indices and other information.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Return element at index k+1 (element 0 is reserved for the head of the free list).
+Any item will be returned, also holes, because checking whether an item is a hole at each access operation is too expensive.
+Also, there will be no test, whether the index is within bounds, as this can also reduce speed by up to 25%.
+To get a list of all items which are not holes, use the occupied attribute!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.get_random">
+<span class="sig-name descname"><span class="pre">get_random</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.get_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.get_random" title="Permalink to this definition"></a></dt>
+<dd><p>Return a random reaction from the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int64</dt><dd><p>Index of the random reaction.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.make_array">
+<span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.make_array" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new array with new_cap capacity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>array_like</dt><dd><p>array with dtype = self.item_t</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.reactions_left_pointer">
+<span class="sig-name descname"><span class="pre">reactions_left_pointer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.reactions_left_pointer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.reactions_left_pointer" title="Permalink to this definition"></a></dt>
+<dd><p>Prints out all reactions left in the reactions list for educt of index i.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Educt index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_registry_util.Reaction.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_registry_util.html#Reaction.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_registry_util.Reaction.set" title="Permalink to this definition"></a></dt>
+<dd><p>Inserts the given values into the array at the position correspnding to the reaction of index k.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the reaction</p>
+</dd>
+<dt><strong>value</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>values to insert (np.dtype([(‘educts_index’, (np.int64, (2,))), (‘id’, np.int64), (‘unique_educts_id’, np.float64)],  align=True))</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../reactions.html" class="btn btn-neutral float-left" title="reactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reactions_util.html" class="btn btn-neutral float-right" title="reactions_util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

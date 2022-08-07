@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluation &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Blender Add-on" href="Blender_Addon.html" />
+    <link rel="prev" title="Run simulation" href="Run_Simulation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecules.html">Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interaction_Potentials.html">Interaction potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compartments.html">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecule_Distribution.html">Molecule distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reading-and-plotting-data">Reading and plotting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzing-data">Analyzing data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">User Guide</a> &raquo;</li>
+      <li>Evaluation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/User_Guide/Evaluation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="evaluation">
+<h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline"></a></h1>
+<p>There are many ways in which one could want to analyze the data gathered during a simulation.
+Via the Evaluation class, PyRID offers a straight forward way to read the data from the hdf5 files and even to do some analysis on these or do basic plots (Fig. <a class="reference internal" href="#fig-evaluation"><span class="std std-ref">Plots of various observables.</span></a>).
+We can create an instance of the Evaluation class by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
+
+<span class="ow">and</span> <span class="n">then</span> <span class="n">load</span> <span class="n">an</span> <span class="n">hdf5</span> <span class="n">file</span><span class="p">:</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;my_hdf5_file&#39;</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;my_path//&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="reading-and-plotting-data">
+<h2>Reading and plotting data<a class="headerlink" href="#reading-and-plotting-data" title="Permalink to this headline"></a></h2>
+<p>Now, we can do several things, such as reading certain observables from the file, e.g., molecule numbers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="s1">&#39;stepwise&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we told PyRID to read the numbers of all molecules that have been sampled and to read the stepwise sampled data. If you want to read the binned samples of a property, set sampling = ‘binned’.
+Now that we have read the data, we can access it to, e.g., plot the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">]:</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Evaluation</span><span class="o">.</span><span class="n">Observables</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">][</span><span class="s1">&#39;Number&#39;</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">Evaluation</span><span class="o">.</span><span class="n">Observables</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">][</span><span class="s1">&#39;Number&#39;</span><span class="p">][</span><span class="n">molecule</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="n">molecule</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Reading other observables works analog to the above example. If we want to read reactions, we also have to pass the type of reaction we want to read:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;bind&#39;</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;fusion&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition to reading the data and creating our own plots as shown above, we can also ask PyRID to do some basic plots. For example, to plot the number of fusion reactions that occurred for a specific educt pair:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="s1">&#39;A+B&#39;</span><span class="p">,</span> <span class="n">particle_educt</span> <span class="o">=</span> <span class="s1">&#39;core_1+core_2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since a fusion reaction can be executed via different particle pairs we also have to pass the particle educts involved. A feature by which all fusion reactions defined on an educt pair are summed up is still missing.
+We can also plot any of the other measures, such as the number of bonds between particle pairs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Bonds&#39;</span><span class="p">,</span> <span class="n">bond_pairs</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You do not actually need to read the data before plotting, PyRID will do that for you. However, you need to have loaded the hdf5 file of course:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">])</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Virial&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want to plot the force, torque, position, or orientation, you also need to pass the sampling step (time point) from which to read the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As already mentioned in <a class="reference internal" href="Reactions.html#userguide-reactions"><span class="std std-ref">Reactions</span></a>, you visualize the reactions defined in a graphs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Bimolecular&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Interactions&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Unimolecular&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzing-data">
+<h2>Analyzing data<a class="headerlink" href="#analyzing-data" title="Permalink to this headline"></a></h2>
+<p>Currently, PyRID does not support many methods for analyzing the data.</p>
+<p><strong>Concentration profile</strong></p>
+<p>You can, e.g., plot a concentration profile:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_concentration_profile</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>MSD</strong></p>
+<p>You can calculate and plot the mean squared displacement of a molecule type population:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">MSD</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_MSD</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>rotational time correlation function</strong></p>
+<p>or the rotational time correlation function</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">P2</span><span class="p">(</span><span class="mi">3100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_P2</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">limits</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mf">1e-3</span><span class="p">,</span><span class="mf">1e0</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p><strong>Radial distribution function</strong></p>
+<p>You can sample and plot the radial distribution function for a molecule pair:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_rdf</span><span class="p">([[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">]],</span> <span class="n">steps</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-evaluation">
+<a class="reference internal image-reference" href="../../_images/Evaluation.png"><img alt="../../_images/Evaluation.png" src="../../_images/Evaluation.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text"><strong>Plots of various observables.</strong></span><a class="headerlink" href="#fig-evaluation" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Run_Simulation.html" class="btn btn-neutral float-left" title="Run simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Blender_Addon.html" class="btn btn-neutral float-right" title="Blender Add-on" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.reactions.reactions_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.reactions.reactions_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.reactions.reactions_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">root</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="k_macro"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_util.html#pyrid.reactions.reactions_util.k_macro">[docs]</a><span class="k">def</span> <span class="nf">k_macro</span><span class="p">(</span><span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_micro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the macroscopic reaction rate for a bimolecular reaction from the educts diffusion coefficients, the reaction radius and the microscopic reaction rate.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    D1 : `float`</span>
+<span class="sd">        Translational diffusion coefficient of educt 1.</span>
+<span class="sd">    D2 : `float`</span>
+<span class="sd">        Translational diffusion coefficient of educt 2.</span>
+<span class="sd">    k_micro : `float`</span>
+<span class="sd">        Microscopic reaction rate.</span>
+<span class="sd">    R_react : `float`</span>
+<span class="sd">        Reaction radius.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Macroscopic reaction rate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">R_react</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">)</span><span class="o">/</span><span class="n">k_micro</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">R_react</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_micro</span><span class="o">/</span><span class="p">(</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">))))</span></div>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="k_micro"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_util.html#pyrid.reactions.reactions_util.k_micro">[docs]</a><span class="k">def</span> <span class="nf">k_micro</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,</span> <span class="n">loc_type</span> <span class="o">=</span> <span class="s1">&#39;Volume&#39;</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the microscopic reaction rate for a bimolecular reaction given the educts diffusion coefficients, the reaction radius and the macroscopic reaction rate.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class.</span>
+<span class="sd">    mol_type_1 : `string`</span>
+<span class="sd">        Name of educt moelcule 1.</span>
+<span class="sd">    mol_type_2 : `string`</span>
+<span class="sd">        Name of educt moelcule 2.</span>
+<span class="sd">    k_macro : `float`</span>
+<span class="sd">        Macroscopic reaction rate.</span>
+<span class="sd">    R_react : `float`</span>
+<span class="sd">        Reaction radius.</span>
+<span class="sd">    loc_type : `string`</span>
+<span class="sd">        Location type of the educts (&#39;Volume&#39; or &#39;Surface&#39;).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The method used here is only valid for volume moelcules, i.e. diffusion in 3D. For surface molecules a value is also returned, however with a warning.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Microscopic reaction rate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">loc_type</span> <span class="o">==</span> <span class="s1">&#39;Surface&#39;</span><span class="p">:</span>
+        <span class="n">D1</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_type_1</span><span class="p">]</span><span class="o">.</span><span class="n">Dtrans_2D</span>
+        <span class="n">D2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_type_2</span><span class="p">]</span><span class="o">.</span><span class="n">Dtrans_2D</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The estimate of the microscopic reaction rate from the macroscopic reaction rate and the reaction radius is only precise for volume molecules. While PyRID allows users to get an estimate for the 2D case, please be aware that the result may not be accurate!&#39;</span><span class="p">)</span>
+        
+    <span class="k">elif</span> <span class="n">loc_type</span> <span class="o">==</span> <span class="s1">&#39;Volume&#39;</span><span class="p">:</span>
+        <span class="n">D1</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_type_1</span><span class="p">]</span><span class="o">.</span><span class="n">Dtrans</span>
+        <span class="n">D2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_type_2</span><span class="p">]</span><span class="o">.</span><span class="n">Dtrans</span>
+        
+    <span class="k">def</span> <span class="nf">k_macro_root</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">):</span>
+    
+        <span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">R_react</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">)</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">R_react</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">))))</span><span class="o">-</span><span class="n">k_macro</span>
+    
+    <span class="n">lamb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span> <span class="c1"># Diffusion length constant</span>
+    <span class="k">if</span> <span class="n">R_react</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">*</span><span class="n">lamb</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: The reaction radius is very close to the diffusion length constan for the molecule pair </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">. Thereby, many bi-molecular reactions could get overlooked! I recommend to choose a reaction radius that is above </span><span class="si">{2:.3g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="n">lamb</span><span class="p">))</span>
+    
+    <span class="c1"># R_react at k_micro -&gt; oo</span>
+    <span class="n">R_react_infty</span> <span class="o">=</span> <span class="n">k_macro</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">D1</span><span class="o">+</span><span class="n">D2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">R_react</span> <span class="o">&lt;</span> <span class="n">R_react_infty</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: The reaction radius is too small to be able to match the macroscopic reaction rate! The minimum reaction radius for an infinite microscopic reaction rate that is in agreement with the given macroscopic reaction rate is </span><span class="si">{0:.3g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">R_react_infty</span><span class="p">))</span>
+        
+    <span class="n">k_micro_0</span> <span class="o">=</span> <span class="n">k_macro</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">R_react</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">k_micro_sol</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span><span class="n">k_macro_root</span><span class="p">,</span> <span class="p">[</span><span class="n">k_micro_0</span><span class="p">],</span> <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;lm&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">k_micro_sol</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="o">&gt;</span><span class="mf">0.1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: The reaction rate for the bi-molecule reaction of the educts </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1"> is larger 1/(10*dt). k*dt = </span><span class="si">{2:.3g}</span><span class="s1">. The discretization errors may become too large! Please increase the reaction radius or lower the macroscopic reaction rate or the integration time step!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_micro_sol</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
+    
+    
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">k_micro_sol</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

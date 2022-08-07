@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reactions_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="update_reactions" href="update_reactions.html" />
+    <link rel="prev" title="reactions_registry_util" href="reactions_registry_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../reactions.html">reactions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reactions_registry_util.html">reactions_registry_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">reactions_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="update_reactions.html">update_reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../reactions.html">reactions</a> &raquo;</li>
+      <li>reactions_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/reactions/reactions_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reactions-util">
+<h1>reactions_util<a class="headerlink" href="#reactions-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<span class="target" id="module-pyrid.reactions.reactions_util"></span><p>&#64;author: Moritz F P Becker</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_util.k_macro">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.reactions_util.</span></span><span class="sig-name descname"><span class="pre">k_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_micro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_react</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_util.html#k_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_util.k_macro" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the macroscopic reaction rate for a bimolecular reaction from the educts diffusion coefficients, the reaction radius and the microscopic reaction rate.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>D1</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Translational diffusion coefficient of educt 1.</p>
+</dd>
+<dt><strong>D2</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Translational diffusion coefficient of educt 2.</p>
+</dd>
+<dt><strong>k_micro</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Microscopic reaction rate.</p>
+</dd>
+<dt><strong>R_react</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Reaction radius.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64</cite></dt><dd><p>Macroscopic reaction rate</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.reactions_util.k_micro">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.reactions_util.</span></span><span class="sig-name descname"><span class="pre">k_micro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_macro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_react</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Volume'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/reactions_util.html#k_micro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.reactions_util.k_micro" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the microscopic reaction rate for a bimolecular reaction given the educts diffusion coefficients, the reaction radius and the macroscopic reaction rate.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class.</p>
+</dd>
+<dt><strong>mol_type_1</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of educt moelcule 1.</p>
+</dd>
+<dt><strong>mol_type_2</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of educt moelcule 2.</p>
+</dd>
+<dt><strong>k_macro</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Macroscopic reaction rate.</p>
+</dd>
+<dt><strong>R_react</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Reaction radius.</p>
+</dd>
+<dt><strong>loc_type</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Location type of the educts (‘Volume’ or ‘Surface’).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float64</cite></dt><dd><p>Microscopic reaction rate</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The method used here is only valid for volume moelcules, i.e. diffusion in 3D. For surface molecules a value is also returned, however with a warning.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reactions_registry_util.html" class="btn btn-neutral float-left" title="reactions_registry_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="update_reactions.html" class="btn btn-neutral float-right" title="update_reactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

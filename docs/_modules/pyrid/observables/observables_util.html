@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.observables.observables_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.observables.observables_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.observables.observables_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">..evaluation.rdf_util</span> <span class="kn">import</span> <span class="n">create_rb_hgrid</span><span class="p">,</span> <span class="n">radial_distr_function</span>
+
+<span class="c1">#%%</span>
+
+
+<div class="viewcode-block" id="Observables"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables">[docs]</a><span class="k">class</span> <span class="nc">Observables</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A brief summary of the classes purpose and behavior</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    attribute_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    attribute_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    method_1(arguments)</span>
+<span class="sd">        Some general information about this method</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="Observables.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">):</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;/hdf5&#39;</span><span class="p">)</span> 
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="c1"># directory already exists</span>
+            <span class="k">pass</span>
+ 
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">fig_path</span><span class="p">)</span> 
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="c1"># directory already exists</span>
+            <span class="k">pass</span>
+        
+        <span class="c1"># -------------</span>
+        <span class="c1"># Binning Data</span>
+        <span class="c1"># -------------</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Epot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Bonds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Pressure</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Virial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_scalar</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        
+        <span class="n">observables_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Bonds&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Position&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),(</span><span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">observables_types</span><span class="p">)</span>
+        
+        <span class="c1"># -------------</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Time_passed</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observing_rdf</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        
+        <span class="c1">#------------------</span>
+        <span class="c1"># System Setup</span>
+        <span class="c1">#------------------</span>
+        
+        <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;Setup/&#39;</span><span class="p">)</span>
+        <span class="c1"># hdf[&#39;Setup&#39;].attrs[&#39;box_lengths&#39;] = Simulation.System.box_lengths</span>
+        <span class="c1"># hdf[&#39;Setup&#39;].attrs[&#39;Temp&#39;] = Simulation.System.Temp</span>
+        <span class="c1"># hdf[&#39;Setup&#39;].attrs[&#39;eta&#39;] = Simulation.System.eta</span>
+        <span class="c1"># hdf[&#39;Setup&#39;].attrs[&#39;dt&#39;] = Simulation.System.dt</span>
+        
+        <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;box_lengths&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span>
+        <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;Temp&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Temp</span><span class="p">)</span>
+        <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;kbt&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">kbt</span><span class="p">)</span>
+        <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;eta&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">eta</span><span class="p">)</span>
+        <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+        <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;nsteps&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">nsteps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">barostat</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;active&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+            <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;Setup/barostat&#39;</span><span class="p">)</span>
+            <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup/barostat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;Tau_P&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">barostat</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Tau_P&#39;</span><span class="p">])</span>
+            <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup/barostat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;P0&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">barostat</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;P0&#39;</span><span class="p">])</span>
+            
+        <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;Setup/units&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">measure</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
+            <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup/units&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">measure</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="n">measure</span><span class="p">])</span>
+        
+        <span class="c1">#------------------</span>
+        <span class="c1"># Molecule data</span>
+        <span class="c1">#------------------</span>
+        
+        <span class="c1"># hdf.create_group(&#39;Molecules/&#39;)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;No molecules defined!&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">type1</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">:</span>
+                    
+                <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">))</span>        
+                
+                <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;types&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">types</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;S&#39;</span><span class="p">))</span>
+                <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;radii&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">type1</span><span class="p">]</span><span class="o">.</span><span class="n">radii</span><span class="p">)</span>
+                <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">type1</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+                <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;volume&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">type1</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span>
+                <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">type1</span><span class="p">]</span><span class="o">.</span><span class="n">mu_tb</span><span class="p">)</span>
+                <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">type1</span><span class="p">]</span><span class="o">.</span><span class="n">mu_rb</span><span class="p">)</span>
+            
+        <span class="c1">#------------------</span>
+        
+        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+        
+
+<div class="viewcode-block" id="Observables.update_bins"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.update_bins">[docs]</a>    <span class="k">def</span> <span class="nf">update_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_1 : dtype</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        parameter_2 : dtype</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError (just an example)</span>
+<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dtype</span>
+<span class="sd">            Some information</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Volume&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">volume</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Number&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="s1">&#39;Number&#39;</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>   
+                <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Number&#39;</span><span class="p">][</span><span class="n">mol_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Energy&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>   
+                <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">][</span><span class="n">mol_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Epot</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Bonds&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">type1_id</span><span class="p">,</span> <span class="n">type2_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_pairs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Bonds&#39;</span><span class="p">][</span><span class="n">type1_id</span><span class="p">][</span><span class="n">type2_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">type1_id</span><span class="p">][</span><span class="n">type2_id</span><span class="p">]</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Pressure&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>   
+                <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">][</span><span class="n">mol_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Pressure</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>         
+
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Virial&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="s1">&#39;Virial&#39;</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>   
+                <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Virial&#39;</span><span class="p">][</span><span class="n">mol_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_scalar</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_scalar_Wall</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span> 
+
+                
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>   
+                <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">][</span><span class="n">mol_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span><span class="c1">#+Simulation.System.virial_tensor_Wall[mol_id] </span></div>
+            
+            
+                    
+    <span class="c1">#%%</span>
+    
+    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reactions</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">binned</span><span class="o">=</span> <span class="kc">False</span><span class="p">):</span><span class="c1">#, save = True, keep_list = False):</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">Property</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">binned</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">Property</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;stride&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stride</span>
+        <span class="c1"># self.observables_setup[Property][&#39;save&#39;] = save</span>
+        <span class="c1"># self.observables_setup[Property][&#39;keep_list&#39;] = keep_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;nsteps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">Simulation</span><span class="o">.</span><span class="n">nsteps</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># self.observables_setup[Property][&#39;trace&#39;] = dict()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">binned</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stepwise</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;current_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="c1"># if save==True:</span>
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;stride&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stride</span>
+        <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;stride&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stride</span>
+        
+            
+        <span class="k">if</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="s1">&#39;Position&#39;</span><span class="p">]:</span>
+            
+            <span class="k">for</span> <span class="n">type1</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Molecule type not found&#39;</span><span class="p">)</span>
+                    
+                <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">))</span>
+                
+                <span class="c1"># if keep_list == True:</span>
+                <span class="c1">#     self.observables_setup[Property][&#39;trace&#39;][str(type1)] = []</span>
+                <span class="c1"># if save==True:</span>
+                <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">group</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">),</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">group</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">),</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    
+        <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">]:</span>
+            
+            <span class="c1"># if keep_list == True:</span>
+            <span class="c1">#     self.observables_setup[Property][&#39;trace&#39;] = []</span>
+            <span class="c1"># if save== True:</span>
+            <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/Volume/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+            <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/Volume/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                    
+                    
+        <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Virial Tensor&#39;</span><span class="p">]:</span>
+                
+                
+            <span class="k">if</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="s1">&#39;Energy&#39;</span><span class="p">]:</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
+                <span class="n">max_shape</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;f8&#39;</span>
+            <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">]:</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">max_shape</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;f8&#39;</span>
+            <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Number&#39;</span><span class="p">]:</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
+                <span class="n">max_shape</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;i8&#39;</span>
+                
+            <span class="k">for</span> <span class="n">type1</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Molecule type not found&#39;</span><span class="p">)</span>
+                    
+                <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">))</span>
+                
+                <span class="c1"># if keep_list == True:</span>
+                <span class="c1">#     self.observables_setup[Property][&#39;trace&#39;][str(type1)] = []</span>
+                <span class="c1"># if save== True:</span>
+                <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="n">max_shape</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="n">max_shape</span><span class="p">)</span>     
+                            
+                            
+        <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Reactions&#39;</span><span class="p">]:</span>
+            
+            <span class="k">for</span> <span class="n">reaction_type_index</span> <span class="ow">in</span> <span class="n">reactions</span><span class="p">:</span>
+                
+                <span class="c1"># reaction_type_id = Simulation.System.Reactions_Dict[reaction_type_index].reaction_type_id</span>
+                <span class="n">bimol</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">bimol</span>
+                
+                <span class="k">if</span> <span class="n">bimol</span><span class="p">:</span>
+                    <span class="n">educts_names</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">educt_id</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">educts</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span><span class="p">:</span>
+                            <span class="n">educts_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">educt_id</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">educts_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">educt_id</span><span class="p">])</span>
+                    <span class="n">educts</span> <span class="o">=</span> <span class="n">educts_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;+&#39;</span><span class="o">+</span><span class="n">educts_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">educt_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">educts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span><span class="p">:</span>
+                        <span class="n">educts</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">educt_id</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">educts</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">educt_id</span><span class="p">]</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">reaction_type_index</span><span class="p">,</span><span class="n">educts</span><span class="p">])</span>
+                
+                <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span> <span class="ow">and</span> <span class="n">bimol</span><span class="p">:</span>
+                    
+                    <span class="n">particle_educts</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">particle_educts</span>
+                    <span class="n">particle_educts</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">particle_educts</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">+</span><span class="s1">&#39;+&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">particle_educts</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                    
+                    <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                    <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                    <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">)):</span>
+                    
+                    <span class="n">reaction_type</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                    
+                    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;path_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    
+                    <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span> <span class="ow">and</span> <span class="n">bimol</span><span class="p">:</span>
+                    
+                        <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                        <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                    
+                    <span class="k">else</span><span class="p">:</span>
+                        
+                        <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                        <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                        
+                    
+                    
+        <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Bonds&#39;</span><span class="p">]:</span>
+
+            <span class="n">ii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">reaction_args</span><span class="p">[</span><span class="s1">&#39;bond&#39;</span><span class="p">])</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">bond_pairs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ii</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ii</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            
+            <span class="k">for</span> <span class="n">type1_id</span><span class="p">,</span> <span class="n">type2_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_pairs</span><span class="p">:</span>
+                
+                <span class="n">type1_name</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">type1_id</span><span class="p">]</span>
+                <span class="n">type2_name</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">type2_id</span><span class="p">]</span>
+                
+                <span class="n">bond_pair</span> <span class="o">=</span> <span class="n">type1_name</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">type2_name</span>
+                
+                <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">bond_pair</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+                <span class="k">if</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">bond_pair</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>     
+                                
+            
+        <span class="c1"># if save==True:</span>
+        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>    
+            
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observing </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Property</span><span class="p">))</span>
+        
+    <span class="c1">#%%</span>
+            
+            
+<div class="viewcode-block" id="Observables.observe_rdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.observe_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">observe_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf_pairs</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">,</span> <span class="n">rdf_cutoff</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">):</span> <span class="c1">#, save = True, keep_list = False):</span>
+        
+        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_1 : dtype</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        parameter_2 : dtype</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError (just an example)</span>
+<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dtype</span>
+<span class="sd">            Some information</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">observing_rdf</span> <span class="o">=</span><span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_nsteps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">Simulation</span><span class="o">.</span><span class="n">nsteps</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_current_step</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rdf_cutoff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rdf_bins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_stride</span> <span class="o">=</span> <span class="n">stride</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_pairs</span> <span class="o">=</span> <span class="n">rdf_pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_molecules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rdf_pairs</span><span class="p">,[]))</span> <span class="c1"># [[mol1, mol2], [mol2, mol3]] -&gt; {mol1, mol2, mol3}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_hgrid</span> <span class="o">=</span> <span class="n">create_rb_hgrid</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_molecules</span><span class="p">,</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">,</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_measure_pair</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdf_hist</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rdf_pairs</span><span class="p">)):</span>
+            <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span> <span class="o">=</span> <span class="n">rdf_pairs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            
+            <span class="n">type1_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)]</span><span class="o">.</span><span class="n">type_id</span>
+            <span class="n">type2_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">type2</span><span class="p">)]</span><span class="o">.</span><span class="n">type_id</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">type2</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Molecule type not found&#39;</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">rdf_hist</span><span class="p">[</span><span class="n">type1</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">type2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">rdf_bins</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rdf_measure_pair</span><span class="p">[</span><span class="n">type1_id</span><span class="p">][</span><span class="n">type2_id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;RDF/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">type2</span><span class="p">),</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;stride&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stride</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;rdf_cutoff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf_cutoff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;rdf_bins&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf_bins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            
+        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> </div>
+        
+            
+    <span class="c1">#%%</span>
+    
+<div class="viewcode-block" id="Observables.update"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">hdf</span><span class="p">,</span> <span class="n">RBs</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_1 : dtype</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        parameter_2 : dtype</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError (just an example)</span>
+<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dtype</span>
+<span class="sd">            Some information</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">for</span> <span class="n">Property</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">:</span>
+            
+            <span class="n">observable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">current_step</span> <span class="o">%</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stride&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                
+                <span class="c1"># hdf = h5py.File(Simulation.file_path+&#39;hdf5/&#39;+Simulation.file_name+&#39;.h5&#39;, &#39;a&#39;)</span>
+                
+                <span class="k">if</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="s1">&#39;Position&#39;</span><span class="p">]:</span>
+                    
+                    <span class="n">digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">observable</span><span class="p">[</span><span class="s1">&#39;nsteps&#39;</span><span class="p">]))</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="n">step</span> <span class="o">=</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;current_step&#39;</span><span class="p">]</span>
+                    <span class="n">step_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step</span><span class="si">:</span><span class="s1">0</span><span class="si">{</span><span class="n">digits</span><span class="si">}}</span><span class="s1">&#39;</span>
+                    
+                    
+                    <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>   
+                        <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                        
+                        <span class="n">Mask</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">]][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">mol_id</span>
+                        
+                        <span class="c1"># if observable[&#39;stepwise&#39;] == True:</span>
+                        <span class="k">if</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Force&#39;</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">step_id</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">RBs</span><span class="p">[</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">]][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="n">Mask</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Torque&#39;</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">step_id</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">RBs</span><span class="p">[</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">]][</span><span class="s1">&#39;torque&#39;</span><span class="p">][</span><span class="n">Mask</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">step_id</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">RBs</span><span class="p">[</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">]][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="n">Mask</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Position&#39;</span><span class="p">:</span>
+                            <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">step_id</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">RBs</span><span class="p">[</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">]][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">Mask</span><span class="p">])</span>
+                            
+                        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;time step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">current_step</span>
+                    
+                    <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;current_step&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    
+                    
+                <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">]:</span>
+                    
+                    <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/Volume/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">]</span>
+                        <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Volume&#39;</span><span class="p">:</span>
+                            <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">volume</span>
+                    <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/Volume/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">]</span>
+                        <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">]</span>       
+                        
+                        <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                
+                <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="s1">&#39;Virtial Tensor&#39;</span><span class="p">,</span> <span class="s1">&#39;Number&#39;</span><span class="p">]:</span>
+                    
+                    <span class="k">for</span> <span class="n">mol_name</span> <span class="ow">in</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span> 
+                        <span class="n">mol_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+                        
+                        <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)]</span>
+                            <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Energy&#39;</span><span class="p">:</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Epot</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+                            <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">:</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Pressure</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+                            <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Virial&#39;</span><span class="p">:</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_scalar</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_scalar_Wall</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+                            <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Virial Tensor&#39;</span><span class="p">:</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+                            <span class="k">elif</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Number&#39;</span><span class="p">:</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">mol_id</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)]</span>
+                            <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                            <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="n">mol_id</span><span class="p">]</span>
+                            
+                            <span class="k">if</span> <span class="n">Property</span> <span class="o">==</span> <span class="s1">&#39;Virial Tensor&#39;</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">][:,:,:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                            <span class="k">else</span><span class="p">:</span>       
+                                <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    
+                
+                <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Reactions&#39;</span><span class="p">]:</span>
+                    
+                    <span class="k">for</span> <span class="n">reaction_type_index</span><span class="p">,</span><span class="n">educts</span> <span class="ow">in</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span> 
+                        
+                        <span class="n">bimol</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">bimol</span>
+                        
+                        <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span> <span class="ow">and</span> <span class="n">bimol</span><span class="p">:</span>
+                            
+                            <span class="n">particle_educts</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">particle_educts</span>
+                            <span class="n">particle_educts</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">particle_educts</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">+</span><span class="s1">&#39;+&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">particle_educts</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                    
+                            <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">]</span>
+                                <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total</span>
+                            <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">]</span>
+                                <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total_binned</span><span class="c1">#/observable[&#39;stride&#39;]</span>
+                                
+                                <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total_binned</span> <span class="o">=</span> <span class="mi">0</span>                            
+                    
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">]</span>
+                                <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total</span>
+                            <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/n_total&#39;</span><span class="p">]</span>
+                                <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total_binned</span><span class="c1">#/observable[&#39;stride&#39;]</span>
+                                
+                                <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total_binned</span> <span class="o">=</span> <span class="mi">0</span>
+                        
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">)):</span>
+                            
+                            <span class="n">reaction_type</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                            
+                            <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;path_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                            
+                            <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span> <span class="ow">and</span> <span class="n">bimol</span><span class="p">:</span>
+                    
+                                <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                    
+                                    <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">]</span>
+                                    <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                    <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success&#39;</span><span class="p">]</span>
+                                    
+                                <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                    
+                                    <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">particle_educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">]</span>
+                                    <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                    <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span><span class="c1">#/observable[&#39;stride&#39;]</span>
+                                    
+                                    <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                                
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                    
+                                    <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">]</span>
+                                    <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                    <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success&#39;</span><span class="p">]</span>
+                                    
+                                <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                                    
+                                    <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">educts</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">reaction_type</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">path</span><span class="p">]</span>
+                                    <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                    <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span><span class="c1">#/observable[&#39;stride&#39;]</span>
+                                    
+                                    <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                                    
+                                    
+                <span class="k">elif</span> <span class="n">Property</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Bonds&#39;</span><span class="p">]:</span>
+                    
+                    <span class="k">for</span> <span class="n">type1_id</span><span class="p">,</span> <span class="n">type2_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_pairs</span><span class="p">:</span>
+                        
+                        <span class="n">type1_name</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">type1_id</span><span class="p">]</span>
+                        <span class="n">type2_name</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">type2_id</span><span class="p">]</span>
+                        
+                        <span class="n">bond_pair</span> <span class="o">=</span> <span class="n">type1_name</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">type2_name</span>
+                        
+                        <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;stepwise&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">bond_pair</span><span class="p">]</span>
+                            <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                            <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">type1_id</span><span class="p">][</span><span class="n">type2_id</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">observable</span><span class="p">[</span><span class="s1">&#39;binned&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">Dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;binned/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">bond_pair</span><span class="p">]</span>
+                            <span class="n">Dset</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">Dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                            <span class="n">Dset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="n">type1_id</span><span class="p">][</span><span class="n">type2_id</span><span class="p">]</span>
+                            
+                            <span class="bp">self</span><span class="o">.</span><span class="n">binned</span><span class="p">[</span><span class="n">Property</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+                                
+                <span class="c1">#%%</span>
+                
+                <span class="c1"># hdf.close() </span>
+                    
+    <span class="c1">#%%</span>
+    
+    
+    <span class="k">def</span> <span class="nf">update_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">hdf</span><span class="p">):</span>
+        
+        
+        <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">current_step</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_stride</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rdf_pairs</span><span class="p">)):</span>
+                
+                <span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rdf_pairs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                
+                <span class="n">typeI_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">mol1</span><span class="p">)]</span><span class="o">.</span><span class="n">type_id</span>
+                <span class="n">typeJ_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">mol2</span><span class="p">)]</span><span class="o">.</span><span class="n">type_id</span>
+                
+                <span class="n">rdf_hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_hist</span><span class="p">[</span><span class="n">mol1</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">mol2</span><span class="p">]</span>
+                
+                <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">typeI_id</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">typeJ_id</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                
+                    <span class="n">rdf_hgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_hgrid</span>
+                    <span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_cutoff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">rdf_bins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_bins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    
+                    <span class="n">radial_distr_function</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">typeI_id</span><span class="p">,</span><span class="n">typeJ_id</span><span class="p">]),</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">,</span> <span class="n">rdf_hgrid</span><span class="p">,</span> <span class="n">rdf_cutoff</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">,</span> <span class="n">rdf_hist</span><span class="p">)</span>
+                    
+                    <span class="n">dr_rdf</span> <span class="o">=</span> <span class="n">rdf_cutoff</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">rdf_bins</span><span class="p">)</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rdf_cutoff</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">)</span>
+                    
+                    <span class="n">rdf_hist</span> <span class="o">=</span> <span class="n">rdf_hist</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">dr_rdf</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">typeJ_id</span><span class="p">]</span><span class="o">/</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="o">.</span><span class="n">prod</span><span class="p">())</span><span class="o">/</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">typeI_id</span><span class="p">])</span>
+                
+                <span class="k">else</span><span class="p">:</span>
+                    
+                    <span class="n">rdf_hist</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    
+                <span class="n">digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rdf_nsteps</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_current_step</span>
+                <span class="n">step_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step</span><span class="si">:</span><span class="s1">0</span><span class="si">{</span><span class="n">digits</span><span class="si">}}</span><span class="s1">&#39;</span>
+                
+                <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;RDF/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol2</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">step_id</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">rdf_hist</span><span class="p">)</span>
+                <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;time step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">current_step</span>
+                
+            <span class="bp">self</span><span class="o">.</span><span class="n">rdf_current_step</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            
+            
+            
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

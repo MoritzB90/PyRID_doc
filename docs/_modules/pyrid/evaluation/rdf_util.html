@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.evaluation.rdf_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.evaluation.rdf_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.evaluation.rdf_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="update_rb_level"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.update_rb_level">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">update_rb_level</span><span class="p">(</span><span class="n">RBs</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">for</span> <span class="n">i0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span>  
+    
+        <span class="n">mol_type</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_type</span><span class="p">)]</span><span class="o">.</span><span class="n">h</span></div>
+
+
+
+<div class="viewcode-block" id="update_rb_hgrid"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.update_rb_hgrid">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">update_rb_hgrid</span><span class="p">(</span><span class="n">HGrid</span><span class="p">,</span> <span class="n">box_lengths</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">1e-8</span> <span class="c1"># We scale the overall grid size by this factor relatove to the simulation box size. This way, the cell grid is slioghtly larger than the simulation box. If we don&#39;t do this, we can get out of bounds errors for points that lie exactly in the plane of a positive box boundary!</span>
+    
+    <span class="n">N_Levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;L&#39;</span><span class="p">])</span>
+
+    <span class="n">hstart</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_Levels</span><span class="p">):</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head_start&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hstart</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        
+            
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">max_cells_per_dim</span><span class="p">):</span>
+            <span class="n">min_radius</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">max_cells_per_dim</span>
+            <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+            <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+            <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">eps</span><span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">eps</span><span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">eps</span><span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;NCells&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+        
+        <span class="n">hstart</span> <span class="o">+=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;NCells&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span></div>
+        
+        
+    
+<div class="viewcode-block" id="create_rb_hgrid"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.create_rb_hgrid">[docs]</a><span class="k">def</span> <span class="nf">create_rb_hgrid</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">RB_Types</span><span class="p">,</span> <span class="n">box_lengths</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtype</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">1e-8</span> <span class="c1"># We scale the overall grid size by this factor relatove to the simulation box size. This way, the cell grid is slioghtly larger than the simulation box. If we don&#39;t do this, we can get out of bounds errors for points that lie exactly in the plane of a positive box boundary!</span>
+    
+    <span class="n">Radii</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Types</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">mol_type</span> <span class="ow">in</span> <span class="n">RB_Types</span><span class="p">:</span>
+
+        <span class="n">Radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_type</span><span class="p">]</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">Types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol_type</span><span class="p">)</span>
+        
+    <span class="n">R_T</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">Radii</span><span class="p">,</span><span class="n">Types</span><span class="p">)</span>
+    <span class="n">Radii</span><span class="p">,</span> <span class="n">Types</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">R_T</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="c1">#sort by Radii        </span>
+    
+    <span class="n">Level</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Cells</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Cutoffs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_level</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">current_cells</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">N_Levels</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">radius</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Radii</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">radius</span><span class="o">&gt;</span><span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">box_lengths</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">radius</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">cells</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">max_cells_per_dim</span><span class="p">):</span>
+                <span class="c1"># cells = np.array([50,50,50], dtype = np.int64) </span>
+                <span class="n">min_radius</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">max_cells_per_dim</span>
+                <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+                <span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+                <span class="n">cells</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">current_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Note: </span><span class="si">{</span><span class="n">Types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> lacks any bimolecular reactions or interactions!&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_cells</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cells</span> <span class="o">=</span> <span class="n">current_cells</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># cells = np.array([50,50,50], dtype = np.int64) </span>
+                <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> 
+                <span class="n">min_radius</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">max_cells_per_dim</span>
+                <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+                <span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+                <span class="n">cells</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">min_radius</span><span class="p">)</span>
+                
+            
+   
+        <span class="n">current_cells</span> <span class="o">=</span> <span class="n">cells</span>
+        <span class="n">current_level</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">Level</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_level</span><span class="p">)</span>
+        <span class="n">Cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+        <span class="n">Cutoffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        
+        <span class="n">N_Levels</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+    
+    <span class="n">NCells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_Levels</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">cells_per_dim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N_Levels</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">Cutoff_HGrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_Levels</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">cutoff</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Level</span><span class="p">,</span> <span class="n">Cells</span><span class="p">,</span> <span class="n">Types</span><span class="p">,</span> <span class="n">Cutoffs</span><span class="p">):</span>
+        
+        <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">mol_type</span><span class="p">]</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        
+        <span class="n">NCells</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+        <span class="n">cells_per_dim</span><span class="p">[</span><span class="n">h</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">cell</span>
+        <span class="n">Cutoff_HGrid</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cutoff</span>
+    
+    <span class="n">item_t_hgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="n">N_Levels</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;sh&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="n">N_Levels</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NCells</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;head_start&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="n">N_Levels</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;ls&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;NCells&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="n">N_Levels</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="n">N_Levels</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;cutoff&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="n">N_Levels</span><span class="p">,))],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    
+    <span class="n">HGrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_hgrid</span><span class="p">)</span>
+    
+    <span class="n">hstart</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_Levels</span><span class="p">):</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head_start&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hstart</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;L&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="o">*</span><span class="n">eps</span><span class="o">/</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cutoff_HGrid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;NCells&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">NCells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">cells_per_dim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="n">hstart</span> <span class="o">+=</span> <span class="n">NCells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+
+    <span class="n">update_rb_level</span><span class="p">(</span><span class="n">RBs</span><span class="p">,</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">HGrid</span></div>
+
+
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="radial_distr_function"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.radial_distr_function">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">radial_distr_function</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RDF_types</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">HGrid</span><span class="p">,</span> <span class="n">RDF_cutoff</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">,</span> <span class="n">rdf_hist</span><span class="p">):</span>
+    
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">rdf_hist</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">dr_rdf</span> <span class="o">=</span> <span class="n">RDF_cutoff</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">rdf_bins</span><span class="p">)</span>
+
+    <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span>
+    <span class="n">empty</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">empty</span>
+    <span class="n">x_c_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">x_c_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    
+    
+    <span class="n">pos_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>  <span class="c1"># position shift to account for periodic boundary conditions.</span>
+    
+    <span class="c1"># Initialize</span>
+    <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">empty</span><span class="p">)</span>
+
+    <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ls&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">empty</span><span class="p">)</span>
+    
+
+    <span class="c1"># Loop over all particles and place them in cells, calculate bond forces and update reaction list.</span>
+    <span class="k">for</span> <span class="n">i0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span>
+        
+        <span class="n">typeI_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>  
+        <span class="n">pos_i</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        
+        
+        <span class="n">within_box</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Check if particle is within box volume:</span>
+            <span class="n">within_box</span> <span class="o">=</span> <span class="o">-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="o">&lt;=</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span> <span class="ow">and</span> <span class="o">-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="o">&lt;=</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span> <span class="ow">and</span> <span class="o">-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="o">&lt;=</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&lt;</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+            
+        <span class="c1">#Only add the particle to the linked cell list if there is actually any pair-interaction or bimol-reaction defined for this partricle type:</span>
+        <span class="k">if</span> <span class="n">typeI_id</span> <span class="o">==</span> <span class="n">RDF_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typeI_id</span> <span class="o">==</span> <span class="n">RDF_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        
+            <span class="n">h</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+            <span class="n">h_start</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head_start&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">]</span>
+            <span class="n">cells_per_dim_prim</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">]</span>
+            
+            <span class="c1"># Determine what cell, in each direction, the i-th particle is in</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">cy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">cz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            
+
+            <span class="k">if</span> <span class="n">within_box</span><span class="p">:</span>
+                
+                <span class="n">c</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># List of particle indices occupying a given cell</span>
+                <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ls&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head&#39;</span><span class="p">][</span><span class="n">h_start</span><span class="o">+</span><span class="n">c</span><span class="p">]</span>
+        
+                <span class="c1"># The last particle found to lie in cell c (head particle)</span>
+                <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head&#39;</span><span class="p">][</span><span class="n">h_start</span><span class="o">+</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        
+            
+<span class="c1">#%%</span>
+                
+    
+    <span class="c1"># Loop over all Particles</span>
+    <span class="k">for</span> <span class="n">i0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> 
+ 
+        <span class="n">pos_i</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        <span class="c1"># typeI_id = RBs_Data[i][&#39;type_id&#39;]  </span>
+        
+        <span class="n">h</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+        <span class="n">h_start</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head_start&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">]</span>
+        <span class="n">cells_per_dim_prim</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">]</span>
+        
+        
+        <span class="c1">#%%</span>
+        
+        <span class="n">cx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        
+        <span class="n">dcx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">RDF_cutoff</span><span class="o">/</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">dcy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">RDF_cutoff</span><span class="o">/</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">dcz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">RDF_cutoff</span><span class="o">/</span><span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">h</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+        
+        <span class="n">cz_start</span><span class="p">,</span> <span class="n">cz_end</span> <span class="o">=</span> <span class="n">cz</span> <span class="o">-</span> <span class="n">dcz</span><span class="p">,</span> <span class="n">cz</span> <span class="o">+</span> <span class="n">dcz</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">cy_start</span><span class="p">,</span> <span class="n">cy_end</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">dcy</span><span class="p">,</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">dcy</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">cx_start</span><span class="p">,</span> <span class="n">cx_end</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">dcx</span><span class="p">,</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">dcx</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        
+        <span class="n">within_box</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Check if particle is within box volume:</span>
+            <span class="n">within_box</span> <span class="o">=</span> <span class="mi">0</span><span class="o">&lt;=</span><span class="n">cx</span><span class="o">&lt;</span><span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="mi">0</span><span class="o">&lt;=</span><span class="n">cy</span><span class="o">&lt;</span><span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="mi">0</span><span class="o">&lt;=</span><span class="n">cz</span><span class="o">&lt;</span><span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">cz_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cz_start</span> <span class="o">=</span> <span class="mi">0</span> 
+            <span class="k">elif</span> <span class="n">cz_end</span> <span class="o">&gt;</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">cz_end</span> <span class="o">=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                
+            <span class="k">if</span> <span class="n">cy_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cy_start</span> <span class="o">=</span> <span class="mi">0</span> 
+            <span class="k">elif</span> <span class="n">cy_end</span> <span class="o">&gt;</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">cy_end</span> <span class="o">=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                
+            <span class="k">if</span> <span class="n">cx_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cx_start</span> <span class="o">=</span> <span class="mi">0</span> 
+            <span class="k">elif</span> <span class="n">cx_end</span> <span class="o">&gt;</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">cx_end</span> <span class="o">=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                
+        <span class="c1">#%%</span>
+        
+        <span class="k">if</span> <span class="n">within_box</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">RDF_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">RDF_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># Check contacts on same hierarchy level:</span>
+                <span class="k">for</span> <span class="n">cz_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cz_start</span><span class="p">,</span> <span class="n">cz_end</span><span class="p">):</span>
+                    <span class="n">cz_shift</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="n">pos_shift</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cz_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+                    <span class="k">for</span> <span class="n">cy_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cy_start</span><span class="p">,</span> <span class="n">cy_end</span><span class="p">):</span>
+                        <span class="n">cy_shift</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="n">pos_shift</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+                        <span class="k">for</span> <span class="n">cx_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cx_start</span><span class="p">,</span> <span class="n">cx_end</span><span class="p">):</span>
+                            <span class="n">cx_shift</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="n">pos_shift</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+                            <span class="c1"># Compute the location of the N-th cell based on shifts</span>
+                            <span class="n">c_N</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">+</span> <span class="n">cx_shift</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">+</span> <span class="n">cy_shift</span><span class="p">)</span> <span class="o">*</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> \
+                                  <span class="o">+</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">+</span> <span class="n">cz_shift</span><span class="p">)</span> <span class="o">*</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cells_per_dim_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                                  
+                          
+                            <span class="c1"># Check neighboring head particle interactions</span>
+                            <span class="n">j</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head&#39;</span><span class="p">][</span><span class="n">h_start</span><span class="o">+</span><span class="n">c_N</span><span class="p">]</span>
+                    
+                            <span class="k">while</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">empty</span><span class="p">:</span>
+    
+                                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">:</span>
+                                    
+                                    <span class="n">pos_j</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+                                    <span class="c1"># typeJ_id = RBs_Data[j][&#39;type_id&#39;]  </span>
+                                    
+                                    <span class="c1"># Compute the difference in positions for the i-th and j-th particles</span>
+                                    <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                        <span class="n">dx</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos_shift</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                        <span class="n">dy</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos_shift</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                                        <span class="n">dz</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos_shift</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                                            
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="n">dx</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                        <span class="n">dy</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                                        <span class="n">dz</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+                                    <span class="c1"># Compute distance between particles i and j</span>
+                                    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dz</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                    
+                                    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">dr_rdf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">rdf_bins</span><span class="p">:</span>
+                                        <span class="n">rdf_hist</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">dr_rdf</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">2</span> 
+                                            
+                                <span class="c1"># Move down list (ls) of particles for cell interactions with a head particle</span>
+                                <span class="n">j</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ls&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        
+            <span class="c1">#-----------------------------------------------------------</span>
+            <span class="k">else</span><span class="p">:</span>
+    
+                <span class="n">hj</span> <span class="o">=</span> <span class="n">h</span><span class="o">-</span><span class="mi">1</span>
+                <span class="k">while</span> <span class="n">hj</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+                    
+                    <span class="n">cells_per_dim_sec</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cells_per_dim&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">]</span>
+                    
+                    <span class="n">h_start</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head_start&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">]</span>
+                    
+                    <span class="n">x_c_min</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">RDF_cutoff</span> <span class="o">+</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">x_c_min</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">RDF_cutoff</span> <span class="o">+</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">x_c_min</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">RDF_cutoff</span> <span class="o">+</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+            
+                    <span class="n">cx_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">x_c_min</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">cy_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">x_c_min</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">cz_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">x_c_min</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+                    
+                    
+                    <span class="n">x_c_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">RDF_cutoff</span> <span class="o">+</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">x_c_max</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">RDF_cutoff</span> <span class="o">+</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">x_c_max</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">RDF_cutoff</span> <span class="o">+</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+            
+                    <span class="n">cx_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">x_c_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="n">cy_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">x_c_max</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="n">cz_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">x_c_max</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sh&#39;</span><span class="p">][</span><span class="n">hj</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+                    
+                    <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        
+                        <span class="k">if</span> <span class="n">cz_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">cz_start</span> <span class="o">=</span> <span class="mi">0</span> 
+                        <span class="k">elif</span> <span class="n">cz_end</span> <span class="o">&gt;</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                            <span class="n">cz_end</span> <span class="o">=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                            
+                        <span class="k">if</span> <span class="n">cy_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">cy_start</span> <span class="o">=</span> <span class="mi">0</span> 
+                        <span class="k">elif</span> <span class="n">cy_end</span> <span class="o">&gt;</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                            <span class="n">cy_end</span> <span class="o">=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                            
+                        <span class="k">if</span> <span class="n">cx_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">cx_start</span> <span class="o">=</span> <span class="mi">0</span> 
+                        <span class="k">elif</span> <span class="n">cx_end</span> <span class="o">&gt;</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                            <span class="n">cx_end</span> <span class="o">=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            
+        
+                    <span class="k">for</span> <span class="n">cz_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cz_start</span><span class="p">,</span> <span class="n">cz_end</span><span class="p">):</span>
+                        <span class="n">cz_shift</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                        <span class="n">pos_shift</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cz_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">cy_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cy_start</span><span class="p">,</span> <span class="n">cy_end</span><span class="p">):</span>
+                            <span class="n">cy_shift</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                            <span class="n">pos_shift</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cy_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                            <span class="k">for</span> <span class="n">cx_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cx_start</span><span class="p">,</span> <span class="n">cx_end</span><span class="p">):</span>
+                                <span class="n">cx_shift</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                <span class="n">pos_shift</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cx_N</span> <span class="o">&gt;=</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                
+                                <span class="n">c_N</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx_N</span> <span class="o">+</span> <span class="n">cx_shift</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">cy_N</span> <span class="o">+</span> <span class="n">cy_shift</span><span class="p">)</span> <span class="o">*</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> \
+                                      <span class="o">+</span> <span class="p">(</span><span class="n">cz_N</span> <span class="o">+</span> <span class="n">cz_shift</span><span class="p">)</span> <span class="o">*</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cells_per_dim_sec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                                      
+                                
+                                <span class="n">j</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;head&#39;</span><span class="p">][</span><span class="n">h_start</span><span class="o">+</span><span class="n">c_N</span><span class="p">]</span>
+                                
+                                <span class="k">while</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">empty</span><span class="p">:</span>
+                                    
+                                    <span class="n">pos_j</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+                                    <span class="c1"># typeJ_id = RBs_Data[j][&#39;type_id&#39;]  </span>
+                                    
+                                    <span class="c1"># Compute the difference in positions for the i-th and j-th particles</span>
+                                    <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                        <span class="n">dx</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos_shift</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                        <span class="n">dy</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos_shift</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                                        <span class="n">dz</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos_shift</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                                            
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="n">dx</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                        <span class="n">dy</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                                        <span class="n">dz</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos_j</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+                                    <span class="c1"># Compute distance between particles i and j</span>
+                                    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dz</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                    
+        
+                                    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">dr_rdf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">rdf_bins</span><span class="p">:</span>
+                                        <span class="n">rdf_hist</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">dr_rdf</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                                            
+                                <span class="c1"># Move down list (ls) of particles for cell interactions with a head particle</span>
+                                    <span class="n">j</span> <span class="o">=</span> <span class="n">HGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ls&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                            
+                    <span class="n">hj</span> <span class="o">-=</span> <span class="mi">1</span></div>
+
+
+
+
+<span class="c1">#%%</span>
+
+<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>update_reactions &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="system" href="../system.html" />
+    <link rel="prev" title="reactions_util" href="reactions_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../reactions.html">reactions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reactions_registry_util.html">reactions_registry_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reactions_util.html">reactions_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">update_reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../reactions.html">reactions</a> &raquo;</li>
+      <li>update_reactions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/reactions/update_reactions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="update-reactions">
+<h1>update_reactions<a class="headerlink" href="#update-reactions" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<span class="target" id="module-pyrid.reactions.update_reactions"></span><p>&#64;author: Moritz F P Becker</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.update_reactions.convert_molecule_type">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.update_reactions.</span></span><span class="sig-name descname"><span class="pre">convert_molecule_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/update_reactions.html#convert_molecule_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.update_reactions.convert_molecule_type" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a molecule to a different type.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>product_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Id of the product molecule type.</p>
+</dd>
+<dt><strong>product_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the product molecule type.</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
+</dd>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the molecule whose type to convert</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.update_reactions.convert_particle_type">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.update_reactions.</span></span><span class="sig-name descname"><span class="pre">convert_particle_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/update_reactions.html#convert_particle_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.update_reactions.convert_particle_type" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a particle to a different type.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>product_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Id of the product particle type.</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
+</dd>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the particle whose type to convert</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.update_reactions.delete_molecule">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.update_reactions.</span></span><span class="sig-name descname"><span class="pre">delete_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/update_reactions.html#delete_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.update_reactions.delete_molecule" title="Permalink to this definition"></a></dt>
+<dd><p>Removes a molecule and its reactions from the simulation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
+</dd>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the molecule which to delete</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.update_reactions.delete_particles">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.update_reactions.</span></span><span class="sig-name descname"><span class="pre">delete_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/update_reactions.html#delete_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.update_reactions.delete_particles" title="Permalink to this definition"></a></dt>
+<dd><p>Removes all particle belonging to a molecule and its reactions and bonds from the simulation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
+</dd>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the molecule whose particles to delete</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.update_reactions.delete_reactions">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.update_reactions.</span></span><span class="sig-name descname"><span class="pre">delete_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_is_particle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/update_reactions.html#delete_reactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.update_reactions.delete_reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Removes all reactions of an educt i scheduled for this time step.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the particle for which to delete all reactions</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.reactions.update_reactions.update_reactions">
+<span class="sig-prename descclassname"><span class="pre">pyrid.reactions.update_reactions.</span></span><span class="sig-name descname"><span class="pre">update_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/reactions/update_reactions.html#update_reactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.reactions.update_reactions.update_reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluates the bimolecular and unimolecular reactions.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of System class.</p>
+</dd>
+<dt><strong>Particles</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of Particle class.</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of RBs (Rigid Bodies) class.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p><em>Reaction handler</em></p>
+<p>We use a Gillespie reaction handler scheme, similar to the one used in <a class="reference external" href="https://readdy.github.io/simulation.html">ReaDDy</a>:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>All reactions events occuring within a time step are gathered in lists (a seperate list for each reaction that has been defined).</p></li>
+<li><p>A reaction type is picked randomly, weighted by the its total reaction rate times the total number of reactions that are in the list of that type (the total reaction rate is the sum of the individual reaction path rates. Different reaction paths allow for the same educts to undergo, e.g., different fusion reactions or for a single molecule to convert to different products).</p></li>
+<li><p>A random reaction event is picked from the list.</p></li>
+<li><dl class="simple">
+<dt>If the reaction is bimolecular, the reaction probability Eq. <a class="reference internal" href="#equation-reactionprob">(28)</a> is tested against a random number between 0 and 1. </dt><dd><ol class="loweralpha simple">
+<li><p>If the reaction was successfull, we pick a random reaction path, weighted by the path’s reaction rates. After the execution of the reaction, it is deleted from the list together with all the other reactions the educts participated in.</p></li>
+<li><p>If the reaction was not successful, the reaction is deleted from the list.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>If the reaction is unimolecular, it is always successful, since, for unimolecular reactions, we draw the time point of the next reaction event from the corresponding distribution (Gillespie SSA). As such, we pick a random reaction path, weighted by the individual path’s reaction rates. After the execution of the reaction, it is deleted from the list together with all the other reactions the educt participated in.</p></li>
+<li><p>Go back to 2. until no reactions are left.</p></li>
+</ol>
+</div></blockquote>
+<div class="math notranslate nohighlight" id="equation-reactionprob">
+<span class="eqno">(28)<a class="headerlink" href="#equation-reactionprob" title="Permalink to this equation"></a></span>\[p = 1-exp\Big(-\sum_{i \in paths} \lambda_i \cdot \Delta t \Big)\]</div>
+<p><em>Doi bimolecular reaction scheme</em></p>
+<p>There exist different methods of how to model bimolecular reactions. PyRID, just as ReaDDy <span id="id1">[<a class="reference internal" href="../../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>, uses the Doi scheme <span id="id2">[<a class="reference internal" href="../../../References.html#id29" title="M Doi. Stochastic theory of diffusion-controlled reaction. Journal of Physics A: Mathematical and General, 9(9):1479–1495, sep 1976. doi:10.1088/0305-4470/9/9/009.">22</a>]</span>. In this scheme, two molecules can react to a single product moelcule if their distance is less than some reaction radius R. In this case the reaction may occur with a microscopic reaction rate <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reactions_util.html" class="btn btn-neutral float-left" title="reactions_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../system.html" class="btn btn-neutral float-right" title="system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

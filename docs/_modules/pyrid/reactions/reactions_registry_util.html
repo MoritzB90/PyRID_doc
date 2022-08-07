@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.reactions.reactions_registry_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.reactions.reactions_registry_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.reactions.reactions_registry_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="c1"># from ..math.transform_util import cantor_pairing, unique_pairing</span>
+<span class="kn">from</span> <span class="nn">..data_structures.dynamic_array_util</span> <span class="kn">import</span> <span class="n">DenseArrayReact</span><span class="p">,</span> <span class="n">HolesArrayReact</span>
+
+<span class="c1">#%%</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Adds a column to a given numpy array.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array : `array_like`</span>
+<span class="sd">        Numpy array to which to add a column</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array_like</span>
+<span class="sd">        numpy array with an extra columns</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">array</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">key_head</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span>
+<span class="n">value_head</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:]</span>
+
+<span class="n">item_t_react</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;educts_index&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;unique_educts_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">item_t_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;rate&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;products_ids&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;products_loc&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;products_direction&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;n_products&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;U20&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;n_success&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+       
+<span class="n">spec_darray</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;n_success&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;n_total&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;n_total_binned&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;capacity&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_react</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s1">&#39;item_t&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">item_t_react</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">HolesArrayReact</span><span class="o">.</span><span class="n">class_type</span><span class="o">.</span><span class="n">instance_type</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;slot&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;dummy&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_react</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">DictType</span><span class="p">(</span><span class="n">key_head</span><span class="p">,</span> <span class="n">value_head</span><span class="p">)),</span>
+<span class="p">]</span>
+
+<span class="n">spec_reactions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;educts&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:]),</span>
+    <span class="p">(</span><span class="s1">&#39;particle_educts&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:]),</span>
+    <span class="c1">#(&#39;products&#39;, nb.int64[:]),</span>
+    <span class="p">(</span><span class="s1">&#39;rate&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>  
+    <span class="p">(</span><span class="s1">&#39;current_index&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;reaction_educt_type&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">string</span><span class="p">),</span>
+    <span class="c1"># (&#39;reaction_type_id&#39;, nb.int64),</span>
+    <span class="p">(</span><span class="s1">&#39;paths&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_paths</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s1">&#39;n_paths&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;bimol&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">boolean</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;particle_reaction&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">boolean</span><span class="p">),</span>
+    
+<span class="p">]</span>
+
+<span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_darray</span><span class="o">+</span><span class="n">spec_reactions</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Reaction</span><span class="p">(</span><span class="n">DenseArrayReact</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The reaction class stores all particle and molecule reactions of the current time step. At its core the Reaction class is a dense dynamic array (i.e. elements are deleted via a pop and swap mechanism). It also keeps another dynamic array with holes that keeps track of where a reaction moves during swaping. This is necessary, beacause we also store each reaction by its id in a doubly linked list that contains for each particle all its reactions. This doubly linked list is needed whenever we delete all reactions of a certain particle, in which case we need to be able to recover the position of a reaction id in the dynamic array. Also, the elements of the doubly linked list have shape (2,2), each for the next and prev pointer. The first dimension has two elements since a reaction can be assigned to at max two educts (for bimoelcular reactions). Therefore, these two integers point to the next (previous) reaction id belonging to each of the educts. The two elements of the second dimension are required, beacuse we need to be able to track the position of particles i and j in the linked list, which can in principle switch between two positions (to which reaction id should the next pointer go? There are always two possibilities). Thereby, the other two ints store, whether the next (prev) pointer target element 0 or 1.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    educts : `nb.int32[:]`</span>
+<span class="sd">        Educt type ids.</span>
+<span class="sd">    products : `nb.int64[:]`</span>
+<span class="sd">        Product type ids.</span>
+<span class="sd">    rate : `nb.float64`</span>
+<span class="sd">        Reaction rate.</span>
+<span class="sd">    radius : `nb.float64`</span>
+<span class="sd">        Reaction radius.</span>
+<span class="sd">    current_index : `nb.uint64`</span>
+<span class="sd">        Current/last assigned slot of dynamic array (main -&gt; dense_array_react())</span>
+<span class="sd">    reaction_type : `nb.types.string` {&#39;bind&#39;, &#39;enzymatic&#39;, &#39;conversion&#39;, &#39;decay&#39;, &#39;enzymatic_rb&#39;, &#39;conversion_rb&#39;, &#39;fusion&#39;}</span>
+<span class="sd">        Name of reaction type</span>
+<span class="sd">    reaction_type_id : `nb.int64 {0,1,2,3,4,5,6,7}`</span>
+<span class="sd">        ID of reaction type</span>
+<span class="sd">    paths : `array_like`</span>
+<span class="sd">        Reaction path.</span>
+<span class="sd">        </span>
+<span class="sd">        `dtype = np.dtype([(&#39;rate&#39;, np.float64), (&#39;products&#39;, (np.int64, (100,3))), (&#39;n_products&#39;, np.int64),],  align=True)`</span>
+<span class="sd">    n_paths : `nb.int64`</span>
+<span class="sd">        Number of reaction paths defined for this reaction.</span>
+<span class="sd">    </span>
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    add_path(products, rate)</span>
+<span class="sd">        Adds a reaction path to the reaction.</span>
+<span class="sd">    re_initialize()</span>
+<span class="sd">        Reinitializes the dense dynamic array saving all reactions occuring within a timestep, reseting the array size and deleting all linked lists containg reaction data.</span>
+<span class="sd">    append_reaction(i,j, Particle_Reaction)</span>
+<span class="sd">        Appends a new reaction to the reactions list.</span>
+<span class="sd">    delete_reaction(k, Particle_Reaction)</span>
+<span class="sd">        Deletes reaction at index k.</span>
+<span class="sd">    delete_reaction_all(i)</span>
+<span class="sd">        Deletes all reactions of Particle i assigned for the current time step.</span>
+<span class="sd">    get_random()</span>
+<span class="sd">        Returns a random reaction id.</span>
+<span class="sd">    getit(k)</span>
+<span class="sd">        Returns reaction data inserted at index k.</span>
+<span class="sd">    setit(k, value)</span>
+<span class="sd">        Assigns anew value to reaction at index k.</span>
+<span class="sd">    reactions_left()</span>
+<span class="sd">        Prints out all reactions left in list.</span>
+<span class="sd">    reactions_left_pointer(Particles, i)</span>
+<span class="sd">        Prints out all reactions left for particle i.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The data structure we need to organize the reactions is a little bit more complex than a simple dense dynamic array or one with holes as is used to keep track of all the rigid body molecules and particles in the sytsem. The Reaction class is a combination of different dynamic arrays and a hash table. Let  me motivate this: Our data structure needs to be able to do 4 things as efficient as possible:</span>
+<span class="sd">        </span>
+<span class="sd">        1. Add reactions,</span>
+<span class="sd">        2. Delete single reactions,</span>
+<span class="sd">        3. Delete all reactions certain particle participates in,</span>
+<span class="sd">        4. Return a random reaction from the list.</span>
+<span class="sd">        </span>
+<span class="sd">    We need to be able to delete a single reaction whenever this reaction was not successful.</span>
+<span class="sd">    We need to delete all reactions of a particle whenever a reaction was successful, because this particle is no longer available since it either got deleted or changed its type (except in the case where the particle participates as an enzyme).</span>
+<span class="sd">    We need to be able to request a random reaction from the list, because processing the reactions in the order they occur in the list will introduce a bias: Reactions of particles with a low index are added to the list first, at least in the beginning of a simulation when the indices of particles have not yet been swapped around (in case there are any decay reactions), beacuse particle distances are evaluated in the order particles occur in the corresponding list. Thereby particle 1 will always have a higher chance of having a successfull reactions when competing with other particles.</span>
+<span class="sd">    Points 1. an 2. could be easily established with a simple dynamic array. However, point 3 is a bit more complicated but can be solved with a doubly linked list, embedded into a dynamic array with holes, that connects all reaction of a particle. We need a doubly linked list, because we need to be able to delete a single reaction (index k) fom the linked list (point 2). As such, we need to be able to reconnect the linked list&#39;s &#39;chain&#39;. Therefore, we need to know the element in the linked list that pointed to k (prev) in addition to the element k points to (next). Another problem that needs to be solved is that a reaction can be linked to at max. 2 educts. Therefore, each next and prev pointer needs to be 4-dimensional. We need 1 integer for each educt to save the next (prev) reaction index and another integer {0,1} to keep track of whether in the next (prev) reaction the particle is the first or the second educt since this may change from reaction to reaction!</span>
+<span class="sd">    Since the dynamic array, the doubly linked list is embedded in, has holes, picking a random reaction from the list becomes another issue. This can, however, easily be solved by adding another dynamic array (dense array), which keeps all the reactions that are left in a tightly packed format. Picking a random reaction is that as easy as drawing a uniformly distributed random interger between 0 and n, where n is the length of the dense array.</span>
+<span class="sd">    A very nice introduction/overview to the kind of data structures used here has been written by Niklas Gray (see `&lt;https://ourmachinery.com/post/data-structures-part-1-bulk-data/&gt;`_)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    .. image:: ../../../Graphics/Reactions_DynamicArray.png</span>
+<span class="sd">        :width: 60%</span>
+<span class="sd">    </span>
+<span class="sd">    |</span>
+<span class="sd">    </span>
+<span class="sd">    The figure depicts the data structure we use to keep track of the reactions.</span>
+<span class="sd">    </span>
+<span class="sd">    |</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">__init__DenseArrayReact</span> <span class="o">=</span> <span class="n">DenseArrayReact</span><span class="o">.</span><span class="fm">__init__</span>
+    
+<div class="viewcode-block" id="Reaction.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">educts</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">reaction_educt_type</span><span class="p">,</span> <span class="n">particle_educts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__init__DenseArrayReact</span><span class="p">(</span><span class="n">item_t_react</span><span class="p">)</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">reaction_educt_type</span> <span class="o">=</span> <span class="n">reaction_educt_type</span>
+        
+        <span class="k">if</span> <span class="n">reaction_type</span> <span class="o">==</span> <span class="s1">&#39;bimolecular&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bimol</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">particle_reaction</span> <span class="o">=</span> <span class="kc">True</span>
+            
+        <span class="k">elif</span> <span class="n">reaction_type</span> <span class="o">==</span> <span class="s1">&#39;unimolecular&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bimol</span> <span class="o">=</span> <span class="kc">False</span>
+            
+            <span class="k">if</span> <span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Particle&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">particle_reaction</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">reaction_educt_type</span> <span class="o">==</span> <span class="s1">&#39;Molecule&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">particle_reaction</span> <span class="o">=</span> <span class="kc">False</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">educts</span> <span class="o">=</span> <span class="n">educts</span>
+        
+        <span class="c1"># In case we have a bimolecular reaction we may also want to save the actual particle educts involved, not just the corresponding molecules (educts):</span>
+        <span class="k">if</span> <span class="n">particle_educts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">particle_educts</span> <span class="o">=</span> <span class="n">particle_educts</span>
+            
+        <span class="c1"># self.reaction_type_id = reaction_type_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_success</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_total_binned</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_paths</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_paths</span><span class="p">)</span></div>
+        
+    
+<div class="viewcode-block" id="Reaction.add_path"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.add_path">[docs]</a>    <span class="k">def</span> <span class="nf">add_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">path_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">products_ids</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_surf_vol</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_direction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Adds a new reaction path to the reaction class instance.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        path_type : `string`</span>
+<span class="sd">            Type of reaction</span>
+<span class="sd">        rate : `float64`</span>
+<span class="sd">            Reaction rate       </span>
+<span class="sd">        products_ids : `int64[:]`</span>
+<span class="sd">            List of product ids. Default = None </span>
+<span class="sd">        product_surf_vol : `int64[:]`</span>
+<span class="sd">            List indicating whether a product is a volume (0) or a surface (1) molecule. </span>
+<span class="sd">        product_direction : `int64[:]`. Default = None</span>
+<span class="sd">            In case of a surface moelcule having a volume moelcule product indicates whether the product is to be released into the simulation box volume (0) or the mesh compartment (1). Default = None</span>
+<span class="sd">        radius : `float64`</span>
+<span class="sd">            Reaction radius in case of a bimolecular/biparticle reaction. Default = None</span>
+<span class="sd">            </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError(&#39;Number of reaction products must not be larger than 1000!&#39;)</span>
+<span class="sd">            PyRID limits the number of product moelcules to 1000, otherwise a value error is raised. The user may rayise this limit at any time by changing the size of the structured array of dtype item_t_paths.</span>
+<span class="sd">        ValueError(&#39;Reaction type unknown!&#39;)</span>
+<span class="sd">            If a reaction type is passed that has not yet been implemented, a value error is raised.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">products_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">products_ids</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1000</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of reaction products must not be larger than 1000!&#39;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">path_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="s1">&#39;enzymatic&#39;</span><span class="p">,</span> <span class="s1">&#39;enzymatic_mol&#39;</span><span class="p">,</span> <span class="s1">&#39;absorption&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bimol</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">path_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;conversion&#39;</span><span class="p">,</span> <span class="s1">&#39;conversion_mol&#39;</span><span class="p">,</span> <span class="s1">&#39;decay&#39;</span><span class="p">,</span> <span class="s1">&#39;production&#39;</span><span class="p">,</span> <span class="s1">&#39;fission&#39;</span><span class="p">,</span> <span class="s1">&#39;release&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bimol</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Reaction type unknown!&#39;</span><span class="p">)</span>
+            
+            
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_paths</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_paths</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="n">add_column</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">,</span> <span class="n">item_t_paths</span><span class="p">)</span>
+            
+
+        <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span> <span class="c1"># This is the radius, which is used, e.g. when resolving fission or production reactions.</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">react_type_id</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">path_type</span><span class="p">)]</span>
+        
+        <span class="k">if</span> <span class="n">products_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_products&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">products_ids</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">products_ids</span><span class="p">)]</span> <span class="o">=</span> <span class="n">products_ids</span> <span class="c1"># product type id</span>
+            <span class="k">if</span> <span class="n">product_surf_vol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;products_loc&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">products_ids</span><span class="p">)]</span> <span class="o">=</span> <span class="n">product_surf_vol</span> <span class="c1"># product surface (1) or volume (0) molecule</span>
+            <span class="k">if</span> <span class="n">product_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;products_direction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">products_ids</span><span class="p">)]</span> <span class="o">=</span> <span class="n">product_direction</span> <span class="c1"># if the educt is a surface molecule but the product is a volume molecule, we need to define one whioch side the product should be released (0: outside (System), 1: inside (Mesh Compartment))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_products&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        
+        
+        <span class="c1"># update the total number of paths:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_paths</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># update the total reaction rate:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">+=</span> <span class="n">rate</span></div>
+        
+        
+        <span class="c1">#%%</span>
+        
+    <span class="k">def</span> <span class="nf">re_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__init__DenseArrayReact</span><span class="p">(</span><span class="n">item_t_react</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="Reaction.append_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.append_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">append_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Appends a new reaction to the current reactions list.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Index of educt 1</span>
+<span class="sd">        j : `int64`</span>
+<span class="sd">            Index of educt 2. Default = None</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+            <span class="c1"># Double capacity if not enough room</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_resize</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span>      
+    
+        
+        <span class="c1"># The new reaction gets an id assigned. This id will be selected from the available ids (holes) of the index array:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">allocate_slot</span><span class="p">()</span>
+        <span class="c1"># print(self.current_index+1)</span>
+        <span class="c1"># print(self.n)</span>
+        
+        <span class="n">current_indexP1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">][</span><span class="s1">&#39;educts_index&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="c1"># self.Data[self.n][&#39;unique_educts_id&#39;] = Unique_Pairing(i,j)</span>
+
+        <span class="c1"># if i%2 == 0:</span>
+        <span class="c1">#     i0 = i</span>
+        <span class="c1">#     i = j</span>
+        <span class="c1">#     j = i0</span>
+        
+        <span class="n">first_reaction_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">first_educt_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">second_reaction_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">second_educt_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="c1"># If this is not the first reaction of i:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
+            <span class="c1"># The reaction index of the head:</span>
+            <span class="n">first_reaction_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">first_educt_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># The reaction index the head (first) points to:</span>
+            <span class="n">second_reaction_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">second_educt_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># The current_index is inserted between the first and the second </span>
+            <span class="c1"># This makes keeping the linked list circular strait forward:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">second_reaction_idx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_reaction_idx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">second_reaction_idx</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">second_educt_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+            <span class="c1"># insert educt_idx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">second_educt_idx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_educt_idx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">second_reaction_idx</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">second_educt_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># the reaction will simply point to itself:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># set this to be the first reaction (head)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">current_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bimol</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">j</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">][</span><span class="s1">&#39;educts_index&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+            
+            <span class="c1"># Repeat the same for j:</span>
+            <span class="c1"># If this is not the first reaction of j:</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
+                <span class="c1"># The reaction index of the head:</span>
+                <span class="n">first_reaction_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">first_educt_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># The reaction index the head (first) points to:</span>
+                <span class="n">second_reaction_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">second_educt_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># The current_index is inserted between the first and the second </span>
+                <span class="c1"># This makes keeping the linked list circular strait forward:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">second_reaction_idx</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_reaction_idx</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">second_reaction_idx</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">second_educt_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+                <span class="c1"># insert educt_idx</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">second_educt_idx</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_educt_idx</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">first_reaction_idx</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">first_educt_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">second_reaction_idx</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">second_educt_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>     
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># the reaction will simply point to itself:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_index</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">current_indexP1</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1"># set this to be the first reaction (head)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">current_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Since we are appending an element, the size of our array needs to increase by 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span></div>
+        
+<div class="viewcode-block" id="Reaction.delete_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.delete_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">delete_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes the reaction from the list by its index.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index of the reaction which to delete</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Deletes an element from the array by a pop and swap mechanism.</span>
+<span class="sd">        This is a dense dynamic array. As such, elements get swapped around by a pop and swap mechanism. Element k, which is trageted for deletion may no longer be at the place where it was originally inserted. Therefore, k does not refer to the element currently at index k in the dense array but needs to be looked up in the index array (self.index), which is an array with holes, preserving the location of its elements.</span>
+<span class="sd">        Element k also needs to be deleted from the index array. The index array is a dynamic array with holes. Thereby, an element is removed from the index array by creating a hole that can be reused for the insertion of new elements. The index array also holds a doubly free linked list containing all reactions belonging to a certain particle. Therefore, the doubly free linked list is also updated.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bimol</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">number_educts</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">number_educts</span> <span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="c1"># We need to loop over both educts (in case of bimolecular reaction) and update the free linked list</span>
+        <span class="c1"># of each educt, linking all reactions of the respective particle:</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_educts</span><span class="p">):</span>
+            <span class="c1"># Get the reaction_id and educt_no of the next pointer</span>
+            <span class="c1"># We need to assign these to the previous next pointer</span>
+            <span class="n">next_reaction_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">next_educt_no</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># Therefore, also get the reaction_id and educt_no of the prev pointer</span>
+            <span class="n">prev_reaction_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">prev_educt_no</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            
+            
+            <span class="n">ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;educts_index&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            
+            <span class="c1"># Check which reaction the head currently points to.</span>
+            <span class="n">first_reaction_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">ip</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># If the head happens to point to index k, which we just deleted, we need to set</span>
+            <span class="c1"># the head to the reaction idx k pointed to:</span>
+            <span class="k">if</span> <span class="n">first_reaction_idx</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+                <span class="c1"># However, only if reaction k did not point to itself (However, this should never happen anyway, right!?)! </span>
+                <span class="k">if</span> <span class="n">next_reaction_id</span> <span class="o">!=</span> <span class="n">k</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">ip</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_reaction_id</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">ip</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_educt_no</span>
+                    
+                <span class="c1"># else:</span>
+                    <span class="c1"># print(&#39;completetly deleted from list&#39;)</span>
+            
+            <span class="c1"># Since we deleted k, the reaction that pointed to k (prev_reaction_id) now needs to skip k and instead point to the reaction the k pointed to.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">prev_reaction_id</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">prev_educt_no</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_reaction_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">prev_reaction_id</span><span class="p">][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">prev_educt_no</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_educt_no</span>
+            <span class="c1"># Similarly, k is no longer the previous reaction of the reaction that k pointed to. </span>
+            <span class="c1"># So, we also need to to set the previous pointer of the next reaction to that of k:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">next_reaction_id</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">next_educt_no</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">prev_reaction_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">next_reaction_id</span><span class="p">][</span><span class="s1">&#39;prev_reaction&#39;</span><span class="p">][</span><span class="n">next_educt_no</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">prev_educt_no</span>    
+            
+            <span class="c1"># At last, we decrease the number of reaction particle i partcipates in by 1:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">ip</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Delete the reaction itself:</span>
+        <span class="c1"># Get the id (id_swap) of the last item in the reactions list and swap it with k:</span>
+        <span class="n">id_swap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">id_swap</span><span class="p">]</span>
+        
+        <span class="c1"># Add to the freelist, which is stored in slot 0. !!!This is useless, as we do never</span>
+        <span class="c1"># add any new reactions after a reaction has been deleted. We first add all reaction to the list. Then we evaluate all reactions until none is left!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;next_hole&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;next_hole&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;next_hole&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>    <span class="c1"># !!!Why not k+1 ? -&gt; because the values in &#39;next_hole&#39; refer to the actual reaction index in the dense array. In the holes array, 0 is the head, which now points to reaction index k. Reaction index k is now available. When allcoating a &#39;slot&#39;, this only refers to getting an reaction id not yet taken. So maybe we should change the term &#39;slot here!? We could also just keep on incerasing the reaction id, for int64 we shouldnt get into trouble very soon! </span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">id_swap</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>  
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span></div>
+        
+<div class="viewcode-block" id="Reaction.delete_reaction_all"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.delete_reaction_all">[docs]</a>    <span class="k">def</span> <span class="nf">delete_reaction_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all reactions educt i (molecule or particle) is involved in.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Index of the educt</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Check if there even exist any reactions for particle i:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
+            <span class="c1"># Go to the head of the reaction linked list:</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># continue until head points to itself:</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span> <span class="c1"># Equivalent to while self.head[i][2] &gt; 0:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_reaction</span><span class="p">(</span><span class="n">head</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">count</span></div>
+                
+                
+<div class="viewcode-block" id="Reaction.get_random"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.get_random">[docs]</a>    <span class="k">def</span> <span class="nf">get_random</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a random reaction from the list.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int64</span>
+<span class="sd">            Index of the random reaction.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="c1"># print(&#39;idx: &#39;, idx)</span>
+        
+        <span class="c1"># sorted_index = np.argsort(self.Data[0:self.n][&#39;unique_educts_id&#39;])</span>
+        <span class="c1"># return self.Data[0:self.n][sorted_index][&#39;id&#39;][idx] </span>
+    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="c1"># self.Data[&#39;id&#39;][idx] # </span></div>
+        
+            
+<div class="viewcode-block" id="Reaction.get"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the data array of the reaction at index k, which contains the educt indices.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index of the reaction whose educt indices to return</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Return element at index k+1 (element 0 is reserved for the head of the free list).</span>
+<span class="sd">        Any item will be returned, also holes, because checking whether an item is a hole at each access operation is too expensive.</span>
+<span class="sd">        Also, there will be no test, whether the index is within bounds, as this can also reduce speed by up to 25%.</span>
+<span class="sd">        To get a list of all items which are not holes, use the occupied attribute!</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array_like</span>
+<span class="sd">            Array containing the educt indices and other information.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+          
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="Reaction.set"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts the given values into the array at the position correspnding to the reaction of index k.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index of the reaction</span>
+<span class="sd">        value : `array_like`</span>
+<span class="sd">            values to insert (np.dtype([(&#39;educts_index&#39;, (np.int64, (2,))), (&#39;id&#39;, np.int64), (&#39;unique_educts_id&#39;, np.float64)],  align=True))</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span></div>
+        
+    <span class="k">def</span> <span class="nf">reactions_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;((educt_1, educt_2), id): &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Reaction.reactions_left_pointer"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction.reactions_left_pointer">[docs]</a>    <span class="k">def</span> <span class="nf">reactions_left_pointer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Prints out all reactions left in the reactions list for educt of index i.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Educt index</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;((educt_1, educt_2), id): &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">head</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;id&#39;</span><span class="p">]])</span>
+            <span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">head</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="n">head</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            
+            <span class="k">while</span> <span class="nb">next</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="n">head</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;((educt_1, educt_2), id): &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">next</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;id&#39;</span><span class="p">]])</span>
+                
+                <span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">next</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;next_reaction&#39;</span><span class="p">][</span><span class="nb">next</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span></div>
+                
+<span class="c1">#%%</span>
+
+<span class="c1"># if __name__==&#39;__main__&#39;:</span>
+    
+    
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

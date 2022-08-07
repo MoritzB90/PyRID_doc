@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.reactions.update_reactions &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.reactions.update_reactions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.reactions.update_reactions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..math</span> <span class="kn">import</span> <span class="n">random_util</span> <span class="k">as</span> <span class="n">randu</span>
+<span class="kn">from</span> <span class="nn">..system</span> <span class="kn">import</span> <span class="n">distribute_vol_util</span> <span class="k">as</span> <span class="n">distribute_vol</span>
+<span class="kn">from</span> <span class="nn">..system</span> <span class="kn">import</span> <span class="n">distribute_surface_util</span> <span class="k">as</span> <span class="n">distribute_surf</span>
+<span class="kn">from</span> <span class="nn">..geometry.intersections_util</span> <span class="kn">import</span> <span class="n">any_ray_mesh_intersection_test</span>
+<span class="kn">from</span> <span class="nn">..system</span> <span class="kn">import</span> <span class="n">potentials_util</span> <span class="k">as</span> <span class="n">potu</span>
+
+<span class="c1">#%%</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">update_bond_force</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">Particles</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span>
+    <span class="n">dF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    
+    <span class="n">ptype_idx_i</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>  
+    <span class="n">pos_i</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+    
+    <span class="n">ptype_idx_j</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+    <span class="n">pos_j</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+    
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dz</span> <span class="o">=</span> <span class="n">pos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_j</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">+=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dx</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dx</span> <span class="o">&gt;=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">dy</span> <span class="o">+=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dy</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dy</span> <span class="o">&gt;=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">dz</span> <span class="o">+=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dz</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dz</span> <span class="o">&gt;=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dz</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">System</span><span class="o">.</span><span class="n">interaction_args</span><span class="p">[</span><span class="n">ptype_idx_i</span><span class="p">][</span><span class="n">ptype_idx_j</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">]:</span>
+        
+        <span class="n">mol_idx_i</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+        <span class="n">mtype_idx_i</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">mol_idx_i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+        <span class="n">mpos_i</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">mol_idx_i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        
+        <span class="n">mol_idx_j</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+        <span class="n">mtype_idx_j</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">mol_idx_j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+        <span class="n">mpos_j</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">mol_idx_j</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+                            
+        <span class="n">dx_mol</span> <span class="o">=</span> <span class="n">mpos_i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">mpos_j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dy_mol</span> <span class="o">=</span> <span class="n">mpos_i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mpos_j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dz_mol</span> <span class="o">=</span> <span class="n">mpos_i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">mpos_j</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dx_mol</span><span class="o">&lt;=-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">dx_mol</span> <span class="o">+=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">dx_mol</span><span class="o">&gt;=</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">dx_mol</span> <span class="o">-=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">dy_mol</span><span class="o">&lt;=-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">dy_mol</span> <span class="o">+=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">dy_mol</span><span class="o">&gt;=</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">dy_mol</span> <span class="o">-=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                
+            <span class="k">if</span> <span class="n">dz_mol</span><span class="o">&lt;=-</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">dz_mol</span> <span class="o">+=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">dz_mol</span><span class="o">&gt;=</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">dz_mol</span> <span class="o">-=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>                
+                        
+        
+        <span class="n">pot</span><span class="p">,</span> <span class="n">fr</span> <span class="o">=</span> <span class="n">potu</span><span class="o">.</span><span class="n">execute_force</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">interaction_args</span><span class="p">[</span><span class="n">ptype_idx_i</span><span class="p">][</span><span class="n">ptype_idx_j</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">interaction_args</span><span class="p">[</span><span class="n">ptype_idx_i</span><span class="p">][</span><span class="n">ptype_idx_j</span><span class="p">][</span><span class="s1">&#39;parameters&#39;</span><span class="p">])</span>
+        
+        <span class="n">fr</span> <span class="o">/=</span> <span class="n">r</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">Epot</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pot</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">Epot</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pot</span>
+
+        <span class="c1"># Update force for the i-th particle:</span>
+            
+        <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">fr</span> 
+        <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">fr</span> 
+        <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dz</span> <span class="o">*</span> <span class="n">fr</span>
+        
+        <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+        <span class="c1"># Newton&#39;s 3rd law:</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_scalar</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">dx_mol</span><span class="o">+</span><span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">dy_mol</span><span class="o">+</span><span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">dz_mol</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_scalar</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">dx_mol</span><span class="o">+</span><span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">dy_mol</span><span class="o">+</span><span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">dz_mol</span>
+        
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dx_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dx_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dx_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dy_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dy_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dy_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dz_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dz_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_i</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dz_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dx_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dx_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dx_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dy_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dy_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dy_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dz_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dz_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">virial_tensor</span><span class="p">[</span><span class="n">mtype_idx_j</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dz_mol</span> <span class="o">*</span> <span class="n">dF</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="delete_molecule"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/update_reactions.html#pyrid.reactions.update_reactions.delete_molecule">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Removes a molecule and its reactions from the simulation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of RBs class</span>
+<span class="sd">    Particles : `object`</span>
+<span class="sd">        Instance of Particles class</span>
+<span class="sd">    i : `int64`</span>
+<span class="sd">        Index of the molecule which to delete</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+    
+    <span class="n">delete_particles</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            
+    <span class="c1">#Delete the rigidbody from the RB dictionary:</span>
+    <span class="n">RBs</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">System</span><span class="o">.</span><span class="n">N</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span></div>
+    
+    
+    
+    
+<div class="viewcode-block" id="delete_particles"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/update_reactions.html#pyrid.reactions.update_reactions.delete_particles">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">delete_particles</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Removes all particle belonging to a molecule and its reactions and bonds from the simulation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of RBs class</span>
+<span class="sd">    Particles : `object`</span>
+<span class="sd">        Instance of Particles class</span>
+<span class="sd">    i : `int64`</span>
+<span class="sd">        Index of the molecule whose particles to delete</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#loop over all particles that are part of this rigid body and delete them as well as all their reactions:</span>
+    <span class="k">for</span> <span class="n">pi0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]):</span>
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">pi0</span><span class="p">]</span>
+        
+        <span class="c1"># Delete bond of partner particles if a bond exists:</span>
+        <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">pj</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> 
+            
+            <span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]][</span><span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]][</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+            
+            <span class="c1"># If the binding reaction changed the particle type of pj, reverse that:</span>
+            <span class="n">educt_type_j</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;bond_educt_id&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">educt_type_j</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                
+                <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">pj</span><span class="p">,</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+                
+                <span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">educt_type_j</span>
+                <span class="n">Particles</span><span class="p">[</span><span class="n">pj</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">educt_type_j</span><span class="p">]</span>
+                <span class="n">Particles</span><span class="o">.</span><span class="n">next_up_reaction</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">pj</span><span class="p">)</span>
+                
+                
+        <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>  
+        
+        <span class="c1"># Delete Particle</span>
+        <span class="n">Particles</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+        
+        <span class="n">System</span><span class="o">.</span><span class="n">Np</span> <span class="o">-=</span> <span class="mi">1</span></div>
+        
+          
+            
+<span class="c1">#%%   </span>
+
+<div class="viewcode-block" id="delete_reactions"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/update_reactions.html#pyrid.reactions.update_reactions.delete_reactions">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">type_id</span><span class="p">,</span> <span class="n">educt_is_particle</span><span class="p">):</span><span class="c1">#, reaction_educt_type_id):</span>
+
+    <span class="sd">&quot;&quot;&quot;Removes all reactions of an educt i scheduled for this time step.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
+<span class="sd">    i : `int64`</span>
+<span class="sd">        Index of the particle for which to delete all reactions</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Delete particle reactions</span>
+    <span class="k">if</span> <span class="n">educt_is_particle</span><span class="p">:</span>
+        <span class="c1"># delete uniparticle reaction:</span>
+        <span class="n">reaction_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">up_reaction_id</span><span class="p">[</span><span class="n">type_id</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">reaction_id</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">number_deleted_i</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_id</span><span class="p">]</span><span class="o">.</span><span class="n">delete_reaction_all</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">-=</span> <span class="n">number_deleted_i</span>
+                
+        <span class="c1"># delete all biparticle and unimolecular reactions the particle is involved in, scheduled for this time point:</span>
+        <span class="n">number_bpr</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">bp_reaction_ids</span><span class="p">[</span><span class="n">type_id</span><span class="p">][</span><span class="s1">&#39;n_reactions&#39;</span><span class="p">]</span>
+        <span class="n">reaction_ids</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">bp_reaction_ids</span><span class="p">[</span><span class="n">type_id</span><span class="p">][</span><span class="s1">&#39;ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">number_bpr</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">reaction_id</span> <span class="ow">in</span> <span class="n">reaction_ids</span><span class="p">:</span>
+            <span class="n">number_deleted_i</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_id</span><span class="p">]</span><span class="o">.</span><span class="n">delete_reaction_all</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">-=</span> <span class="n">number_deleted_i</span> <span class="c1"># Note: for uniparticle reactions number_deleted_i is either 1 or 0</span>
+
+     <span class="c1"># Delete molecule reactions      </span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># delete unimolecular reaction:</span>
+        <span class="n">reaction_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">um_reaction_id</span><span class="p">[</span><span class="n">type_id</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">reaction_id</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">number_deleted_i</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_id</span><span class="p">]</span><span class="o">.</span><span class="n">delete_reaction_all</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">-=</span> <span class="n">number_deleted_i</span> <span class="c1"># Note: for unimolecular reactions number_deleted_i is either 1 or 0</span></div>
+            
+
+<span class="c1"># @nb.njit</span>
+<span class="c1"># def delete_reactions(System, i, type_id, educt_is_particle):</span>
+
+<span class="c1">#     &quot;&quot;&quot;Removes all reactions of an educt i scheduled for this time step.</span>
+    
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     System : `object`</span>
+<span class="c1">#         Instance of System class</span>
+<span class="c1">#     i : `int64`</span>
+<span class="c1">#         Index of the particle for which to delete all reactions</span>
+    
+<span class="c1">#     &quot;&quot;&quot;</span>
+    
+
+<span class="c1">#     if educt_is_particle:</span>
+<span class="c1">#         for key in System.Reactions_Dict:</span>
+<span class="c1">#             if System.Reactions_Dict[key].particle_reaction:</span>
+<span class="c1">#               number_deleted_i = System.Reactions_Dict[key].delete_reaction_all(i)</span>
+<span class="c1">#               System.reactions_left -= number_deleted_i</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         for key in System.Reactions_Dict:</span>
+<span class="c1">#             if not System.Reactions_Dict[key].particle_reaction:</span>
+<span class="c1">#               number_deleted_i = System.Reactions_Dict[key].delete_reaction_all(i)</span>
+<span class="c1">#               System.reactions_left -= number_deleted_i        </span>
+        
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="convert_particle_type"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/update_reactions.html#pyrid.reactions.update_reactions.convert_particle_type">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Converts a particle to a different type.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
+<span class="sd">    product_id : `int64`</span>
+<span class="sd">        Id of the product particle type.</span>
+<span class="sd">    Particles : `object`</span>
+<span class="sd">        Instance of Particles class</span>
+<span class="sd">    i : `int64`</span>
+<span class="sd">        Index of the particle whose type to convert</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># First, we need to delete this reaction and all other reactions of the educt from the lists:</span>
+    <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Next, we delete the bond with partner particles if a bond exists:</span>
+    <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> 
+        <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> 
+        
+        <span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]][</span><span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]][</span><span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+        
+        <span class="c1"># If the binding reaction changed the particle type of j, reverse that:</span>
+        <span class="n">educt_type_j</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;bond_educt_id&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">educt_type_j</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            
+            <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+            
+            <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">educt_type_j</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">educt_type_j</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="o">.</span><span class="n">next_up_reaction</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        
+    <span class="c1">#At last, convert the particle type</span>
+    <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product_id</span>
+    <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="n">product_id</span><span class="p">]</span>
+    <span class="n">Particles</span><span class="o">.</span><span class="n">next_up_reaction</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="convert_molecule_type"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/update_reactions.html#pyrid.reactions.update_reactions.convert_molecule_type">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">product_name</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>  
+    
+    <span class="sd">&quot;&quot;&quot;Converts a molecule to a different type.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
+<span class="sd">    product_id : `int64`</span>
+<span class="sd">        Id of the product molecule type.</span>
+<span class="sd">    product_name : `string`</span>
+<span class="sd">        Name of the product molecule type.</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of RBs class</span>
+<span class="sd">    Particles : `object`</span>
+<span class="sd">        Instance of Particles class</span>
+<span class="sd">    i : `int64`</span>
+<span class="sd">        Index of the molecule whose type to convert</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Delete all unimolecular reactions of this molecule that are scheduled for this time point:</span>
+    <span class="c1"># (Note: Any bimolecular reaction is currently handled via particles, not molecules. These have already been deleted above!)</span>
+    <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+    
+    <span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+    
+    <span class="n">delete_particles</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product_id</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product_name</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_rb</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_tb</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_rb_sqrt</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_tb_sqrt</span>
+    <span class="n">RBs</span><span class="o">.</span><span class="n">place_particles</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">types</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">h_membrane</span><span class="p">)</span>
+    <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;collision_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">product_name</span><span class="p">]</span><span class="o">.</span><span class="n">collision_type</span>
+    <span class="n">RBs</span><span class="o">.</span><span class="n">next_um_reaction</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>   
+    
+    <span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="n">product_id</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+    
+<span class="c1">#%%              </span>
+
+<span class="c1"># TODO: There is redundant code in what follows!!!</span>
+
+<div class="viewcode-block" id="update_reactions"><a class="viewcode-back" href="../../../Developers/Developer%20API/reactions/update_reactions.html#pyrid.reactions.update_reactions.update_reactions">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">update_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">RBs</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Evaluates the bimolecular and unimolecular reactions. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `obj`</span>
+<span class="sd">        Instance of System class.</span>
+<span class="sd">    Particles : `obj`</span>
+<span class="sd">        Instance of Particle class.</span>
+<span class="sd">    RBs : `obj`</span>
+<span class="sd">        Instance of RBs (Rigid Bodies) class.</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    *Reaction handler*</span>
+<span class="sd">    </span>
+<span class="sd">    We use a Gillespie reaction handler scheme, similar to the one used in `ReaDDy &lt;https://readdy.github.io/simulation.html&gt;`_:</span>
+<span class="sd">        </span>
+<span class="sd">        1. All reactions events occuring within a time step are gathered in lists (a seperate list for each reaction that has been defined).</span>
+<span class="sd">        2. A reaction type is picked randomly, weighted by the its total reaction rate times the total number of reactions that are in the list of that type (the total reaction rate is the sum of the individual reaction path rates. Different reaction paths allow for the same educts to undergo, e.g., different fusion reactions or for a single molecule to convert to different products).</span>
+<span class="sd">        3. A random reaction event is picked from the list.</span>
+<span class="sd">        4. If the reaction is bimolecular, the reaction probability Eq. :eq:`ReactionProb` is tested against a random number between 0 and 1. </span>
+<span class="sd">            a. If the reaction was successfull, we pick a random reaction path, weighted by the path&#39;s reaction rates. After the execution of the reaction, it is deleted from the list together with all the other reactions the educts participated in. </span>
+<span class="sd">            b. If the reaction was not successful, the reaction is deleted from the list.</span>
+<span class="sd">        5. If the reaction is unimolecular, it is always successful, since, for unimolecular reactions, we draw the time point of the next reaction event from the corresponding distribution (Gillespie SSA). As such, we pick a random reaction path, weighted by the individual path&#39;s reaction rates. After the execution of the reaction, it is deleted from the list together with all the other reactions the educt participated in.</span>
+<span class="sd">        6. Go back to 2. until no reactions are left.</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: ReactionProb</span>
+<span class="sd">        </span>
+<span class="sd">        p = 1-exp\\Big(-\\sum_{i \\in paths} \\lambda_i \cdot \Delta t \\Big)</span>
+<span class="sd">    </span>
+<span class="sd">    *Doi bimolecular reaction scheme*</span>
+<span class="sd">    </span>
+<span class="sd">    There exist different methods of how to model bimolecular reactions. PyRID, just as ReaDDy :cite:p:`Hoffmann2019`, uses the Doi scheme :cite:p:`Doi1976`. In this scheme, two molecules can react to a single product moelcule if their distance is less than some reaction radius R. In this case the reaction may occur with a microscopic reaction rate :math:`\\lambda`.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Reset the number of successful and total rections for this timestep:</span>
+    <span class="k">for</span> <span class="n">reaction_type_index</span> <span class="ow">in</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">)):</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;n_success&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_total_binned</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+    
+    <span class="c1"># Create arrays for product position and quaternion:</span>
+    <span class="n">Product_Pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">Product_Quat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    
+    <span class="n">reactions_total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">)):</span>
+        <span class="n">reactions_total</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+    
+    <span class="k">if</span> <span class="n">reactions_total</span> <span class="o">!=</span> <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Discrepancy in number of reactions: &#39;</span><span class="p">,</span> <span class="n">reactions_total</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">current_step</span><span class="p">)</span>
+            
+    <span class="c1">#Start loop:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        
+        <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="k">if</span> <span class="n">count</span><span class="o">%</span><span class="mi">100000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Stuck in while loop! Not able to evaluate all reactions!&#39;</span><span class="p">)</span>
+            
+        <span class="c1">#============================================</span>
+        <span class="c1"># Randomly select a reaction:</span>
+        <span class="c1"># First we randomly select the reaction__type_index based on the number of reactions per reaction type and the respective reaction rate.</span>
+        
+        <span class="n">cum_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">))</span>
+        <span class="n">cum_weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rate</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">)):</span>
+            <span class="n">cum_weights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cum_weights</span><span class="p">[</span><span class="n">key</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rate</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+    
+        <span class="n">reaction_type_index</span> <span class="o">=</span> <span class="n">randu</span><span class="o">.</span><span class="n">random_choice</span><span class="p">(</span><span class="n">cum_weights</span> <span class="o">=</span> <span class="n">cum_weights</span><span class="p">)</span>
+        
+        <span class="c1"># Second, we randomly choose a reaction from the reaction list of that reaction type:</span>
+        <span class="n">reaction_index</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">get_random</span><span class="p">()</span>
+        
+        
+        <span class="c1">#%%</span>
+        
+        <span class="c1"># ----------------------</span>
+        <span class="c1"># Unimolecular Reactions</span>
+        <span class="c1"># ----------------------</span>
+        
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">bimol</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        
+            
+            <span class="n">i</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reaction_index</span><span class="p">)[</span><span class="s1">&#39;educts_index&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_success</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="c1"># Choose reaction path:</span>
+            <span class="n">rates</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
+            <span class="n">reaction_path_index</span> <span class="o">=</span> <span class="n">randu</span><span class="o">.</span><span class="n">random_choice</span><span class="p">(</span><span class="n">weights</span> <span class="o">=</span> <span class="n">rates</span><span class="p">)</span>
+            
+            <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_success&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="c1">#%%</span>
+            
+            <span class="c1"># ------------------</span>
+            <span class="c1"># Paticle Conversion</span>
+            <span class="c1"># ------------------</span>
+            
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1">#&#39;conversion&#39;     </span>
+                        
+                <span class="c1">#Convert the particle type</span>
+                <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    
+                <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                
+    
+    
+            <span class="c1">#%%</span>
+    
+            <span class="c1"># -------------------------</span>
+            <span class="c1"># Particle Release Reaction</span>
+            <span class="c1"># -------------------------</span>
+            
+            <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                    
+                <span class="n">i_rb</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+                
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+                
+                <span class="n">educt_comp_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;compartment&#39;</span><span class="p">]</span>
+                <span class="n">educt_loc_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span>
+                <span class="n">educt_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">])</span>
+                <span class="n">educt_Triangle_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">]</span>
+                <span class="n">educt_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+                
+                <span class="c1"># Convert the educt particle:</span>
+                <span class="n">product_id_educt</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_educt</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                
+                
+                <span class="c1"># Release the product molecule:</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
+                
+                <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">product_loc</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_loc&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">product_name_k</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id</span><span class="p">])</span>
+                
+                
+                <span class="c1"># if the molecule location type didnt change:</span>
+                <span class="k">if</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="n">educt_loc_id</span><span class="p">:</span>
+                    <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                    <span class="c1"># and is volume:</span>
+                    <span class="k">if</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># mol_radius = System.molecule_types[str(product_name_k)].radius</span>
+                        <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_direction_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                        <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">not_absorbed</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        
+                            <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                            <span class="n">distribute_vol</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">product_name_k</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        
+                        <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">point_in_disc</span><span class="p">(</span><span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">Triangle_id</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span>
+                            <span class="n">distribute_surf</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">educt_comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span><span class="p">,</span> <span class="n">product_name_k</span><span class="p">)</span>
+                        
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># The product and educt type are different.</span>
+                    <span class="k">if</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+                        <span class="c1"># The product is a volume molecule, so the educt must have been a surface molecule. Therefore, first, we get the direction of release (inside or outside):</span>
+                        <span class="n">product_direction</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_direction&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                        
+                        <span class="k">if</span> <span class="n">product_direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="c1"># if product_direction == 0, the molecule is released outside. Therefore, the comp_id has to change to 0:</span>
+                            <span class="n">comp_id</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                            
+                        <span class="c1"># Next, we distribute the molecule:</span>
+                        <span class="c1"># To make sure that the ray origin, for which we do the &quot;in same compartment test&quot;, is in System, we shift a little along the triangle normal</span>
+                        <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">educt_Triangle_id</span>
+                        <span class="n">normal</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangle_coord&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+                        <span class="n">origin</span> <span class="o">=</span> <span class="n">educt_pos</span> <span class="o">+</span> <span class="n">product_direction</span><span class="o">*</span><span class="n">normal</span><span class="o">*</span><span class="mf">1e-6</span>
+                        
+                        <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_direction_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                        <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">not_absorbed</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        
+                            <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                            <span class="n">distribute_vol</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">product_name_k</span><span class="p">)</span>
+                        
+                            
+                    <span class="k">elif</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="c1"># The educt was a volume molecule but the product is a surface molecule. This is not supported yet:</span>
+                        <span class="c1"># print(&#39;Volume to surface molecule conversion reaction not yet supported&#39;)</span>
+                        <span class="k">pass</span>       
+    
+    
+            <span class="c1">#%%</span>
+    
+            <span class="c1"># --------------------</span>
+            <span class="c1"># Molecule Decay</span>
+            <span class="c1"># --------------------</span>
+            <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                
+
+                <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                
+                    
+            
+            <span class="c1">#%%</span>
+            
+            <span class="c1"># --------------------</span>
+            <span class="c1"># Molecule Conversion</span>
+            <span class="c1"># --------------------</span>
+            
+            <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                
+                <span class="c1"># Get the product type&#39;s id and name:</span>
+                <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">product_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id</span><span class="p">])</span>
+                
+                
+                <span class="c1">#Change the Molecule&#39;s type:</span>
+                <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">product_name</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                
+            
+            <span class="c1">#%%</span>
+                
+            <span class="c1"># -------------------</span>
+            <span class="c1"># Molecule Production</span>
+            <span class="c1"># -------------------</span>
+            
+            <span class="c1"># New molecules are released from the educt molecule. The educt molecule may change its type in addition.</span>
+            
+            <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                
+                <span class="n">n_products</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_products&#39;</span><span class="p">]</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+                
+                <span class="n">educt_comp_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;compartment&#39;</span><span class="p">]</span>
+                <span class="n">educt_loc_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span>
+                <span class="n">educt_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">])</span>
+                <span class="n">educt_Triangle_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">]</span>
+                <span class="n">educt_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+                
+                <span class="c1"># Check if the educt changes its type:</span>
+                <span class="n">product_id_educt</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">product_id_educt</span> <span class="o">!=</span> <span class="n">educt_id</span><span class="p">:</span>
+                    
+                    <span class="n">product_name_educt</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id_educt</span><span class="p">])</span>
+    
+                    <span class="c1">#Change the Molecule&#39;s type:</span>
+                    <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_educt</span><span class="p">,</span> <span class="n">product_name_educt</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>            
+                
+                    <span class="c1"># # Update molecule position:</span>
+                    <span class="c1"># RBs.set_pos(Particles, System, Product_Pos, i) </span>
+                    <span class="c1"># # Update molecule orientation:</span>
+                    <span class="c1"># Product_Quat[0],Product_Quat[1],Product_Quat[2],Product_Quat[3] = distribute_vol.random_quaternion_tuple()</span>
+                    <span class="c1"># RBs.set_orientation_quat(Particles, Product_Quat, System, i)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># We don&#39;t need to convert the educt molecule, but we still need to delete the reactions of i from the list (otherwise done in convert_molecule_type()):</span>
+                    <span class="c1"># System.Reactions_Dict[reaction_type_index].delete_reaction(reaction_index)</span>
+                    <span class="c1"># System.reactions_left -= 1</span>
+                    <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="n">RBs</span><span class="o">.</span><span class="n">next_um_reaction</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                
+                <span class="c1"># Release the other product molecules:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n_products</span><span class="p">):</span>
+    
+                    <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                    <span class="n">product_loc</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_loc&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                    <span class="n">product_name_k</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id</span><span class="p">])</span>
+                    
+                    
+                    <span class="c1"># if the molecule location type didnt change:</span>
+                    <span class="k">if</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="n">educt_loc_id</span><span class="p">:</span>
+                        <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                        <span class="c1"># and is volume:</span>
+                        <span class="k">if</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="c1"># mol_radius = System.molecule_types[str(product_name_k)].radius</span>
+                            <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_direction_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                            <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                            
+                            <span class="k">if</span> <span class="n">not_absorbed</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            
+                                <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                                <span class="n">distribute_vol</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">product_name_k</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            
+                            <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">point_in_disc</span><span class="p">(</span><span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                            <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                            
+                            <span class="k">if</span> <span class="n">Triangle_id</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span>
+                                <span class="n">distribute_surf</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">educt_comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span><span class="p">,</span> <span class="n">product_name_k</span><span class="p">)</span>
+                            
+                    <span class="k">else</span><span class="p">:</span> <span class="c1"># The product and educt type are different.</span>
+                        <span class="k">if</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+                            <span class="c1"># The product is a volume molecule, so the educt must have been a surface molecule. Therefore, first, we get the direction of release (inside or outside):</span>
+                            <span class="n">product_direction</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_direction&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                            
+                            <span class="k">if</span> <span class="n">product_direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="c1"># if product_direction == 0, the molecule is released outside. Therefore, the comp_id has to change to 0:</span>
+                                <span class="n">comp_id</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                                
+                            <span class="c1"># Next, we distribute the molecule:</span>
+                            <span class="c1"># To make sure that the ray origin, for which we do the &quot;in same compartment test&quot;, is in System, we shift a little along the triangle normal</span>
+                            <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">educt_Triangle_id</span>
+                            <span class="n">normal</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangle_coord&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+                            <span class="n">origin</span> <span class="o">=</span> <span class="n">educt_pos</span> <span class="o">+</span> <span class="n">product_direction</span><span class="o">*</span><span class="n">normal</span><span class="o">*</span><span class="mf">1e-6</span>
+                            
+                            <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_direction_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                            <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                            
+                            <span class="k">if</span> <span class="n">not_absorbed</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            
+                                <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                                <span class="n">distribute_vol</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">product_name_k</span><span class="p">)</span>
+                            
+                                
+                        <span class="k">elif</span> <span class="n">product_loc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="c1"># The educt was a volume molecule but the product is a surface molecule. This is not supported yet:</span>
+                            <span class="c1"># print(&#39;Volume to surface molecule conversion reaction not yet supported&#39;)</span>
+                            <span class="k">pass</span>
+                        
+                
+            
+            <span class="c1">#%%</span>
+            
+            <span class="c1"># ----------------</span>
+            <span class="c1"># Molecule Fission</span>
+            <span class="c1"># ----------------</span>
+            
+            
+            <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+                
+    
+                <span class="n">educt_comp_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;compartment&#39;</span><span class="p">]</span>
+                <span class="n">educt_loc_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span>
+                <span class="n">educt_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">])</span>
+                <span class="n">educt_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+                
+                <span class="c1"># Get the prouct properties:</span>
+                <span class="n">product_id_1</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">product_id_2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                
+                <span class="n">product_name_1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id_1</span><span class="p">])</span>
+                <span class="n">product_name_2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id_2</span><span class="p">])</span>
+                
+                <span class="c1"># Depending on the location of educt and products molecule placement is different:</span>
+                <span class="c1"># if the educt is a volume molecule, the products must also be volume molecules:</span>
+                <span class="k">if</span> <span class="n">educt_loc_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">w1</span> <span class="o">=</span> <span class="mf">0.5</span>
+                    <span class="n">w2</span> <span class="o">=</span> <span class="mf">0.5</span>
+                    <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                    
+                    <span class="c1"># draw a random vector:</span>
+                    <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_direction_sphere</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                    
+                    <span class="c1">#=============================================================== </span>
+                    <span class="c1">#CONVERT the EDUCT to PRODUCT 1:</span>
+                    <span class="c1"># Set new position and orientation of product 1:</span>
+                    <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="o">*</span><span class="n">w1</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">not_absorbed</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                        <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_1</span><span class="p">,</span> <span class="n">product_name_1</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>  
+                        
+                        <span class="c1"># Update molecule position:</span>
+                        <span class="n">RBs</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> 
+                        <span class="c1"># Update molecule orientation:</span>
+                        <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                        <span class="n">RBs</span><span class="o">.</span><span class="n">set_orientation_quat</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    
+                    
+                    <span class="c1">#CREATE a NEW molecule for PRODUCT 2:</span>
+                    <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="o">-</span><span class="n">dX</span><span class="o">*</span><span class="n">w2</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">not_absorbed</span><span class="p">:</span>
+                        
+                        <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                        <span class="n">distribute_vol</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">product_name_2</span><span class="p">)</span>
+                    <span class="c1">#===============================================================</span>
+                    
+                <span class="k">elif</span> <span class="n">educt_loc_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1">#If the educt is a surface molcule we need to check the product locations</span>
+                    <span class="n">educt_Triangle_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">]</span>
+                    
+                    <span class="n">product_loc_1</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_loc&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">product_loc_2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_loc&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    
+                    <span class="c1"># If either of the products is a volume molecule, the other moelcule will keep its location:</span>
+                    <span class="k">if</span> <span class="n">product_loc_1</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">product_loc_2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        
+                        <span class="k">if</span> <span class="n">product_loc_1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">product_id</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">product_name</span> <span class="o">=</span> <span class="n">product_name_1</span>
+                            <span class="n">product_id_convert</span> <span class="o">=</span> <span class="mi">1</span>
+                            <span class="n">product_name_convert</span> <span class="o">=</span> <span class="n">product_name_2</span>
+                        <span class="k">elif</span> <span class="n">product_loc_2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">product_id</span> <span class="o">=</span> <span class="mi">1</span>
+                            <span class="n">product_name</span> <span class="o">=</span> <span class="n">product_name_2</span>
+                            <span class="n">product_id_convert</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">product_name_convert</span> <span class="o">=</span> <span class="n">product_name_1</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Fission reactions of surface molcules can only contain 1 volume product!&#39;</span><span class="p">)</span>
+                            
+                        <span class="n">w1</span> <span class="o">=</span> <span class="mi">1</span>
+                        <span class="n">w2</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="c1">#Direction -&gt; 1: outside, -1: inside compartment</span>
+                        <span class="n">product_direction</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_direction&#39;</span><span class="p">][</span><span class="n">product_id</span><span class="p">]</span>
+                        
+                        <span class="k">if</span> <span class="n">product_direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">comp_id</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                            
+                        <span class="c1"># Next, we distribute the molecule:</span>
+                        <span class="c1"># To make sure that the ray origin, for which we do the &quot;in same compartment test&quot;, is in System, we shift a little along the triangle normal</span>
+                        <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">educt_Triangle_id</span>
+                        <span class="n">normal</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangle_coord&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+                        <span class="n">origin</span> <span class="o">=</span> <span class="n">educt_pos</span> <span class="o">+</span> <span class="n">product_direction</span><span class="o">*</span><span class="n">normal</span><span class="o">*</span><span class="mf">1e-6</span>
+        
+                        <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_direction_Halfsphere</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
+                        
+                        <span class="n">not_absorbed</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">not_absorbed</span><span class="p">:</span>
+                            
+                            <span class="n">Product_Quat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Product_Quat</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">distribute_vol</span><span class="o">.</span><span class="n">random_quaternion_tuple</span><span class="p">()</span>
+                            <span class="n">distribute_vol</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Product_Pos</span><span class="p">,</span> <span class="n">Product_Quat</span><span class="p">,</span> <span class="n">product_name</span><span class="p">)</span>
+                            
+                        <span class="c1"># Convert the other educt, the position stays unaltered:</span>
+                        <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_convert</span><span class="p">,</span> <span class="n">product_name_convert</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> 
+                        
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Both products are surface molecules.</span>
+                        
+                        <span class="n">w1</span> <span class="o">=</span> <span class="mf">0.5</span>
+                        <span class="n">w2</span> <span class="o">=</span> <span class="mf">0.5</span>
+                        <span class="n">comp_id</span> <span class="o">=</span> <span class="n">educt_comp_id</span>
+                    
+                        <span class="n">dX</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">point_in_disc</span><span class="p">(</span><span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        
+                        <span class="c1">#=============================================================== </span>
+                        <span class="c1">#CONVERT the EDUCT to PRODUCT 1:</span>
+                        <span class="c1"># Set new position and orientation of product 1:</span>
+                        <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="n">w1</span><span class="o">*</span><span class="n">dX</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">Triangle_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                            <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_1</span><span class="p">,</span> <span class="n">product_name_1</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>  
+                            
+                            <span class="n">RBs</span><span class="o">.</span><span class="n">set_triangle</span><span class="p">(</span><span class="n">Triangle_id</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                            <span class="n">RBs</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Position</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> 
+                            <span class="c1"># distribute_surf.random_orientation_in_plane(System.Mesh[Triangle_id][&#39;triangle_coord&#39;][3], Quaternion) # Is part of distribute_surf.trace_direction_vector()</span>
+                            <span class="n">RBs</span><span class="o">.</span><span class="n">set_orientation_quat</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                        
+                        <span class="c1">#CREATE a NEW molecule for PRODUCT 2:</span>
+                        <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span> <span class="o">=</span> <span class="n">distribute_surf</span><span class="o">.</span><span class="n">trace_direction_vector</span><span class="p">(</span><span class="o">-</span><span class="n">w2</span><span class="o">*</span><span class="n">dX</span><span class="p">,</span> <span class="n">educt_pos</span><span class="p">,</span> <span class="n">educt_Triangle_id</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">Triangle_id</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                            
+                            <span class="n">distribute_surf</span><span class="o">.</span><span class="n">add_molecule_single</span><span class="p">(</span><span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">Position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">Triangle_id</span><span class="p">,</span> <span class="n">product_name_2</span><span class="p">)</span>
+        
+        
+        
+        <span class="c1">#%%</span>
+        
+        <span class="c1"># ---------------------</span>
+        <span class="c1"># Bimolecular Reactions</span>
+        <span class="c1"># ---------------------</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="c1">#Next, we test whether the reaction is successfuLL:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">rate</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="p">):</span>            
+                
+                <span class="n">i</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reaction_index</span><span class="p">)[</span><span class="s1">&#39;educts_index&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reaction_index</span><span class="p">)[</span><span class="s1">&#39;educts_index&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                
+                <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_success</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+                <span class="c1"># Choose reaction path:</span>
+                <span class="n">rates</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
+                <span class="n">reaction_path_index</span> <span class="o">=</span> <span class="n">randu</span><span class="o">.</span><span class="n">random_choice</span><span class="p">(</span><span class="n">weights</span> <span class="o">=</span> <span class="n">rates</span><span class="p">)</span>
+                
+                <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_success&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+                <span class="c1">#The reaction was succefull, so we need to execute the reaction:</span>
+                
+                <span class="c1">#%%</span>
+            
+                
+                <span class="c1"># ----------------</span>
+                <span class="c1"># Particle Binding</span>
+                <span class="c1"># ----------------</span>
+                
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">#&#39;bind&#39;</span>
+
+                    <span class="c1"># If the binding reaction is linked to a particle type change, convert the particle types:</span>
+                    <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;n_products&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        
+                        <span class="n">product_id_i</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">product_id_j</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                        
+                        <span class="c1"># Check if i is the first or the second educt as defined in the reaction:</span>
+                        <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">educts</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+    
+                            <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_i</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                            <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_j</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                            
+                        <span class="k">else</span><span class="p">:</span>
+                        
+                            <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_j</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                            <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id_i</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                            
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># We now need to delete this reaction and all other reactions of the educts from the lists (If the educt types changed, deletio of the reaction is handled by convert_particle_type()):</span>
+                        <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+                        <span class="n">delete_reactions</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+                            
+                    <span class="c1">#Increase the number of bonds:</span>
+                    <span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]][</span><span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">System</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">[</span><span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]][</span><span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    
+                    <span class="c1">#Update the particle&#39;s bound state variables:</span>
+                    <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;bound&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+                    <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                    
+                    <span class="c1">#update force:</span>
+                    <span class="n">update_bond_force</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">Particles</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+        
+                <span class="c1">#%%</span>
+                
+                <span class="c1"># ---------------------------</span>
+                <span class="c1"># Particle Enzymatic Reaction</span>
+                <span class="c1"># ---------------------------</span>
+                
+                <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    
+    
+                    <span class="c1">#-----------------------------------</span>
+                    <span class="c1">#Convert the particle type</span>
+                    <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    
+                    <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    
+        
+                <span class="c1">#%%</span>
+        
+                <span class="c1"># ----------------------------</span>
+                <span class="c1"># Particle Absorption Reaction</span>
+                <span class="c1"># ----------------------------</span>
+                
+                <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+                    
+                    <span class="c1">#-----------------------------------</span>
+                    <span class="c1">#Convert the particle type</span>
+                    <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    
+                    <span class="n">convert_particle_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    
+                    <span class="c1">#-----------------------------------</span>
+                    <span class="c1"># delete molecule belonging to particle j:</span>
+                    <span class="n">j_rb</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+                    <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">j_rb</span><span class="p">)</span>
+                        
+
+                <span class="c1">#%%</span>
+                
+                <span class="c1"># --------------------</span>
+                <span class="c1"># Molecule Fusion</span>
+                <span class="c1"># --------------------</span>
+                
+                <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                        
+                    <span class="c1"># get the corresponding rb_ids:</span>
+                    <span class="n">i_rb</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+                    <span class="n">j_rb</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+                    
+                    <span class="n">educt_1_loc_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span>
+                    <span class="n">educt_2_loc_id</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">j_rb</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span>
+                        
+                    <span class="n">surface_intersection</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">mesh</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="p">(</span><span class="n">educt_1_loc_id</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">educt_2_loc_id</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+                        <span class="c1">#The reaction will only be executed if there is no mesh surface element in between the direct path connecting the 2 educt molecules if at least one of the educts is a volume molecule:</span>
+                        <span class="n">pos_i</span> <span class="o">=</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+                        <span class="n">dX_ij</span> <span class="o">=</span> <span class="n">pos_i</span><span class="o">-</span><span class="n">RBs</span><span class="p">[</span><span class="n">j_rb</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+                        <span class="n">surface_intersection</span> <span class="o">=</span> <span class="n">any_ray_mesh_intersection_test</span><span class="p">(</span><span class="n">pos_i</span><span class="p">,</span> <span class="n">dX_ij</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+                    
+                    <span class="c1">#The reaction was succefull, so we need to execute the reaction:</span>
+                    <span class="k">if</span> <span class="n">surface_intersection</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                        
+                        <span class="c1">#Check if location types are different:</span>
+                        <span class="k">if</span> <span class="n">educt_1_loc_id</span> <span class="o">!=</span> <span class="n">educt_2_loc_id</span><span class="p">:</span>
+                            <span class="c1"># For a reaction between a volume and a surface molecule, the product will always be a surface molcule. If mol 2 is a surface molecule, swap indices:</span>
+                            <span class="k">if</span> <span class="n">educt_2_loc_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="n">i_rb_copy</span> <span class="o">=</span> <span class="n">i_rb</span>
+                                <span class="n">i_rb</span> <span class="o">=</span> <span class="n">j_rb</span>
+                                <span class="n">j_rb</span> <span class="o">=</span> <span class="n">i_rb_copy</span>
+                        
+                        <span class="n">educt_2_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">RBs</span><span class="p">[</span><span class="n">j_rb</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">])</span>
+                        
+                        <span class="c1">#-----------------------------------</span>
+                        <span class="c1"># DELETE second MOLECULE:</span>
+                        <span class="c1">#-----------------------------------</span>
+                        
+                        <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">j_rb</span><span class="p">)</span>
+                        
+                        
+                        <span class="c1">#-----------------------------------</span>
+                        <span class="c1"># CONVERT first MOLECULE to PRODUCT:</span>
+                        <span class="c1">#-----------------------------------</span>
+                        
+                        <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">product_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id</span><span class="p">])</span>
+                        
+                        <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">product_name</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i_rb</span><span class="p">)</span>
+                        
+                        <span class="c1"># Position the product molecule</span>
+                        <span class="k">if</span> <span class="n">educt_1_loc_id</span> <span class="o">==</span> <span class="n">educt_2_loc_id</span><span class="p">:</span> 
+                            
+                            <span class="n">dX</span> <span class="o">=</span> <span class="p">(</span><span class="n">educt_2_pos</span> <span class="o">-</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># (periodic)</span>
+                                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                                    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                                        <span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">-</span> <span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                              
+                            <span class="n">RBs</span><span class="p">[</span><span class="n">i_rb</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">dX</span><span class="o">/</span><span class="mi">2</span>
+                            <span class="k">if</span> <span class="n">educt_1_loc_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Both volume molecules</span>
+                                <span class="n">RBs</span><span class="o">.</span><span class="n">update_particle_pos</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i_rb</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">educt_1_loc_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># Both surface molecules</span>
+                                <span class="c1"># Travel along surface (The result will of course not be exactly in</span>
+                                <span class="c1"># the middle between the two molecule, since dX is calculated as euclidian distance, but for a small surface curvature this will be negligable.)</span>
+                                <span class="c1"># TODO: Rotate dX into triangle plane!?</span>
+                                <span class="n">RBs</span><span class="o">.</span><span class="n">update_particle_pos_2D</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i_rb</span><span class="p">)</span>
+                    
+                    
+                    <span class="k">else</span><span class="p">:</span>
+                        
+                        <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">n_success</span> <span class="o">-=</span> <span class="mi">1</span>
+                        <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_success&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+                        <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;n_success_binned&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+                        
+                        <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">delete_reaction</span><span class="p">(</span><span class="n">reaction_index</span><span class="p">)</span>
+                        <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">-=</span> <span class="mi">1</span>                
+                        
+                        
+                        
+                <span class="c1">#%%</span>
+                
+                <span class="c1"># --------------------</span>
+                <span class="c1"># Molecule Enzymatic</span>
+                <span class="c1"># --------------------</span>
+                
+                <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                        
+                    <span class="c1"># get the corresponding rb_ids:</span>
+                    <span class="n">i_rb</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+                    <span class="n">j_rb</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;rb_id&#39;</span><span class="p">]</span>
+                    
+                    <span class="c1">#-----------------------------------</span>
+                    <span class="c1"># CONVERT first MOLECULE to PRODUCT:</span>
+                    <span class="c1">#-----------------------------------</span>
+    
+                    <span class="n">product_id</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">reaction_path_index</span><span class="p">][</span><span class="s1">&#39;products_ids&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">product_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">product_id</span><span class="p">])</span>
+                    
+                    <span class="n">convert_molecule_type</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">product_name</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i_rb</span><span class="p">)</span>
+                                    
+                        
+                        
+<span class="c1">#%%</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                
+                <span class="c1"># If the reaction was not succesfull, we need to delete this reaction from the list but keep all other reactions of the educts:</span>
+                
+                <span class="n">System</span><span class="o">.</span><span class="n">Reactions_Dict</span><span class="p">[</span><span class="n">reaction_type_index</span><span class="p">]</span><span class="o">.</span><span class="n">delete_reaction</span><span class="p">(</span><span class="n">reaction_index</span><span class="p">)</span>
+                
+                <span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">-=</span> <span class="mi">1</span>  </div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

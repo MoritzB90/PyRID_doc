@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyRID: A Brownian dynamics simulator for reacting and interacting particles written in python. &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="Users/Installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> PyRID
+            <img src="_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>PyRID: A Brownian dynamics simulator for reacting and interacting particles written in python.</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyrid-a-brownian-dynamics-simulator-for-reacting-and-interacting-particles-written-in-python">
+<h1>PyRID: A Brownian dynamics simulator for reacting and interacting particles written in python.<a class="headerlink" href="#pyrid-a-brownian-dynamics-simulator-for-reacting-and-interacting-particles-written-in-python" title="Permalink to this headline"></a></h1>
+<p>Disclaimer: PyRID is currently in early state development (version 0.1). As such, there is no guaranty that any of the functions are bug free. Careful validation of any results is recommended.</p>
+<p>PyRID is a tool for particle based reaction diffusion simulations and is highly influenced and inspired by</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://readdy.github.io/">ReaDDy</a></p></li>
+<li><p><a class="reference external" href="https://mcell.org/">MCell</a></p></li>
+<li><p><a class="reference external" href="https://murillo-group.github.io/sarkas/">Sarkas</a></p></li>
+</ul>
+<p>PyRID is an attempt to combine several features of the above mentioned tools, which include</p>
+<ul class="simple">
+<li><p>unimolecular and bimolecular Reactions (ReaDDy, MCell)</p></li>
+<li><p>pair-interactions (ReaDDy)</p></li>
+<li><p>mesh based compartments and surface diffusion (MCell)</p></li>
+<li><p>pure Python implementation (Sarkas)</p></li>
+</ul>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h2>
+<p>Several tools have been developed that target the simulation of cell biological processes. MCell and Smoldyn, e.g., are popular representatives of the category of particle-based reaction diffusion simulators. Both are powerful tools but cannot simulate particle-particle interactions. Another tool, ReaDDy, has also been developed to fill the gap between classical molecular dynamics and particle-based reaction-diffusion simulations and allows for reactions and interactions between particles. So why do we need PyRID then? While ReaDDy combines some of the features of MCell, Smoldyn, and classical MD, some features are missing.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>PyRID supports triangulated mesh geometries, whereas ReaDDy only supports spherical or box-shaped compartments via external potentials. While these two shapes are sufficient in some situations, they are not in others where we want to, e.g., combine compartments to investigate narrow escape properties or where we are interested in the effect of more complex shapes on molecule dynamics.</p></li>
+<li><p>PyRID supports rigid bead models of molecules. Rigid bead models are a method of minimal coarse-graining that have some essential benefits. A rigid bead topology replaces strong, short ranged interactions between atoms. Thereby, integration time steps can be several orders larger than in atomic-scale simulations. Usually, the beads of a rigid bead model do not represent single atoms but pattern the geometry of the molecule of interest <span id="id1">[<a class="reference internal" href="References.html#id63" title="J Garcia de la Torre. Building hydrodynamic bead–shell models for rigid bioparticles of arbitrary shape. Biophysical Chemistry, 94(3):265–274, dec 2001. doi:10.1016/s0301-4622(01)00244-7.">1</a>]</span>, significantly reducing the number of particles that need to be simulated. In addition, experimentally or theoretically estimated diffusion tensors can be used to describe the diffusive motion of molecules accurately. Importantly, patches on the bead model surface can describe multivalent protein-protein interactions.</p></li>
+<li><p>PyRID accounts for polydispersity of particle sizes. Polydispersity, however, becomes a critical performance issue if we would like to simulate proteins of very different sizes or even proteins in the presence of large diffusing structures such as synaptic vesicles. PyRID uses a hierarchical grid data structure such that polydisperse systems can be simulated with basically no performance loss.</p></li>
+<li><p>PyRID supports fixed concentration boundary conditions. These can be useful if we would like to simulate sub-regions within a larger system. PyRID supports fixed concentration boundaries for volume and surface molecules and even supports the overlap of mesh compartments with the simulation box boundary.</p></li>
+<li><p>PyRID supports simulations in the NPT ensemble using the Berendsen barostat.</p></li>
+<li><p>PyRID can be modified and expanded reasonably easily by anyone with solid knowledge of the Python programming language. Also, by using technologies such as Cython, PyPy, and Numba, Python can reach up to C speed! Using Numba, the MD tool Sarkas has shown that Python is even suited to do molecular dynamics simulations, although still limited to a single core and single thread computation! Inspired by Sarkas, PyRID is also solely written in Python by extensively using Numbas jit compilation. Thereby, PyRID can achieve comparable performance to that of ReaDDy. In addition, PyRID is lightweight, with the core modules having less than 10.000 lines of code (excluding documentation).</p></li>
+</ol>
+</div></blockquote>
+<a class="reference internal image-reference" href="_images/PyRID_Overview.png"><img alt="_images/PyRID_Overview.png" src="_images/PyRID_Overview.png" style="width: 100%;" /></a>
+<section id="feature-comparison">
+<h3>Feature comparison<a class="headerlink" href="#feature-comparison" title="Permalink to this headline"></a></h3>
+<p>Please note that this feature comparison is not complete and biased towards PyRID as only the main features of PyRID are compared to the other tools. Each of the tools mentioned here have some unique abilities and features that are not necessarily supported by the other tools/PyRID. However, to do an all-encompassing comparison would go beyond the scope of this documentation.</p>
+<style>
+   .gbg {background-color:#00ff00;}
+</style><table class="colwidths-given docutils align-default" id="id4">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Feature comparison</span><a class="headerlink" href="#id4" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Features</p></th>
+<th class="head"><p>PyRID</p></th>
+<th class="head"><p><a class="reference external" href="https://readdy.github.io/">ReaDDy</a></p></th>
+<th class="head"><p><a class="reference external" href="https://mcell.org/">MCell</a></p></th>
+<th class="head"><p><a class="reference external" href="https://www.smoldyn.org/">Smoldyn</a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Reactions</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Very Good (zeroth order, unimolecular, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+bimolecular, arbitrary number of products, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+compartment specific, different reaction paths)</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Good</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Excellent (Integration with BioNetGen)</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Excellent (Integration with BioNetGen)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Reaction accuracy</strong></p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Volume: Good (Not exact close to <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+boundary, reversible fusion reactions of <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+interacting particles do not obey detailed balance) <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+<style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Surface: Good (euclidian distance only)</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Volume: Very Good (Not exact close to boundary, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+reversible fusion reactions obey detailed balance) <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+<style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Surface: Good (euclidian distance only)</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Volume: Very Good, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+<style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Surface: Very Good</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Volume: Very Good, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+<style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Surface: Very Good</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Diffusion</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Anisotropic translational and rotaional <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+diffusion, integrated diffusion tensors <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+calculation</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Isotropic translational diffusion</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Isotropic translational diffusion</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Anisotropic translational diffusion</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Molecular structure</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Molecules modeled explicitly <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+(by interaction potential and <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+/or rigid bodies).</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Molecules modeled explicitly <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+(only by interaction potential).</p></td>
+<td><p><style>
+.Rdot {
+  height: 15px;
+  width: 15px;
+  background-color: #eb7a63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Rdot"></span> Indirectly by internal state <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+variables (only point particles).</p></td>
+<td><p><style>
+.Rdot {
+  height: 15px;
+  width: 15px;
+  background-color: #eb7a63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Rdot"></span> Indirectly by internal state variables <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+(spherical particle approximation).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Surfaces</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Arbitrary surfaces <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+(triangulated mesh, supports obj. format)</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Only via external potentials (Box and Sphere)</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Arbitrary surfaces <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+triangulated mesh, blender interface)</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Arbitrary surfaces (6 elementary shapes, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+custom format)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Interactions</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Selection of several pair-potentials, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+custom potentials can be added easily.</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Selection of 4 potentials, custom potentials <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+require altering C++ source code.</p></td>
+<td><p><style>
+.Rdot {
+  height: 15px;
+  width: 15px;
+  background-color: #eb7a63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Rdot"></span> No Interactions</p></td>
+<td><p><style>
+.Rdot {
+  height: 15px;
+  width: 15px;
+  background-color: #eb7a63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Rdot"></span>/<style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Excluded volume approximation for spheres.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Boundary Conditions</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Periodic, Repulsive, Fixed concentration <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br></p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Periodic, Repulsive</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Periodic, Repulsive, Fixed concentration</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Periodic, Repulsive, Fixed concentration <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Polydispersity</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Efficient simulation of polydisperse system <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+by the use of a hierarchical grid data structure</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Polydisperse systems result in performance drop.</p></td>
+<td><p>Does not apply</p></td>
+<td><p>Does not apply</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>API</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Python</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Python</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Blender GUI, Python</p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Python, Text based</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Modifiability</strong></p></td>
+<td><p><style>
+.Gdot {
+  height: 15px;
+  width: 15px;
+  background-color: #84d674;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Gdot"></span> Excellent (All source code in python, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+little dependencies)</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Ok (Requires changing C++ source code)</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Ok (Requires changing C++ source code)</p></td>
+<td><p><style>
+.Ydot {
+  height: 15px;
+  width: 15px;
+  background-color: #ebcd63;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<span class="Ydot"></span> Ok (Requires changing C++ source code, <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br>
+Libsmoldyn API) <style>
+br {
+display: block;
+margin-top:4px;
+line-height:10px;
+}
+</style>
+
+<br></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="contents">
+<h3>Contents<a class="headerlink" href="#contents" title="Permalink to this headline"></a></h3>
+<blockquote>
+<div><div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Users/User_Guide/Contents.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Molecules.html">Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Interaction_Potentials.html">Interaction potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Compartments.html">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Molecule_Distribution.html">Molecule distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/User_Guide/Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Users/Examples/Contents.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Users/Examples/Large_Toy_Model.html">Large scale toy-model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/Examples/Fixed_Concentration.html">Fixed concentration boundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Users/Examples/Dendritic_Spine.html">Dendritic Spine</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Developer%20API/Contents.html">Developer API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/data_structures.html">data_structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/data_structures/cell_list_util.html">cell_list_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/data_structures/dynamic_array_util.html">dynamic_array_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/data_structures/h_grid_util.html">h_grid_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/evaluation.html">evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/evaluation/evaluation_util.html">evaluation_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/evaluation/diffusion_util.html">diffusion_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/evaluation/direct_coexistence_method_util.html">direct_coexistence_method_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/evaluation/rdf_util.html">rdf_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/geometry.html">geometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/geometry/intersections_util.html">intersections_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/geometry/load_wavefront.html">load_wavefront</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/geometry/mesh_util.html">mesh_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/geometry/ray_march_util.html">ray_march_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/math.html">math</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/math/random_util.html">random_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/math/transform_util.html">transform_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/molecules.html">molecules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/molecules/particles_util.html">particles_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/molecules/rigidbody_util.html">rigidbody_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/molecules/hydro_util.html">hydro_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/observables.html">observables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/observables/checkpoint_util.html">checkpoint_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/observables/observables_util.html">observables_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/observables/plot_util.html">plot_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/observables/write_util.html">write_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/reactions.html">reactions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/reactions/reactions_registry_util.html">reactions_registry_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/reactions/reactions_util.html">reactions_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/reactions/update_reactions.html">update_reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/system.html">system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/system/distribute_surface_util.html">distribute_surface_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/system/distribute_vol_util.html">distribute_vol_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/system/potentials_util.html">potentials_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/system/system_util.html">system_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/system/update_force.html">update_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Developer%20API/system/update_pos.html">update_pos</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Developer%20API/run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Theory/Contents.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/rigid_bead_molecules.html">Rigid bead molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/anisotropic_diffusion.html">Anisotropic diffusion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/anisotropic_diffusion.html#quaternion-propagator">Quaternion propagator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html">Diffusion tensor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#the-oseen-tensor-and-hydrodynamic-interaction-between-beads">The Oseen tensor and hydrodynamic interaction between beads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#the-friction-tensor-for-rigid-bead-molecules">The friction tensor for rigid bead molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#validation">Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/reactions.html">Reactions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/reactions.html#unimolecular-reactions">Unimolecular reactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/reactions.html#bi-molecular-reactions">Bi-molecular reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/mesh_compartments.html">Mesh compartments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/mesh_compartments.html#volume-molecules">Volume molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/mesh_compartments.html#surface-molecules">Surface molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/mesh_compartments.html#distribution-of-molecules">Distribution of molecules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/data_structures.html">Data structures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Developers/Validation/Contents.html">Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Validation/Diffusion.html">Diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Validation/Hard-Sphere-Fluid.html">Hard-Sphere Fluid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Validation/Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Validation/LLPS.html">LLPS</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+</ul>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">license</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Users/Installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

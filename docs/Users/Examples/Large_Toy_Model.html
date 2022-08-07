@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Large scale toy-model &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fixed concentration boundary" href="Fixed_Concentration.html" />
+    <link rel="prev" title="Examples" href="Contents.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Large scale toy-model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Fixed_Concentration.html">Fixed concentration boundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dendritic_Spine.html">Dendritic Spine</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Examples</a> &raquo;</li>
+      <li>Large scale toy-model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/Examples/Large_Toy_Model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="large-scale-toy-model">
+<h1>Large scale toy-model<a class="headerlink" href="#large-scale-toy-model" title="Permalink to this headline"></a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="kn">import</span> <span class="nn">pyrid</span> <span class="k">as</span> <span class="nn">prd</span>
+
+    <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;Files//&#39;</span>
+    <span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;Figures//&#39;</span>
+    <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;Large_Toy_Model&#39;</span>
+
+    <span class="n">nsteps</span> <span class="o">=</span> <span class="mf">1e4</span>
+    <span class="n">stride</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nsteps</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">obs_stride</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nsteps</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">use_checkpoint</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#  True #</span>
+    <span class="n">checkp</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="n">box_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">250.0</span><span class="p">,</span><span class="mf">250.0</span><span class="p">,</span><span class="mf">350.0</span><span class="p">]</span>
+    <span class="n">Temp</span><span class="o">=</span><span class="mf">293.15</span>
+    <span class="n">eta</span><span class="o">=</span><span class="mf">1e-21</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="n">Simulation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">box_lengths</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">,</span>
+                        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="p">,</span>
+                        <span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">,</span>
+                        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="p">,</span>
+                        <span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span><span class="p">,</span>
+                        <span class="n">write_trajectory</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">,</span>
+                        <span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">,</span>
+                        <span class="n">fig_path</span> <span class="o">=</span> <span class="n">fig_path</span><span class="p">,</span>
+                        <span class="n">boundary_condition</span> <span class="o">=</span> <span class="s1">&#39;periodic&#39;</span><span class="p">,</span>
+                        <span class="n">nsteps</span> <span class="o">=</span> <span class="n">nsteps</span><span class="p">,</span>
+                        <span class="n">seed</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+                        <span class="n">wall_force</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
+                        <span class="n">length_unit</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span><span class="p">,</span>
+                        <span class="n">time_unit</span> <span class="o">=</span> <span class="s1">&#39;ns&#39;</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_checkpos</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nsteps</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span> <span class="s2">&quot;checkpos/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># stride, directory, max_saves</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span> <span class="c1"># (Name, Radius)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_1a&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_2a&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_3&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_4&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_5&#39;</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_6&#39;</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+<span class="n">A_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.5</span><span class="p">]]</span>
+<span class="n">A_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">]</span>
+
+<span class="n">B_pos</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">distribute_surf</span><span class="o">.</span><span class="n">evenly_on_sphere</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">B_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_2&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">]</span>
+
+<span class="n">B2_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.5</span><span class="p">]]</span>
+<span class="n">B2_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_1a&#39;</span><span class="p">,</span><span class="s1">&#39;Core_2a&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">]</span>
+
+<span class="n">C_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">C_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_3&#39;</span><span class="p">]</span>
+
+<span class="n">D_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">D_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_4&#39;</span><span class="p">]</span>
+
+<span class="n">E_pos</span> <span class="o">=</span><span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">E_types</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;Core_5&#39;</span><span class="p">]</span>
+
+<span class="n">F_pos</span> <span class="o">=</span><span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">F_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_6&#39;</span><span class="p">]</span>
+
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">A_pos</span><span class="p">,</span> <span class="n">A_types</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">B_pos</span><span class="p">,</span> <span class="n">B_types</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="n">B2_pos</span><span class="p">,</span> <span class="n">B2_types</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">C_pos</span><span class="p">,</span> <span class="n">C_types</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">D_pos</span><span class="p">,</span> <span class="n">D_types</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="n">E_pos</span><span class="p">,</span> <span class="n">E_types</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">F_pos</span><span class="p">,</span> <span class="n">F_types</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_A</span><span class="p">,</span> <span class="n">rCoM_A</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">return_CoD</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">return_coupling</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">return_CoM</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_B</span><span class="p">,</span> <span class="n">rCoM_B</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_B2</span><span class="p">,</span> <span class="n">rCoM_B2</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_C</span><span class="p">,</span> <span class="n">rCoM_C</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_D</span><span class="p">,</span> <span class="n">rCoM_D</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_E</span><span class="p">,</span> <span class="n">rCoM_E</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">rOD_F</span><span class="p">,</span> <span class="n">rCoM_F</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Global Pair Interactions</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">k</span><span class="o">=</span><span class="mf">100.0</span> <span class="c1">#kJ/(avogadro*nm^2)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">},</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">},</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">},</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Pair Binding Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">k</span><span class="o">=</span><span class="mf">100.0</span>
+<span class="n">h</span><span class="o">=</span><span class="mf">50.0</span>
+<span class="n">d</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">rc</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">],</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_2&#39;</span><span class="p">],</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">],</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_2&#39;</span><span class="p">],</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">],</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_potential</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="p">[(</span><span class="n">prd</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">harmonic_repulsion</span><span class="p">,</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span><span class="n">k</span><span class="p">]),</span> <span class="p">(</span><span class="n">prd</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">piecewise_harmonic</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">d</span><span class="p">])],</span> <span class="n">yU_limits</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">yF_limits</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">60</span> <span class="p">,</span><span class="mi">300</span> <span class="p">],</span> <span class="n">r_limits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Particle Conversion Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_up_reaction</span><span class="p">(</span><span class="s1">&#39;conversion&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">])</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Particle Enzymatic Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;enzymatic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_6&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_6&#39;</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Molecule Production Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;production&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B2&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Molecule Fusion Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">])</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">])</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">])</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;B2&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">])</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2a&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">])</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1a&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">])</span>
+
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Molecule Enzymatic Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;enzymatic_mol&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">],</span> <span class="p">[[</span><span class="s1">&#39;Core_3&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_5&#39;</span><span class="p">]],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">])</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Bimolecular&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Interactions&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Unimolecular&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">Compartments</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">load_compartments</span><span class="p">(</span><span class="s1">&#39;Compartments//Synapse.obj&#39;</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_compartments</span><span class="p">(</span><span class="n">Compartments</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1e3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_compartments</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add a release event</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_release_site</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="n">Types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">],</span> <span class="n">jitter</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_release_site</span><span class="p">(</span><span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="p">[</span><span class="mi">500</span><span class="p">],</span> <span class="n">Types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="n">triangle_id</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Compartments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">triangle_ids</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">jitter</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">checkp</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+
+    <span class="n">pos</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS uniform&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2000</span><span class="p">],</span> <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">)</span>
+
+    <span class="c1"># prd.plot.plot_sphere_packing(0, Simulation, pos, mol_type_idx)</span>
+
+
+    <span class="c1"># Postysnapse:</span>
+
+    <span class="n">pos</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS uniform&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">500</span><span class="p">],</span> <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">)</span>
+
+    <span class="c1"># prd.plot.plot_sphere_packing(1, Simulation, pos, mol_type_idx)</span>
+
+
+    <span class="n">pos</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">face_ids</span>  <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;MC&#39;</span><span class="p">,</span> <span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">])</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Surface&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">face_ids</span><span class="p">)</span>
+
+    <span class="c1"># prd.plot.plot_sphere_packing(1, Simulation, pos, mol_type_idx)</span>
+
+
+    <span class="c1"># Presynapse:</span>
+
+    <span class="n">pos</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS uniform&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">500</span><span class="p">],</span> <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">)</span>
+
+    <span class="c1"># prd.plot.plot_sphere_packing(1, Simulation, pos, mol_type_idx)</span>
+
+
+    <span class="n">pos</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">face_ids</span>  <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS&#39;</span><span class="p">,</span> <span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">])</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Surface&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">face_ids</span><span class="p">)</span>
+
+<span class="k">else</span><span class="p">:</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">load_checkpoint</span><span class="p">(</span><span class="s1">&#39;Large_Toy_Model&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_scene</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe_rdf</span><span class="p">(</span><span class="n">rdf_pairs</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">],[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">],[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">]],</span> <span class="n">rdf_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="mf">20.0</span><span class="p">,</span><span class="mf">20.0</span><span class="p">],</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Bonds&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Position&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">progress_stride</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">out_linebreak</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">print_timer</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_concentration_profile</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Bonds&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;bind&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;fusion&#39;</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="s1">&#39;Patch_1+Patch_3&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;enzymatic&#39;</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="s1">&#39;Patch_2+Core_6&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="s1">&#39;A+B2&#39;</span><span class="p">,</span> <span class="n">particle_educt</span> <span class="o">=</span> <span class="s1">&#39;Core_1+Core_2a&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Bonds&#39;</span><span class="p">,</span> <span class="n">bond_pairs</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-large-toy-model-render">
+<a class="reference internal image-reference" href="../../_images/Large_Toy_Model_render.jpg"><img alt="../../_images/Large_Toy_Model_render.jpg" src="../../_images/Large_Toy_Model_render.jpg" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text"><strong>Render.</strong></span><a class="headerlink" href="#fig-large-toy-model-render" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Contents.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Fixed_Concentration.html" class="btn btn-neutral float-right" title="Fixed concentration boundary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

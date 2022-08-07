@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Molecule distribution &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Observables" href="Observables.html" />
+    <link rel="prev" title="Compartments" href="Compartments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecules.html">Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interaction_Potentials.html">Interaction potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compartments.html">Compartments</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Molecule distribution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#distribute-in-volume">Distribute in volume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distribute-on-surface">Distribute on surface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#release-events">Release events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">User Guide</a> &raquo;</li>
+      <li>Molecule distribution</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/User_Guide/Molecule_Distribution.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="molecule-distribution">
+<span id="userguide-distribution"></span><h1>Molecule distribution<a class="headerlink" href="#molecule-distribution" title="Permalink to this headline"></a></h1>
+<p>Before we can start a simulation, we need to initialize the system by distributing the molecules in the simulation volume and on the compartment surfaces.</p>
+<section id="distribute-in-volume">
+<h2>Distribute in volume<a class="headerlink" href="#distribute-in-volume" title="Permalink to this headline"></a></h2>
+<p>For the distribution of molecules in the volume of a compartment, PyRID offers three approaches.</p>
+<ol class="arabic simple">
+<li><p>Specify molecule positions and orientations manually:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">quaternion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">])</span>
+<span class="n">mol_type_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">500</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The mol_type_index array comprises the molecule type indices of the molecules which to distribute. The quaternion array defines the molecule orientations. The second argument in add_molecules() is the index of the compartment. The index 0 is reserved for the simulation box, i.e. outside any mesh compartment.</p>
+<ol class="arabic simple" start="2">
+<li><p>PyRID supports the Poisson disc sampling method. Thereby, spheres are packed inside the simulation box or a compartment such that there is no overlap. The sphere radii correspond to the size of the rigid bead molecules which to distribute. Therefore, this method is well suited for close to spherical molecules but less suited for highly non-spherical/elongated molecules. PyRid offers two variants of Poisson disc sampling. For dense packing use:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, 1000 molecules A and 2000 molecules B are distributed in compartment 0 (the box volume). With this method volume fractions of around 35% are possible. For dilute uniform packing use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS uniform&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>For highly non-spherical/elongated molecules or packing densities above 35% PyRID currently does not offer a good method to distribute molecules without overlap. However, molecules can be distributed randomly inside a compartment using the Monte Carlo method where position vectors are sampled uniformly inside the compartment volume (not to be confused with the Metropolis Monte Carlo method). To reduce the molecule-molecule overlap, one could, e.g.,  in addition simulate the system with soft repulsive interactions between the particles:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;MC&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">])</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="distribute-on-surface">
+<h2>Distribute on surface<a class="headerlink" href="#distribute-on-surface" title="Permalink to this headline"></a></h2>
+<p>To distribute molecules on the surface of a mesh compartment, PyRID also offers a Poisson disc sampling method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">face_idx</span>  <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS&#39;</span><span class="p">,</span> <span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="mi">1000</span><span class="p">],</span> <span class="n">facegroup</span> <span class="o">=</span> <span class="s1">&#39;active_zone&#39;</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Surface&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">face_idx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, 500 A molecules and 1000 B molecules are distributed on the faces belonging to the face group ‘active_zone’of mesh compartment 2. The facegroup is optional and if no facegroup name is passed, the molecules are distributed across the hole mesh surface. The face_idx array contains the indices of the faces/triangles where each molecule is located.</p>
+<p>Again, you can also use the Monte Carlo sampling method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">face_idx</span>  <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;MC&#39;</span><span class="p">,</span> <span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="mi">1000</span><span class="p">],</span> <span class="n">facegroup</span> <span class="o">=</span> <span class="s1">&#39;active_zone&#39;</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Surface&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_index</span><span class="p">,</span> <span class="n">face_idx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For visualization of the molecule distribution you can call (see Fig. <a class="reference internal" href="#fig-molecule-dictribution"><span class="std std-ref">Molecule distributions. (A) Top: No overlap between particles. This can be achieved either by using the PDS (Poisson Disc Sampling) methods offered by PyRID, or by the MC (Monte Carlo) method and subsequent simulation with soft repulsive particle-particle interactions. Bottom: If the Monte Carlo method is used, particles will overlap. (B) Visualization of the molecule distribution including the different mesh compartments.</span></a> B):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_scene</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-molecule-dictribution">
+<a class="reference internal image-reference" href="../../_images/Molecule_Distribution.png"><img alt="../../_images/Molecule_Distribution.png" src="../../_images/Molecule_Distribution.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text"><strong>Molecule distributions.</strong> <strong>(A)</strong> Top: No overlap between particles. This can be achieved either by using the PDS (Poisson Disc Sampling) methods offered by PyRID, or by the MC (Monte Carlo) method and subsequent simulation with soft repulsive particle-particle interactions. Bottom: If the Monte Carlo method is used, particles will overlap. <strong>(B)</strong> Visualization of the molecule distribution including the different mesh compartments.</span><a class="headerlink" href="#fig-molecule-dictribution" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="release-events">
+<h2>Release events<a class="headerlink" href="#release-events" title="Permalink to this headline"></a></h2>
+<p>It is also possible to distribute new molecules during the simulation (apart from molecular reactions) by what we here call release events. A release event can occur in the volume of on a mesh surface.
+To define a release event in the volume of a Compartment call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_release_site</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="n">Types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">],</span> <span class="n">jitter</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, 300 A molecules and 50 B molecules are distributed around the point [0.0, 0.0, 24.5] in the compartment with index 0. The release event is scheduled for time step 10000. The parameter ‘jitter’ sets the standard deviation of the molecule distribution around the given origin.
+Similarly, we can define a release event on a surface by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_release_site</span><span class="p">(</span><span class="s1">&#39;Surface&#39;</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="p">[</span><span class="mi">500</span><span class="p">],</span> <span class="n">Types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">triangle_id</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">jitter</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, we do not directly set origin but instead pass a triangle index. The moelcules will then be distributed around the centroid of the corresponding mesh triangle.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Compartments.html" class="btn btn-neutral float-left" title="Compartments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Observables.html" class="btn btn-neutral float-right" title="Observables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

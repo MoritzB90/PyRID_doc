@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.molecules.rigidbody_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.molecules.rigidbody_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.molecules.rigidbody_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">from</span> <span class="nn">..geometry.ray_march_util</span> <span class="kn">import</span> <span class="n">ray_march_volume</span><span class="p">,</span> <span class="n">ray_march_surface</span>
+<span class="kn">from</span> <span class="nn">..data_structures.dynamic_array_util</span> <span class="kn">import</span> <span class="n">DenseArray</span><span class="p">,</span> <span class="n">HolesArray</span>
+<span class="kn">from</span> <span class="nn">..reactions.update_reactions</span> <span class="kn">import</span> <span class="n">delete_molecule</span>
+
+
+<span class="c1">#%%</span>
+
+    
+<span class="n">item_t_RB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;U20&#39;</span><span class="p">),(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;type_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;dX&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;torque&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;topology&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,)),(</span><span class="s1">&#39;topology_N&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;dq&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)),(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)),(</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;Dtrans&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">&#39;Drot&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;loc_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;compartment&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos_last&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;Theta_t&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;Theta_r&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;posL&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;collision_type&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;next_transition&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">spec_holes_array</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;capacity&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_RB</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s1">&#39;item_t&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="n">item_t_RB</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;occupied&#39;</span><span class="p">,</span> <span class="n">DenseArray</span><span class="o">.</span><span class="n">class_type</span><span class="o">.</span><span class="n">instance_type</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;slot&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;continue_update&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">boolean</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">spec_RBs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_holes_array</span><span class="o">+</span><span class="n">spec_RBs</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">RBs</span><span class="p">(</span><span class="n">HolesArray</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A rigid body/bead model object is defined by a set of particles with fixed positions relative to the body center. </span>
+<span class="sd">    In our framework we use rigid bodies as a course grained representation of molecules.</span>
+<span class="sd">    A rigid bead model has a center of diffusion around which the rigid bead model rotates in response to torque and rotational diffusion. </span>
+<span class="sd">    By default a surface molecule is bound to the mesh surface at the center of diffusion or shifted by an offset passed by the user.</span>
+<span class="sd">    A rigid bodies topology is described by a list of particle indices. A RBs instance is initializeed without any molecules. Use the add_RB method to add molecules to the list.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Data : `array_like`</span>
+<span class="sd">        Numpy structured array containing all data that define a moelcules state.</span>
+<span class="sd">        `dtype = np.dtype([(&#39;next&#39;, np.uint64),(&#39;name&#39;, &#39;U20&#39;),(&#39;id&#39;, np.int32),(&#39;type_id&#39;, np.int32), (&#39;pos&#39;, np.float64, (3,)), (&#39;dX&#39;, np.float64, (3,)), (&#39;force&#39;, np.float64, (3,)), (&#39;torque&#39;, np.float64, (3,)), (&#39;topology&#39;, np.int32, (20,)),(&#39;topology_N&#39;, np.int32),(&#39;q&#39;, np.float64, (4,)), (&#39;dq&#39;, np.float64, (4,)),(&#39;B&#39;, np.float64, (4,4)),(&#39;orientation_quat&#39;, np.float64, (3,3)),(&#39;mu_tb&#39;, np.float64, (3,3)),(&#39;mu_rb&#39;, np.float64, (3,3)),(&#39;mu_tb_sqrt&#39;, np.float64, (3,3)),(&#39;mu_rb_sqrt&#39;, np.float64, (3,3)),(&#39;Dtrans&#39;, np.float64),(&#39;Drot&#39;, np.float64),(&#39;radius&#39;, np.float64), (&#39;loc_id&#39;, np.int32), (&#39;compartment&#39;, np.int64), (&#39;triangle_id&#39;, np.int32), (&#39;pos_last&#39;, np.float64, (3,)), (&#39;Theta_t&#39;, np.float64, (3,)), (&#39;Theta_r&#39;, np.float64, (3,)), (&#39;posL&#39;, np.float64, (3,)), (&#39;collision_type&#39;, np.int64), (&#39;next_transition&#39;, np.float64), ],  align=True)`</span>
+<span class="sd">    pos : array </span>
+<span class="sd">        position of the center of mass</span>
+<span class="sd">    </span>
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    add_RB(name, compartment, System, Particles, vol_surf_id)</span>
+<span class="sd">        Adds a new rigid body molecule to the Data array.</span>
+<span class="sd">    next_um_reaction(System, i)</span>
+<span class="sd">        Calculates the time of the next unimolecular reaction.</span>
+<span class="sd">    set_triangle(tri_id, i)</span>
+<span class="sd">        Set the triangle id of a surface molecule.</span>
+<span class="sd">    add_particle(pi, i)</span>
+<span class="sd">        Adds a particle to the molecule topology list.</span>
+<span class="sd">    update_topology(System, Particles, i)</span>
+<span class="sd">        Updates the positions of all particles in the molecule.         </span>
+<span class="sd">    place_particles(pos, types, radii, System, Particles, i)</span>
+<span class="sd">        Registeres the particle positions, radii and types of a molecule.  </span>
+<span class="sd">    set_pos(Particles, System, pos, i)</span>
+<span class="sd">        Sets the position of moelcule i to pos.       </span>
+<span class="sd">    update_force_torque(Particles, i)</span>
+<span class="sd">        Updates the total force and torque acting on molecule i. </span>
+<span class="sd">    update_B(i)        </span>
+<span class="sd">        Updates matrix B which is used to update the moelcule&#39;s rotation quaternion. </span>
+<span class="sd">    calc_orientation_quat(i)</span>
+<span class="sd">        Calculated the orientation matrix of the molecule from it&#39;s&#39; rotation quaternion.</span>
+<span class="sd">    set_orientation_quat(Particles, q, System, i)</span>
+<span class="sd">        Rotates the molecule according to quaternion q.</span>
+<span class="sd">    update_orientation_quat(i)</span>
+<span class="sd">       Updates the molecules orientation matrix and the B-matrix.</span>
+<span class="sd">    update_dq(System, i)</span>
+<span class="sd">        Updates the rotational displacement dq.</span>
+<span class="sd">    update_dX(System, i)</span>
+<span class="sd">        Updates the translational displacement dX.</span>
+<span class="sd">    update_particle_pos(Particles, System, i)</span>
+<span class="sd">        Updates the position and orientation of volume molecule i (and all its particles).</span>
+<span class="sd">    update_particle_pos_2D(System, Particles, i)</span>
+<span class="sd">        Updates the position and orientation of surface molecule i (and all its particles).</span>
+<span class="sd">    rescale_pos(Particles, System, mu, i)</span>
+<span class="sd">        Rescales the position molecule i&#39;s origin by a factor mu (needed for the Berendsen barostat).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">__init__HolesArray</span> <span class="o">=</span> <span class="n">HolesArray</span><span class="o">.</span><span class="fm">__init__</span>
+    
+<div class="viewcode-block" id="RBs.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__init__HolesArray</span><span class="p">(</span><span class="n">item_t_RB</span><span class="p">)</span></div>
+        
+        
+<div class="viewcode-block" id="RBs.add_RB"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.add_RB">[docs]</a>    <span class="k">def</span> <span class="nf">add_RB</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">compartment</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">vol_surf_id</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Adds a rigid bead molecule to the system.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : `string`</span>
+<span class="sd">            name of the molecule type</span>
+<span class="sd">        compartment : `int64`</span>
+<span class="sd">            Id of the compartment the moelcule sites in</span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class        </span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_RB</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;compartment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compartment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vol_surf_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">type_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_tb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_rb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_tb_sqrt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">mu_rb_sqrt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;Dtrans&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">Dtrans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;Drot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">Drot</span>
+        <span class="c1">#self.Data[self.slot][&#39;radius&#39;] = System.molecule_types[name].radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;collision_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">collision_type</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">place_particles</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">types</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">h_membrane</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_um_reaction</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">System</span><span class="o">.</span><span class="n">N</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">Nmol</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+        
+        
+<div class="viewcode-block" id="RBs.next_um_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.next_um_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">next_um_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Draws the time point of the next unimolecular diffusion for moelcule i.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        For unimolecular reactions we can draw the time point of the next reaction from a distribution using a variant of the Gillespie Stochastic Simulation Algorithm (SSA) :cite:t:`Stiles2001`, :cite:t:`Erban2007`. For a single molecule having :math:`n` possible transition reactions/reaction paths each having a reaction rate :math:`k_i`, let :math:`k_t = \sum_i^n k_i` be the total reaction rate. Then, we can draw the time point of the next reaction from:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            \\tau = \\frac{1}{k_t} \ln\Big[\\frac{1}{r}\Big],</span>
+<span class="sd">            </span>
+<span class="sd">        where :math:`r` is a random number uninformly distributed in (0,1).</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="n">type_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;type_id&#39;</span><span class="p">]</span>
+        <span class="n">mol_name</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="n">type_id</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)]</span><span class="o">.</span><span class="n">um_reaction</span><span class="p">:</span>
+            
+            <span class="n">total_rate</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_name</span><span class="p">)]</span><span class="o">.</span><span class="n">transition_rate_total</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;next_transition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">current_step</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="n">total_rate</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">())</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;next_transition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e10</span></div>
+    
+<div class="viewcode-block" id="RBs.set_triangle"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.set_triangle">[docs]</a>    <span class="k">def</span> <span class="nf">set_triangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tri_id</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Sets the triangle id for surface molecule i.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        triangle_id : `int64`</span>
+<span class="sd">            Index of the triangle</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tri_id</span></div>
+        
+        
+<div class="viewcode-block" id="RBs.add_particle"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.add_particle">[docs]</a>    <span class="k">def</span> <span class="nf">add_particle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Adds a new particle to the rigid bead molecule topology.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pi : `int64`</span>
+<span class="sd">            Particle index</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        IndexError(&#39;Maximum number of particles per molecule (20) reached! To change this, currently you have to manualy set the maximum size in rigidbody_util.py&#39;)</span>
+<span class="sd">            by default, currenztly, a maximum number of 20 particles per rigid bead molecule type is allowed. The user may incerase this limit by increasing the size of the field &#39;topology&#39; in the structured numpy array dtype &#39;item_t_RB&#39; (see rigi_body_util.py)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">19</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Maximum number of particles per molecule (20) reached! To change this, currently you have to manualy set the maximum size in rigidbody_util.py&#39;</span><span class="p">)</span>
+            
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">pi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            
+        
+<div class="viewcode-block" id="RBs.update_topology"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_topology">[docs]</a>    <span class="k">def</span> <span class="nf">update_topology</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Updates the positions of the particles that make up the topology of molecule i.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="k">for</span> <span class="n">pi0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]):</span>
+            <span class="n">pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">pi0</span><span class="p">]</span>
+            
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            
+            
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span></div>
+                        
+                        
+<div class="viewcode-block" id="RBs.place_particles"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.place_particles">[docs]</a>    <span class="k">def</span> <span class="nf">place_particles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">h_membrane</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Places all the particles that make up the topology of rigid bead molecule i given a list of partcile types, positions and radii.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pos : `float64[:,3]`</span>
+<span class="sd">            Array of particle positions</span>
+<span class="sd">        types : `array_like`</span>
+<span class="sd">            Array of strings of particle type names</span>
+<span class="sd">        radii : `float64[:]`</span>
+<span class="sd">            Array of particle radii</span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class        </span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        h_membrane : `float64`</span>
+<span class="sd">            Additive factor by which the particle positions are shifted along the z axis of the local coordinate frame. Thereby, the relative position to the center of diffusion is shifted. &#39;h_membrane&#39; should only be used to change the position at which a surface molecule sits in the mesh surface.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            
+            <span class="n">Particles</span><span class="o">.</span><span class="n">add_particle</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">Particles</span><span class="o">.</span><span class="n">slot</span><span class="o">-</span><span class="mi">1</span>
+
+            <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">k</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">Particles</span><span class="o">.</span><span class="n">set_coord</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">pos</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="n">pos</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Particles</span><span class="o">.</span><span class="n">set_coord</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">pos</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="n">pos</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">h_membrane</span><span class="p">)</span>
+                
+            <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">],</span> <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;coord_local&#39;</span><span class="p">])</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>   
+                    
+            <span class="n">Particles</span><span class="o">.</span><span class="n">set_rb_id</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_particle</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            
+            <span class="n">System</span><span class="o">.</span><span class="n">Np</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            
+            
+<div class="viewcode-block" id="RBs.set_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.set_pos">[docs]</a>    <span class="k">def</span> <span class="nf">set_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Sets the position of rigid bead molecule i.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        pos : `float64[3]`</span>
+<span class="sd">            Position of the molecule center</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">pos</span>
+        
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">-=</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">+=</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">pi0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]):</span>
+            <span class="n">pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">pi0</span><span class="p">]</span>
+
+            <span class="n">Particles</span><span class="o">.</span><span class="n">increase_pos</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
+            
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span></div>
+                    
+                    
+<div class="viewcode-block" id="RBs.update_force_torque"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_force_torque">[docs]</a>    <span class="k">def</span> <span class="nf">update_force_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;torque&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">pi0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]):</span>
+            <span class="n">pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">pi0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;torque&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+=</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;torque&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+=</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>      
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;torque&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+=</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="n">Particles</span><span class="o">.</span><span class="n">clear_force</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;number_reactions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
+        
+        
+<div class="viewcode-block" id="RBs.update_B"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_B">[docs]</a>    <span class="k">def</span> <span class="nf">update_B</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Calculates matrix B used in the quaternion propagator (see RBs.dq()).</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index.</span>
+
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        When propagating the cartesian coordinates of the rigid bead moelcule&#39;s center of diffusion we need to account for the orientation of the moelcule. This is readily done by applying the rotation matrix A to the molecule&#39;s mobility tensor (Note: to rotate a tensor we need to apply the rotation matrix twice: :math:`\\mu^{lab} = A \cdot \\mu^{local} \cdot A^{-1}`). However, things are more complicated when deriving the propagator for the rotation quaternion. Here, the rotation matrix is partially replaced by matrix :math:`\\boldsymbol{B}` which accounts for the fact that we are using a four dimensional coordinate set of quaternions instead of three euler angles. In other terms, :math:`\\boldsymbol{B}` relates the angular velocity in the local frame to the quaternion velocity ( :math:`\\frac{d\\boldsymbol{q}}{dt} = \\boldsymbol{B} \\boldsymbol{\\omega}^{local}` ) :cite:p:`Ilie2015`.</span>
+<span class="sd">        The matrix :math:`\\boldsymbol{B}` is given by:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            :label: B-matrix</span>
+<span class="sd">            </span>
+<span class="sd">            \\boldsymbol{B}</span>
+<span class="sd">            = \\frac{1}{2}</span>
+<span class="sd">            \\begin{pmatrix}</span>
+<span class="sd">            q_0 &amp; -q_1 &amp; -q_2 &amp; -q_3 \\\\</span>
+<span class="sd">            q_1 &amp; q_0 &amp; -q_3 &amp; q_2 \\\\</span>
+<span class="sd">            q_2 &amp; q_3 &amp; q_0 &amp; -q_1 \\\\</span>
+<span class="sd">            q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\\\</span>
+<span class="sd">            \\end{pmatrix},</span>
+<span class="sd">            </span>
+<span class="sd">        where :math:`\\boldsymbol{q}` is the current rotational quaternion of molecule i.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>            </div>
+        
+    
+<div class="viewcode-block" id="RBs.calc_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.calc_orientation_quat">[docs]</a>    <span class="k">def</span> <span class="nf">calc_orientation_quat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Calculates the orientation/rotation matrix of moelcule i from it&#39;s rotational quaternion q.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        </span>
+<span class="sd">        The rotation matrix corresponding to a unit rotation quaternion :math:`\\boldsymbol{q} = [q_0, q_1, q_2, q_3]` can be calculated by:</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            :label: RotationMatrix</span>
+<span class="sd">            </span>
+<span class="sd">            \\boldsymbol{A}</span>
+<span class="sd">            = </span>
+<span class="sd">            \\begin{pmatrix}</span>
+<span class="sd">            2(q_0^2+q_1^2)-1 &amp; 2(q_1 q_2-q_0 q_3) &amp; 2(q_1 q_3-q_0 q_2) \\\\</span>
+<span class="sd">            2(q_1 q_2-q_0 q_3) &amp; 2(q_0^2+q_2^2)-1 &amp; 2(q_2 q_3-q_0 q_1) \\\\</span>
+<span class="sd">            2(q_1 q_3-q_0 q_2) &amp; 2(q_2 q_3-q_0 q_1) &amp; 2(q_0^2+q_3^2)-1 \\\\</span>
+<span class="sd">            \\end{pmatrix}.  </span>
+<span class="sd">            </span>
+<span class="sd">        (Note: There exist several equivalent ways to calculate the rotation matrix, which share the way the off-diagonal elements are calculated but slightly differ in the diagonal elements)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+            
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+    
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span></div>
+            
+        
+<div class="viewcode-block" id="RBs.set_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.set_orientation_quat">[docs]</a>    <span class="k">def</span> <span class="nf">set_orientation_quat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Sets the orientation of rigid bead molecule i given a rotation quaternion q.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        q : `float64[4]`</span>
+<span class="sd">            Rotation quanternion</span>
+<span class="sd">        System : `object`</span>
+<span class="sd">            Instance of System class</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span></div>
+                        
+            
+
+<div class="viewcode-block" id="RBs.update_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_orientation_quat">[docs]</a>    <span class="k">def</span> <span class="nf">update_orientation_quat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Updates the rotation matrix of rigid bead molecule i, however, without updating the molecule and particle positions.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+        
+    
+<div class="viewcode-block" id="RBs.update_dq"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_dq">[docs]</a>    <span class="k">def</span> <span class="nf">update_dq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Calculates the rotational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by :cite:t:`Ilie2015`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        System : `obj`</span>
+<span class="sd">            Instance of System class.</span>
+<span class="sd">        i : `int`</span>
+<span class="sd">            Index of the molecule.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The rotational displacement of an anisotropic particles due to Brownian motion and an external torque :math:`\\boldsymbol{T}` can be expressed by :cite:p:`Ilie2015`:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            :label: dq</span>
+<span class="sd">            </span>
+<span class="sd">            \\begin{align*}</span>
+<span class="sd">            q_{a}(t+\\Delta t) - q_{a}(t) = &amp; B_{a \\alpha} \\mu_{\\alpha \\beta}^{rb} A_{\\gamma \\beta} T_{\\gamma} \\Delta t \\\\</span>
+<span class="sd">            &amp; + B_{a \\alpha}(\\sqrt{\\boldsymbol{\\mu}^{rb}})_{\\alpha \\beta} \\Theta_{\\beta}^q \\sqrt{2 k_B T \\Delta t} + \\lambda_q q_a,</span>
+<span class="sd">            \\end{align*}</span>
+<span class="sd">        </span>
+<span class="sd">        where :math:`\\boldsymbol{A}` is the rotation matrix and :math:`\\boldsymbol{\mu}^{rb}` the rotational mobility tensor of the molecule in the body fixed frame (as opposed to the lab frame of reference). :math:`\\boldsymbol{\\Theta}^q` is a normal distributed random vector describing the random rotational movement of the molecule due to collisions with the fluid molecules. :math:`\\boldsymbol{\mu}^{rb}` should be a real, positive semidefinite matrix to have proper physical meaning :cite:p:`Niethammer2006`. In this case, there exists a unique square root of the matrix :math:`\\sqrt{\\boldsymbol{\\mu}^{rb}}`, which can be found via diagonalization (see geometry_util.Transform:Util.sqrtM()). Latin indices run from 0 to 3 and Greek indices run from 1 to 3.</span>
+<span class="sd">        </span>
+<span class="sd">        The matrix :math:`\\boldsymbol{B}` is given by:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            :label: B-matrix_0</span>
+<span class="sd">            </span>
+<span class="sd">            \\boldsymbol{B}</span>
+<span class="sd">            = \\frac{1}{2q^4}</span>
+<span class="sd">            \\begin{pmatrix}</span>
+<span class="sd">            q_0 &amp; -q_1 &amp; -q_2 &amp; -q_3 \\\\</span>
+<span class="sd">            q_1 &amp; q_0 &amp; -q_3 &amp; q_2 \\\\</span>
+<span class="sd">            q_2 &amp; q_3 &amp; q_0 &amp; -q_1 \\\\</span>
+<span class="sd">            q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\\\</span>
+<span class="sd">            \\end{pmatrix}.         </span>
+<span class="sd">            </span>
+<span class="sd">        For infinitesimal time steps :math:`\\boldsymbol{q}` preserves its unit length. However, for finite time step :math:`\\Delta t` an additional constraint needs to be added to ensure that :math:`\\boldsymbol{q}` keeps its unit length. This is realized here by a constraint force in the last term, directed along :math:`\\boldsymbol{q}`. By solving the Langrange multiplier :math:`\lambda_q` from the condition :math:`q(t+\Delta t) = 1` we get the strength of the force. Denoting :math:`\\tilde{q}(t+ \\Delta t)` as the uncopnstrained quaternion, :math:`\lambda_q` is obtained from solving the quadratic equation</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            :label: LagrangeMult</span>
+<span class="sd">            </span>
+<span class="sd">            \\lambda_q^2 + 2 \\lambda_q \\boldsymbol{q} \cdot \\tilde{q}(t+ \\Delta t)+ \\tilde{q}^2(t+ \\Delta t) = 1</span>
+<span class="sd">            </span>
+<span class="sd">        Simple rescaling of the quaternion will change the sampled phase space distribution. However, in practice, the resulting error is marginal and since rescaling is fatser than solving the quadratic equation each time step, we currently do the rescaling. However, the more accurate method is mentioned here for compeleness.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="n">dq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dq&#39;</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
+        <span class="n">mu_rb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">]</span>
+        <span class="n">mu_rb_sqrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">]</span>
+        <span class="n">torque</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;torque&#39;</span><span class="p">]</span>
+        <span class="n">Theta_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;Theta_r&#39;</span><span class="p">]</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">]</span>
+        <span class="n">orientation_quat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ai</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Surface molecule</span>
+            <span class="n">ai</span> <span class="o">=</span> <span class="mi">3</span>
+        
+
+        <span class="n">dq</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1"># Theta_r = np.random.normal(loc=0.0, scale=1.0, size = 3)</span>
+        <span class="n">Theta_r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">Theta_r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">Theta_r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ai</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ai</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">gamma</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span> 
+                        
+                        <span class="n">dq</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">B</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">alpha</span><span class="p">]</span><span class="o">*</span><span class="n">mu_rb</span><span class="p">[</span><span class="n">alpha</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">orientation_quat</span><span class="p">[</span><span class="n">gamma</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">torque</span><span class="p">[</span><span class="n">gamma</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span>
+                    
+                    <span class="c1">#TODO: If mu_rb is a diagonal matrix, we could shorten this loop:</span>
+                    <span class="c1">#(9 - &gt; 3 iterations).</span>
+                    <span class="n">dq</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">B</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">alpha</span><span class="p">]</span><span class="o">*</span><span class="n">mu_rb_sqrt</span><span class="p">[</span><span class="n">alpha</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Theta_r</span><span class="p">[</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">kbt</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+                    
+        <span class="c1"># q[:] += dq</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dq</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dq</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        
+        <span class="c1"># TODO: renormalizing the quaternion actually introduces a bias. Better use Lagrange multiplier to apply restriction!</span>
+        <span class="c1"># In practice, however, the bias seems to be fairly low!</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">norm</span>  
+        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">norm</span>  
+        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/=</span> <span class="n">norm</span>  
+        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/=</span> <span class="n">norm</span>  </div>
+        
+        <span class="c1"># print(&#39;dq:&#39;, self.dq)</span>
+        <span class="c1"># print(&#39;T:&#39;, torque)</span>
+            
+
+
+<div class="viewcode-block" id="RBs.update_dX"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_dX">[docs]</a>    <span class="k">def</span> <span class="nf">update_dX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Calculates the translational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by :cite:t:`Ilie2015`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        System : `obj`</span>
+<span class="sd">            Instance of System class.</span>
+<span class="sd">        i : `int`</span>
+<span class="sd">            Index of the molecule.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The translational displacement of an anisotropic particles due to Brownian motion and an external force :math:`\\boldsymbol{F}` can be expressed by :cite:p:`Ilie2015`:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            :label: dX</span>
+<span class="sd">            </span>
+<span class="sd">            \\begin{align*}</span>
+<span class="sd">            R_{\\alpha}(t+\\Delta t) - R_{\\alpha}(t) = &amp; A_{\\alpha \\gamma} \\mu_{\\gamma \\delta}^{tb} A_{\\beta \\delta} F_{\\beta} \\Delta t \\\\</span>
+<span class="sd">            &amp; + A_{\\alpha \\gamma}(\\sqrt{\\boldsymbol{\\mu}^{tb}})_{\\gamma \\beta} \\Theta_{\\beta}^t \\sqrt{2 k_B T \\Delta t},</span>
+<span class="sd">            \\end{align*}</span>
+<span class="sd">            </span>
+<span class="sd">        where :math:`\\boldsymbol{A}` is the rotation matrix and :math:`\\boldsymbol{\mu}^{tb}` the translational mobility tensor of the molecule in the body fixed frame (as opposed to the lab frame of reference). :math:`\\boldsymbol{\\Theta}^t` is a normal distributed random vector describing the random movement of the molecule due to collisions with the fluid molecules. :math:`\\boldsymbol{\mu}^{tb}` should be a real, positive semidefinite matrix to have proper physical meaning :cite:p:`Niethammer2006` . In this case, there exists a unique square root of the matrix :math:`\\sqrt{\\boldsymbol{\\mu}^{tb}}`, which can be found via diagonalization (see geometry_util.Transform:Util.sqrtM()). Latin indices run from 0 to 3 and Greek indices run from 1 to 3.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="n">dX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span>
+        <span class="n">mu_tb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">]</span>
+        <span class="n">mu_tb_sqrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">]</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">]</span>
+        <span class="n">Theta_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;Theta_t&#39;</span><span class="p">]</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        <span class="n">orientation_quat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">]</span>
+        
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">bi</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Surface molecule</span>
+            <span class="n">bi</span> <span class="o">=</span> <span class="mi">3</span>
+            
+        <span class="n">dX</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1"># Theta_t = np.random.normal(loc=0.0, scale=1.0, size = 3)</span>
+        <span class="n">Theta_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">Theta_t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">Theta_t</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">gamma</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">bi</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">delta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">bi</span><span class="p">):</span>
+                    <span class="c1">#TODO: If mu_tb is a diagonal, we could shorten this loop:</span>
+                    <span class="c1">#(9 - &gt; 3 iterations).</span>
+                        
+                        <span class="n">dX</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">+=</span> <span class="n">orientation_quat</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="n">gamma</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">mu_tb</span><span class="p">[</span><span class="n">gamma</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">delta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">orientation_quat</span><span class="p">[</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">delta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">force</span><span class="p">[</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span>
+                    
+                    <span class="n">dX</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">+=</span> <span class="n">orientation_quat</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="n">gamma</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">mu_tb_sqrt</span><span class="p">[</span><span class="n">gamma</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Theta_t</span><span class="p">[</span><span class="n">beta</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">kbt</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos_last&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos_last&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos_last&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
+        
+        
+                
+    <span class="c1">#%%</span>
+                
+            
+<div class="viewcode-block" id="RBs.update_particle_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_particle_pos">[docs]</a>    <span class="k">def</span> <span class="nf">update_particle_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Updates the position of volume molecule i. </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        System : `obj`</span>
+<span class="sd">            Instance of System class.</span>
+<span class="sd">        i : `int`</span>
+<span class="sd">            Index of the molecule.</span>
+<span class="sd">        </span>
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`~pyrid.geometry.intersections_util.ray_march_volume`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;collision_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># ALl collisions are handled during force update</span>
+            
+            <span class="n">dX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                
+                <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">-=</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">+=</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                 
+                <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                
+                <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                
+                <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                       
+                <span class="k">if</span> <span class="n">crossed_border</span><span class="p">:</span>
+                    <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span>
+                    
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                
+    
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">mesh</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            
+                <span class="c1"># pos_init = np.copy(self.Data[i][&#39;pos&#39;])</span>
+                <span class="c1"># dX_init = np.copy(self.Data[i][&#39;dX&#39;])</span>
+                <span class="c1"># ---------------</span>
+                            
+                <span class="c1"># self.resolve_collisions(System, Particles, i-1)</span>
+                <span class="n">passed</span> <span class="o">=</span> <span class="n">ray_march_volume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">],</span> <span class="n">System</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">passed</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                
+                <span class="c1"># inside_System_before = isPointInside_fast(pos_init, 0, System)</span>
+                <span class="c1"># inside_System_after = isPointInside_fast(self.Data[i][&#39;pos&#39;], 0, System)</span>
+                
+                <span class="c1"># if inside_System_before == False and inside_System_after == True and 0&gt;self.Data[i][&#39;pos&#39;][2]&gt;-System.box_lengths[2]/2:</span>
+                <span class="c1">#     print(i, pos_init, dX_init)</span>
+                <span class="c1">#     raise ValueError(&#39;crossed triangle boundary!&#39;)</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                
+                <span class="n">dX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+    
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    
+                    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">-=</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">+=</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                        
+                    <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    
+                    
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                     
+                    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                            
+                            <span class="n">boundary</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][:]</span> <span class="o">+=</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">][:]</span> <span class="o">-=</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+                            
+                        <span class="k">elif</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                            
+                            <span class="n">boundary</span> <span class="o">=</span> <span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][:]</span> <span class="o">+=</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">][:]</span> <span class="o">-=</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+                    
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    
+                <span class="k">elif</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    
+                    <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                            <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                            <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                           
+                    <span class="k">if</span> <span class="n">crossed_border</span><span class="p">:</span>
+                        <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="k">return</span>
+                        
+                    <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+                
+
+                
+
+            
+                    
+    <span class="c1">#%%</span>
+
+<div class="viewcode-block" id="RBs.update_particle_pos_2D"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_particle_pos_2D">[docs]</a>    <span class="k">def</span> <span class="nf">update_particle_pos_2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Updates the position of surface molecule i. </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        System : `obj`</span>
+<span class="sd">            Instance of System class.</span>
+<span class="sd">        i : `int`</span>
+<span class="sd">            Index of the molecule.</span>
+<span class="sd">        </span>
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`~pyrid.geometry.intersections_util.ray_march_surface`</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+           
+        
+        <span class="n">triangle_id</span> <span class="o">=</span> <span class="n">ray_march_surface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dX&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">],</span> <span class="n">System</span><span class="p">,</span> <span class="n">update_quat</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">triangle_id</span><span class="o">==-</span><span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;i, step: &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">current_step</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unable to Raymarch on mesh surface!&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">triangle_id</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triangle_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_topology</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">delete_molecule</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+    
+    <span class="c1">#%%</span>
+    
+<div class="viewcode-block" id="RBs.rescale_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.rescale_pos">[docs]</a>    <span class="k">def</span> <span class="nf">rescale_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Rescales the position of molecule i by a multiplicative factor mu. This method is only used for the Berendsen barostat.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        System : `obj`</span>
+<span class="sd">            Instance of System class.</span>
+<span class="sd">        mu : `float64`</span>
+<span class="sd">            Multiplicative factor by which to scale the molecule position.</span>
+<span class="sd">        i : `int`</span>
+<span class="sd">            Index of the molecule.</span>
+<span class="sd">        </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError (just an example)</span>
+<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dtype</span>
+<span class="sd">            Some information</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mu</span>
+        
+        <span class="k">for</span> <span class="n">pi0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]):</span>
+            <span class="n">pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">pi0</span><span class="p">]</span>
+            
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos_local&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+                        
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span></div>
+    
+    
+
+
+
+
+<span class="c1">#%%</span>
+
+<span class="c1"># if __name__==&#39;__main__&#39;:</span>
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

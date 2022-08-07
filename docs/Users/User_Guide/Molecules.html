@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Molecules &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Interaction potentials" href="Interaction_Potentials.html" />
+    <link rel="prev" title="Simulation setup" href="Simulation_Setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Molecules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fixed-concentration-boundary-conditions">Fixed concentration boundary conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Interaction_Potentials.html">Interaction potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compartments.html">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecule_Distribution.html">Molecule distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">User Guide</a> &raquo;</li>
+      <li>Molecules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/User_Guide/Molecules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="molecules">
+<span id="userguide-molecules"></span><h1>Molecules<a class="headerlink" href="#molecules" title="Permalink to this headline"></a></h1>
+<p>In PyRID, molecules are represented by rigid bead models. In the following, bead and particle are synonymous and used interchangeably. Each rigid bead molecule consists of a number of Particles with fixed positions relative to the local coordinate frame of the molecule. In PyRID, molecules can be either located in the volume of a compartment (in the following called volume molecules) or on the surface of a mesh compartment (surface molecules).
+Before we can define molecules, we need to register the corresponding particle types. As an example, let us construct two toy molecules named A and B. We will use the name ‘core particle’ for particles that represent the excluded volume of the molecule and which interact with each other by repulsive forces. We will use the name ‘patchy particle’ for particles that represent attractive interaction sites via which molecule pairs can form bonds.
+Let molecule A consists of 1 core particle ‘core_1’ and 3 patchy particles ‘patch_1’, and molecule B out of two core particles ‘core_2’, ‘core_3’ and two patchy particles ‘patch_2’.
+We can add new particle types to the system by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span> <span class="c1"># (name, radius)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;core_2&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;core_3&#39;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;patch_2&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, the first argument is the particle name, and the second the particle radius. The radius does not have any meaning/effect by default but can be used by PyRID to calculate the molecule’s diffusion tensor for translation and rotation, or when we add repulsive interactions between particles.
+Now that the particles have been defined, we can use these to construct a rigid bead model. Therefore, we need to create two lists, one containing the particle types, the other the particle positions. As just mentioned, PyRID comes with a method to calculate the diffusion tensors of a rigid bead molecule. We can, however, also manually set a diffusion tensor, e.g., one that has been measured experimentally for a certain molecule/protein. However, if we want to use the build in method, it is important that we take into account the particle radii such that there is no overlap between particles!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">A_pos</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">distribute_surf</span><span class="o">.</span><span class="n">evenly_on_sphere</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>  <span class="c1"># (number, radius)</span>
+<span class="n">A_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core_1&#39;</span><span class="p">,</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_1&#39;</span><span class="p">]</span>
+
+<span class="n">B_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="p">]]</span>
+<span class="n">B_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core_2&#39;</span><span class="p">,</span><span class="s1">&#39;core_3&#39;</span><span class="p">,</span><span class="s1">&#39;patch_2&#39;</span><span class="p">,</span><span class="s1">&#39;patch_2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In our example, we used the function evenly_on_sphere(n,r) from PyRIDs distribute_surf module in order to get the position data for molecule A. This function distributes n points on the surface of a sphere of radius r such that the minimum distance between all points is approximately maximized, i.e. the points are approximately evenly distributed. For molecule B, the position vector has been set manually.
+Next, we still need to register the two molecule types:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">A_pos</span><span class="p">,</span> <span class="n">A_types</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">B_pos</span><span class="p">,</span> <span class="n">B_types</span><span class="p">,</span> <span class="n">h_membrane</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The parameter h_membrane is optional and shifts the position of surface molecules along the z axis. by default h_membrane = 0, i.e., the molecule is inserted into the mesh surface at its center (0,0,0).
+We still need to pass information about the molecule diffusion properties to PyRID.
+Let us assume that molecule A should represent some protein, for which the translational and rotational diffusion tensor have been measured, either by experiment or molecular dynamics simulations. We can then set the diffusion tensors by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">D_rr</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.005</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.04</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]]</span>
+<span class="n">D_tt</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]]</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For molecule B no such data is available. Therefore, we calculate the diffusion tensors using PyRIDs diffusion_tensor method. Here, it is important to note that the method not only calculates the diffusion tensors but also shifts the center of the molecule to the center of diffusion! As such, while molecule A will still rotate about the origin ([0,0,0]) as defined by the position vector above, for molecule B the particle positions will be shifted such that the center coincides with the center of diffusion!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default diffusion_tensor() only returns the translational and rotational diffusion tensors. However, we can also ask for the translation rotation coupling, the center of diffusion, and the center of mass (the center of mass is actually not used by PyRID at any point. However, it might be interesting to compare it to the center of diffusion).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">r_CoD</span><span class="p">,</span> <span class="n">r_CoM</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">return_CoD</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">return_coupling</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">return_CoM</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PyRID also allows us to now plot the rigid bead model structure and diffusion tensors (Fig. <a class="reference internal" href="#fig-moelcules-a-b"><span class="std std-numref">Fig. 1</span></a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-moelcules-a-b">
+<a class="reference internal image-reference" href="../../_images/Molecules_A_B.png"><img alt="../../_images/Molecules_A_B.png" src="../../_images/Molecules_A_B.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text"><strong>Structure (left) and translational (middle) and rotational (right) diffusion tensors for the molecules A and B.</strong> As one would expect, for molecule B, diffusion about the z axis is much higher than about the x or y axis. For molecule A, the diffusion tensors do not correspond to the molecule structure as we have set these manually.</span><a class="headerlink" href="#fig-moelcules-a-b" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<section id="fixed-concentration-boundary-conditions">
+<h2>Fixed concentration boundary conditions<a class="headerlink" href="#fixed-concentration-boundary-conditions" title="Permalink to this headline"></a></h2>
+<p>In the case that we set the boundary condition to ‘fixed concentration’, we also need to define the concentration of the different molecule types outside the simulation box. By default, the concentration is zero. We need to set concentration separately for the volume and for the surface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">fixed_concentration_at_boundary</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">fixed_concentration_at_boundary</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s1">&#39;Postsynapse&#39;</span><span class="p">,</span> <span class="s1">&#39;Surface&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Simulation_Setup.html" class="btn btn-neutral float-left" title="Simulation setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Interaction_Potentials.html" class="btn btn-neutral float-right" title="Interaction potentials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

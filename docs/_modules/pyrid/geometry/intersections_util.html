@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.geometry.intersections_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.geometry.intersections_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.geometry.intersections_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">from</span> <span class="nn">..geometry.mesh_util</span> <span class="kn">import</span> <span class="n">triangle_centroid</span><span class="p">,</span> <span class="n">closest_boundary_point</span>
+<span class="kn">from</span> <span class="nn">..math</span> <span class="kn">import</span> <span class="n">transform_util</span> <span class="k">as</span> <span class="n">trf</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="point_inside_triangle_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.point_inside_triangle_test">[docs]</a><span class="k">def</span> <span class="nf">point_inside_triangle_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">triangle_id</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a point is inside a triangle.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    triangle_id : `int64`</span>
+<span class="sd">        Triangle id</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class       </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `boolean`</span>
+<span class="sd">        True if point is inside triangle, otherwise False.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    
+    <span class="n">triangle</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">triangle_id</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
+    
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>    
+    
+    <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">trf</span><span class="o">.</span><span class="n">barycentric_coord</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">triangle_id</span><span class="p">][</span><span class="s1">&#39;barycentric_denom_id&#39;</span><span class="p">])</span>
+    
+    <span class="n">in_triangle</span> <span class="o">=</span> <span class="n">point_in_triangle_barycentric</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">in_triangle</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Point is inside triangle (plane)!&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Point is not inside triangle (plane)!&#39;</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">in_triangle</span></div>
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="point_inside_AABB_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.point_inside_AABB_test">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">point_inside_AABB_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">AABB</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests is a point is inside an AABB</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    AABB : `float64[2,3]`</span>
+<span class="sd">        Array containing the two vector points that represent the lower left and upper right corner of the AABB</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `boolean`</span>
+<span class="sd">        True if point inside AABB</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">lower</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">lower</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">lower</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> </div>
+          
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="ray_mesh_intersection_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.ray_mesh_intersection_test">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">ray_mesh_intersection_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">triangle_of_intersection</span><span class="p">,</span> <span class="n">current_triangle</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a line segment intersects with a mesh within a given cell by looping over all triangles in the cell and doing a ray triangle collision test.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    dX : `float64[3]`</span>
+<span class="sd">        Direction vector</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class   </span>
+<span class="sd">    cell : `int64`</span>
+<span class="sd">        Cell in which to check for ray triangle collisions</span>
+<span class="sd">    t_min : `float64`</span>
+<span class="sd">        Current minimum parameterized distance coordinate</span>
+<span class="sd">    triangle_of_intersection : `int64`</span>
+<span class="sd">        Current triangle of intersection</span>
+<span class="sd">    current_triangle : `int64`</span>
+<span class="sd">        In case a collision has been resolved before, this is the current triangle id the ray origin is located on.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    t_min and triangle_of_intersection are only updated if a new detected intersection is closer to the ray origin than the t_min that has been passed to the function. The algorithm has to include these kind of tests, because a triangle may intersect with the current cell and is therefore tested for collision but teh collision itself may take place far away from the current cell because the triangle extends the cell. Also, if a collision has been resolved before, the current orign of the ray will be located in the plane of the triangle the ray collided with. Therefore, this triangle (current_triangle) has to be excluded from the collision test, since a collision test will return True. The algorithm is also optimized such that triangles are not tested multiple times. This could in general be the case since triangles may extend severel cells. Therefore, each triangle keeps a flag/time stamp. The time stamp is increased every time a new ray is cast. For more information also see teh original work by :cite:t:`Amanatides87`.</span>
+<span class="sd">    </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`~pyrid.geometry.intersection_util.ray_triangle_intersection`</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(boolean, float64, int64)`</span>
+<span class="sd">        intersection_in_cell, t_min, triangle_of_intersection</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">intersection</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">intersection_in_cell</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="c1"># TODO: First test if ray origin is inside any compartent. If False, test if ray intersects any compartment AABB. If not, we do not need to continue here. If the ray does intersect an AABB we may also start intersection testing from the AABB boundary, thereby reducing the number of cells we have to travers!</span>
+    
+    <span class="n">head</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">head</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="n">head</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># Check if triangle has not yet been tested in another cell for the same ray using the current time_stamp:</span>
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">!=</span><span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span> <span class="ow">and</span> <span class="n">Tri_idx</span><span class="o">!=</span><span class="n">current_triangle</span><span class="p">:</span>
+            <span class="n">triangle</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]]</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span>
+            
+            <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="n">intersection</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ray_triangle_intersection</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">intersection</span> <span class="ow">and</span> <span class="n">t</span><span class="o">&lt;</span><span class="n">t_min</span><span class="p">:</span>
+                <span class="n">t_min</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="n">triangle_of_intersection</span> <span class="o">=</span> <span class="n">Tri_idx</span>
+                <span class="n">intersection_in_cell</span> <span class="o">=</span> <span class="kc">True</span>
+                
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="n">head</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+        
+        <span class="k">while</span> <span class="nb">next</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span>
+            
+            <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="nb">next</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">!=</span><span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span> <span class="ow">and</span> <span class="n">Tri_idx</span><span class="o">!=</span><span class="n">current_triangle</span><span class="p">:</span>
+                <span class="n">triangle</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]]</span>
+                <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span>
+                
+                <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                
+                <span class="n">intersection</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ray_triangle_intersection</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">intersection</span> <span class="ow">and</span> <span class="n">t</span><span class="o">&lt;</span><span class="n">t_min</span><span class="p">:</span>
+                    <span class="n">t_min</span> <span class="o">=</span> <span class="n">t</span>
+                    <span class="n">triangle_of_intersection</span> <span class="o">=</span> <span class="n">Tri_idx</span>
+                    <span class="n">intersection_in_cell</span> <span class="o">=</span> <span class="kc">True</span>
+    
+            <span class="nb">next</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="nb">next</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">intersection_in_cell</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">triangle_of_intersection</span></div>
+        
+    
+    
+<span class="c1">#%%</span>
+
+
+<div class="viewcode-block" id="ray_triangle_intersection"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.ray_triangle_intersection">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">ray_triangle_intersection</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">poi</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a ray intersects with a triangle using the Möller–Trumbore intersection algorithm :cite:p:`Moeller1997`. For reference see also http://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector.</span>
+<span class="sd">    dX : `float64[3]`</span>
+<span class="sd">        Direction vector.</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    poi : `float64[3]`</span>
+<span class="sd">        Empty point of intersection vector</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(boolean, float64)`</span>
+<span class="sd">        True if there is an intersection, distance to triangle plane.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
+    
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># n = np.cross(ab, ac)</span>
+    <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># sign = np.sign(np.dot(dX, normal))</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">d</span><span class="o">*=</span> <span class="n">sign</span>
+    <span class="c1"># print(&#39;d: &#39;,d)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span>
+    
+    <span class="n">pos_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">pos_o</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pos_o</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pos_o</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">ood</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">d</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">sign</span><span class="o">*</span><span class="p">(</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">ood</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="c1"># print(&#39;t:&#39;, t)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">t</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># print(&#39;t:&#39;, t)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">t</span>
+    
+
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">pos_o</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">sign</span><span class="o">*</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">ood</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># print(&#39;v:&#39;, v)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">t</span>
+    <span class="c1"># w = np.dot(ab, e)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">sign</span><span class="o">*</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">ood</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">w</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">+</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># print(&#39;w:&#39;, w)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">t</span>
+
+    <span class="c1"># u = 1.0-v-w</span>
+    
+    <span class="k">if</span> <span class="n">poi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">poi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">poi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">poi</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="c1"># print(v,w)</span>
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">t</span></div>
+
+
+
+<span class="c1">#%%</span>
+    
+<div class="viewcode-block" id="point_inside_mesh_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.point_inside_mesh_test">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">point_inside_mesh_test</span><span class="p">(</span><span class="n">triangle_ids</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a point is inside or outside a mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    triangle_ids : `int64[:]`</span>
+<span class="sd">        Triangle ids of the mesh</span>
+<span class="sd">    Mesh : `array_like`</span>
+<span class="sd">        Mesh structured array containing a field &#39;triangles&#39; that keeps the vertex ids of the mesh triangles</span>
+<span class="sd">    vertices : `float64[:,3]`</span>
+<span class="sd">        Mesh vertices</span>
+<span class="sd">    point : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    </span>
+
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `bolean`</span>
+<span class="sd">        True if point is inside mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">total_angle</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">tri_id</span> <span class="ow">in</span> <span class="n">triangle_ids</span><span class="p">:</span>
+        <span class="n">triangle</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">[</span><span class="n">tri_id</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
+    
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">trf</span><span class="o">.</span><span class="n">solid_angle</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">trf</span><span class="o">.</span><span class="n">normal_vector</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">)</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">triangle_centroid</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+        
+        <span class="n">faceVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">center</span><span class="p">)</span>
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">faceVec</span><span class="p">)</span>
+        
+        <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">dot</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        
+        <span class="n">total_angle</span> <span class="o">+=</span> <span class="n">angle</span><span class="o">*</span><span class="n">factor</span>
+        
+    <span class="n">abs_total</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">total_angle</span><span class="p">)</span>
+    
+    <span class="n">inside</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">abs_total</span> <span class="o">-</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tolerance</span>
+    
+    <span class="k">return</span> <span class="n">inside</span></div>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="mesh_inside_box_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.mesh_inside_box_test">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">mesh_inside_box_test</span><span class="p">(</span><span class="n">Compartment</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a mesh intersects at some point with the simulation box.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Compartment : `object`</span>
+<span class="sd">        Instance of Compartment class</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `boolean`</span>
+<span class="sd">        True if mesh intersects with simulation box.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">Compartment</span><span class="o">.</span><span class="n">AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="n">System</span><span class="o">.</span><span class="n">AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">Compartment</span><span class="o">.</span><span class="n">AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="n">AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    
+    <span class="n">AABB_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">AABB_extents</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="o">/</span><span class="mi">2</span>
+    
+    <span class="n">Intersection</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">Compartment</span><span class="o">.</span><span class="n">triangle_ids</span><span class="p">:</span>
+        <span class="n">triangle_index</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
+        <span class="c1"># triangle = [System.vertices[triangle_index[0]], System.vertices[triangle_index[1]], System.vertices[triangle_index[2]]]</span>
+        <span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle_index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle_index</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        
+        <span class="k">if</span> <span class="n">triangle_cell_intersection_test</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span> <span class="n">AABB_center</span><span class="p">,</span> <span class="n">AABB_extents</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">Intersection</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+    <span class="k">return</span> <span class="n">Intersection</span></div>
+    
+<span class="c1">#%%</span>
+
+
+<div class="viewcode-block" id="triangle_cell_intersection_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.triangle_cell_intersection_test">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">triangle_cell_intersection_test</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span> <span class="n">cell_center</span><span class="p">,</span> <span class="n">cell_extent</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a triangle intersects with a cell. Based on :cite:p:`Ericson2004`, :cite:p:`AkenineMoellser2001` (See &quot;Real-Time Collision Detection&quot;, Chapter 5.2.9 &quot;Testing AAB Against Triangle&quot;, p.169 ff). The algorithm is used to create the cell list for the mesh compartment triangles.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    cell_center : `float64[3]`</span>
+<span class="sd">        Center of the cell</span>
+<span class="sd">    cell_extent : `float64[3]`</span>
+<span class="sd">        Extent of cell</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `boolean`</span>
+<span class="sd">        True if triangle intersects with cell.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+
+    <span class="c1"># Translate triangle as conceptually moving AABB to origin</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">cell_center</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">cell_center</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">cell_center</span>
+
+    <span class="c1"># Compute edge vectors for triangle</span>
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p1</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p2</span>
+
+    <span class="c1"># Test axes a00..a22 (category 3)</span>
+    <span class="c1"># Test axis a00 (d0 = d1)</span>
+    <span class="c1"># d0 = p0[2]*e0[1]-p0[1]*e0[2]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a01 (d1 = d2)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># d1 = p1[2]*e1[1]-p1[1]*e1[2]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d2</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a02 (d0 = d2)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># d2 = p2[2]*e2[1]-p2[1]*e2[2]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a10 (d0 = d1)</span>
+    <span class="c1"># d0 = p0[0]*e0[2]-p0[2]*e0[0]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a11 (d1 = d2)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># d1 = p1[0]*e1[2]-p1[2]*e1[0]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d2</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a12 (d0 = d2)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># d2 = p2[0]*e2[2]-p2[2]*e2[0]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a20 (d0 = d1)</span>
+    <span class="c1"># d0 = p0[1]*e0[0]-p0[0]*e0[1]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a21 (d1 = d2)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># d1 = p1[1]*e1[0]-p1[0]*e1[1]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d2</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Test axis a22 (d0 = d2)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># d2 = p2[1]*e2[0]-p2[0]*e2[1]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+
+    <span class="c1"># Test the three axes corresponding to the face normals of AABB (category 1)</span>
+    <span class="c1"># Exit if...</span>
+    <span class="c1"># ... [-cell_extent[0], cell_extent[0]] and [min(p0[0],p1[0],p2[0]), max(p0[0],p1[0],p2[0])] do not overlap</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># ... [-cell_extent[1], cell_extent[1]] and [min(p0[1],p1[1],p2[1]), max(p0[1],p1[1],p2[1])] do not overlap</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># ... [-cell_extent[2], cell_extent[2]] and [min(p0[2],p1[2],p2[2]), max(p0[2],p1[2],p2[2])] do not overlap</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+    <span class="c1"># Test separating axis corresponding to triangle face normal (category 2)</span>
+    <span class="c1"># normal = np.cross(e0, e1)</span>
+    <span class="n">normal_x</span> <span class="o">=</span> <span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">normal_y</span> <span class="o">=</span> <span class="n">e0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">e1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">normal_z</span> <span class="o">=</span> <span class="n">e0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">e0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># distance = np.dot(normal, p0)</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">normal_x</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">normal_y</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">normal_z</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">cell_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal_z</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">return</span> <span class="kc">True</span></div>
+  
+<span class="c1">#%%</span>
+
+<span class="c1"># ------------------------</span>
+<span class="c1"># Barycentric Coordinates</span>
+<span class="c1"># ------------------------</span>
+
+<div class="viewcode-block" id="edge_intersection_barycentric"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.edge_intersection_barycentric">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">edge_intersection_barycentric</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">du</span><span class="p">,</span> <span class="n">dv</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests intersection of a line segment with triangle edges in barycentric coordinates and returns the edge index and distance to the edge. Edges must be numbered counter clockwise.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : `float64`</span>
+<span class="sd">        Barycentric u coordinate</span>
+<span class="sd">    v : `float64`</span>
+<span class="sd">        Barycentric v coordinate</span>
+<span class="sd">    du : `float64`</span>
+<span class="sd">        Barycentric u coordinate of the line segment</span>
+<span class="sd">    dv : `float64`</span>
+<span class="sd">        Barycentric v coordinate of the line segment</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(int64, float64)`</span>
+<span class="sd">        Edge index, distance to edge</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
+    
+    <span class="c1"># edge 0</span>
+    <span class="k">if</span> <span class="n">dv</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span> <span class="n">dv</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="c1"># edge 1</span>
+    <span class="k">if</span> <span class="n">du</span> <span class="o">+</span> <span class="n">dv</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">u</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">du</span> <span class="o">+</span> <span class="n">dv</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="c1"># edge 2</span>
+    <span class="k">if</span> <span class="n">du</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="o">-</span><span class="n">u</span> <span class="o">/</span> <span class="n">du</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        
+        
+    <span class="c1"># Test for the smallest positive distance to an edge:</span>
+    <span class="c1"># min([i for i in [t0, t1, t2] if i &gt;= eps])</span>
+    
+    <span class="k">if</span> <span class="n">t0</span> <span class="o">&gt;=</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t0</span> <span class="o">&lt;=</span> <span class="n">t1</span> <span class="ow">or</span> <span class="n">t1</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t0</span> <span class="o">&lt;=</span> <span class="n">t2</span> <span class="ow">or</span> <span class="n">t2</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t0</span> <span class="c1"># edge 0</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># We already know that t2 &lt; t0 and t0 &lt; t1</span>
+                <span class="k">return</span> <span class="mi">2</span><span class="p">,</span> <span class="n">t2</span>
+            
+        <span class="k">elif</span> <span class="n">t1</span> <span class="o">&lt;=</span> <span class="n">t2</span> <span class="ow">or</span> <span class="n">t2</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span> <span class="c1"># We already know that t1&lt;t0 and t1&gt;= eps.</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="n">t1</span> <span class="c1"># edge 1</span>
+        
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#  We already know that t2&lt;t1 amd t2&gt;= eps and since t1&lt;t0 -&gt; t2&lt;t0.</span>
+            <span class="k">return</span> <span class="mi">2</span><span class="p">,</span> <span class="n">t2</span> <span class="c1"># edge 2</span>
+            
+    <span class="k">elif</span> <span class="n">t1</span> <span class="o">&gt;=</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t1</span> <span class="o">&lt;=</span> <span class="n">t2</span> <span class="ow">or</span> <span class="n">t2</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span> <span class="c1"># t0 is already rejected.</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="n">t1</span> <span class="c1"># edge 1</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># t0 and t1 are rejected and we already know that t2 &lt; eps.</span>
+            <span class="k">return</span> <span class="mi">2</span><span class="p">,</span> <span class="n">t2</span> <span class="c1"># edge 2</span>
+
+    <span class="k">elif</span> <span class="n">t2</span> <span class="o">&gt;=</span> <span class="n">eps</span><span class="p">:</span> <span class="c1"># t0 and t1 are already rejected</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="p">,</span> <span class="n">t2</span> <span class="c1"># edge 2</span>
+
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># t0, t1 and t2 are all larger than eps.</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span></div>
+    
+    
+
+<div class="viewcode-block" id="point_in_triangle_barycentric"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.point_in_triangle_barycentric">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">point_in_triangle_barycentric</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a point given in barycentric coordinates is inside the triangle.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : `float64`</span>
+<span class="sd">        Barycentric u coordinate</span>
+<span class="sd">    v : `float64`</span>
+<span class="sd">        Barycentric v coordinate</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `boolean`</span>
+<span class="sd">        True if point is inside the triangle.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">eps</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e-10</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">eps</span><span class="o">&lt;=</span><span class="n">u</span><span class="o">&lt;=</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">eps</span><span class="o">&lt;=</span><span class="n">v</span><span class="o">&lt;=</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">u</span><span class="o">+</span><span class="n">v</span><span class="o">&lt;=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+    
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="any_ray_mesh_intersection_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.any_ray_mesh_intersection_test">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">any_ray_mesh_intersection_test</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">dX_O</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if their is any intersection of a line segment with the mesh. Returns as soon as the first intersection is detected. The algorithm is based on :cite:p:`Amanatides87` : Amanatides et al. 1987 &quot;A Fast Voxel Traversal Algorithm for Ray Tracing&quot; Also see :cite:p:`Ericson2004` : Ericson &quot;Real-Time Collision Detection&quot;, chapter 7.4.2 and 7.7</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    origin : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    dX_O : `float64[3]`</span>
+<span class="sd">        Direction vector</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class       </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `boolean`</span>
+<span class="sd">        True if any intersection is found.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dX_O</span><span class="p">)</span>
+    
+    <span class="n">current_triangle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="n">passed_all</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    
+    <span class="n">Max</span> <span class="o">=</span> <span class="mi">100000</span>
+    <span class="n">cx_max</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cy_max</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">cz_max</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">passed_all</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Need to increase time_stamp such that for the follow up ray, no triangles are excluded from the intersection test.</span>
+        <span class="c1"># Problem: We may end up intersecting the triangle we are currently located on!</span>
+        <span class="c1"># Solution: Save the current triangle and exclude it from the intersection test!</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">t_min</span> <span class="o">=</span> <span class="mf">1e10</span>
+        <span class="n">triangle_of_intersection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">intersection</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        
+        <span class="c1"># INITIALIZATION PHASE:</span>
+            
+        <span class="c1"># identifying the voxel in which the ray System.origin is found:</span>
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        
+        <span class="n">cx_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(((</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cy_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(((</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cz_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(((</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cx_end</span> <span class="o">-=</span> <span class="n">cx_end</span><span class="o">//</span><span class="n">cx_max</span><span class="o">*</span><span class="n">cx_max</span>
+            <span class="n">cy_end</span> <span class="o">-=</span> <span class="n">cy_end</span><span class="o">//</span><span class="n">cy_max</span><span class="o">*</span><span class="n">cy_max</span>
+            <span class="n">cz_end</span> <span class="o">-=</span> <span class="n">cz_end</span><span class="o">//</span><span class="n">cz_max</span><span class="o">*</span><span class="n">cz_max</span>
+        
+        <span class="n">Next</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cx_end</span> <span class="o">==</span> <span class="n">cx</span> <span class="ow">and</span> <span class="n">cy_end</span> <span class="o">==</span> <span class="n">cy</span> <span class="ow">and</span> <span class="n">cz_end</span> <span class="o">==</span> <span class="n">cz</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">Next</span><span class="p">:</span>
+
+            <span class="c1"># the variables stepX and stepY are initialized to either 1 or -1 indicating whether X and Y are incremented or decremented</span>
+            <span class="n">stepX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">stepY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">stepZ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+            <span class="c1"># Next, we determine the value of t at which the ray crosses the ﬁrst vertical voxel boundary and store it in variable tMaxX.</span>
+            <span class="n">next_voxel_boundary_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx</span><span class="o">+</span><span class="n">stepX</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">cx</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">next_voxel_boundary_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">cy</span><span class="o">+</span><span class="n">stepY</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">cy</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">next_voxel_boundary_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">cz</span><span class="o">+</span><span class="n">stepZ</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">cz</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="n">tMaxX</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_voxel_boundary_x</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+            <span class="n">tMaxY</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_voxel_boundary_y</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+            <span class="n">tMaxZ</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_voxel_boundary_z</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+        
+            <span class="c1"># Finally, we compute tDeltaX and tDeltaY. TDeltaX indicates how far along the ray we must move (in units of t) for the horizontal component of such a movement to equal the width of a voxel.</span>
+            <span class="n">tDeltaX</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">stepX</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+            <span class="n">tDeltaY</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">stepY</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+            <span class="n">tDeltaZ</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">stepZ</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+        
+        
+        <span class="c1">#INCREMENTAL PHASE:</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="n">Next</span><span class="p">):</span>
+            
+            <span class="n">cell</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            
+            <span class="n">intersection</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">triangle_of_intersection</span> <span class="o">=</span> <span class="n">ray_mesh_intersection_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">triangle_of_intersection</span><span class="p">,</span> <span class="n">current_triangle</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">intersection</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">tMaxX</span> <span class="o">&lt;</span> <span class="n">tMaxY</span><span class="p">):</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">tMaxX</span> <span class="o">&lt;</span> <span class="n">tMaxZ</span><span class="p">):</span> 
+                <span class="n">cx</span> <span class="o">+=</span> <span class="n">stepX</span>
+                <span class="n">tMaxX</span> <span class="o">+=</span> <span class="n">tDeltaX</span>
+                
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">cx</span><span class="o">&gt;=</span><span class="n">cx_max</span><span class="p">:</span>
+                        
+                        <span class="n">boundary_x</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tX</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_x</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tX</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tX</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+    
+                    <span class="k">elif</span> <span class="n">cx</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                        
+                        <span class="n">boundary_x</span> <span class="o">=</span> <span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tX</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_x</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tX</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tX</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                            
+                    
+              <span class="k">else</span><span class="p">:</span>
+                <span class="n">cz</span> <span class="o">+=</span> <span class="n">stepZ</span>
+                <span class="n">tMaxZ</span> <span class="o">+=</span> <span class="n">tDeltaZ</span>
+                
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">cz</span><span class="o">&gt;=</span><span class="n">cz_max</span><span class="p">:</span>
+    
+                        <span class="n">boundary_z</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tZ</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_z</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                            
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+                    <span class="k">elif</span> <span class="n">cz</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                        
+                        <span class="n">boundary_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tZ</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_z</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                            
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+             
+            <span class="k">else</span><span class="p">:</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">tMaxY</span> <span class="o">&lt;</span> <span class="n">tMaxZ</span><span class="p">):</span>
+                  
+                <span class="n">cy</span> <span class="o">+=</span> <span class="n">stepY</span>
+                <span class="n">tMaxY</span> <span class="o">+=</span> <span class="n">tDeltaY</span>
+                
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">cy</span><span class="o">&gt;=</span><span class="n">cy_max</span><span class="p">:</span>
+                        
+                        <span class="n">boundary_y</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tY</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_y</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tY</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tY</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                            
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+                    <span class="k">elif</span> <span class="n">cy</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                        <span class="n">cy</span><span class="o">+=</span><span class="n">cy_max</span>
+                        
+                        <span class="n">boundary_y</span> <span class="o">=</span> <span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tY</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_y</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tY</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tY</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+                    
+              <span class="k">else</span><span class="p">:</span>   
+                <span class="n">cz</span> <span class="o">+=</span> <span class="n">stepZ</span>
+                <span class="n">tMaxZ</span> <span class="o">+=</span> <span class="n">tDeltaZ</span>
+                
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">boundary_condition_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">cz</span><span class="o">&gt;=</span><span class="n">cz_max</span><span class="p">:</span>
+                        
+                        <span class="n">boundary_z</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tZ</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_z</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                            
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+                    <span class="k">elif</span> <span class="n">cz</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                        
+                        <span class="n">boundary_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">tZ</span> <span class="o">=</span> <span class="p">(</span><span class="n">boundary_z</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="n">pos</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        
+                        <span class="n">dX</span><span class="p">[:]</span> <span class="o">-=</span> <span class="n">tZ</span><span class="o">*</span><span class="n">dX</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        
+                        <span class="n">crossed_border</span> <span class="o">=</span> <span class="kc">True</span>
+                        
+            
+            
+            <span class="k">if</span> <span class="n">crossed_border</span><span class="p">:</span>
+                
+                <span class="n">Next</span> <span class="o">=</span> <span class="kc">False</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                
+                <span class="c1"># Loop until we reach end point</span>
+                <span class="n">Next</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cx_end</span> <span class="o">==</span> <span class="n">cx</span> <span class="ow">and</span> <span class="n">cy_end</span> <span class="o">==</span> <span class="n">cy</span> <span class="ow">and</span> <span class="n">cz_end</span> <span class="o">==</span> <span class="n">cz</span><span class="p">)</span>   
+                
+                
+        <span class="c1"># After we exit the while loop, we still need to check the las cell for any collisions if correct_intersection_found is still False:</span>
+        <span class="k">if</span> <span class="n">crossed_border</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            
+            <span class="n">intersection</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">triangle_of_intersection</span> <span class="o">=</span> <span class="n">ray_mesh_intersection_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">triangle_of_intersection</span><span class="p">,</span> <span class="n">current_triangle</span><span class="p">)</span>                
+            
+            <span class="k">if</span> <span class="n">intersection</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="kc">True</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                
+                <span class="n">passed_all</span> <span class="o">=</span> <span class="kc">True</span>
+            
+        <span class="k">if</span> <span class="n">count</span><span class="o">&gt;</span><span class="mi">100</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;canceled while loop&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">)</span>
+            <span class="n">passed_all</span> <span class="o">=</span> <span class="kc">True</span>
+              
+    
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="ray_mesh_intersection_count"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.ray_mesh_intersection_count">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">ray_mesh_intersection_count</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">time_stamp</span><span class="p">,</span> <span class="n">comp_id</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Counts the number of times a line segments collides/intersects with a mesh surface. Can  be used, e.g., to test whether a point sites inside or outside a mesh if we know that the end point of the line segment is outside the mesh. If the intersection count is odd, the point is located inside the mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    dX : `float64[3]`</span>
+<span class="sd">        Direction vector</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class   </span>
+<span class="sd">    cell : `int64`</span>
+<span class="sd">        Cell in which to check for ray triangle collisions</span>
+<span class="sd">    time_stamp : `int64`        </span>
+<span class="sd">        Each triangle keeps a time stamp that indicates whether the triangle has already been tested for collisions with the current ray. The time stamp is increased every time a new ray is cast.</span>
+<span class="sd">    comp_id : `int64`</span>
+<span class="sd">        Compartment index</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`~pyrid.geometry.intersections_util.point_inside_mesh_test2`</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `int64`</span>
+<span class="sd">        Number of intersections</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">intersection</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="o">.</span><span class="n">head</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">head</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        
+        <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="n">head</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">comp_id</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;comp_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">:</span>
+            <span class="c1"># Make sure that this triangle has not yet been tested in another cell for the same ray using the time_stamp:</span>
+            <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">!=</span><span class="n">time_stamp</span><span class="p">:</span>
+                <span class="n">triangle</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]]</span>
+                <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">time_stamp</span>
+                
+                <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                
+                <span class="n">intersection</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ray_triangle_intersection</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+                
+                <span class="n">count</span> <span class="o">+=</span> <span class="n">intersection</span>
+            
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="n">head</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+
+        <span class="k">while</span> <span class="nb">next</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span>
+            
+            <span class="n">Tri_idx</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="nb">next</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">comp_id</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;comp_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">:</span>
+                <span class="c1"># Only continue if this triangle has not yet been checked for collision!  </span>
+                <span class="k">if</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">!=</span><span class="n">time_stamp</span><span class="p">:</span>
+                    <span class="n">triangle</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]]</span>
+                    <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">Tri_idx</span><span class="p">][</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">time_stamp</span>
+                    
+                    <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    
+                    <span class="n">intersection</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ray_triangle_intersection</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+                    
+                    <span class="n">count</span> <span class="o">+=</span> <span class="n">intersection</span>
+    
+            <span class="nb">next</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">CellList</span><span class="p">[</span><span class="nb">next</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+        
+    <span class="k">return</span> <span class="n">count</span></div>
+    
+
+
+<div class="viewcode-block" id="point_inside_mesh_test_raycasting"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/intersections_util.html#pyrid.geometry.intersections_util.point_inside_mesh_test_raycasting">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">point_inside_mesh_test_raycasting</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">comp_id</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span> <span class="c1">#, my_end_point = None):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests if a point id inside or outside a mesh. </span>
+<span class="sd">    The algorithm casts a ray from the given point and counts the number of times it intersects with a triangle/the mesh surface.</span>
+<span class="sd">    If the ray passes an odd number of triangles, it is in the mesh compartment (see &#39;point in polygon problem&#39;). </span>
+<span class="sd">    For efficiency, we divide space into cells and do a fast voxel traversal.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    comp_id : `int64`</span>
+<span class="sd">        Compartment index</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class   </span>
+<span class="sd">    </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    boolean</span>
+<span class="sd">        True if the point is inside the mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="c1"># The first thing we can do is check, if the point is inside or outside the mesh AABB:</span>
+    
+    <span class="c1"># If the point is outside the AABB, there is no need to continue and check if it may </span>
+    <span class="c1"># still be inside the mesh, which, by definition of the AABB it wont!</span>
+    <span class="c1"># However, if the compartment is System and not a mesh, the opposite is true. </span>
+    <span class="c1"># If the point is outside, i.e. inside some AABB, it might still be inside System. </span>
+    
+    <span class="c1"># The point is inside comp 0 (System) if it is outside all the other compartments</span>
+    <span class="k">if</span> <span class="n">comp_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="n">inside_system</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">comp_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Compartments</span><span class="p">)):</span>
+            <span class="n">inside_system</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">point_inside_AABB_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">Compartments</span><span class="p">[</span><span class="n">comp_id</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">AABB</span><span class="p">)</span> <span class="ow">and</span> <span class="n">inside_system</span>
+            
+        <span class="k">if</span> <span class="n">inside_system</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inside_comp</span> <span class="o">=</span> <span class="n">point_inside_AABB_test</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">Compartments</span><span class="p">[</span><span class="n">comp_id</span><span class="p">]</span><span class="o">.</span><span class="n">AABB</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">inside_comp</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+    <span class="c1"># RAYCAST</span>
+    
+    <span class="c1"># if no endpoint is given (we may also pass an endpoint from which we know that </span>
+    <span class="c1"># it is outside any mesh), we simply calculate the closest point to the AABB.</span>
+    <span class="c1"># Thereby, the ray we cast is as short as possible, so we dont need to check that many cells for triangle collisions.</span>
+    <span class="c1"># if my_end_point is None:</span>
+        
+    <span class="k">if</span> <span class="n">comp_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="n">closest_boundary_point</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">AABB_all</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">AABB</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="n">closest_boundary_point</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">Compartments</span><span class="p">[</span><span class="n">comp_id</span><span class="p">]</span><span class="o">.</span><span class="n">AABB</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">AABB</span><span class="p">)</span>
+    
+
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">end_point</span> <span class="o">-</span> <span class="n">pos</span>
+    
+    <span class="n">intersection_count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">Max</span> <span class="o">=</span> <span class="mi">100000</span>
+        
+    
+    <span class="c1"># INITIALIZATION PHASE:</span>
+        
+    <span class="c1"># identifying the voxel in which the ray System.origin is found:</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">cz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    
+    <span class="n">cx_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(((</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cy_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(((</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">cz_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(((</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    
+    <span class="c1"># the variables stepX and stepY are initialized to either 1 or -1 indicating whether X and Y are incremented or decremented</span>
+    <span class="n">stepX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">stepY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">stepZ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Next, we determine the value of t at which the ray crosses the ﬁrst vertical voxel boundary and store it in variable tMaxX.</span>
+    <span class="n">next_voxel_boundary_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx</span><span class="o">+</span><span class="n">stepX</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">cx</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">next_voxel_boundary_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">cy</span><span class="o">+</span><span class="n">stepY</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">cy</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">next_voxel_boundary_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">cz</span><span class="o">+</span><span class="n">stepZ</span><span class="p">)</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">cz</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">tMaxX</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_voxel_boundary_x</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+    <span class="n">tMaxY</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_voxel_boundary_y</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+    <span class="n">tMaxZ</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_voxel_boundary_z</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">System</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+
+    <span class="c1"># Finally, we compute tDeltaX and tDeltaY. TDeltaX indicates how far along the ray we must move (in units of t) for the horizontal component of such a movement to equal the width of a voxel.</span>
+    <span class="n">tDeltaX</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">stepX</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+    <span class="n">tDeltaY</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">stepY</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+    <span class="n">tDeltaZ</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">cell_length_per_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">stepZ</span> <span class="k">if</span> <span class="p">(</span><span class="n">dX</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">Max</span>
+    
+    <span class="n">cell</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="n">intersection_count</span> <span class="o">+=</span> <span class="n">ray_mesh_intersection_count</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span><span class="p">,</span> <span class="n">comp_id</span><span class="p">)</span>
+    
+    <span class="c1">#INCREMENTAL PHASE:</span>
+    
+    <span class="n">Next</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cx_end</span> <span class="o">==</span> <span class="n">cx</span> <span class="ow">and</span> <span class="n">cy_end</span> <span class="o">==</span> <span class="n">cy</span> <span class="ow">and</span> <span class="n">cz_end</span> <span class="o">==</span> <span class="n">cz</span><span class="p">)</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">Next</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tMaxX</span> <span class="o">&lt;</span> <span class="n">tMaxY</span><span class="p">):</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">tMaxX</span> <span class="o">&lt;</span> <span class="n">tMaxZ</span><span class="p">):</span>
+            <span class="n">cx</span> <span class="o">+=</span> <span class="n">stepX</span>
+            <span class="n">tMaxX</span> <span class="o">+=</span> <span class="n">tDeltaX</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="n">cz</span> <span class="o">+=</span> <span class="n">stepZ</span>
+            <span class="n">tMaxZ</span> <span class="o">+=</span> <span class="n">tDeltaZ</span>
+         
+        <span class="k">else</span><span class="p">:</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">tMaxY</span> <span class="o">&lt;</span> <span class="n">tMaxZ</span><span class="p">):</span>
+            <span class="n">cy</span> <span class="o">+=</span> <span class="n">stepY</span>
+            <span class="n">tMaxY</span> <span class="o">+=</span> <span class="n">tDeltaY</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="n">cz</span> <span class="o">+=</span> <span class="n">stepZ</span>
+            <span class="n">tMaxZ</span> <span class="o">+=</span> <span class="n">tDeltaZ</span>
+            
+        <span class="n">cell</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">cy</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cz</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">System</span><span class="o">.</span><span class="n">cells_per_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="c1"># Loop until we reach end point</span>
+        <span class="n">Next</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cx_end</span> <span class="o">==</span> <span class="n">cx</span> <span class="ow">and</span> <span class="n">cy_end</span> <span class="o">==</span> <span class="n">cy</span> <span class="ow">and</span> <span class="n">cz_end</span> <span class="o">==</span> <span class="n">cz</span><span class="p">)</span>   
+        
+        <span class="n">intersection_count</span> <span class="o">+=</span> <span class="n">ray_mesh_intersection_count</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dX</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">System</span><span class="o">.</span><span class="n">time_stamp</span><span class="p">,</span> <span class="n">comp_id</span><span class="p">)</span>
+        
+
+    <span class="k">if</span> <span class="n">comp_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="c1"># For System, to be &#39;inside&#39; means outside, which is the case for </span>
+        <span class="c1"># intersection_count beeing even (which of course includes 0).</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">intersection_count</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="c1"># For any mesh compartment, inside is true for intersection_count beeing odd</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">intersection_count</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span></div>
+    
+<span class="c1">#%%</span>
+
+<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
+    
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

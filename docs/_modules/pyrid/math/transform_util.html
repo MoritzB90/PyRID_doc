@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.math.transform_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.math.transform_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.math.transform_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">cmath</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="c1"># ------------</span>
+<span class="c1"># Tests</span>
+<span class="c1"># ------------</span>
+
+<div class="viewcode-block" id="isclose"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.isclose">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a boolean array where two arrays are element-wise equal within a tolerance.</span>
+<span class="sd">    Reduced copy of the numpy fucntion isclose(), which is, however, currently not supported by numba.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b : array_like</span>
+<span class="sd">        Input arrays to compare.</span>
+<span class="sd">    rtol : float</span>
+<span class="sd">        The relative tolerance parameter.</span>
+<span class="sd">    atol : float</span>
+<span class="sd">        The absolute tolerance parameter.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rel_tol</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span> <span class="n">abs_tol</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="valid_mobility_tensor_test"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.valid_mobility_tensor_test">[docs]</a><span class="k">def</span> <span class="nf">valid_mobility_tensor_test</span><span class="p">(</span><span class="n">Mu</span><span class="p">,</span> <span class="n">Mu_sqrt</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests whether a mobility tensor i a positive semidefinite matrix. For mobility tensors and diffusion tesnors to have proper physical meaning, they should be real positive semidefinite. . </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Mu : `float64[3,3]`</span>
+<span class="sd">        Mobility tensor</span>
+<span class="sd">    Mu_sqrt : `float64[3,3]`</span>
+<span class="sd">        Square root of mobility tensor</span>
+<span class="sd">    </span>
+<span class="sd">    .. note::</span>
+<span class="sd">        </span>
+<span class="sd">        Experimentaly estimated diffusion tensors are, although non-physical, not always positive semidefinite (see e.g. :cite:t`Niethammer2006`).</span>
+<span class="sd">        Also, in case of overlapping beads, the diffusion tensor calculated by PyRID is not necessarily positive semidefinite!</span>
+<span class="sd">        </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`~pyrid.molecules.hydro_util`</span>
+<span class="sd">        </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Warning(&#39;Diffusion tensor should be a positive semidefinite matrix!&#39;)</span>
+<span class="sd">        Warning is raised if the diffusion tensor and the mobility tensor respectively are not positive semidefinite.</span>
+<span class="sd">    ValueError(&#39;Error: complex square root of the mobility tensor detected. Square root must be real valued (Diffusion tensor should be a real positive semidefinite matrix).&#39;)</span>
+<span class="sd">        Raised in case the square root of the mobility tensor contains complex values.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Note: Experimentaly estimated diffusion tensors are, although non-physical, not always positive semidefinite (see e.g. Niethammer et al. 2006, &quot;On Diffusion Tensor Estimation&quot;, IEEE)</span>
+    
+    <span class="c1"># Diagonalize</span>
+    <span class="n">eVal</span><span class="p">,</span> <span class="n">eVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">Mu</span><span class="p">)</span>
+    <span class="c1"># Test if positive definite:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">eVal</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s1">&#39;Diffusion tensor should be a positive semidefinite matrix!&#39;</span><span class="p">)</span>
+    
+    <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-05</span>
+    
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Mu_sqrt</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">0.0</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Mu_sqrt</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">Mu_sqrt</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">/</span><span class="n">Mu_sqrt</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;</span> <span class="n">rtol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Error: complex square root of the mobility tensor detected. Square root must be real valued (Diffusion tensor should be a real positive semidefinite matrix).&#39;</span><span class="p">)</span></div>
+       
+
+<div class="viewcode-block" id="is_diagonal"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.is_diagonal">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">is_diagonal</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Tests whether matrix x is diagonal.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : `float[:,:]`</span>
+<span class="sd">        Matrix</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-05</span>
+    
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">M</span><span class="p">))))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">M</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="n">rtol</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Matrix is not diagonal!&#39;</span><span class="p">)</span></div>
+        
+
+<span class="c1">#%%</span>
+
+<span class="c1"># ---------------</span>
+<span class="c1"># Mapping</span>
+<span class="c1"># ---------------</span>
+
+<div class="viewcode-block" id="cantor_pairing"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.cantor_pairing">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">cantor_pairing</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;The Cantor pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k1 : `uint64`</span>
+<span class="sd">        Natural number 1</span>
+<span class="sd">    k3 : `uint64`</span>
+<span class="sd">        Natural number 2</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is just needed when validating the reaction registry class against</span>
+<span class="sd">    new implementations which may change the order in which reactions are evaluated. The Cantor pairing function enables to assign a unique id to each educt pair and thereby enables sorting the reactions by the educts! Educt order is not exchangeable!</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `uint64`</span>
+<span class="sd">        Result of the Cantor pairing</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">k1</span><span class="o">+</span><span class="n">k2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">k1</span><span class="o">+</span><span class="n">k2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">k2</span></div>
+
+
+<div class="viewcode-block" id="unique_pairing"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.unique_pairing">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">unique_pairing</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;The unique pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k1 : `uint64`</span>
+<span class="sd">        Natural number 1</span>
+<span class="sd">    k3 : `uint64`</span>
+<span class="sd">        Natural number 2</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is just needed when validating the reaction handling functions against</span>
+<span class="sd">    new implementations which may change the order in whcih reactions are resolved. The function enables to assign a unique id for each educt pair and thereby enables sorting the reactions by the educts! Educt order is exchangeable!</span>
+<span class="sd">    </span>
+<span class="sd">    from: https://math.stackexchange.com/questions/882877/produce-unique-number-given-two-integers</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `uint64`</span>
+<span class="sd">        Result of the unique pairing</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">max_</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">max_</span><span class="o">*</span><span class="p">(</span><span class="n">max_</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="nb">min</span><span class="p">((</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">))</span></div>
+    
+
+<span class="c1">#%%</span>
+
+<span class="c1"># ----------------------</span>
+<span class="c1"># Some usefull functions</span>
+<span class="c1"># ----------------------</span>
+
+<div class="viewcode-block" id="sqrt_matrix"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.sqrt_matrix">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">sqrt_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the square root of a matrix by doing an eigenvalue decomposition and then taking the square root of the eigenvalues before reconstructing the matric form. Only works for diagonalzable matrices!</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : `float[:,:]`</span>
+<span class="sd">        Matrix</span>
+<span class="sd">    </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`~pyrid.math.transform_util.is_diagonal`</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[:,:]`</span>
+<span class="sd">        Square root of matric M</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">sqrtc</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+        
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="c1"># Diagonalize</span>
+    <span class="n">eVal</span><span class="p">,</span> <span class="n">eVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="c1"># Test if positive definite:</span>
+    <span class="c1"># if not np.all(eVal.real &gt;= 0):</span>
+    <span class="c1">#     raise ValueError(&#39;Unable to caclulate square root of mobility tensor! Only real positive semidefinite matrices are supported!&#39;)</span>
+    <span class="k">return</span> <span class="n">eVec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">sqrtc</span><span class="p">(</span><span class="n">eVal</span><span class="p">)))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">eVec</span><span class="p">))</span><span class="o">.</span><span class="n">real</span></div>
+
+
+<div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.normalize">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Normalizes a vector v.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : `float64[:]`</span>
+<span class="sd">        Vector</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[:]`</span>
+<span class="sd">        Normalized vector</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normal_vector"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.normal_vector">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">normal_vector</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns the normal vector of a triangle given its vertex vectors p0, p1 and p2.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    </span>
+<span class="sd">    .. note::</span>
+<span class="sd">        The direction of the triangle normal vector depends on the vertex order (clockwise or counter-clockwise)!</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Normal vector of the triangle.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">e0</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="eij"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.eij">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">eij</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Normalizes the edge represented by the vertices p0 and p1. This edge can be used as the first coordinate vector when constructing a triangle&#39;s local coordinate frame.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Normalized edge vector</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="n">normalize</span><span class="p">(</span><span class="n">p1</span><span class="o">-</span><span class="n">p0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ek"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.ek">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">ek</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span> <span class="n">ej</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Given the triangle vertices p0 and p2 and the normalized triangle edge norm(p1-p0), a vector that is orthogonal to the edge but lies in teh triangle plane is returned. Incombination with the triangle normal vector these 3 vector make up the triangle&#39;s local coordinate frame.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    ej : `float64[3]`</span>
+<span class="sd">        Normalized edge vector p1-p0</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Normalized vector orhogonal to ej that lies within the plane of triangle p0, p1, p2.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="n">normalize</span><span class="p">(</span><span class="n">p2</span><span class="o">-</span><span class="n">p0</span><span class="o">-</span><span class="n">ej</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ej</span><span class="p">,</span><span class="n">p2</span><span class="o">-</span><span class="n">p0</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="local_coord"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.local_coord">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">local_coord</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns the local coordinate system of the triangle represented by the three vertices p0,p1 and p2.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64[3], float64[3], float64[3], float64[3])`</span>
+<span class="sd">        Local coordinate system of the triangle (origin, ex,ey,ez).</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">p0</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">eij</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">)</span>
+    <span class="n">ey</span> <span class="o">=</span> <span class="n">ek</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+    <span class="n">ez</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">normal_vector</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">origin</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span><span class="n">ey</span><span class="p">,</span><span class="n">ez</span></div>
+
+<div class="viewcode-block" id="solid_angle"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.solid_angle">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">solid_angle</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the solid angle defined by the tetraeder that is represented by the triangle with vertices p0, p1, and p2 and the coordinate system origin. Is used by PyRID to determine whether a point sited inside or outside a mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`pyrid.geometry.mesh_util.point_inside_mesh_test`</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Solid angle</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+    
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">),</span><span class="n">p2</span><span class="p">)</span>
+    <span class="n">denomenator</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span><span class="n">p0</span><span class="p">)</span>
+    
+    <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denomenator</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="cross"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.cross">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the cross product between vectors v1 and v2.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v1 : `float64[3]`</span>
+<span class="sd">        Vector 1</span>
+<span class="sd">    v2 : `float64[3]`</span>
+<span class="sd">        Vector 2</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Cross product between v1 and v2.s</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">v0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="n">v0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">v0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="n">v0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="half_angle"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.half_angle">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">half_angle</span><span class="p">(</span><span class="n">cos_phi</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the half angle cosine and sine functions (cos(phi/2), sin(phi/2)) given the full angle cosine function cos(phi).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cos_phi : `float64`</span>
+<span class="sd">        cos(phi).</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, float64)`</span>
+<span class="sd">        sin(phi/2), cos(phi/2)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="o">-</span><span class="mf">1.0</span><span class="o">&lt;=</span><span class="n">cos_phi</span><span class="o">&lt;=</span><span class="mf">1.0</span><span class="p">:</span>
+        <span class="c1"># phi = np.arccos(cos_phi)</span>
+        <span class="n">cos_half</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">cos_phi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">sin_half</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">cos_phi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cos_phi</span><span class="o">&gt;</span><span class="mf">1.0</span><span class="p">:</span>
+        <span class="c1"># phi = 0.0</span>
+        <span class="n">sin_half</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">cos_half</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># phi = pi</span>
+        <span class="n">sin_half</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">cos_half</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+    <span class="k">return</span> <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span></div>
+
+
+<span class="c1">#%%</span>
+
+<span class="c1"># -----------------</span>
+<span class="c1"># Reflection</span>
+<span class="c1"># -----------------</span>
+
+<div class="viewcode-block" id="collision_response"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.collision_response">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">collision_response</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">v_refl</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the collision response of a ray colliding with a mesh triangle.</span>
+<span class="sd">    The collision is resolved via reflection along the triangle plane.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : `float64[3]`</span>
+<span class="sd">        Ray vector which to reflect</span>
+<span class="sd">    normal : `float64[3]`</span>
+<span class="sd">        Normal vector of the triangle plane</span>
+<span class="sd">    v_refl : `float64[3]`</span>
+<span class="sd">        Empty array to be filled with the values of the reflected vector</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Reflection is calculated by</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        \\vec{v}_{ref} = \\vec{v} - 2 (\\vec{v} \\cdot \\hat{n}) \\hat{n}</span>
+<span class="sd">        </span>
+<span class="sd">    where :math:`\\hat{n}` is the normal vector of the plane at which :math:`\\vec{v}` is reflected.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">v_dot_n</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">v_refl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">v_dot_n</span><span class="o">*</span><span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v_refl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">v_dot_n</span><span class="o">*</span><span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">v_refl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">v_dot_n</span><span class="o">*</span><span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
+    
+    
+<span class="c1">#%%</span>
+
+<span class="c1"># -------------------</span>
+<span class="c1"># Quaternions</span>
+<span class="c1"># -------------------</span>
+
+
+
+<div class="viewcode-block" id="rot_quaternion"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.rot_quaternion">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">rot_quaternion</span><span class="p">(</span><span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a_n</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns a quaternion, corresponding to a rotation about a given axis by a given angle. If no angle or axis is passed [1.0, 0.0, 0.0, 0.0] is returned, correpsonding to a rotation by zero degree.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phi : `float64`</span>
+<span class="sd">        Angle, given in rad.</span>
+<span class="sd">    a_n : `float64[3]`</span>
+<span class="sd">        Rotation axis normal vector </span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A rotation around the axis vector :math:`\\boldsymbol{u}` is represented in quaternion form:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{q_{rot}} = \\cos(\\phi/2) + (u_x \\boldsymbol{i} + u_y \\boldsymbol{i} + u_z \\boldsymbol{i}) \\sin(\\phi/2),</span>
+<span class="sd">                                                                                                                                                              </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">a_n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="o">/</span><span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="quaternion_plane_to_plane"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.quaternion_plane_to_plane">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">quaternion_plane_to_plane</span><span class="p">(</span><span class="n">quaternion</span><span class="p">,</span> <span class="n">n0</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">a_n</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    updates the quaternion corresponding to an orientation in plane n0 to the orientation in plane n1 and returns sin(phi) and cos(phi).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quaternion : `float64[4]`</span>
+<span class="sd">        Quaternion</span>
+<span class="sd">    normal : `float64[3]`</span>
+<span class="sd">        Normal vector 1</span>
+<span class="sd">    normal : `float64[3]`</span>
+<span class="sd">        Normal vector 2</span>
+<span class="sd">    a_n : `float64[3]`</span>
+<span class="sd">        Empty rotation axis vector</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[4]`</span>
+<span class="sd">        Rotation quaternion</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># a_n = np.empty(3)</span>
+    
+    <span class="c1">#Rotation into the plane of the triangle:</span>
+        
+    <span class="n">sin_phi</span><span class="p">,</span> <span class="n">cos_phi</span> <span class="o">=</span> <span class="n">axis_angle_parameters</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span><span class="n">n1</span><span class="p">,</span><span class="n">a_n</span><span class="p">)</span>
+    
+    <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span> <span class="o">=</span> <span class="n">half_angle</span><span class="p">(</span><span class="n">cos_phi</span><span class="p">)</span>
+    
+    <span class="n">quaternion0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cos_half</span><span class="p">,</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">sin_half</span><span class="p">,</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sin_half</span><span class="p">,</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">sin_half</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    <span class="n">quaternion</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">quat_mult</span><span class="p">(</span><span class="n">quaternion</span><span class="p">,</span> <span class="n">quaternion0</span><span class="p">)</span>     
+        
+    <span class="k">return</span> <span class="n">sin_phi</span><span class="p">,</span> <span class="n">cos_phi</span></div>
+    
+
+<div class="viewcode-block" id="quaternion_to_plane"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.quaternion_to_plane">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">quaternion_to_plane</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a rotation quaternion representing the rotation of a vector [0.0, 0.0, 1.0] to a given plane normal vector.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    normal : `float64[3]`</span>
+<span class="sd">        Normal vector</span>
+<span class="sd">    quaternion : `float64[4]`</span>
+<span class="sd">        Quaternion</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[4]`</span>
+<span class="sd">        Rotation quaternion</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">a_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="c1">#Rotation into the plane of the triangle:</span>
+    <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span> <span class="o">=</span> <span class="n">axis_halfangle_parameters</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]),</span><span class="n">normal</span><span class="p">,</span><span class="n">a_n</span><span class="p">)</span>
+    
+    <span class="n">quaternion</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cos_half</span><span class="p">,</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">sin_half</span><span class="p">,</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sin_half</span><span class="p">,</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">sin_half</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">quaternion</span></div>
+    
+
+<div class="viewcode-block" id="quaternion_random_axis_rot"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.quaternion_random_axis_rot">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span> 
+<span class="k">def</span> <span class="nf">quaternion_random_axis_rot</span><span class="p">(</span><span class="n">quaternion</span><span class="p">,</span> <span class="n">a_n</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates an orientation quaternion by a random rotation around a given axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">quaternion0</span> <span class="o">=</span> <span class="n">rot_quaternion</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">a_n</span><span class="p">)</span>
+    <span class="n">quaternion</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">quat_mult</span><span class="p">(</span><span class="n">quaternion</span><span class="p">,</span> <span class="n">quaternion0</span><span class="p">)</span></div>
+    
+            
+    
+<div class="viewcode-block" id="quat_mult"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.quat_mult">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">quat_mult</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Executes the quaternion multiplication between two quaternions q1 and q2.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q1 : `float64[4]`</span>
+<span class="sd">        Quaternion 1</span>
+<span class="sd">    q2 : `float64[4]`</span>
+<span class="sd">        Quaternion 2</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[4]`</span>
+<span class="sd">        Quaternion product q1*q2</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">w0</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span> <span class="o">=</span> <span class="n">q1</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">q2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">y0</span> <span class="o">-</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">z0</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">w0</span><span class="p">,</span>
+                     <span class="n">x1</span> <span class="o">*</span> <span class="n">w0</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">z0</span> <span class="o">-</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">x0</span><span class="p">,</span>
+                     <span class="o">-</span><span class="n">x1</span> <span class="o">*</span> <span class="n">z0</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">w0</span> <span class="o">+</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">y0</span><span class="p">,</span>
+                     <span class="n">x1</span> <span class="o">*</span> <span class="n">y0</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">w0</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">z0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
+
+
+
+
+
+<span class="c1">#%%</span>
+
+<span class="c1"># ------------------------</span>
+<span class="c1"># Barycentric Coordinates</span>
+<span class="c1"># ------------------------</span>
+    
+
+<div class="viewcode-block" id="tri_area_2D"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.tri_area_2D">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">tri_area_2D</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the area of a triangle in 2D.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x1 : `float64`</span>
+<span class="sd">        X value of vertex 1</span>
+<span class="sd">    x2 : `float64`</span>
+<span class="sd">        X value of vertex 2</span>
+<span class="sd">    x3 : `float64`</span>
+<span class="sd">        X value of vertex 3</span>
+<span class="sd">    y1 : `float64`</span>
+<span class="sd">        Y value of vertex 1</span>
+<span class="sd">    y2 : `float64`</span>
+<span class="sd">        Y value of vertex 2</span>
+<span class="sd">    y3 : `float64`</span>
+<span class="sd">        y value of vertex 3</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Triangle area  </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y2</span><span class="o">-</span><span class="n">y3</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="barycentric_coord_projection_method"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.barycentric_coord_projection_method">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">barycentric_coord_projection_method</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the barycentric coordinates of a position vector with respect to the triangle represented by the vertices p0, p1, and p2. The algorithm from :cite:t:`Ericson2004` is used. The algorithm takes advantage of the fact that the barycentric coordinates remain invariant under projections. It projects the vertices to either of the planes xy, yz, xz and then calculates the barycentric coordinates from the sub-triangle areas.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    normal : `float64[3]`</span>
+<span class="sd">        Unnormalized triangle normal vector.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, float64)`</span>
+<span class="sd">        Barycentric coordinates u, v.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Nominators and one-over-denominator for u and v ratios</span>
+    <span class="c1"># float nu, nv, ood</span>
+    <span class="c1"># Absolute components for determining projection plane</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># Unnormalized triangle normal</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    
+    <span class="c1"># Compute areas in plane of largest projection</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">z</span><span class="p">):</span>
+        <span class="c1"># x is largest, project to the yz plane</span>
+        <span class="n">nw</span> <span class="o">=</span> <span class="n">tri_area_2D</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># Area of PBC in yz plane</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">tri_area_2D</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># Area of PCA in yz plane</span>
+        <span class="n">ood</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 1/(2*area of ABC in yz plane)</span>
+
+    <span class="k">elif</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="n">z</span><span class="p">):</span>
+        <span class="c1"># y is largest, project to the xz plane</span>
+        <span class="n">nw</span> <span class="o">=</span> <span class="n">tri_area_2D</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">tri_area_2D</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">ood</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="o">-</span><span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># z is largest, project to the xy plane</span>
+        <span class="n">nw</span> <span class="o">=</span> <span class="n">tri_area_2D</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">tri_area_2D</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ood</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">w</span> <span class="o">=</span> <span class="n">nw</span> <span class="o">*</span> <span class="n">ood</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">ood</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">w</span> <span class="o">-</span> <span class="n">u</span>
+
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span></div>
+
+    
+
+<div class="viewcode-block" id="barycentric_params"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.barycentric_params">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">barycentric_params</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Precalculates the fixed parameters for the barycentric coordinates of a triangle represented by the vertices p0, p1, and p2. The algorithm is taken from :cite:t:`Ericson2004`.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">d00</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">e0</span><span class="p">,</span> <span class="n">e0</span><span class="p">)</span>
+    <span class="n">d01</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">e0</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    <span class="n">d11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">d00</span> <span class="o">*</span> <span class="n">d11</span> <span class="o">-</span> <span class="n">d01</span> <span class="o">*</span> <span class="n">d01</span>
+    
+    <span class="k">return</span> <span class="n">d00</span><span class="p">,</span> <span class="n">d01</span><span class="p">,</span> <span class="n">d11</span><span class="p">,</span> <span class="n">denom</span></div>
+    
+    
+<div class="viewcode-block" id="barycentric_coord"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.barycentric_coord">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">barycentric_coord</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">barycentric_params</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Calculates the barycentric coordinates of a position vector with respect to the triangle represented by the vertices p0, p1, and p2. The algorithm from :cite:t:`Ericson2004` is used.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    barycentric_params : `float64[4]`</span>
+<span class="sd">        Precalculated parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, float64)`</span>
+<span class="sd">        Barycentric coordinates u, v.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">d00</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">d01</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d11</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        
+    <span class="n">pos_O</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">d20</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pos_O</span><span class="p">,</span> <span class="n">e0</span><span class="p">)</span>
+    <span class="n">d21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pos_O</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    
+    <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="n">d11</span> <span class="o">*</span> <span class="n">d20</span> <span class="o">-</span> <span class="n">d01</span> <span class="o">*</span> <span class="n">d21</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">d00</span> <span class="o">*</span> <span class="n">d21</span> <span class="o">-</span> <span class="n">d01</span> <span class="o">*</span> <span class="n">d20</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="c1"># w = 1.0 - u - v</span>
+
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span></div>
+
+    
+<div class="viewcode-block" id="barycentric_direction"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.barycentric_direction">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">barycentric_direction</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">barycentric_params</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Calculates the barycentric coordinates of a direction vector with respect to the triangle represented by the vertices p0, p1, and p2. The algorithm from :cite:t:`Ericson2004` is used.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    barycentric_params : `float64[4]`</span>
+<span class="sd">        Precalculated parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, float64)`</span>
+<span class="sd">        Barycentric coordinates u, v.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">d00</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">d01</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d11</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">barycentric_params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        
+    <span class="n">d20</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">e0</span><span class="p">)</span>
+    <span class="n">d21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    
+    <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="n">d11</span> <span class="o">*</span> <span class="n">d20</span> <span class="o">-</span> <span class="n">d01</span> <span class="o">*</span> <span class="n">d21</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">d00</span> <span class="o">*</span> <span class="n">d21</span> <span class="o">-</span> <span class="n">d01</span> <span class="o">*</span> <span class="n">d20</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="c1"># w = 1.0 - u - v</span>
+
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span></div>
+
+    
+
+
+<div class="viewcode-block" id="cartesian_coord"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.cartesian_coord">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">cartesian_coord</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the cartesian coordinates of a position vector given in barycentric coordinates.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : `float64`</span>
+<span class="sd">        Barycentric u coordinate</span>
+<span class="sd">    v : `float64`</span>
+<span class="sd">        Barycentric v coordinate</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Position vector in cartesian coordiantes.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">v</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">v</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">v</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="cartesian_direction"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.cartesian_direction">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">cartesian_direction</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the cartesian coordinates of a direction vector given in barycentric coordinates.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    du : `float64`</span>
+<span class="sd">        Barycentric u coordinate of the direction vector</span>
+<span class="sd">    dv : `float64`</span>
+<span class="sd">        Barycentric v coordinate of the direction vector</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Direction vector in cartesian coordiantes.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">du</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">du</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">du</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
+
+<span class="c1">#%%</span>
+
+<span class="c1"># -------------------</span>
+<span class="c1"># Axis Agle Rotations</span>
+<span class="c1"># -------------------</span>
+
+<div class="viewcode-block" id="orthogonal_vector"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.orthogonal_vector">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">orthogonal_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v_perp</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates a vector orthoginal to v.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">v_perp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">v_perp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">v_perp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v_perp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">v_perp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">v_perp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+        
+
+<div class="viewcode-block" id="axis_angle_parameters"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.axis_angle_parameters">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">axis_angle_parameters</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span><span class="n">n1</span><span class="p">,</span><span class="n">a_n</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the normalized rotation axis and angle (sin(phi), cos(phi)) between two normalized vectors. Accounts for the two special cases where n0=n1 and n0=-n1.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n0 : `float64[3]`</span>
+<span class="sd">        Vector 1</span>
+<span class="sd">    n1 : `float64[3]`</span>
+<span class="sd">        Vector 2</span>
+<span class="sd">    a_n : `float64[3]`</span>
+<span class="sd">        Empty vector to be filled with values of the normalized rotation axis vector</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, float64)`</span>
+<span class="sd">        sin(phi), cos(phi)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Rotation axis is given by the cross product:</span>
+    <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">a_n_sqrd</span> <span class="o">=</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+    <span class="k">if</span> <span class="n">a_n_sqrd</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        
+        <span class="c1"># Since we have already calculated the cross product, sin(phi) can efficiently be calculated. </span>
+        <span class="n">a_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a_n_sqrd</span><span class="p">)</span>
+        <span class="n">sin_phi</span> <span class="o">=</span> <span class="n">a_norm</span>
+        <span class="c1"># And cos(phi) by:</span>
+        <span class="n">cos_phi</span> <span class="o">=</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="c1"># normalize the axis vector:</span>
+        <span class="n">a_n</span><span class="p">[:]</span> <span class="o">/=</span> <span class="n">a_norm</span>
+        
+        <span class="k">return</span> <span class="n">sin_phi</span><span class="p">,</span> <span class="n">cos_phi</span>
+        
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># no and n1 are either parallel or antiparallel</span>
+        
+        <span class="n">n0_dot_n1</span> <span class="o">=</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+        <span class="k">if</span> <span class="n">n0_dot_n1</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="p">:</span> <span class="c1"># antiparallel</span>
+            
+            <span class="c1"># If n1 is rotated by 180 relative to n0 there is no unique rotation axis and the cross product is 0. As such, we may rotate about any axis that lies in the plane defined by either of the two vectors:</span>
+            
+            <span class="n">orthogonal_vector</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span> <span class="n">a_n</span><span class="p">)</span> <span class="c1"># Arbitrary vector perpendicular to n0</span>
+            <span class="n">a_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            
+            <span class="n">sin_phi</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># sin(pi) = 0</span>
+            <span class="n">cos_phi</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="c1"># cos(pi) = -1</span>
+            <span class="c1"># normalize the axis vector:</span>
+            <span class="n">a_n</span><span class="p">[:]</span> <span class="o">/=</span> <span class="n">a_norm</span>
+            
+            <span class="k">return</span> <span class="n">sin_phi</span><span class="p">,</span> <span class="n">cos_phi</span>
+        
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># parallel (n0 == n1)</span>
+            
+            <span class="n">cos_phi</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># cos(0) = 1</span>
+            <span class="n">sin_phi</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># sin(0) = 0</span>
+            
+            <span class="k">return</span> <span class="n">sin_phi</span><span class="p">,</span> <span class="n">cos_phi</span></div>
+            
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="axis_halfangle_parameters"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.axis_halfangle_parameters">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">axis_halfangle_parameters</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span><span class="n">n1</span><span class="p">,</span><span class="n">a_n</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the normalized rotation axis and half-angle (sin(phi/2), cos(phi/2)) between two normalized vectors.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n0 : `float64[3]`</span>
+<span class="sd">        Vector 1</span>
+<span class="sd">    n1 : `float64[3]`</span>
+<span class="sd">        Vector 2</span>
+<span class="sd">    a_n : `float64[3]`</span>
+<span class="sd">        Empty vector to be filled with values of the normalized rotation axis vector</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, float64)`</span>
+<span class="sd">        sin(phi), cos(phi)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Rotation axis is given by the cross product:</span>
+    <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">a_n_sqrd</span> <span class="o">=</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+    <span class="k">if</span> <span class="n">a_n_sqrd</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        
+        <span class="n">cos_phi</span> <span class="o">=</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        
+        <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span> <span class="o">=</span> <span class="n">half_angle</span><span class="p">(</span><span class="n">cos_phi</span><span class="p">)</span>
+        
+        <span class="n">a_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="c1"># normalize the axis vector:</span>
+        <span class="n">a_n</span><span class="p">[:]</span> <span class="o">/=</span> <span class="n">a_norm</span>
+        
+        <span class="k">return</span> <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span>
+        
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># no and n1 are either parallel or antiparallel</span>
+        
+        <span class="n">n0_dot_n1</span> <span class="o">=</span> <span class="n">n0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">n0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">n1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+        <span class="k">if</span> <span class="n">n0_dot_n1</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="p">:</span> <span class="c1"># antiparallel</span>
+            
+            <span class="c1"># If n1 is rotated by 180 relative to n0 there is no unique rotation axis and the cross product is [0,0,0]. We could rotate about any axis that lies in the plane defined by either of the two vectors:</span>
+            
+            <span class="n">cos_half</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># cos(pi/2) = 0</span>
+            <span class="n">sin_half</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># sin(pi/2) = 1</span>
+            
+            <span class="n">orthogonal_vector</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span> <span class="n">a_n</span><span class="p">)</span> <span class="c1"># We simply use an arbitrary vector perpendicular to n0 for a_n.</span>
+            <span class="n">a_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">a_n</span><span class="p">[:]</span> <span class="o">/=</span> <span class="n">a_norm</span>
+            
+            <span class="k">return</span> <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span>
+        
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># parallel (n0 == n1)</span>
+            
+            <span class="n">cos_half</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># cos(0) = 1</span>
+            <span class="n">sin_half</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># sin(0) = 0</span>
+            
+            <span class="k">return</span> <span class="n">sin_half</span><span class="p">,</span> <span class="n">cos_half</span></div>
+
+
+
+
+<div class="viewcode-block" id="rodrigues_rot"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.rodrigues_rot">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">rodrigues_rot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">a_n</span><span class="p">,</span> <span class="n">cos_phi</span><span class="p">,</span> <span class="n">sin_phi</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Rotates vector v by an angle alpha around the axis vector a using the Rodriguez rotation formula.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : `float64[3]`</span>
+<span class="sd">        Vector which to rotate</span>
+<span class="sd">    a_n : `float64[3]`</span>
+<span class="sd">        Normalized rotation axis vector.</span>
+<span class="sd">    cos_phi : `float64`</span>
+<span class="sd">        Cosine of the angle phi by which to rotate vector v.</span>
+<span class="sd">    sin_phi : `float64`</span>
+<span class="sd">        Sine of the angle phi by which to rotate vector v.     </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Rotated vector</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># vxa = cross(v, a_n)</span>
+    <span class="n">vxa_0</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">vxa_1</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">vxa_2</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">v_dot_a</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="n">cos_v_dot_a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos_phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">v_dot_a</span>
+
+    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos_phi</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos_v_dot_a</span> <span class="o">-</span> <span class="n">vxa_0</span> <span class="o">*</span> <span class="n">sin_phi</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos_phi</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos_v_dot_a</span> <span class="o">-</span> <span class="n">vxa_1</span> <span class="o">*</span> <span class="n">sin_phi</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos_phi</span> <span class="o">+</span> <span class="n">a_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos_v_dot_a</span> <span class="o">-</span> <span class="n">vxa_2</span> <span class="o">*</span> <span class="n">sin_phi</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

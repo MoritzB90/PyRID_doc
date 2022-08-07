@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hard-Sphere Fluid &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Reactions" href="Reactions.html" />
+    <link rel="prev" title="Diffusion" href="Diffusion.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Validation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Diffusion.html">Diffusion</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Hard-Sphere Fluid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LLPS.html">LLPS</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Validation</a> &raquo;</li>
+      <li>Hard-Sphere Fluid</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Developers/Validation/Hard-Sphere-Fluid.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hard-sphere-fluid">
+<h1>Hard-Sphere Fluid<a class="headerlink" href="#hard-sphere-fluid" title="Permalink to this headline"></a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyrid</span> <span class="k">as</span> <span class="nn">prd</span>
+
+<span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;Files//&#39;</span>
+<span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;Figures//&#39;</span>
+<span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;Hard_Sphere_Fluid&#39;</span>
+
+<span class="n">nsteps</span> <span class="o">=</span> <span class="mf">2e3</span>
+<span class="n">stride</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">obs_stride</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">box_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">75.0</span><span class="p">,</span><span class="mf">75.0</span><span class="p">,</span><span class="mf">75.0</span><span class="p">]</span>
+<span class="n">Temp</span><span class="o">=</span><span class="mf">293.15</span>
+<span class="n">eta</span><span class="o">=</span><span class="mf">1e-21</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="n">Simulation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">box_lengths</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">,</span>
+                            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="p">,</span>
+                            <span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">,</span>
+                            <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="p">,</span>
+                            <span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span><span class="p">,</span>
+                            <span class="n">write_trajectory</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">,</span>
+                            <span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">,</span>
+                            <span class="n">fig_path</span> <span class="o">=</span> <span class="n">fig_path</span><span class="p">,</span>
+                            <span class="n">boundary_condition</span> <span class="o">=</span> <span class="s1">&#39;periodic&#39;</span><span class="p">,</span>
+                            <span class="n">nsteps</span> <span class="o">=</span> <span class="n">nsteps</span><span class="p">,</span>
+                            <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">length_unit</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span><span class="p">,</span>
+                            <span class="n">time_unit</span> <span class="o">=</span> <span class="s1">&#39;ns&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span> <span class="c1"># (Name, Radius)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span> <span class="c1"># (Name, Radius)</span>
+
+<span class="n">A_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">A_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_1&#39;</span><span class="p">]</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">A_pos</span><span class="p">,</span> <span class="n">A_types</span><span class="p">)</span>
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">B_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">B_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Core_2&#39;</span><span class="p">]</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">B_pos</span><span class="p">,</span> <span class="n">B_types</span><span class="p">)</span>
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">=</span><span class="mf">100.0</span> <span class="c1">#kJ/(avogadro*nm^2)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">},</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">},</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">},</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">points</span><span class="p">,</span> <span class="n">points_types</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span><span class="mi">125</span><span class="p">],</span> <span class="n">clustering_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_trials</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">points_types</span><span class="p">)</span>
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_scene</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe_rdf</span><span class="p">(</span><span class="n">rdf_pairs</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">],[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">],[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">]],</span> <span class="n">rdf_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="mf">22.5</span><span class="p">,</span><span class="mf">25.0</span><span class="p">],</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Position&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">progress_stride</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">out_linebreak</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">print_timer</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_rdf</span><span class="p">([[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">]],</span> <span class="n">steps</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_rdf</span><span class="p">([[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">]],</span> <span class="n">steps</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_rdf</span><span class="p">([[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">]],</span> <span class="n">steps</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-hard-sphere-fluid">
+<a class="reference internal image-reference" href="../../_images/hard_sphere_fluid.png"><img alt="../../_images/hard_sphere_fluid.png" src="../../_images/hard_sphere_fluid.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text"><strong>Radial distribution functions.</strong></span><a class="headerlink" href="#fig-hard-sphere-fluid" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Diffusion.html" class="btn btn-neutral float-left" title="Diffusion" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Reactions.html" class="btn btn-neutral float-right" title="Reactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

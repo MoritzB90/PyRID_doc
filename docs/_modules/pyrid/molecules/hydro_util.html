@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.molecules.hydro_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.molecules.hydro_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.molecules.hydro_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="c1"># from numba.experimental import jitclass</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;svg.fonttype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">inv</span><span class="p">,</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+
+<div class="viewcode-block" id="center_of_mass"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.center_of_mass">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns the center of mass of the molecule assuming equal mass density for all paricles with radius a_i.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    my_molecule : `obj`</span>
+<span class="sd">        Instance of molecule containing the position data of each bead.</span>
+<span class="sd">    eta_0 : `float`</span>
+<span class="sd">        Viscosity</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float64[3]</span>
+<span class="sd">        Center of mass</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The center of mass is defined by:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: r_CoM</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{R} = \\frac{1}{M} \\sum_{i=1}^n m_i \\boldsymbol{r_i},</span>
+<span class="sd">        </span>
+<span class="sd">    where :math:`M` is the total mass of the molecule.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    
+    <span class="n">R_CoM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">r_i</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">a_i</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="n">R_CoM</span><span class="p">[:]</span> <span class="o">+=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">a_i</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="n">r_i</span>
+        
+        <span class="n">M</span> <span class="o">+=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">a_i</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">rho</span>
+        
+    <span class="n">R_CoM</span><span class="p">[:]</span><span class="o">/=</span><span class="n">M</span>
+    
+    <span class="k">return</span> <span class="n">R_CoM</span></div>
+    
+
+<div class="viewcode-block" id="supermatrix_inverse"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.supermatrix_inverse">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">supermatrix_inverse</span><span class="p">(</span><span class="n">M1</span><span class="p">,</span><span class="n">M2</span><span class="p">,</span><span class="n">M3</span><span class="p">,</span><span class="n">M4</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the inverse of a 2x2 supermatrix.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M1 : float64[3N,3N]</span>
+<span class="sd">        submatrix at (0,0)</span>
+<span class="sd">    M2 : float64[3N,3N]</span>
+<span class="sd">        submatrix at (0,1)</span>
+<span class="sd">    M3 : float64[3N,3N]</span>
+<span class="sd">        submatrix at (1,0)</span>
+<span class="sd">    M4 : float64[3N,3N]</span>
+<span class="sd">        submatrix at (1,1)</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A super Matrix :math:`M=[[M1, M2], [M3, M4]]` is invertible, if both the diagonal blocks, :math:`M_1` and :math:`M_4` are invertible</span>
+<span class="sd">    The inverse of a (2x2) supermatrix can be calculated by :cite:p:`Varadarajan2004`, :cite:p:`Deligne1996`:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: supermaztrix_inverse</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{align*}</span>
+<span class="sd">        &amp; T_1 = (M_1 - M_2 M_4^{-1} M_3)^{-1} \\\\</span>
+<span class="sd">        &amp; T_2 = -M_1^{-1} M_2 (M_4-M_3 M_1^{-1} M_2)^{-1} \\\\</span>
+<span class="sd">        &amp; T_3 = -M_4^{-1} M_3 (M_1-M_2 M_4^{-1} M_3)^{-1} \\\\</span>
+<span class="sd">        &amp; T_4 = (M_4 - M_3 M_1^{-1} M_2)^{-1} \\\\</span>
+<span class="sd">        \\end{align*}</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float64[3N,3N], float64[3N,3N], float64[3N,3N], float64[3N,3N])</span>
+<span class="sd">        Some information</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="n">M1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M2</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">M4</span><span class="p">),</span><span class="n">M3</span><span class="p">)))</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">M1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M2</span><span class="p">,</span><span class="n">inv</span><span class="p">(</span><span class="n">M4</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M3</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">M1</span><span class="p">),</span><span class="n">M2</span><span class="p">)))))</span>
+    <span class="n">T3</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">M4</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M3</span><span class="p">,</span><span class="n">inv</span><span class="p">(</span><span class="n">M1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M2</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">M4</span><span class="p">),</span><span class="n">M3</span><span class="p">)))))</span>
+    <span class="n">T4</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="n">M4</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M3</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">M1</span><span class="p">),</span><span class="n">M2</span><span class="p">)))</span>
+    
+    <span class="k">return</span> <span class="n">T1</span><span class="p">,</span><span class="n">T2</span><span class="p">,</span><span class="n">T3</span><span class="p">,</span><span class="n">T4</span></div>
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="calc_CoD"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.calc_CoD">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">calc_CoD</span><span class="p">(</span><span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the center of diffusion of a rigid bead molecule.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    D_rr : `float64[3,3]`</span>
+<span class="sd">        Rotational diffusion tensor.</span>
+<span class="sd">    D_tr : `float64[3,3]`</span>
+<span class="sd">        Translation-rotation coupling</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float64[3]</span>
+<span class="sd">        Center of diffusion.</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The diffusion tensor :math:`[[D^{tt}, D^{tr}],[D^{rt},D^{rr}]]` depends on the choice of the bead model origin (body frame). For symmetry reason, one should use the so-called center of Diffusion, which can be calculated from a diffusion tensor referring to an arbitrary origin :cite:p:`Harvey1980`, :cite:p:`Carrasco1999` :</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: r_CoD</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{align*}</span>
+<span class="sd">        \\boldsymbol{r}_{OD}</span>
+<span class="sd">        = &amp;</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        x_{OD} \\\\</span>
+<span class="sd">        y_{OD}\\\\</span>
+<span class="sd">        z_{OD}</span>
+<span class="sd">        \\end{pmatrix} \\\\</span>
+<span class="sd">        = &amp;</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        D_{rr}^{yy}+D_{rr}^{zz} &amp; -D_{rr}^{xy} &amp; -D_{rr}^{xz}\\\\</span>
+<span class="sd">        -D_{rr}^{xy} &amp; D_{rr}^{xx}+D_{rr}^{zz} &amp; -D_{rr}^{yz}\\\\</span>
+<span class="sd">        -D_{rr}^{xz} &amp; -D_{rr}^{yz} &amp; D_{rr}^{yy}+D_{rr}^{xx}</span>
+<span class="sd">        \\end{pmatrix}^{-1}</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        D_{tr}^{zy}-D_{tr}^{yz}\\\\</span>
+<span class="sd">        D_{tr}^{xz}-D_{tr}^{zx}\\\\</span>
+<span class="sd">        D_{tr}^{yx}-D_{tr}^{xy}</span>
+<span class="sd">        \\end{pmatrix}</span>
+<span class="sd">        \\end{align*}</span>
+<span class="sd">        </span>
+<span class="sd">    After calculating the the center of diffusion, we simply set the rigid body origin to :math:`r_{OD}` and recalculate the diffusion tensor.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">r_CoD_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="o">-</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="o">-</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">D_rr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]])</span>
+    
+    <span class="n">r_CoD_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">D_tr</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">D_tr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="n">D_tr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">D_tr</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="n">D_tr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">D_tr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]])</span>
+    
+    <span class="n">r_CoD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">r_CoD_0</span><span class="p">),</span> <span class="n">r_CoD_1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">r_CoD</span></div>
+
+
+<span class="c1">#%%</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">I</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<div class="viewcode-block" id="P"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.P">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">rij</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the normalized tensor/outer product :math:`\\frac{\\boldsymbol{r}_{ij} \otimes \\boldsymbol{r}_{ij}}{r_{ij}}` for the hydrodynamic interaction tensor (Oseen tensor).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rij : `float64[3]`</span>
+<span class="sd">        Distance between partcile i and j</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float[3,3]</span>
+<span class="sd">        Normalized outer product of r_ij</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># return np.dot(rij,rij)/norm(rij)**2</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">P</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="n">beta</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">rij</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span><span class="o">*</span><span class="n">rij</span><span class="p">[</span><span class="n">beta</span><span class="p">])</span><span class="o">/</span><span class="n">norm</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">P</span></div>
+
+<div class="viewcode-block" id="levi_civita"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.levi_civita">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">levi_civita</span><span class="p">(</span><span class="n">rij</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns the product of the Levi-Civita tensor with vector rij.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rij : `float64[3]`</span>
+<span class="sd">        Distance between partcile i and j</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    Given the distance vector :math:`r_{ij} = [x_{ij},y_{ij},z_{ij}]` the product :math:`\epsilon \cdot r_{ij}` is returned, where :math:`\epsilon` is the Levi-Civita tensor:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        \epsilon \cdot r_{ij} = </span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        0 &amp; z_{ij} &amp; -y_{ij}\\\\</span>
+<span class="sd">        -z_{ij} &amp; 0 &amp; x_{ij}\\\\</span>
+<span class="sd">        y_{ij} &amp; -x_{ij} &amp; 0</span>
+<span class="sd">        \\end{pmatrix}.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float[3,3]</span>
+<span class="sd">        Levi-Civita tensor</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">xij</span> <span class="o">=</span> <span class="n">rij</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">yij</span> <span class="o">=</span> <span class="n">rij</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">zij</span> <span class="o">=</span> <span class="n">rij</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="n">zij</span><span class="p">,</span><span class="o">-</span><span class="n">yij</span><span class="p">],[</span><span class="o">-</span><span class="n">zij</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">xij</span><span class="p">],[</span><span class="n">yij</span><span class="p">,</span><span class="o">-</span><span class="n">xij</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span></div>
+   
+<div class="viewcode-block" id="calc_mu"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.calc_mu">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span> 
+<span class="k">def</span> <span class="nf">calc_mu</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the transtalional, rotational and translation-rotation coupling parts of the mobility super matrix :math:`\\mu_{tt}, \\mu_{rr}, \\mu_{tr} = \\mu_{rt}`.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    my_molecule : `obj`</span>
+<span class="sd">        Instance of molecule containing the position data of each bead.</span>
+<span class="sd">    eta_0 : `float`</span>
+<span class="sd">        Viscosity</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    The mobility matrices are directly related to the modified Oseen tensor. The Oseen tensor has first been introduced by Oseen in 1927 (For reference also see :cite:p:`Dhont1996a`). The Oseen tensor comes up when solving the Stokes equations, which are a linearization of the Navier-Stokes equations. More precisely, it comes up when solving for the flow velocity field in case of a force acting on a point particle (:math:`f(r) = f_0 \\delta(r-r_p)`) which is immersed in a viscous liquid.</span>
+<span class="sd">    In this case, we can write the solution to the Stokes equation as (due to its linearity, any solution to the Stokes equation has to be a linear transformation):</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        v(r) = T(r-r_p) \cdot F</span>
+<span class="sd">        </span>
+<span class="sd">    T is called the hyrodynamic interaction tensor, Oseen tensor or Green&#39;s function of the Stoke&#39;s equations. The above solution is also called Stokeslet:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{T}(r) = \\frac{1}{8 \\pi \\eta r} \cdot \\Big(\\boldsymbol{I}+\\frac{\\boldsymbol{r} \otimes \\boldsymbol{r}}{r^2} \\Big),</span>
+<span class="sd">        </span>
+<span class="sd">    where :math:`\\eta` is the viscosity and :math:`\otimes` is the outer product. In prosa, :math:`T` gives the fluid flow velocty at some point :math:`r`, given a force acting at another point :math:`r_p`.</span>
+<span class="sd">    Kirkwood and Riseman calculated the translational mobility tensor of a rigid bead molecule using the Oseen tensor to describe the hydrodynamic interaction between the beads, and by assigning each bead its friction coefficient :math:`\\zeta_i = 6 \pi \\eta_0 a_i`:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{align*}</span>
+<span class="sd">        \\mu_{ij}^{tt} = &amp; \\delta_{ij}(6 \\pi \\eta_0 a_i)^{-1} \\boldsymbol{I} \\\\</span>
+<span class="sd">        &amp; + (1-\\delta_ij)(8 \\pi \\eta_0 r_{ij})^{-1} \\\\</span>
+<span class="sd">        &amp; \\Big(\\boldsymbol{I}+\\frac{\\boldsymbol{r} \otimes \\boldsymbol{r}}{r^2} \\Big)</span>
+<span class="sd">        \\end{align*}</span>
+<span class="sd">    </span>
+<span class="sd">    This solution is fairly intuitive. The first term is just the mobility of a single particle with radius :math:`a_i`. The second term is just the Oseen tensor. Recalling that the mobility :math:`\mu` is defined as the ratio of a particles drift velocity and the applied applied force, the interpretation of the Oseen tensor as representing the interaction part of the bead mobility matrix feels natural (recalling its origin (see above)). However, we also instantly see that something is missing since the Oseen tensor  only considers the distance between the bead centers but neglects their volume/radius :math:`a_i`. Fortunately,  :cite:t:`Torre1977` established a correction to the Oseen tensor for nonidentical spheres (also see :cite:`Torre2007`):</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: modified_Oseen</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{T}_{ij} = \\frac{1}{8 \\pi \\eta r} \cdot \\Big(\\boldsymbol{I}+\\frac{\\boldsymbol{r}_{ij} \otimes \\boldsymbol{r}_{ij}}{r_{ij}^2} + \\frac{\\sigma_i + \\sigma_j}{r_{ij}^2} \\Big( \\frac{1}{3} \\boldsymbol{I} - \\frac{\\boldsymbol{r}_{ij} \otimes \\boldsymbol{r}_{ij}}{r_{ij}^2} \\Big) \\Big),</span>
+<span class="sd">    </span>
+<span class="sd">    By that, the friction tensor reads:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: mu_tt</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{align*}</span>
+<span class="sd">        \mu^{tt}_{ij} = &amp; \\delta_{ij} (6 \\pi \eta_0 a_i)^{-1} \\boldsymbol{I} + (1-\\delta_{ij})(8 \\pi \\eta_0 r_{ij}^{-1})(\\boldsymbol{I}+\\boldsymbol{P}_{ij}) \\\\</span>
+<span class="sd">        &amp; + (8 \\pi \\eta_0 r_{ij}^{-3})(a_i^2+a_j^2)(\\boldsymbol{I}-3 \\boldsymbol{P}_{ij}),</span>
+<span class="sd">        \\end{align*}</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`\\boldsymbol{P}_{ij} = \\Big(\\boldsymbol{I}+\\frac{\\boldsymbol{r} \otimes \\boldsymbol{r}}{r^2} \\Big)`.</span>
+<span class="sd">    The mobility tensor for rotation, not correcting for the beads volume, reads :cite:p:`Carrasco1999a`.</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: mu_rr</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{align*}</span>
+<span class="sd">        \mu^{rr}_{ij} = &amp; \\delta_{ij} (8 \\pi \\eta_0 a_i^3)^{-1} \\boldsymbol{I} \\\\</span>
+<span class="sd">        &amp; + (1 - \delta_{ij})(16 \\pi \\eta_0 r^3_{ij})^{-1} (3 \\boldsymbol{P}_{ij} - \\boldsymbol{I})</span>
+<span class="sd">        \\end{align*}    </span>
+<span class="sd">        </span>
+<span class="sd">    Here, again, the first term is just the rotational mobility of the single bead and the second term accounts for the hydrodynamic interaction. In this formulation, there is still a correction for the volume missing. This correction consists of adding :math:`6 \eta_0 V_m \\boldsymbol{I}` to the diagonal components of the rotational friction tensor :math:`\\Xi^{rr}_O`, where :math:`V_m` is the volume of the bead model (sum over all bead volumes) :cite:`Torre1983`, :cite:p:`Carrasco1999a`.</span>
+<span class="sd">    </span>
+<span class="sd">    And, at last, for rotation-translation coupling, we have :cite:p:`Carrasco1999a`:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: mu_rt</span>
+<span class="sd">        </span>
+<span class="sd">        \mu^{rt}_{ij} = (1-\\delta_{ij}) (8 \\pi \\eta_0 r_{ij}^2)^{-1} \\boldsymbol{\\epsilon}\\boldsymbol{\\hat{r}}_{ij} </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float[N,N,3,3], float[N,N,3,3], float[N,N,3,3], float[N,N,3,3])</span>
+<span class="sd">        mu_tt, mu_rt, mu_tr, mu_rr</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">mu_tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">mu_rt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">mu_tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">mu_rr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">r_i</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">a_i</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">r_j</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>    
+            <span class="n">a_j</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">rij</span> <span class="o">=</span> <span class="n">r_i</span><span class="o">-</span><span class="n">r_j</span>
+            
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">mu_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">eta_0</span><span class="o">*</span><span class="n">a_i</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span><span class="o">*</span><span class="n">I</span><span class="p">()</span>
+                
+                <span class="n">mu_rr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">eta_0</span><span class="o">*</span><span class="n">a_i</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span><span class="o">*</span><span class="n">I</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># mu_tt[i][j] = (8*pi*eta_0*norm(rij)**-1)*(I()+P(rij))+(8*pi*eta_0*norm(rij)**-3)*(a_i**2+a_j**2)*(I()+3*P(rij))</span>
+                <span class="c1"># mu_tt[i][j] = np.dot((8*pi*eta_0*norm(rij)**-1)*(I()+P(rij)),(8*pi*eta_0*norm(rij)**-3)*(a_i**2+a_j**2)*(I()+3*P(rij)))</span>
+                
+                <span class="n">mu_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">eta_0</span><span class="o">*</span><span class="n">norm</span><span class="p">(</span><span class="n">rij</span><span class="p">))</span><span class="o">**-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">I</span><span class="p">()</span><span class="o">+</span><span class="n">P</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">a_i</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">a_j</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">I</span><span class="p">()</span><span class="o">/</span><span class="mi">3</span><span class="o">-</span><span class="n">P</span><span class="p">(</span><span class="n">rij</span><span class="p">)))</span>
+                
+                
+                <span class="n">mu_rt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">eta_0</span><span class="o">*</span><span class="n">norm</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span><span class="o">*</span><span class="n">levi_civita</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span>
+                <span class="n">mu_tr</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">eta_0</span><span class="o">*</span><span class="n">norm</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span><span class="o">*</span><span class="n">levi_civita</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span>
+                
+                <span class="n">mu_rr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">eta_0</span><span class="o">*</span><span class="n">norm</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">P</span><span class="p">(</span><span class="n">rij</span><span class="p">)</span><span class="o">-</span><span class="n">I</span><span class="p">())</span>
+         
+    <span class="k">return</span> <span class="n">mu_tt</span><span class="p">,</span> <span class="n">mu_rt</span><span class="p">,</span> <span class="n">mu_tr</span><span class="p">,</span> <span class="n">mu_rr</span></div>
+
+<div class="viewcode-block" id="calc_zeta"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.calc_zeta">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">calc_zeta</span><span class="p">(</span><span class="n">mu_tt</span><span class="p">,</span> <span class="n">mu_tr</span><span class="p">,</span> <span class="n">mu_rt</span><span class="p">,</span> <span class="n">mu_rr</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the friction tensors :math:`\\zeta^{tt}, \\zeta^{rr}, \\zeta^{tr}, \\zeta^{rt}` from the inverse of the mobility supermatrix :math:`[[\\mu^{tt}, \\mu^{rr}], [\\mu^{tr}, \\mu^{rt}]]`.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu_tt : `float64[3N,3N]`</span>
+<span class="sd">        Translational mobility tensor.</span>
+<span class="sd">    mu_tr : `float64[3N,3N]`</span>
+<span class="sd">        Translation-rotation coupling.</span>
+<span class="sd">    mu_rt : `float64[3N,3N]`</span>
+<span class="sd">        Rotation-translation coupling.</span>
+<span class="sd">    mu_rr : `float64[3N,3N]`</span>
+<span class="sd">        Rotational mobility tensor.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float64[3N,3N], float64[3N,3N], float64[3N,3N], float64[3N,3N])</span>
+<span class="sd">        The friction tensors :math:`\\zeta^{tt}, \\zeta^{rr}, \\zeta^{tr}, \\zeta^{rt}`.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">zeta_tt</span><span class="p">,</span> <span class="n">zeta_tr</span><span class="p">,</span> <span class="n">zeta_rt</span><span class="p">,</span> <span class="n">zeta_rr</span> <span class="o">=</span> <span class="n">supermatrix_inverse</span><span class="p">(</span><span class="n">mu_tt</span><span class="p">,</span> <span class="n">mu_tr</span><span class="p">,</span> <span class="n">mu_rt</span><span class="p">,</span> <span class="n">mu_rr</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">zeta_tt</span><span class="p">,</span> <span class="n">zeta_tr</span><span class="p">,</span> <span class="n">zeta_rt</span><span class="p">,</span> <span class="n">zeta_rr</span></div>
+
+<div class="viewcode-block" id="A"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.A">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns matrix A which turns the cross product rxw into a dot product A.w.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : `float`</span>
+<span class="sd">        Bead position</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    We can turn the cross product :math:`r \\times \\omega` with :math:`r = [x,y,z]` into a dot product :math:`A \\cdot \\omega`, where</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        A = </span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        0 &amp; -z &amp; y\\\\</span>
+<span class="sd">        z &amp; 0 &amp; -x\\\\</span>
+<span class="sd">        -y &amp; x &amp; 0</span>
+<span class="sd">        \\end{pmatrix}.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">z</span><span class="p">,</span><span class="n">y</span><span class="p">],[</span><span class="n">z</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">x</span><span class="p">],[</span><span class="o">-</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="calc_Xi"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.calc_Xi">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">calc_Xi</span><span class="p">(</span><span class="n">zeta_tt</span><span class="p">,</span> <span class="n">zeta_rt</span><span class="p">,</span> <span class="n">zeta_tr</span><span class="p">,</span> <span class="n">zeta_rr</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the friction tensors (3,3) of a ridig bead molecule from the friction super matricies (3N,3N) of its individiual beads.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zeta_tt : `float64[3N,3N]`</span>
+<span class="sd">        Translational friction matrix.</span>
+<span class="sd">    zeta_rt : `float64[3N,3N]`</span>
+<span class="sd">        Rotation-translation coupling matrix.</span>
+<span class="sd">    zeta_tr : `float64[3N,3N]`</span>
+<span class="sd">        Translation-rotation coupling matrix.</span>
+<span class="sd">    zeta_rr : `float64[3N,3N]`</span>
+<span class="sd">        Rotational friction matrix.</span>
+<span class="sd">    my_molecule : `obj`</span>
+<span class="sd">        Molceule class instance containing position data of each bead.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError (just an example)</span>
+<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float[3,3], float[3,3], float[3,3], float[3,3])</span>
+<span class="sd">        Returns the friction tensors Xi_tt, Xi_rt, Xi_tr, Xi_rr of the molecule.</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    Here, we closely follow :cite:p:`Carrasco1999a`. To get an expression for the friction tensor of a rigid bead molecule, we start by considering a sytsem of :math:`N` free spherical particles in a fluid with viscosity :math:`\\eta_0`. Each sphere lateraly moves at some velocity :math`u_i` and rotates with some angular velocity :math:`\\omega_i`. The spheres will experience a frictional force and torque :math:`F_i, T_i`. In the noninertial regime (Stokes), the relationship between the force/torque and the velocities are linear:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionForce</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{F}_i = \\sum_{j=1}^N \\zeta_{ij}^{tt} \\cdot \\boldsymbol{u}_j + \\zeta_{ij}^{tr} \\cdot \\boldsymbol{\\omega}_j</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionTorque</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{T}_i = \\sum_{j=1}^N \\zeta_{ij}^{rt} \\cdot \\boldsymbol{u}_j + \\zeta_{ij}^{rr} \\cdot \\boldsymbol{\\omega}_j .</span>
+<span class="sd">    </span>
+<span class="sd">    The :math:`\\zeta_{ij}` are the (3x3) friction matrices, connecting the amount of friction a particle i expiriences due to the presence of particle j moving through the fluid with velocities :math:`u_j, \\omega_j`. We may rewrite this in a matrix representation as:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: ForceTorque</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        F \\\\</span>
+<span class="sd">        T \\\\</span>
+<span class="sd">        \\end{pmatrix}</span>
+<span class="sd">        =</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        \\zeta^{tt} &amp; \\zeta^{tr} \\\\</span>
+<span class="sd">        \\zeta^{rt} &amp; \\zeta^{rr} \\\\</span>
+<span class="sd">        \\end{pmatrix}</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        U \\\\</span>
+<span class="sd">        W \\\\</span>
+<span class="sd">        \\end{pmatrix},</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`F = (\\boldsymbol{F}_1, ..., \\boldsymbol{F}_N)^T`, :math:`T = (\\boldsymbol{T}_1, ..., \\boldsymbol{T}_N)^T`</span>
+<span class="sd">    and :math:`U = (\\boldsymbol{u}_1, ..., \\boldsymbol{u}_N)^T`, :math:`W = (\\boldsymbol{\\omega}_1, ..., \\boldsymbol{\\omega}_N)^T`. Here :math:`\\zeta` are of dimension (3Nx3N), forming the friction supermatrix of dimension (6N,6N). The inverted friction supermatrix is the mobility supermatrix (for inmversion of supermatrices also see supermatrix_inverse()).</span>
+<span class="sd">    </span>
+<span class="sd">    Next, we consider not a system of N free beads but a rigid bead model, i.e. the beads are rigidly connected.</span>
+<span class="sd">    Thereby, all beads move together with some translational velocity :math:`u_{O}`. Let the body&#39;s frame of reference lie at the center of diffusion of the bead model :math:`\\boldsymbol{r}_O` and let :math:`\\omega` be the angular velocity of the rigid bead model. Then, in addition to the translational velocity of the molecule&#39;s center, each bead experiences a translation velocity due to the rotation :math:`\\boldsymbol{\omega} \\times \\boldsymbol{r}_i`, where :math:`\\boldsymbol{r}_i` is the position vector from the moclules origin :math:`\\boldsymbol{r}_O` (in the body frame of reference). Thereby, the total velocity is:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: Velocity</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{u}_i = \\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_i  </span>
+<span class="sd">        </span>
+<span class="sd">    Thereby, the force that a single bead experiences due to the movement of all the other beads is:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionForce_Bead</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{F}_i = \\sum_{j=1}^N \\zeta_{ij}^{tt} \\cdot (\\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_j) + \\zeta_{ij}^{tr} \\cdot \\boldsymbol{\\omega},</span>
+<span class="sd">        </span>
+<span class="sd">    and the torque that single bead experiences due to the movement of all the other beads is:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionTorque_Bead</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{T}_{P,i} = \\sum_{j=1}^N \\zeta_{ij}^{rt} \\cdot (\\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_j) + \\zeta_{ij}^{rr} \\cdot \\boldsymbol{\\omega} .    </span>
+<span class="sd">        </span>
+<span class="sd">    From these expressions we simply get the total force acting at the rigid body origin by summation over all beads:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionForce_Total</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{F} = \\sum_{i=1}^N \\sum_{j=1}^N \\zeta_{ij}^{tt} \\cdot (\\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_j) + \\zeta_{ij}^{tr} \\cdot \\boldsymbol{\\omega}</span>
+<span class="sd">        </span>
+<span class="sd">    For the total torque, however, we get an extra term. :math:`\\boldsymbol{T}_{P,i}` is only the torque acting on bead i relative to it&#39;s center, i.e. the center of the sphere. Thereby, this only describes the amount of rotation bead i would experience around its center due to the movement of all the other beads. However, the force :math:`\\boldsymbol{F}_{i}` acting on bead i due to the movement of the other beads also results in a torque with which bead i acts on the rigid bead models center :math:`r_O`:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionTroque_Exk</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{r}_i \\times \\boldsymbol{F}_i = \\boldsymbol{r}_i \\times \\Big( \\sum_j^N \\zeta_{ij}^{tt} (\\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_j) + \\zeta_{ij}^{tr} \\omega \\Big)</span>
+<span class="sd">    </span>
+<span class="sd">    Thereby, the total torque acting on the rigid bead model&#39;s origin is:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionTorque_Total</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{T}_O = \\sum_i^N \\boldsymbol{T}_{P,i} +  \\boldsymbol{r}_i \\times \\boldsymbol{F}_i = \\sum_{i=1}^N \\sum_{j=1}^N \\zeta_{ij}^{rt} \\cdot (\\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_j) + \\zeta_{ij}^{rr} \\cdot \\boldsymbol{\\omega} + \\boldsymbol{r}_i \\times \\Big( \\zeta_{ij}^{tt} (\\boldsymbol{u}_O + \\boldsymbol{\\omega} \\times \\boldsymbol{r}_j) + \\zeta_{ij}^{tr} \\omega \\Big). </span>
+<span class="sd">  </span>
+<span class="sd">        </span>
+<span class="sd">    In principle, we are done now, however, we would like to transform this into a more &#39;general&#39; expression that we can write in a simple matrix form. For this, we use a little trick to get rid of the cross product, by turning :math:`\\omega \\times r` into the dot product :math:`- A \cdot \\omega` (note: the sign changed, because of the anticommutativity of the cross product). After some rearranging, we end up with:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionForce_Total_2</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{F} = \\Big( \\sum_{i=1}^N \\sum_{j=1}^N \\zeta_{ij}^{tt} \\Big) \\cdot \\boldsymbol{u}_O + \\Big( \\sum_{i=1}^N \\sum_{j=1}^N - \\zeta_{ij}^{tt} \\cdot \\boldsymbol{A}_j + \\zeta_{ij}^{tr} \\Big) \cdot \\boldsymbol{\\omega}</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: FrictionTorque_Total_2</span>
+<span class="sd">        </span>
+<span class="sd">        \\boldsymbol{T} = \\Big( \\sum_{i=1}^N \\sum_{j=1}^N \\zeta_{ij}^{rt} + A_i \zeta_{ij}^{tt} \\Big) \\cdot \\boldsymbol{u}_O + \\Big( \\sum_{i=1}^N \\sum_{j=1}^N \\zeta_{ij}^{rt} \\cdot \\boldsymbol{A}_j + \\zeta_{ij}^{rr} - A_i \\zeta_{ij}^{tt} A_j  + A_i \\zeta_{ij}^{tr} \\Big) \\cdot \\boldsymbol{\\omega}.           </span>
+<span class="sd">        </span>
+<span class="sd">    If we now want write this in matrix form, similar to the free bead example from above:</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: ForceTorque_Bead</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        \\boldsymbol{F} \\\\</span>
+<span class="sd">        \\boldsymbol{T}_O \\\\</span>
+<span class="sd">        \\end{pmatrix}</span>
+<span class="sd">        =</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        \\Xi^{tt} &amp; \\Xi^{tr} \\\\</span>
+<span class="sd">        \\Xi^{rt} &amp; \\Xi^{rr} \\\\</span>
+<span class="sd">        \\end{pmatrix}</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        \\boldsymbol{u}_O \\\\</span>
+<span class="sd">        \\boldsymbol{\\omega} \\\\</span>
+<span class="sd">        \\end{pmatrix},    </span>
+<span class="sd">    </span>
+<span class="sd">    Where we call :math:`\Xi` the friction tensor of the rigid bead molecule :cite:p:`Carrasco1999a` :</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: Xi</span>
+<span class="sd">    </span>
+<span class="sd">        \\begin{align*}</span>
+<span class="sd">        &amp;\\Xi^{tt} = \\sum_{i=1}^N \\sum_{j=1}^N \\zeta_{ij}^{tt} \\\\</span>
+<span class="sd">        &amp;\\Xi_{O}^{tr} = \\sum_{i=1}^N \\sum_{j=1}^N ( -\\zeta_{ij}^{tt} \\cdot \\boldsymbol{A}_j + \\zeta_{ij}^{tr} ) \\\\</span>
+<span class="sd">        &amp;\\Xi_{O}^{rt} = \\sum_{i=1}^N \\sum_{j=1}^N ( \\boldsymbol{A}_j \\cdot \\zeta_{ij}^{tt} + \\zeta_{ij}^{rt} ) \\\\</span>
+<span class="sd">        &amp;\\Xi_{O}^{rr} = \\sum_{i=1}^N \\sum_{j=1}^N ( \\zeta_{ij}^{rr} - \\zeta_{ij}^{rt} \\cdot \\boldsymbol{A}_j + \\boldsymbol{A}_i \\cdot \\zeta_{ij}^{tr} - \\boldsymbol{A}_i \\cdot \\zeta_{ij}^{tt} \\boldsymbol{A}_j)</span>
+<span class="sd">        \\end{align*}</span>
+<span class="sd">        </span>
+<span class="sd">    The only thing left to do now, is calculating :math:`\\zeta`, which we get from the inverse of the mobility supermatrix. The mobility supermatrix is calculated in calc_mu(my_molecule, eta_0).</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    
+    <span class="n">Xi_tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">Xi_rt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">Xi_tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">Xi_rr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">r_i</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">r_j</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            
+            <span class="n">Xi_tt</span> <span class="o">+=</span> <span class="n">zeta_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            
+            <span class="n">Xi_rt</span> <span class="o">+=</span> <span class="n">zeta_rt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">r_i</span><span class="p">),</span> <span class="n">zeta_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+            
+            <span class="n">Xi_tr</span> <span class="o">+=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">zeta_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span><span class="n">A</span><span class="p">(</span><span class="n">r_i</span><span class="p">))</span><span class="o">+</span><span class="n">zeta_tr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="c1"># TODO for some reason (prob. numerical errors), Xi_tr is less accurately calculated than Xi_rt!</span>
+            
+            <span class="n">Xi_rr</span> <span class="o">+=</span> <span class="n">zeta_rr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">zeta_rt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">A</span><span class="p">(</span><span class="n">r_j</span><span class="p">))</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">r_i</span><span class="p">),</span> <span class="n">zeta_tr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">r_i</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">zeta_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">A</span><span class="p">(</span><span class="n">r_j</span><span class="p">)))</span>
+
+            
+    <span class="n">Xi_tr</span> <span class="o">=</span> <span class="n">Xi_rt</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="c1"># V = 4/3*np.pi*np.sum(my_molecule.radii_rb[:]**3)</span>
+    <span class="c1"># Xi_rr += 6*eta_0*V*np.eye(3)</span>
+    
+    <span class="k">return</span> <span class="n">Xi_tt</span><span class="p">,</span> <span class="n">Xi_rt</span><span class="p">,</span> <span class="n">Xi_tr</span><span class="p">,</span> <span class="n">Xi_rr</span></div>
+
+<div class="viewcode-block" id="calc_D"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.calc_D">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>    
+<span class="k">def</span> <span class="nf">calc_D</span><span class="p">(</span><span class="n">Xi_tt</span><span class="p">,</span> <span class="n">Xi_rt</span><span class="p">,</span> <span class="n">Xi_tr</span><span class="p">,</span> <span class="n">Xi_rr</span><span class="p">,</span> <span class="n">kB</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Caclulates the diffusion tensor from  the supermatrix inverse of the friction tensor.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameter_1 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    parameter_2 : dtype</span>
+<span class="sd">        Some Information</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">   </span>
+<span class="sd">    The diffusion tensor can be calculated from the rigid body&#39;s friction tensor via :cite:p:`Carrasco1999` :</span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        :label: DiffTensor</span>
+<span class="sd">        </span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        \\boldsymbol{D}^{tt} &amp; \\boldsymbol{D}^{tr,T} \\\\</span>
+<span class="sd">        \\boldsymbol{D}^{rt} &amp; \\boldsymbol{D}^{rr} \\\\</span>
+<span class="sd">        \\end{pmatrix}</span>
+<span class="sd">        = k_B T</span>
+<span class="sd">        \\begin{pmatrix}</span>
+<span class="sd">        \\boldsymbol{\\Xi}^{tt} &amp; \\boldsymbol{\\Xi}^{tr,T} \\\\</span>
+<span class="sd">        \\boldsymbol{\\Xi}^{rt} &amp; \\boldsymbol{\\Xi}^{rr} \\\\</span>
+<span class="sd">        \\end{pmatrix}^{-1}  </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3])</span>
+<span class="sd">        Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_tr, D_rt, D_rr.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">supermatrix_inverse</span><span class="p">(</span><span class="n">Xi_tt</span><span class="p">,</span> <span class="n">Xi_tr</span><span class="p">,</span> <span class="n">Xi_rt</span><span class="p">,</span> <span class="n">Xi_rr</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">kB</span><span class="o">*</span><span class="n">Temp</span><span class="o">*</span><span class="n">D_tt</span><span class="p">,</span> <span class="n">kB</span><span class="o">*</span><span class="n">Temp</span><span class="o">*</span><span class="n">D_tr</span><span class="p">,</span> <span class="n">kB</span><span class="o">*</span><span class="n">Temp</span><span class="o">*</span><span class="n">D_rt</span><span class="p">,</span> <span class="n">kB</span><span class="o">*</span><span class="n">Temp</span><span class="o">*</span><span class="n">D_rr</span></div>
+
+<div class="viewcode-block" id="transform_supermatrix"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.transform_supermatrix">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">transform_supermatrix</span><span class="p">(</span><span class="n">mu_tt</span><span class="p">,</span><span class="n">mu_tr</span><span class="p">,</span><span class="n">mu_rt</span><span class="p">,</span><span class="n">mu_rr</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Transforms a (N,N,3,3) matrix into a (3N,3N) matrix.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu_tt : `float64[N,N,3,3]`</span>
+<span class="sd">        Translational mobility tensor.</span>
+<span class="sd">    mu_tr : `float64[N,N,3,3]`</span>
+<span class="sd">        Translation-rotation coupling.</span>
+<span class="sd">    mu_rt : `float64[N,N,3,3]`</span>
+<span class="sd">        Rotation-translation coupling.</span>
+<span class="sd">    mu_rr : `float64[N,N,3,3]`</span>
+<span class="sd">        Rotational mobility tensor.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float[3N,3N], float[3N,3N], float[3N,3N], float[3N,3N])</span>
+<span class="sd">        mu_tt_Tf, mu_tr_Tf, mu_rt_Tf, mu_rr_Tf</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">mu_tt_Tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">mu_tr_Tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">mu_rt_Tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">mu_rr_Tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">mu_tt_Tf</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">mu_tr_Tf</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_tr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">mu_rt_Tf</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_rt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">mu_rr_Tf</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_rr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            
+    <span class="k">return</span> <span class="n">mu_tt_Tf</span><span class="p">,</span> <span class="n">mu_tr_Tf</span><span class="p">,</span> <span class="n">mu_rt_Tf</span><span class="p">,</span> <span class="n">mu_rr_Tf</span></div>
+
+<div class="viewcode-block" id="transform_reverse_supermatrix"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.transform_reverse_supermatrix">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">transform_reverse_supermatrix</span><span class="p">(</span><span class="n">zeta_tt_Tr</span><span class="p">,</span><span class="n">zeta_tr_Tr</span><span class="p">,</span><span class="n">zeta_rt_Tr</span><span class="p">,</span><span class="n">zeta_rr_Tr</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Transforms a (3N,3N) matrix into a (N,N,3,3) matrix.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zeta_tt_Tr : `float64[3N,3N]`</span>
+<span class="sd">        Translational friction matrix.</span>
+<span class="sd">    zeta_tr_Tr : `float64[3N,3N]`</span>
+<span class="sd">        Translation-rotation coupling.</span>
+<span class="sd">    zeta_rt_Tr : `float64[3N,3N]`</span>
+<span class="sd">        Rotation-translation coupling.</span>
+<span class="sd">    zeta_rr_Tr : `float64[3N,3N]`</span>
+<span class="sd">        Rotational friction matrix.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float[N,N,3,3], float[N,N,3,3], float[N,N,3,3], float[N,N,3,3])</span>
+<span class="sd">        zeta_tt, zeta_tr, zeta_rt, zeta_rr</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    
+    <span class="n">zeta_tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">zeta_tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">zeta_rt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">zeta_rr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">zeta_tt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_tt_Tr</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">zeta_tr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_tr_Tr</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">zeta_rt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_rt_Tr</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">zeta_rr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_rr_Tr</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+            
+            
+    <span class="k">return</span> <span class="n">zeta_tt</span><span class="p">,</span> <span class="n">zeta_tr</span><span class="p">,</span> <span class="n">zeta_rt</span><span class="p">,</span> <span class="n">zeta_rr</span></div>
+
+<div class="viewcode-block" id="diffusion_tensor_off_center"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.diffusion_tensor_off_center">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">diffusion_tensor_off_center</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">kB</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the diffusion tensor (off the center of diffusion) from the moelcule structure, the fluid viscosity and temperature.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    my_molecule : `obj`</span>
+<span class="sd">        Instance of molecule containing the position data of each bead.</span>
+<span class="sd">    eta_0 : `float`</span>
+<span class="sd">        Viscosity</span>
+<span class="sd">    Temp : `float`</span>
+<span class="sd">        Temperature</span>
+<span class="sd">    kB : `float`</span>
+<span class="sd">        Boltzmann constant</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3])</span>
+<span class="sd">        Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_tr, D_rt, D_rr.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">mu_tt</span><span class="p">,</span> <span class="n">mu_rt</span><span class="p">,</span> <span class="n">mu_tr</span><span class="p">,</span> <span class="n">mu_rr</span> <span class="o">=</span> <span class="n">calc_mu</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">)</span>
+    
+    <span class="n">mu_tt_Tf</span><span class="p">,</span> <span class="n">mu_tr_Tf</span><span class="p">,</span> <span class="n">mu_rt_Tf</span><span class="p">,</span> <span class="n">mu_rr_Tf</span> <span class="o">=</span> <span class="n">transform_supermatrix</span><span class="p">(</span><span class="n">mu_tt</span><span class="p">,</span><span class="n">mu_tr</span><span class="p">,</span><span class="n">mu_rt</span><span class="p">,</span><span class="n">mu_rr</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">)</span>
+    
+    <span class="n">zeta_tt_Tr</span><span class="p">,</span> <span class="n">zeta_tr_Tr</span><span class="p">,</span> <span class="n">zeta_rt_Tr</span><span class="p">,</span> <span class="n">zeta_rr_Tr</span> <span class="o">=</span> <span class="n">calc_zeta</span><span class="p">(</span><span class="n">mu_tt_Tf</span><span class="p">,</span> <span class="n">mu_tr_Tf</span><span class="p">,</span> <span class="n">mu_rt_Tf</span><span class="p">,</span> <span class="n">mu_rr_Tf</span><span class="p">)</span>
+    
+    <span class="n">zeta_tt</span><span class="p">,</span> <span class="n">zeta_tr</span><span class="p">,</span> <span class="n">zeta_rt</span><span class="p">,</span> <span class="n">zeta_rr</span> <span class="o">=</span> <span class="n">transform_reverse_supermatrix</span><span class="p">(</span><span class="n">zeta_tt_Tr</span><span class="p">,</span><span class="n">zeta_tr_Tr</span><span class="p">,</span><span class="n">zeta_rt_Tr</span><span class="p">,</span><span class="n">zeta_rr_Tr</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">)</span>
+    
+    <span class="n">Xi_tt</span><span class="p">,</span> <span class="n">Xi_rt</span><span class="p">,</span> <span class="n">Xi_tr</span><span class="p">,</span> <span class="n">Xi_rr</span> <span class="o">=</span> <span class="n">calc_Xi</span><span class="p">(</span><span class="n">zeta_tt</span><span class="p">,</span> <span class="n">zeta_rt</span><span class="p">,</span> <span class="n">zeta_tr</span><span class="p">,</span> <span class="n">zeta_rr</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">)</span>
+    
+    <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">calc_D</span><span class="p">(</span><span class="n">Xi_tt</span><span class="p">,</span> <span class="n">Xi_rt</span><span class="p">,</span> <span class="n">Xi_tr</span><span class="p">,</span> <span class="n">Xi_rr</span><span class="p">,</span> <span class="n">kB</span><span class="p">,</span> <span class="n">Temp</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">D_rr</span></div>
+   
+<span class="c1"># @nb.njit</span>
+<div class="viewcode-block" id="diffusion_tensor"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/hydro_util.html#pyrid.molecules.hydro_util.diffusion_tensor">[docs]</a><span class="k">def</span> <span class="nf">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">return_CoD</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_CoM</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_coupling</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the diffusion tensor, accounting for the center of diffusion of the rigid bead molecule. The origin of the molecule is automatically updated to the center of diffusion :math:`r_{OD}`!</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    my_molecule : `obj`</span>
+<span class="sd">        Instance of molecule containing the position data of each bead.</span>
+<span class="sd">    Simulation : `obj`</span>
+<span class="sd">        Instance of the Simulation class</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3], float64)</span>
+<span class="sd">        Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_rr, D_tr, D_rt and the center of diffusion r_CoD, center of mass r_CoM.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculating mobility tensor for rigid body molecule &#39;</span><span class="o">+</span><span class="n">molecule_name</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    
+    <span class="n">System</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span>
+    
+    <span class="n">my_molecule</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">molecule_name</span><span class="p">]</span>
+    <span class="n">unit_prefix</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">length_units_prefix</span><span class="p">[</span><span class="n">System</span><span class="o">.</span><span class="n">length_unit</span><span class="p">]</span>
+    
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">my_molecule</span><span class="o">.</span><span class="n">pos_rb</span><span class="p">)</span><span class="o">/</span><span class="n">unit_prefix</span>
+    <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">my_molecule</span><span class="o">.</span><span class="n">radii_rb</span><span class="p">)</span><span class="o">/</span><span class="n">unit_prefix</span>
+    
+    <span class="n">eta_0</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># System.eta</span>
+    <span class="n">Temp</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># System.Temp</span>
+    <span class="n">kB</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># System.kB</span>
+    
+    <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">diffusion_tensor_off_center</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">kB</span><span class="p">)</span>
+    
+    <span class="n">r_CoD</span> <span class="o">=</span> <span class="n">calc_CoD</span><span class="p">(</span><span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">)</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">][:]</span> <span class="o">-=</span> <span class="n">r_CoD</span>
+        
+    <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">diffusion_tensor_off_center</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">kB</span><span class="p">)</span>
+    
+    <span class="n">r_CoM</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">radii</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------&#39;</span><span class="p">)</span>
+    
+    <span class="n">D_tt</span> <span class="o">*=</span> <span class="n">System</span><span class="o">.</span><span class="n">kB</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">Temp</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">eta</span><span class="o">/</span><span class="n">unit_prefix</span>
+    <span class="n">D_rr</span> <span class="o">*=</span> <span class="n">System</span><span class="o">.</span><span class="n">kB</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">Temp</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">eta</span><span class="o">/</span><span class="n">unit_prefix</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">D_tr</span> <span class="o">*=</span> <span class="n">System</span><span class="o">.</span><span class="n">kB</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">Temp</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">eta</span><span class="o">/</span><span class="n">unit_prefix</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">D_rt</span> <span class="o">*=</span> <span class="n">System</span><span class="o">.</span><span class="n">kB</span><span class="o">*</span><span class="n">System</span><span class="o">.</span><span class="n">Temp</span><span class="o">/</span><span class="n">System</span><span class="o">.</span><span class="n">eta</span><span class="o">/</span><span class="n">unit_prefix</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">r_CoD</span> <span class="o">*=</span> <span class="n">unit_prefix</span>
+    <span class="n">r_CoM</span> <span class="o">*=</span> <span class="n">unit_prefix</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_molecule</span><span class="o">.</span><span class="n">pos_rb</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">my_molecule</span><span class="o">.</span><span class="n">pos_rb</span><span class="p">[</span><span class="n">i</span><span class="p">][:]</span> <span class="o">-=</span> <span class="n">r_CoD</span>
+        
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_molecule</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">my_molecule</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">][:]</span> <span class="o">-=</span> <span class="n">r_CoD</span>
+    
+    <span class="n">my_molecule</span><span class="o">.</span><span class="n">h_membrane</span> <span class="o">-=</span> <span class="n">r_CoD</span>
+    
+    
+    <span class="n">return_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">D_tr</span><span class="p">,</span> <span class="n">D_rt</span><span class="p">,</span> <span class="n">r_CoD</span><span class="p">,</span> <span class="n">r_CoM</span><span class="p">]</span>
+    <span class="n">return_booleans</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">return_coupling</span><span class="p">,</span> <span class="n">return_coupling</span><span class="p">,</span> <span class="n">return_CoD</span><span class="p">,</span> <span class="n">return_CoM</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">return_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">return_values</span><span class="p">))</span> <span class="k">if</span> <span class="n">return_booleans</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+    
+<span class="c1">#%%</span>
+
+<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

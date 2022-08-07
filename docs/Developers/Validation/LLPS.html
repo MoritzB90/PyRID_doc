@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLPS &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="References" href="../../References.html" />
+    <link rel="prev" title="Reactions" href="Reactions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Validation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Diffusion.html">Diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hard-Sphere-Fluid.html">Hard-Sphere Fluid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">LLPS</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Validation</a> &raquo;</li>
+      <li>LLPS</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Developers/Validation/LLPS.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="llps">
+<h1>LLPS<a class="headerlink" href="#llps" title="Permalink to this headline"></a></h1>
+<p>To investigate LLPS via molecular dynamics simulations is very computationally expensive.
+Simulating one point in the phase space can take several days.
+To get a phase diagram, however, we need several of these points.
+Therefore, you should have access to a Compute Cluster in order to do several of these independent simulations in parallel.
+In the following I show as an example how such a simulation can be setup on a Linux system running <a class="reference external" href="https://slurm.schedmd.com/documentation.html">slurm</a> to distribute jobs on the cluster.</p>
+<p>When we want to investigate interfacial properties of fluid from MD simulations we first of all need to prepare the system by simulating the fluid in the NPT ensemble until it is in equilibrium. PyRID comes with a Berendsen barostat that we can use. During this step, we choose a temperature or an interaction strength between molecules such that they will phase separate. Only after this step we will investigate the actual phase separating behavior of the fluid under different temperatures/molecular interaction strengths.</p>
+<p>In our python script we want to include some lines such that we can pass parameters via a bash script:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">bash parameters</span><a class="headerlink" href="#id4" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">Interaction_strengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.9</span><span class="p">]</span>
+
+<span class="n">Component</span> <span class="o">=</span>   <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#  {&#39;5_sites&#39;, &#39;4_sites&#39;, &#39;3_sites&#39;}</span>
+<span class="n">Simulation_Phase</span> <span class="o">=</span>  <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># {&#39;NPT&#39;, &#39;NVT&#39;}</span>
+<span class="n">Epsilon</span> <span class="o">=</span> <span class="n">Interaction_strengths</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])]</span> <span class="c1">#</span>
+</pre></div>
+</div>
+</div>
+<p>We will pass 3 parameters which python will read from sys.argv. The first parameter will be a string that tells python, which type of molecule component we want to simulate, in case we want to run the simulation for different types of components. In our example the components are patchy particles with 3,4 or 5 attractive patches to reproduce the results from Fig 1C in <span id="id1">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">57</a>]</span>.
+The second parameter defines the simulation phase. As stated above, we first need to prepare the system in the NPT ensemble to find a proper volume for the simulation box and to release the system from any mechanical stress.
+The third parameter is an integer index that we use to get different values of the pair interaction strength. It makes sense to use different lists of interaction strength for the the three different components since the ‘3_sites’ system we phase separate at higher values of the interaction strength that the ‘4_sites’ and ‘5_sites’ component system.</p>
+<p>Next, we create a bash script that we use to start jobs of the first phase (run_NPT.sh):</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">NPT</span><a class="headerlink" href="#id5" title="Permalink to this code"></a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBatch -p medium</span>
+<span class="c1">#SBATCH -t 06:00:00</span>
+<span class="c1">#SBATCH -o job_output/job-%J.out</span>
+<span class="c1">#SBATCH -C scratch</span>
+<span class="c1">#SBATCH -n 1</span>
+<span class="c1">#SBATCH -c 1</span>
+
+module purge
+module load anaconda3
+<span class="nb">source</span> activate pyrid-env
+
+python3 -u /scratch/users/mbecker3/PyRID/Espinosa/LLPS.py <span class="nv">$1</span> <span class="s1">&#39;NPT&#39;</span> -1
+
+conda deactivate
+</pre></div>
+</div>
+</div>
+<p>This script is written such that we can run jobs on the compute cluster of the gwdg in Göttingen. If you are running this on a different compute cluster with slurm you may need to change the values for -p. When we run this script, first all modules that may have been loaded are purged. Then, we load anaconda and activate our python environment in which we have installed PyRID.
+At last, we run our script LLPS.py and pass the three parameters: $1 is actually a parameter that we will pass to this script via yet another bash script (see below) and which is a string containing the name of our molecule component ({‘5_sites’, ‘4_sites’, ‘3_sites’}). The second parameter is a string stating that we want to simulate in the NPT ensemble and -1 is the index we pass to python that is used to get the interaction strength. -1 means that we will take the last and thereby highest value in the list such that we are sure the system will be in the two phase regime.</p>
+<p>With the next script, we will start the actual simulation where we use the direct coexistence method (run_NVT.sh):</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">NVT</span><a class="headerlink" href="#id6" title="Permalink to this code"></a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBatch -p medium</span>
+<span class="c1">#SBATCH -t 48:00:00</span>
+<span class="c1">#SBATCH -o job_output/job-%J.out</span>
+<span class="c1">#SBATCH -C scratch</span>
+<span class="c1">#SBATCH -n 1</span>
+<span class="c1">#SBATCH -c 11</span>
+<span class="c1">#SBATCH -a 0-10</span>
+
+module purge
+module load anaconda3
+<span class="nb">source</span> activate pypatch-env
+
+python3 -u /scratch/users/mbecker3/PyPatch/Espinosa/LLPS.py <span class="nv">$1</span> <span class="s1">&#39;NVT&#39;</span> <span class="nv">$SLURM_ARRAY_TASK_ID</span>
+
+conda deactivate
+</pre></div>
+</div>
+</div>
+<p>This script will run much longer (48h, the maximum allowed time on the gwdg cluster). Also we do not only start one job but several jobs (11), which will all use as the initial state the result from the NPT simulation. Again, we pass parameter $1, NVT and, this is new, $SLURM_ARRAY_TASK_ID.
+$SLURM_ARRAY_TASK_ID is an array of integers that we defined by -a 0-10. This means that slurm will distribute 11 jobs and $SLURM_ARRAY_TASK_ID runs from 0-11 (again,we use these integer values to choose the interaction strength in the python script).</p>
+<p>Finally, we come to the main script, which is the only one we will actually call but that will itself call the scripts we just set up (main.sh):</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">Main</span><a class="headerlink" href="#id7" title="Permalink to this code"></a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="k">for</span> exp <span class="k">in</span> <span class="s1">&#39;5_sites&#39;</span> <span class="s1">&#39;4_sites&#39;</span> <span class="s1">&#39;3_sites&#39;</span>
+<span class="k">do</span>
+        <span class="nv">my_id</span><span class="o">=</span><span class="k">$(</span>sbatch --parsable run_NPT.sh <span class="nv">$exp</span><span class="k">)</span>
+        sbatch -d afterok:<span class="nv">$my_id</span> run_NVT.sh <span class="nv">$exp</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</div>
+<p>This bash script consists of a simple for loop iterating over the different components we want to use in our simulation. It then calls our run_NPT.sh script to run the NPT setup. Importantly, we save the job id in a variable called my_id. The run_NVT.sh script will only start once the NPT simulation has finished (afterok), because the NVT simulation depends on the result of the NPT simulation as we use the final system state of the one simulation as the initial condition for the other one.</p>
+<p>After we have set up our bash scripts, let us write our actual PyRID python script LLPS.py:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">Direct coexistence method</span><a class="headerlink" href="#id8" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pyrid</span> <span class="k">as</span> <span class="nn">prd</span>
+
+<span class="c1"># sys.stdout = open(&#39;output/&#39;+fileName+&#39;.out&#39;, &#39;w&#39;)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Set Parameters</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">exp</span> <span class="o">=</span>  <span class="s1">&#39;5_sites&#39;</span> <span class="c1">#&#39;3_sites&#39;# &#39;4_sites&#39; # str(sys.argv[1]) #</span>
+<span class="n">phase</span> <span class="o">=</span> <span class="s1">&#39;Equil&#39;</span> <span class="c1"># str(sys.argv[2]) # DC #</span>
+<span class="n">ia_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># int(sys.argv[3]) #</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;exp: &#39;</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;phase: &#39;</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ia_id: &#39;</span><span class="p">,</span> <span class="n">ia_id</span><span class="p">)</span>
+
+
+<span class="c1"># File name and path</span>
+<span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;3_sites&#39;</span><span class="p">:</span>
+    <span class="n">interaction_strength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">43.5</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;3_sites/Files/&#39;</span>
+    <span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;3_sites/Figures/&#39;</span>
+    <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;DC&#39;</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;3_sites_&#39;</span><span class="o">+</span><span class="n">phase</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;Equil&#39;</span><span class="p">:</span>
+        <span class="n">file_name</span><span class="o">=</span> <span class="s1">&#39;3_sites_&#39;</span><span class="o">+</span><span class="n">phase</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;4_sites&#39;</span><span class="p">:</span>
+    <span class="n">interaction_strength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;4_sites/Files/&#39;</span>
+    <span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;4_sites/Figures/&#39;</span>
+    <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;DC&#39;</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;4_sites_&#39;</span><span class="o">+</span><span class="n">phase</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;Equil&#39;</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;4_sites_&#39;</span><span class="o">+</span><span class="n">phase</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;5_sites&#39;</span><span class="p">:</span>
+    <span class="n">interaction_strength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">52.5</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;5_sites/Files/&#39;</span>
+    <span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;5_sites/Figures/&#39;</span>
+    <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;DC&#39;</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;5_sites_&#39;</span><span class="o">+</span><span class="n">phase</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;Equil&#39;</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;5_sites_&#39;</span><span class="o">+</span><span class="n">phase</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;interaction_strength: &#39;</span><span class="p">,</span> <span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">])</span>
+
+
+<span class="c1">#Simulation properties</span>
+<span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;DC&#39;</span><span class="p">:</span>
+    <span class="n">nsteps</span> <span class="o">=</span> <span class="mf">1e9</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1">#</span>
+    <span class="n">sim_time</span> <span class="o">=</span> <span class="mf">47.5</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span>
+    <span class="n">use_checkpoint</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;Equil&#39;</span><span class="p">:</span>
+    <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">1600000</span>
+    <span class="n">sim_time</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">use_checkpoint</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># True #</span>
+
+<span class="n">stride</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nsteps</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">obs_stride</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nsteps</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#System physical properties</span>
+
+<span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;5_sites&#39;</span><span class="p">:</span>
+    <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">74.0</span><span class="p">,</span><span class="mf">74.0</span><span class="p">,</span><span class="mf">74.0</span><span class="p">])</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;3_sites&#39;</span><span class="p">:</span>
+    <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">83.0</span><span class="p">,</span><span class="mf">83.0</span><span class="p">,</span><span class="mf">83.0</span><span class="p">])</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;4_sites&#39;</span><span class="p">:</span>
+    <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">78.3</span><span class="p">,</span><span class="mf">78.3</span><span class="p">,</span><span class="mf">78.3</span><span class="p">])</span>
+
+<span class="n">Temp</span><span class="o">=</span><span class="mf">179.71</span>
+<span class="n">eta</span><span class="o">=</span><span class="mf">1e-21</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.0025</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Initialize System</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">box_lengths</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">,</span>
+                            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="p">,</span>
+                            <span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">,</span>
+                            <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="p">,</span>
+                            <span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span><span class="p">,</span>
+                            <span class="n">write_trajectory</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">,</span>
+                            <span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">,</span>
+                            <span class="n">fig_path</span> <span class="o">=</span> <span class="n">fig_path</span><span class="p">,</span>
+                            <span class="n">boundary_condition</span> <span class="o">=</span> <span class="s1">&#39;periodic&#39;</span><span class="p">,</span>
+                            <span class="n">nsteps</span> <span class="o">=</span> <span class="n">nsteps</span><span class="p">,</span>
+                            <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">length_unit</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span><span class="p">,</span>
+                            <span class="n">time_unit</span> <span class="o">=</span> <span class="s1">&#39;ns&#39;</span>
+                            <span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Barostat</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;Equil&#39;</span><span class="p">:</span>
+
+    <span class="n">P0</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">Tau_P</span><span class="o">=</span><span class="mf">1.0</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="mi">266667</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_barostat_berendsen</span><span class="p">(</span><span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Checkpoints</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;5_sites&#39;</span><span class="p">:</span>
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_checkpoints</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;5_sites/checkpoints/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># stride, directory, max_saves</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;3_sites&#39;</span><span class="p">:</span>
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_checkpoints</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;3_sites/checkpoints/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># stride, directory, max_saves</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;4_sites&#39;</span><span class="p">:</span>
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_checkpoints</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;4_sites/checkpoints/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># stride, directory, max_saves</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Define Particle Types</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span> <span class="c1"># (Name, Radius)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Global repulsive Pair Interactions</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">la</span> <span class="o">=</span> <span class="mi">49</span>
+<span class="n">EpsR</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">kbt</span><span class="o">/</span><span class="mf">1.5</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;PHS&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Core_1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EpsR&#39;</span><span class="p">:</span><span class="n">EpsR</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">:</span><span class="n">lr</span><span class="p">,</span> <span class="s1">&#39;la&#39;</span><span class="p">:</span><span class="n">la</span><span class="p">})</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Pair Binding Reaction</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">2.5</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">alpha</span> <span class="o">=</span>  <span class="n">sigma</span><span class="o">*</span><span class="mf">0.01</span> <span class="c1"># 0.005 #</span>
+<span class="n">rw</span> <span class="o">=</span> <span class="mf">0.12</span><span class="o">*</span><span class="n">sigma</span>
+
+
+<span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;5_sites&#39;</span><span class="p">:</span>
+    <span class="n">eps_csw</span> <span class="o">=</span> <span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">]</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;3_sites&#39;</span><span class="p">:</span>
+    <span class="n">eps_csw</span> <span class="o">=</span> <span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">]</span>
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;4_sites&#39;</span><span class="p">:</span>
+    <span class="n">eps_csw</span> <span class="o">=</span> <span class="n">interaction_strength</span><span class="p">[</span><span class="n">ia_id</span><span class="p">]</span>
+
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="mi">100</span><span class="o">/</span><span class="n">dt</span><span class="p">,</span> <span class="mf">1.75</span><span class="o">*</span><span class="n">rw</span><span class="p">,</span> <span class="s1">&#39;CSW&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rw&#39;</span><span class="p">:</span><span class="n">rw</span><span class="p">,</span> <span class="s1">&#39;eps_csw&#39;</span><span class="p">:</span><span class="n">eps_csw</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span><span class="n">alpha</span><span class="p">})</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_potential</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="p">[(</span><span class="n">prd</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">CSW</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rw</span><span class="p">,</span> <span class="n">eps_csw</span><span class="p">,</span> <span class="n">alpha</span><span class="p">])),</span> <span class="p">(</span><span class="n">prd</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">PHS</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma</span><span class="p">,</span> <span class="n">EpsR</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">la</span><span class="p">]))],</span> <span class="n">yU_limits</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">430</span><span class="p">],</span> <span class="n">yF_limits</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.7e5</span><span class="p">,</span><span class="mf">5e5</span><span class="p">],</span> <span class="n">r_limits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.006</span><span class="p">])</span>
+
+<span class="c1">#%%</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">for</span> <span class="n">molecule_name</span> <span class="ow">in</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">molecule_name</span><span class="p">]</span><span class="o">.</span><span class="n">r_mean_pair</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">molecule_name</span><span class="p">]</span><span class="o">.</span><span class="n">r_mean_pair</span><span class="p">)</span>
+
+
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Define Molecule Structure</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+
+<span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;5_sites&#39;</span><span class="p">:</span>
+    <span class="n">A_pos</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">distribute_surf</span><span class="o">.</span><span class="n">evenly_on_sphere</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+    <span class="n">A_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;U20&#39;</span><span class="p">))</span>
+
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;3_sites&#39;</span><span class="p">:</span>
+    <span class="n">A_pos</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">distribute_surf</span><span class="o">.</span><span class="n">evenly_on_sphere</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+    <span class="n">A_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;U20&#39;</span><span class="p">))</span>
+
+<span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;4_sites&#39;</span><span class="p">:</span>
+    <span class="n">A_pos</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">distribute_surf</span><span class="o">.</span><span class="n">evenly_on_sphere</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+    <span class="n">A_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;Core_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span><span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;Patch_1&#39;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;U20&#39;</span><span class="p">))</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Register Molecules</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">A_pos</span><span class="p">,</span> <span class="n">A_types</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_mobility_matrix</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Distribute Molecules</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+
+<span class="k">if</span> <span class="n">use_checkpoint</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+
+    <span class="n">pos</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">,</span> <span class="n">quaternion</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="s1">&#39;PDS&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2000</span><span class="p">],</span> <span class="n">clustering_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_trials</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">mol_type_idx</span><span class="p">)</span>
+
+    <span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_scene</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="k">else</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;5_sites&#39;</span><span class="p">:</span>
+        <span class="n">Simulation</span><span class="o">.</span><span class="n">load_checkpoint</span><span class="p">(</span><span class="s1">&#39;5_sites_Equil&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">directory</span> <span class="o">=</span> <span class="s1">&#39;5_sites/checkpoints/&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;3_sites&#39;</span><span class="p">:</span>
+        <span class="n">Simulation</span><span class="o">.</span><span class="n">load_checkpoint</span><span class="p">(</span><span class="s1">&#39;3_sites_Equil&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">directory</span> <span class="o">=</span> <span class="s1">&#39;3_sites/checkpoints/&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">exp</span> <span class="o">==</span> <span class="s1">&#39;4_sites&#39;</span><span class="p">:</span>
+        <span class="n">Simulation</span><span class="o">.</span><span class="n">load_checkpoint</span><span class="p">(</span><span class="s1">&#39;4_sites_Equil&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">directory</span> <span class="o">=</span> <span class="s1">&#39;4_sites/checkpoints/&#39;</span><span class="p">)</span>
+
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">3</span>
+    <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Vol</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Add Observables</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+
+<span class="c1">#%%</span>
+
+<span class="c1">#-----------------------------------------------------</span>
+<span class="c1"># Start the Simulation</span>
+<span class="c1">#-----------------------------------------------------</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">progress_stride</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">progress_bar_properties</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="s1">&#39;Vol_Frac&#39;</span><span class="p">],</span> <span class="n">out_linebreak</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">print_timer</span><span class="p">()</span>
+
+<span class="c1">#%%</span>
+
+<span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;/hdf5/&#39;</span><span class="p">)</span>
+
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_observable</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Figure <a class="reference internal" href="#fig-phase-diagram-esp"><span class="std std-ref">Phase diagram.</span></a> shows the phase diagrams for 3,4, and 5 sites of interactions and compares the result with those from <span id="id2">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">57</a>]</span>. The analysis of the data is not discussed here for now, however, you can have a look at <span id="id3">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">57</a>]</span>.</p>
+<figure class="align-default" id="fig-phase-diagram-esp">
+<a class="reference internal image-reference" href="../../_images/Phase-diagram_Esp.png"><img alt="../../_images/Phase-diagram_Esp.png" src="../../_images/Phase-diagram_Esp.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text"><strong>Phase diagram.</strong></span><a class="headerlink" href="#fig-phase-diagram-esp" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-llps-tetrahedral">
+<a class="reference internal image-reference" href="../../_images/LLPS_Tetrahedral.png"><img alt="../../_images/LLPS_Tetrahedral.png" src="../../_images/LLPS_Tetrahedral.png" style="width: 50%;" /></a>
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Reactions.html" class="btn btn-neutral float-left" title="Reactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../References.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrid.geometry.mesh_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyrid.geometry.mesh_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrid.geometry.mesh_util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Moritz F P Becker</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="c1"># import math</span>
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="triangle_volume_signed"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/mesh_util.html#pyrid.geometry.mesh_util.triangle_volume_signed">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">triangle_volume_signed</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the signed volume of a the tetraeder represented by a triangle and the coordinate system origin. PyRID uses the signed tetraeder volume to calculate the volume of a mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Signed tetraeder volume</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#p0.dot(p1.cross(p2)) / 6.0</span>
+    
+    <span class="n">v210</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">v120</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">v201</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">v021</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">p1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">v102</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">v012</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">v210</span> <span class="o">+</span> <span class="n">v120</span> <span class="o">+</span> <span class="n">v201</span> <span class="o">-</span> <span class="n">v021</span> <span class="o">-</span> <span class="n">v102</span> <span class="o">+</span> <span class="n">v012</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mesh_volume"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/mesh_util.html#pyrid.geometry.mesh_util.mesh_volume">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">mesh_volume</span><span class="p">(</span><span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the volume of a mesh.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    triangles : `int64[:,3]`</span>
+<span class="sd">        List of vertex indices that make up the trinagles of the mesh</span>
+<span class="sd">    vertices : `float64[:,3]`</span>
+<span class="sd">        Vertices of the mesh</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Mesh volume</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">vol</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">triangles</span><span class="p">:</span>
+        
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        
+        <span class="n">vol</span> <span class="o">+=</span> <span class="n">triangle_volume_signed</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">vol</span></div>
+
+
+<div class="viewcode-block" id="triangle_area"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/mesh_util.html#pyrid.geometry.mesh_util.triangle_area">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">triangle_area</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the area of a triangle.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Triangle area</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="n">a</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p1</span><span class="o">-</span><span class="n">p0</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p2</span><span class="o">-</span><span class="n">p0</span><span class="p">)</span>
+    <span class="n">c</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p2</span><span class="o">-</span><span class="n">p1</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">+</span><span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">c</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">A</span></div>
+
+
+
+<div class="viewcode-block" id="triangle_centroid"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/mesh_util.html#pyrid.geometry.mesh_util.triangle_centroid">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">triangle_centroid</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the centroid of a triangle.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64`</span>
+<span class="sd">        Triangle centroid</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">p0</span><span class="o">+</span><span class="n">p1</span><span class="o">+</span><span class="n">p2</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span></div>
+
+
+<div class="viewcode-block" id="closest_boundary_point"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/mesh_util.html#pyrid.geometry.mesh_util.closest_boundary_point">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">closest_boundary_point</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">AABB</span><span class="p">,</span> <span class="n">System_AABB</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the closest point on a boundary of an axis aligned bounding box (AABB) to a position vector.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        Position vector.</span>
+<span class="sd">    AABB : `float64[2,3]`</span>
+<span class="sd">        Array containing the two vector points that represent the lower left and upper right corner of the AABB</span>
+<span class="sd">    System_AABB : `float64[2,3]`</span>
+<span class="sd">        Array containing the two vector points that represent the lower left and upper right corner of the AABB of the simulation box.</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `float64[3]`</span>
+<span class="sd">        Point on the AABB boundary that is closest to the position vector.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    
+    <span class="n">min_distance</span> <span class="o">=</span> <span class="mf">1e10</span>
+    <span class="n">border_pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">border_dim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;</span><span class="n">System_AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="ow">and</span> <span class="n">AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="n">System_AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">dim</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">border</span> <span class="o">=</span> <span class="n">AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">border</span> <span class="o">=</span> <span class="n">AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span>
+                
+            <span class="n">distance</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">border</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">min_distance</span><span class="p">:</span>
+                <span class="n">min_distance</span> <span class="o">=</span> <span class="n">distance</span>
+                <span class="n">border_dim</span> <span class="o">=</span> <span class="n">dim</span>
+                <span class="n">border_pos</span> <span class="o">=</span> <span class="n">border</span>
+                
+    <span class="k">if</span> <span class="n">border_dim</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: closest boundary point is not guaranteed to be outside all mesh compartments! (AABB covering all compartments is larger than simulation box in any dimension.)&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">&gt;</span><span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">border</span> <span class="o">=</span> <span class="n">System_AABB</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">border</span> <span class="o">=</span> <span class="n">System_AABB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span>
+                
+            <span class="n">distance</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">border</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">min_distance</span><span class="p">:</span>
+                <span class="n">min_distance</span> <span class="o">=</span> <span class="n">distance</span>
+                <span class="n">border_dim</span> <span class="o">=</span> <span class="n">dim</span>
+                <span class="n">border_pos</span> <span class="o">=</span> <span class="n">border</span>
+                
+    <span class="n">point</span><span class="p">[</span><span class="n">border_dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">border_pos</span>
+    
+    <span class="k">return</span> <span class="n">point</span></div>
+
+
+<span class="c1">#%%</span>
+
+<div class="viewcode-block" id="point_triangle_distance"><a class="viewcode-back" href="../../../Developers/Developer%20API/geometry/mesh_util.html#pyrid.geometry.mesh_util.point_triangle_distance">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">point_triangle_distance</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">pos_tri</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Calculates the distance between a point and a triangle. Based on :cite:p:`Eberly2001`: 3D Game Engine Design, Eberly D. H., Chapter: 14.3 Point to triangle. https://www.geometrictools.com/Documentation/DistancePoint3triangle3.pdf</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p0 : `float64[3]`</span>
+<span class="sd">        Vertex 1</span>
+<span class="sd">    p1 : `float64[3]`</span>
+<span class="sd">        Vertex 2</span>
+<span class="sd">    p2 : `float64[3]`</span>
+<span class="sd">        Vertex 3</span>
+<span class="sd">    pos : `float64[3]`</span>
+<span class="sd">        position vector.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `tuple(float64, int64)`</span>
+<span class="sd">        Distance to triangle, triangle region</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+
+    <span class="n">E0</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">p0</span> <span class="c1"># edge 0</span>
+    <span class="n">E1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p0</span> <span class="c1"># edge 1</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">pos</span> <span class="c1"># Coordinates of point relative to triangle origin (at p0)</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">E0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">E0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">E0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">E0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">E0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">E0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># np.dot(E0, E0)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">E0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">E1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">E0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">E1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">E0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">E1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># np.dot(E0, E1)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">E1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">E1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">E1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">E1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">E1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">E1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># np.dot(E1, E1)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">E0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">E0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">E0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># np.dot(E0, D)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">E1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">E1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">E1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># np.dot(E1, D)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># np.dot(D, D)</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">e</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">d</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">e</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="n">region</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">det</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="c1"># REGION 4</span>
+                <span class="n">region</span> <span class="o">=</span> <span class="mi">4</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span> <span class="c1"># minimum on edge t = 0 with s &gt; 0</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="k">if</span> <span class="o">-</span><span class="n">d</span> <span class="o">&gt;=</span> <span class="n">a</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span> <span class="n">a</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># minimum on edge s = 0</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="k">if</span> <span class="n">e</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="o">-</span><span class="n">e</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span>
+                            <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">e</span> <span class="o">/</span> <span class="n">c</span>
+                            <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># REGION 3</span>
+                <span class="n">region</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">if</span> <span class="n">e</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="o">-</span><span class="n">e</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">e</span> <span class="o">/</span> <span class="n">c</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="c1"># REGION 5</span>
+                <span class="n">region</span> <span class="o">=</span> <span class="mi">5</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="o">-</span><span class="n">d</span> <span class="o">&gt;=</span> <span class="n">a</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span> <span class="n">a</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># REGION 0</span>
+                <span class="n">region</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">det_inv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">det</span>
+                <span class="n">s</span> <span class="o">*=</span> <span class="n">det_inv</span>
+                <span class="n">t</span> <span class="o">*=</span> <span class="n">det_inv</span>
+                <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">s</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">s</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">f</span>
+                
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="c1"># REGION 2</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">tmp0</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">d</span>
+            <span class="n">tmp1</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">e</span>
+            <span class="k">if</span> <span class="n">tmp1</span> <span class="o">&gt;</span> <span class="n">tmp0</span><span class="p">:</span> <span class="c1"># minimum on edge s + t = 1 with s &gt; 0</span>
+                <span class="n">numer</span> <span class="o">=</span> <span class="n">tmp1</span> <span class="o">-</span> <span class="n">tmp0</span>
+                <span class="n">denom</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
+                <span class="k">if</span> <span class="n">numer</span> <span class="o">&gt;=</span> <span class="n">denom</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="mf">1.0</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># t = 1 - s</span>
+                    <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">numer</span> <span class="o">/</span> <span class="n">denom</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">s</span>
+                    <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">s</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">s</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">f</span>
+                    
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># minimum on edge s = 0 with t &lt;= 1</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">if</span> <span class="n">tmp1</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span>
+                    <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">e</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">e</span> <span class="o">/</span> <span class="n">c</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="c1"># REGION 6</span>
+                <span class="n">region</span> <span class="o">=</span> <span class="mi">6</span>
+                <span class="n">tmp0</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">e</span>
+                <span class="n">tmp1</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">d</span>
+                <span class="k">if</span> <span class="n">tmp1</span> <span class="o">&gt;</span> <span class="n">tmp0</span><span class="p">:</span> <span class="c1"># minimum on edge s + t = 1 with t &gt; 0</span>
+                    <span class="n">numer</span> <span class="o">=</span> <span class="n">tmp1</span> <span class="o">-</span> <span class="n">tmp0</span>
+                    <span class="n">denom</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
+                    <span class="k">if</span> <span class="n">numer</span> <span class="o">&gt;=</span> <span class="n">denom</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># s = 1 - t</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="n">numer</span> <span class="o">/</span> <span class="n">denom</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">t</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">s</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">s</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">f</span>
+
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># minimum on edge t = 0 with s &lt;= 0</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="k">if</span> <span class="n">tmp1</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                            <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+                            <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span> <span class="n">a</span>
+                            <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># REGION 1</span>
+                <span class="n">region</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">numer</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">e</span> <span class="o">-</span> <span class="n">b</span> <span class="o">-</span> <span class="n">d</span> <span class="c1"># (c + e) - (b + d)</span>
+                <span class="k">if</span> <span class="n">numer</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># t = 1-s</span>
+                    <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">denom</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
+                    <span class="k">if</span> <span class="n">numer</span> <span class="o">&gt;=</span> <span class="n">denom</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># t = 1-s</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span> <span class="c1"># s*(a*s + 2*b*t + 2*d) + t*(c*t + 2*e) + f</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="n">numer</span> <span class="o">/</span> <span class="n">denom</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">s</span>
+                        <span class="n">dist_squared</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">s</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">s</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">f</span>
+                        
+    
+    <span class="k">if</span> <span class="n">dist_squared</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dist_squared</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="n">pos_tri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pos_tri</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">E0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">E1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pos_tri</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">E0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">E1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pos_tri</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">E0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">E1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">region</span></div>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

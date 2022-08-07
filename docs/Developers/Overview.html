@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer API" href="Developer%20API/Contents.html" />
+    <link rel="prev" title="Dendritic Spine" href="../Users/Examples/Dendritic_Spine.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyRID
+            <img src="../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Developers/Overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h1>
+<p><strong>Developer API</strong></p>
+<p>The Developer API section contains the documentation for all the functions and classes used in PyRID. PyRID relies heavily on <a class="reference external" href="https://numba.pydata.org/">Numba</a>. One thing to keep in mind when implementing new functionalities or changing existing code is that Numba will not do bound checking by default. If somewhere in the code an element of, e.g., a numpy array is accessed that is out of bounds, the kernel might just die without you getting any error message. Therefore, during development it is advisable to enable bound checking, which can be done in your python script by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">BOUNDSCHECK</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># False #</span>
+</pre></div>
+</div>
+<p>Bound checking will, however, slightly slow down your code.</p>
+<p><strong>Style</strong></p>
+<p>I try to follow the PEP 8 programming style recommendation for python (<a class="reference external" href="https://peps.python.org/pep-0008/">https://peps.python.org/pep-0008/</a>, <a class="reference external" href="https://realpython.com/python-pep8/">https://realpython.com/python-pep8/</a>). However, I may not be super consistent all the time.
+Variables are usually written in lower case ‘my_variable’ and for classes, each word starts with capital letters (‘MyClass’). However, I write instances of PyRID classes also starting with capital letters! Also, sometimes it makes more sense to start variables with an upper case letter, e.g., for certain physical properties such as the diffusion coefficient. In such cases I do deviate from the PEP 8 style guide.</p>
+<p><strong>Side noted</strong></p>
+<p>If you want to compare simulation results after making changes to the code, make sure that you use the same random seed and also that everything is sorted.
+If, e.g., the resolution of the hierarchical grid is changed, the order in which reactions between particles are added to the reaction handler list will change. Thereby, even though the seed is the same, randomly picking a reaction event from the list will be different. Therefore, activate</p>
+<ul class="simple">
+<li><p>sorting in get_random(self) and Unique_Pairing in append_reaction(self, …) of the reaction_registry_util module.</p></li>
+</ul>
+<p>to make sure reactions are sorted by the educt tuples.
+Also, if you make any changes to the particles or rigid body data structure you may also want to sort particles by their id whenever looping over particle or molecules.</p>
+<p><strong>Theroy</strong></p>
+<p>In the Theory section, I will introduce and discuss the main methods used in PyRID. I start by introducing the scheme by which bead molecules are represented. Followed by the derivation of an algorithm for the propagation of translational and predominantly rotational diffusion. The rotational and translational mobility tensors dictate the translational and rotational motion of anisotopic rigid bodies. Therefore, I outline the calculation of the mobility tensors based on a modified Oseen tensor <span id="id1">[<a class="reference internal" href="../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span>. One of the main features of PyRID that distinguishes it from other molecular dynamics tools such as LAMMPS, Gromacs and HooMD is the ability to simulate arbitrary unimolecular and bimolecular reactions using a special stochastic simulation algorithm. I describe how these reactions are evaluated in PyRID. Another notable feature of PyRID is its ability to restrict the motion of molecules to complex compartment geometries represented by triangulated meshes. A brief overview of how compartment collisions and surface diffusion are handled is given.</p>
+<p><strong>Validation</strong></p>
+<p>In the Validations section you find some code examples for the validation of certain PyRID functionalities.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Users/Examples/Dendritic_Spine.html" class="btn btn-neutral float-left" title="Dendritic Spine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Developer%20API/Contents.html" class="btn btn-neutral float-right" title="Developer API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

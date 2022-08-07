@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hydro_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="observables" href="../observables.html" />
+    <link rel="prev" title="rigidbody_util" href="rigidbody_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../molecules.html">molecules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="particles_util.html">particles_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rigidbody_util.html">rigidbody_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">hydro_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reactions.html">reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../molecules.html">molecules</a> &raquo;</li>
+      <li>hydro_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/molecules/hydro_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hydro-util">
+<h1>hydro_util<a class="headerlink" href="#hydro-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<span class="target" id="module-pyrid.molecules.hydro_util"></span><p>&#64;author: Moritz F P Becker</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.A">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#A"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.A" title="Permalink to this definition"></a></dt>
+<dd><p>Returns matrix A which turns the cross product rxw into a dot product A.w.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>r</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Bead position</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>We can turn the cross product <span class="math notranslate nohighlight">\(r \times \omega\)</span> with <span class="math notranslate nohighlight">\(r = [x,y,z]\)</span> into a dot product <span class="math notranslate nohighlight">\(A \cdot \omega\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A = 
+\begin{pmatrix}
+0 &amp; -z &amp; y\\
+z &amp; 0 &amp; -x\\
+-y &amp; x &amp; 0
+\end{pmatrix}.\end{split}\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.P">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">P</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rij</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#P"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.P" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the normalized tensor/outer product <span class="math notranslate nohighlight">\(\frac{\boldsymbol{r}_{ij} \otimes \boldsymbol{r}_{ij}}{r_{ij}}\)</span> for the hydrodynamic interaction tensor (Oseen tensor).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>rij</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Distance between partcile i and j</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float[3,3]</dt><dd><p>Normalized outer product of r_ij</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.calc_CoD">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_CoD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_tr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_CoD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_CoD" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the center of diffusion of a rigid bead molecule.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>D_rr</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Rotational diffusion tensor.</p>
+</dd>
+<dt><strong>D_tr</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Translation-rotation coupling</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float64[3]</dt><dd><p>Center of diffusion.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The diffusion tensor <span class="math notranslate nohighlight">\([[D^{tt}, D^{tr}],[D^{rt},D^{rr}]]\)</span> depends on the choice of the bead model origin (body frame). For symmetry reason, one should use the so-called center of Diffusion, which can be calculated from a diffusion tensor referring to an arbitrary origin <span id="id1">[<a class="reference internal" href="../../../References.html#id19" title="Steven Harvey and Jose Garcia de la Torre. Coordinate systems for modeling the hydrodynamic resistance and diffusion coefficients of irregularly shaped rigid macromolecules. Macromolecules, 13(4):960–964, jul 1980. doi:10.1021/ma60076a037.">13</a>]</span>, <span id="id2">[<a class="reference internal" href="../../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span> :</p>
+<div class="math notranslate nohighlight" id="equation-r-cod">
+<span class="eqno">(7)<a class="headerlink" href="#equation-r-cod" title="Permalink to this equation"></a></span>\[\begin{split}\begin{align*}
+\boldsymbol{r}_{OD}
+= &amp;
+\begin{pmatrix}
+x_{OD} \\
+y_{OD}\\
+z_{OD}
+\end{pmatrix} \\
+= &amp;
+\begin{pmatrix}
+D_{rr}^{yy}+D_{rr}^{zz} &amp; -D_{rr}^{xy} &amp; -D_{rr}^{xz}\\
+-D_{rr}^{xy} &amp; D_{rr}^{xx}+D_{rr}^{zz} &amp; -D_{rr}^{yz}\\
+-D_{rr}^{xz} &amp; -D_{rr}^{yz} &amp; D_{rr}^{yy}+D_{rr}^{xx}
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+D_{tr}^{zy}-D_{tr}^{yz}\\
+D_{tr}^{xz}-D_{tr}^{zx}\\
+D_{tr}^{yx}-D_{tr}^{xy}
+\end{pmatrix}
+\end{align*}\end{split}\]</div>
+<p>After calculating the the center of diffusion, we simply set the rigid body origin to <span class="math notranslate nohighlight">\(r_{OD}\)</span> and recalculate the diffusion tensor.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.calc_D">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xi_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xi_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xi_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xi_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Temp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_D" title="Permalink to this definition"></a></dt>
+<dd><p>Caclulates the diffusion tensor from  the supermatrix inverse of the friction tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3])</dt><dd><p>Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_tr, D_rt, D_rr.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The diffusion tensor can be calculated from the rigid body’s friction tensor via <span id="id3">[<a class="reference internal" href="../../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span> :</p>
+<div class="math notranslate nohighlight" id="equation-difftensor">
+<span class="eqno">(8)<a class="headerlink" href="#equation-difftensor" title="Permalink to this equation"></a></span>\[\begin{split}\begin{pmatrix}
+\boldsymbol{D}^{tt} &amp; \boldsymbol{D}^{tr,T} \\
+\boldsymbol{D}^{rt} &amp; \boldsymbol{D}^{rr} \\
+\end{pmatrix}
+= k_B T
+\begin{pmatrix}
+\boldsymbol{\Xi}^{tt} &amp; \boldsymbol{\Xi}^{tr,T} \\
+\boldsymbol{\Xi}^{rt} &amp; \boldsymbol{\Xi}^{rr} \\
+\end{pmatrix}^{-1}  \end{split}\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.calc_Xi">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_Xi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_Xi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_Xi" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the friction tensors (3,3) of a ridig bead molecule from the friction super matricies (3N,3N) of its individiual beads.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>zeta_tt</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translational friction matrix.</p>
+</dd>
+<dt><strong>zeta_rt</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Rotation-translation coupling matrix.</p>
+</dd>
+<dt><strong>zeta_tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translation-rotation coupling matrix.</p>
+</dd>
+<dt><strong>zeta_rr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Rotational friction matrix.</p>
+</dd>
+<dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Molceule class instance containing position data of each bead.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float[3,3], float[3,3], float[3,3], float[3,3])</dt><dd><p>Returns the friction tensors Xi_tt, Xi_rt, Xi_tr, Xi_rr of the molecule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Here, we closely follow <span id="id4">[<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>. To get an expression for the friction tensor of a rigid bead molecule, we start by considering a sytsem of <span class="math notranslate nohighlight">\(N\)</span> free spherical particles in a fluid with viscosity <span class="math notranslate nohighlight">\(\eta_0\)</span>. Each sphere lateraly moves at some velocity :math`u_i` and rotates with some angular velocity <span class="math notranslate nohighlight">\(\omega_i\)</span>. The spheres will experience a frictional force and torque <span class="math notranslate nohighlight">\(F_i, T_i\)</span>. In the noninertial regime (Stokes), the relationship between the force/torque and the velocities are linear:</p>
+<div class="math notranslate nohighlight" id="equation-frictionforce">
+<span class="eqno">(9)<a class="headerlink" href="#equation-frictionforce" title="Permalink to this equation"></a></span>\[\boldsymbol{F}_i = \sum_{j=1}^N \zeta_{ij}^{tt} \cdot \boldsymbol{u}_j + \zeta_{ij}^{tr} \cdot \boldsymbol{\omega}_j\]</div>
+<div class="math notranslate nohighlight" id="equation-frictiontorque">
+<span class="eqno">(10)<a class="headerlink" href="#equation-frictiontorque" title="Permalink to this equation"></a></span>\[\boldsymbol{T}_i = \sum_{j=1}^N \zeta_{ij}^{rt} \cdot \boldsymbol{u}_j + \zeta_{ij}^{rr} \cdot \boldsymbol{\omega}_j .\]</div>
+<p>The <span class="math notranslate nohighlight">\(\zeta_{ij}\)</span> are the (3x3) friction matrices, connecting the amount of friction a particle i expiriences due to the presence of particle j moving through the fluid with velocities <span class="math notranslate nohighlight">\(u_j, \omega_j\)</span>. We may rewrite this in a matrix representation as:</p>
+<div class="math notranslate nohighlight" id="equation-forcetorque">
+<span class="eqno">(11)<a class="headerlink" href="#equation-forcetorque" title="Permalink to this equation"></a></span>\[\begin{split}\begin{pmatrix}
+F \\
+T \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\zeta^{tt} &amp; \zeta^{tr} \\
+\zeta^{rt} &amp; \zeta^{rr} \\
+\end{pmatrix}
+\begin{pmatrix}
+U \\
+W \\
+\end{pmatrix},\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F = (\boldsymbol{F}_1, ..., \boldsymbol{F}_N)^T\)</span>, <span class="math notranslate nohighlight">\(T = (\boldsymbol{T}_1, ..., \boldsymbol{T}_N)^T\)</span>
+and <span class="math notranslate nohighlight">\(U = (\boldsymbol{u}_1, ..., \boldsymbol{u}_N)^T\)</span>, <span class="math notranslate nohighlight">\(W = (\boldsymbol{\omega}_1, ..., \boldsymbol{\omega}_N)^T\)</span>. Here <span class="math notranslate nohighlight">\(\zeta\)</span> are of dimension (3Nx3N), forming the friction supermatrix of dimension (6N,6N). The inverted friction supermatrix is the mobility supermatrix (for inmversion of supermatrices also see supermatrix_inverse()).</p>
+<p>Next, we consider not a system of N free beads but a rigid bead model, i.e. the beads are rigidly connected.
+Thereby, all beads move together with some translational velocity <span class="math notranslate nohighlight">\(u_{O}\)</span>. Let the body’s frame of reference lie at the center of diffusion of the bead model <span class="math notranslate nohighlight">\(\boldsymbol{r}_O\)</span> and let <span class="math notranslate nohighlight">\(\omega\)</span> be the angular velocity of the rigid bead model. Then, in addition to the translational velocity of the molecule’s center, each bead experiences a translation velocity due to the rotation <span class="math notranslate nohighlight">\(\boldsymbol{\omega} \times \boldsymbol{r}_i\)</span>, where <span class="math notranslate nohighlight">\(\boldsymbol{r}_i\)</span> is the position vector from the moclules origin <span class="math notranslate nohighlight">\(\boldsymbol{r}_O\)</span> (in the body frame of reference). Thereby, the total velocity is:</p>
+<div class="math notranslate nohighlight" id="equation-velocity">
+<span class="eqno">(12)<a class="headerlink" href="#equation-velocity" title="Permalink to this equation"></a></span>\[\boldsymbol{u}_i = \boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_i  \]</div>
+<p>Thereby, the force that a single bead experiences due to the movement of all the other beads is:</p>
+<div class="math notranslate nohighlight" id="equation-frictionforce-bead">
+<span class="eqno">(13)<a class="headerlink" href="#equation-frictionforce-bead" title="Permalink to this equation"></a></span>\[\boldsymbol{F}_i = \sum_{j=1}^N \zeta_{ij}^{tt} \cdot (\boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_j) + \zeta_{ij}^{tr} \cdot \boldsymbol{\omega},\]</div>
+<p>and the torque that single bead experiences due to the movement of all the other beads is:</p>
+<div class="math notranslate nohighlight" id="equation-frictiontorque-bead">
+<span class="eqno">(14)<a class="headerlink" href="#equation-frictiontorque-bead" title="Permalink to this equation"></a></span>\[\boldsymbol{T}_{P,i} = \sum_{j=1}^N \zeta_{ij}^{rt} \cdot (\boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_j) + \zeta_{ij}^{rr} \cdot \boldsymbol{\omega} .    \]</div>
+<p>From these expressions we simply get the total force acting at the rigid body origin by summation over all beads:</p>
+<div class="math notranslate nohighlight" id="equation-frictionforce-total">
+<span class="eqno">(15)<a class="headerlink" href="#equation-frictionforce-total" title="Permalink to this equation"></a></span>\[\boldsymbol{F} = \sum_{i=1}^N \sum_{j=1}^N \zeta_{ij}^{tt} \cdot (\boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_j) + \zeta_{ij}^{tr} \cdot \boldsymbol{\omega}\]</div>
+<p>For the total torque, however, we get an extra term. <span class="math notranslate nohighlight">\(\boldsymbol{T}_{P,i}\)</span> is only the torque acting on bead i relative to it’s center, i.e. the center of the sphere. Thereby, this only describes the amount of rotation bead i would experience around its center due to the movement of all the other beads. However, the force <span class="math notranslate nohighlight">\(\boldsymbol{F}_{i}\)</span> acting on bead i due to the movement of the other beads also results in a torque with which bead i acts on the rigid bead models center <span class="math notranslate nohighlight">\(r_O\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-frictiontroque-exk">
+<span class="eqno">(16)<a class="headerlink" href="#equation-frictiontroque-exk" title="Permalink to this equation"></a></span>\[\boldsymbol{r}_i \times \boldsymbol{F}_i = \boldsymbol{r}_i \times \Big( \sum_j^N \zeta_{ij}^{tt} (\boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_j) + \zeta_{ij}^{tr} \omega \Big)\]</div>
+<p>Thereby, the total torque acting on the rigid bead model’s origin is:</p>
+<div class="math notranslate nohighlight" id="equation-frictiontorque-total">
+<span class="eqno">(17)<a class="headerlink" href="#equation-frictiontorque-total" title="Permalink to this equation"></a></span>\[\boldsymbol{T}_O = \sum_i^N \boldsymbol{T}_{P,i} +  \boldsymbol{r}_i \times \boldsymbol{F}_i = \sum_{i=1}^N \sum_{j=1}^N \zeta_{ij}^{rt} \cdot (\boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_j) + \zeta_{ij}^{rr} \cdot \boldsymbol{\omega} + \boldsymbol{r}_i \times \Big( \zeta_{ij}^{tt} (\boldsymbol{u}_O + \boldsymbol{\omega} \times \boldsymbol{r}_j) + \zeta_{ij}^{tr} \omega \Big). \]</div>
+<p>In principle, we are done now, however, we would like to transform this into a more ‘general’ expression that we can write in a simple matrix form. For this, we use a little trick to get rid of the cross product, by turning <span class="math notranslate nohighlight">\(\omega \times r\)</span> into the dot product <span class="math notranslate nohighlight">\(- A \cdot \omega\)</span> (note: the sign changed, because of the anticommutativity of the cross product). After some rearranging, we end up with:</p>
+<div class="math notranslate nohighlight" id="equation-frictionforce-total-2">
+<span class="eqno">(18)<a class="headerlink" href="#equation-frictionforce-total-2" title="Permalink to this equation"></a></span>\[\boldsymbol{F} = \Big( \sum_{i=1}^N \sum_{j=1}^N \zeta_{ij}^{tt} \Big) \cdot \boldsymbol{u}_O + \Big( \sum_{i=1}^N \sum_{j=1}^N - \zeta_{ij}^{tt} \cdot \boldsymbol{A}_j + \zeta_{ij}^{tr} \Big) \cdot \boldsymbol{\omega}\]</div>
+<div class="math notranslate nohighlight" id="equation-frictiontorque-total-2">
+<span class="eqno">(19)<a class="headerlink" href="#equation-frictiontorque-total-2" title="Permalink to this equation"></a></span>\[\boldsymbol{T} = \Big( \sum_{i=1}^N \sum_{j=1}^N \zeta_{ij}^{rt} + A_i \zeta_{ij}^{tt} \Big) \cdot \boldsymbol{u}_O + \Big( \sum_{i=1}^N \sum_{j=1}^N \zeta_{ij}^{rt} \cdot \boldsymbol{A}_j + \zeta_{ij}^{rr} - A_i \zeta_{ij}^{tt} A_j  + A_i \zeta_{ij}^{tr} \Big) \cdot \boldsymbol{\omega}.           \]</div>
+<p>If we now want write this in matrix form, similar to the free bead example from above:</p>
+<div class="math notranslate nohighlight" id="equation-forcetorque-bead">
+<span class="eqno">(20)<a class="headerlink" href="#equation-forcetorque-bead" title="Permalink to this equation"></a></span>\[\begin{split}\begin{pmatrix}
+\boldsymbol{F} \\
+\boldsymbol{T}_O \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\Xi^{tt} &amp; \Xi^{tr} \\
+\Xi^{rt} &amp; \Xi^{rr} \\
+\end{pmatrix}
+\begin{pmatrix}
+\boldsymbol{u}_O \\
+\boldsymbol{\omega} \\
+\end{pmatrix},    \end{split}\]</div>
+<p>Where we call <span class="math notranslate nohighlight">\(\Xi\)</span> the friction tensor of the rigid bead molecule <span id="id5">[<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span> :</p>
+<div class="math notranslate nohighlight" id="equation-xi">
+<span class="eqno">(21)<a class="headerlink" href="#equation-xi" title="Permalink to this equation"></a></span>\[\begin{split}\begin{align*}
+&amp;\Xi^{tt} = \sum_{i=1}^N \sum_{j=1}^N \zeta_{ij}^{tt} \\
+&amp;\Xi_{O}^{tr} = \sum_{i=1}^N \sum_{j=1}^N ( -\zeta_{ij}^{tt} \cdot \boldsymbol{A}_j + \zeta_{ij}^{tr} ) \\
+&amp;\Xi_{O}^{rt} = \sum_{i=1}^N \sum_{j=1}^N ( \boldsymbol{A}_j \cdot \zeta_{ij}^{tt} + \zeta_{ij}^{rt} ) \\
+&amp;\Xi_{O}^{rr} = \sum_{i=1}^N \sum_{j=1}^N ( \zeta_{ij}^{rr} - \zeta_{ij}^{rt} \cdot \boldsymbol{A}_j + \boldsymbol{A}_i \cdot \zeta_{ij}^{tr} - \boldsymbol{A}_i \cdot \zeta_{ij}^{tt} \boldsymbol{A}_j)
+\end{align*}\end{split}\]</div>
+<p>The only thing left to do now, is calculating <span class="math notranslate nohighlight">\(\zeta\)</span>, which we get from the inverse of the mobility supermatrix. The mobility supermatrix is calculated in calc_mu(my_molecule, eta_0).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.calc_mu">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_mu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta_0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_mu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_mu" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the transtalional, rotational and translation-rotation coupling parts of the mobility super matrix <span class="math notranslate nohighlight">\(\mu_{tt}, \mu_{rr}, \mu_{tr} = \mu_{rt}\)</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
+</dd>
+<dt><strong>eta_0</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Viscosity</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float[N,N,3,3], float[N,N,3,3], float[N,N,3,3], float[N,N,3,3])</dt><dd><p>mu_tt, mu_rt, mu_tr, mu_rr</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The mobility matrices are directly related to the modified Oseen tensor. The Oseen tensor has first been introduced by Oseen in 1927 (For reference also see <span id="id6">[<a class="reference internal" href="../../../References.html#id12" title="J K G Dhont. An Introduction to Dynamics of Colloids. Elsevier, 1996. doi:10.1016/s1383-7303(96)x8001-3.">15</a>]</span>). The Oseen tensor comes up when solving the Stokes equations, which are a linearization of the Navier-Stokes equations. More precisely, it comes up when solving for the flow velocity field in case of a force acting on a point particle (<span class="math notranslate nohighlight">\(f(r) = f_0 \delta(r-r_p)\)</span>) which is immersed in a viscous liquid.
+In this case, we can write the solution to the Stokes equation as (due to its linearity, any solution to the Stokes equation has to be a linear transformation):</p>
+<div class="math notranslate nohighlight">
+\[v(r) = T(r-r_p) \cdot F\]</div>
+<p>T is called the hyrodynamic interaction tensor, Oseen tensor or Green’s function of the Stoke’s equations. The above solution is also called Stokeslet:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{T}(r) = \frac{1}{8 \pi \eta r} \cdot \Big(\boldsymbol{I}+\frac{\boldsymbol{r} \otimes \boldsymbol{r}}{r^2} \Big),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\eta\)</span> is the viscosity and <span class="math notranslate nohighlight">\(\otimes\)</span> is the outer product. In prosa, <span class="math notranslate nohighlight">\(T\)</span> gives the fluid flow velocty at some point <span class="math notranslate nohighlight">\(r\)</span>, given a force acting at another point <span class="math notranslate nohighlight">\(r_p\)</span>.
+Kirkwood and Riseman calculated the translational mobility tensor of a rigid bead molecule using the Oseen tensor to describe the hydrodynamic interaction between the beads, and by assigning each bead its friction coefficient <span class="math notranslate nohighlight">\(\zeta_i = 6 \pi \eta_0 a_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\mu_{ij}^{tt} = &amp; \delta_{ij}(6 \pi \eta_0 a_i)^{-1} \boldsymbol{I} \\
+&amp; + (1-\delta_ij)(8 \pi \eta_0 r_{ij})^{-1} \\
+&amp; \Big(\boldsymbol{I}+\frac{\boldsymbol{r} \otimes \boldsymbol{r}}{r^2} \Big)
+\end{align*}\end{split}\]</div>
+<p>This solution is fairly intuitive. The first term is just the mobility of a single particle with radius <span class="math notranslate nohighlight">\(a_i\)</span>. The second term is just the Oseen tensor. Recalling that the mobility <span class="math notranslate nohighlight">\(\mu\)</span> is defined as the ratio of a particles drift velocity and the applied applied force, the interpretation of the Oseen tensor as representing the interaction part of the bead mobility matrix feels natural (recalling its origin (see above)). However, we also instantly see that something is missing since the Oseen tensor  only considers the distance between the bead centers but neglects their volume/radius <span class="math notranslate nohighlight">\(a_i\)</span>. Fortunately,  <span id="id7">Torre and Bloomfield [<a class="reference internal" href="../../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">16</a>]</span> established a correction to the Oseen tensor for nonidentical spheres (also see <span id="id8">[<a class="reference internal" href="../../../References.html#id15" title="J. Garc\'ıa de la Torre, G. del Rio Echenique, and A. Ortega. Improved calculation of rotational diffusion and intrinsic viscosity of bead models for macromolecules and nanoparticles. The Journal of Physical Chemistry B, 111(5):955–961, jan 2007. doi:10.1021/jp0647941.">17</a>]</span>):</p>
+<div class="math notranslate nohighlight" id="equation-modified-oseen">
+<span class="eqno">(22)<a class="headerlink" href="#equation-modified-oseen" title="Permalink to this equation"></a></span>\[\boldsymbol{T}_{ij} = \frac{1}{8 \pi \eta r} \cdot \Big(\boldsymbol{I}+\frac{\boldsymbol{r}_{ij} \otimes \boldsymbol{r}_{ij}}{r_{ij}^2} + \frac{\sigma_i + \sigma_j}{r_{ij}^2} \Big( \frac{1}{3} \boldsymbol{I} - \frac{\boldsymbol{r}_{ij} \otimes \boldsymbol{r}_{ij}}{r_{ij}^2} \Big) \Big),\]</div>
+<p>By that, the friction tensor reads:</p>
+<div class="math notranslate nohighlight" id="equation-mu-tt">
+<span class="eqno">(23)<a class="headerlink" href="#equation-mu-tt" title="Permalink to this equation"></a></span>\[\begin{split}\begin{align*}
+\mu^{tt}_{ij} = &amp; \delta_{ij} (6 \pi \eta_0 a_i)^{-1} \boldsymbol{I} + (1-\delta_{ij})(8 \pi \eta_0 r_{ij}^{-1})(\boldsymbol{I}+\boldsymbol{P}_{ij}) \\
+&amp; + (8 \pi \eta_0 r_{ij}^{-3})(a_i^2+a_j^2)(\boldsymbol{I}-3 \boldsymbol{P}_{ij}),
+\end{align*}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{P}_{ij} = \Big(\boldsymbol{I}+\frac{\boldsymbol{r} \otimes \boldsymbol{r}}{r^2} \Big)\)</span>.
+The mobility tensor for rotation, not correcting for the beads volume, reads <span id="id9">[<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>.</p>
+<div class="math notranslate nohighlight" id="equation-mu-rr">
+<span class="eqno">(24)<a class="headerlink" href="#equation-mu-rr" title="Permalink to this equation"></a></span>\[\begin{split}\begin{align*}
+\mu^{rr}_{ij} = &amp; \delta_{ij} (8 \pi \eta_0 a_i^3)^{-1} \boldsymbol{I} \\
+&amp; + (1 - \delta_{ij})(16 \pi \eta_0 r^3_{ij})^{-1} (3 \boldsymbol{P}_{ij} - \boldsymbol{I})
+\end{align*}    \end{split}\]</div>
+<p>Here, again, the first term is just the rotational mobility of the single bead and the second term accounts for the hydrodynamic interaction. In this formulation, there is still a correction for the volume missing. This correction consists of adding <span class="math notranslate nohighlight">\(6 \eta_0 V_m \boldsymbol{I}\)</span> to the diagonal components of the rotational friction tensor <span class="math notranslate nohighlight">\(\Xi^{rr}_O\)</span>, where <span class="math notranslate nohighlight">\(V_m\)</span> is the volume of the bead model (sum over all bead volumes) <span id="id10">[<a class="reference internal" href="../../../References.html#id16" title="José Garc\'ıa de la Torre and Vicente Rodes. Effects from bead size and hydrodynamic interactions on the translational and rotational coefficients of macromolecular bead models. The Journal of Chemical Physics, 79(5):2454–2460, sep 1983. doi:10.1063/1.446054.">18</a>]</span>, <span id="id11">[<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>.</p>
+<p>And, at last, for rotation-translation coupling, we have <span id="id12">[<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-mu-rt">
+<span class="eqno">(25)<a class="headerlink" href="#equation-mu-rt" title="Permalink to this equation"></a></span>\[\mu^{rt}_{ij} = (1-\delta_{ij}) (8 \pi \eta_0 r_{ij}^2)^{-1} \boldsymbol{\epsilon}\boldsymbol{\hat{r}}_{ij} \]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.calc_zeta">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_zeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_zeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_zeta" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the friction tensors <span class="math notranslate nohighlight">\(\zeta^{tt}, \zeta^{rr}, \zeta^{tr}, \zeta^{rt}\)</span> from the inverse of the mobility supermatrix <span class="math notranslate nohighlight">\([[\mu^{tt}, \mu^{rr}], [\mu^{tr}, \mu^{rt}]]\)</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>mu_tt</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translational mobility tensor.</p>
+</dd>
+<dt><strong>mu_tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translation-rotation coupling.</p>
+</dd>
+<dt><strong>mu_rt</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Rotation-translation coupling.</p>
+</dd>
+<dt><strong>mu_rr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Rotational mobility tensor.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[3N,3N], float64[3N,3N], float64[3N,3N], float64[3N,3N])</dt><dd><p>The friction tensors <span class="math notranslate nohighlight">\(\zeta^{tt}, \zeta^{rr}, \zeta^{tr}, \zeta^{rt}\)</span>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.center_of_mass">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">center_of_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#center_of_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.center_of_mass" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the center of mass of the molecule assuming equal mass density for all paricles with radius a_i.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
+</dd>
+<dt><strong>eta_0</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Viscosity</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float64[3]</dt><dd><p>Center of mass</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The center of mass is defined by:</p>
+<div class="math notranslate nohighlight" id="equation-r-com">
+<span class="eqno">(26)<a class="headerlink" href="#equation-r-com" title="Permalink to this equation"></a></span>\[\boldsymbol{R} = \frac{1}{M} \sum_{i=1}^n m_i \boldsymbol{r_i},\]</div>
+<p>where <span class="math notranslate nohighlight">\(M\)</span> is the total mass of the molecule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.diffusion_tensor">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">diffusion_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_CoD</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_CoM</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_coupling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#diffusion_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.diffusion_tensor" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the diffusion tensor, accounting for the center of diffusion of the rigid bead molecule. The origin of the molecule is automatically updated to the center of diffusion <span class="math notranslate nohighlight">\(r_{OD}\)</span>!</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
+</dd>
+<dt><strong>Simulation</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of the Simulation class</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3], float64)</dt><dd><p>Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_rr, D_tr, D_rt and the center of diffusion r_CoD, center of mass r_CoM.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.diffusion_tensor_off_center">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">diffusion_tensor_off_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#diffusion_tensor_off_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.diffusion_tensor_off_center" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the diffusion tensor (off the center of diffusion) from the moelcule structure, the fluid viscosity and temperature.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
+</dd>
+<dt><strong>eta_0</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Viscosity</p>
+</dd>
+<dt><strong>Temp</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Temperature</p>
+</dd>
+<dt><strong>kB</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Boltzmann constant</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3])</dt><dd><p>Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_tr, D_rt, D_rr.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.levi_civita">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">levi_civita</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rij</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#levi_civita"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.levi_civita" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the product of the Levi-Civita tensor with vector rij.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>rij</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Distance between partcile i and j</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float[3,3]</dt><dd><p>Levi-Civita tensor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Given the distance vector <span class="math notranslate nohighlight">\(r_{ij} = [x_{ij},y_{ij},z_{ij}]\)</span> the product <span class="math notranslate nohighlight">\(\epsilon \cdot r_{ij}\)</span> is returned, where <span class="math notranslate nohighlight">\(\epsilon\)</span> is the Levi-Civita tensor:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\epsilon \cdot r_{ij} = 
+\begin{pmatrix}
+0 &amp; z_{ij} &amp; -y_{ij}\\
+-z_{ij} &amp; 0 &amp; x_{ij}\\
+y_{ij} &amp; -x_{ij} &amp; 0
+\end{pmatrix}.\end{split}\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.supermatrix_inverse">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">supermatrix_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#supermatrix_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.supermatrix_inverse" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the inverse of a 2x2 supermatrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>M1</strong><span class="classifier">float64[3N,3N]</span></dt><dd><p>submatrix at (0,0)</p>
+</dd>
+<dt><strong>M2</strong><span class="classifier">float64[3N,3N]</span></dt><dd><p>submatrix at (0,1)</p>
+</dd>
+<dt><strong>M3</strong><span class="classifier">float64[3N,3N]</span></dt><dd><p>submatrix at (1,0)</p>
+</dd>
+<dt><strong>M4</strong><span class="classifier">float64[3N,3N]</span></dt><dd><p>submatrix at (1,1)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[3N,3N], float64[3N,3N], float64[3N,3N], float64[3N,3N])</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A super Matrix <span class="math notranslate nohighlight">\(M=[[M1, M2], [M3, M4]]\)</span> is invertible, if both the diagonal blocks, <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_4\)</span> are invertible
+The inverse of a (2x2) supermatrix can be calculated by <span id="id13">[<a class="reference internal" href="../../../References.html#id17" title="V. Varadarajan. Supersymmetry for Mathematicians: An Introduction. American Mathematical Society, jul 2004. doi:10.1090/cln/011.">19</a>]</span>, <span id="id14">[<a class="reference internal" href="../../../References.html#id18" title="P Deligne and J Morgan. Notes on supersymmetry following Bernstein. Quantum ﬁelds and strings; a course for mathematicians, pages 41–96. Volume 1. Amer. Math. Soc, Princeton, NJ; Providence, RI, 1996.">20</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-supermaztrix-inverse">
+<span class="eqno">(27)<a class="headerlink" href="#equation-supermaztrix-inverse" title="Permalink to this equation"></a></span>\[\begin{split}\begin{align*}
+&amp; T_1 = (M_1 - M_2 M_4^{-1} M_3)^{-1} \\
+&amp; T_2 = -M_1^{-1} M_2 (M_4-M_3 M_1^{-1} M_2)^{-1} \\
+&amp; T_3 = -M_4^{-1} M_3 (M_1-M_2 M_4^{-1} M_3)^{-1} \\
+&amp; T_4 = (M_4 - M_3 M_1^{-1} M_2)^{-1} \\
+\end{align*}\end{split}\]</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.transform_reverse_supermatrix">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">transform_reverse_supermatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_tt_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_tr_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rt_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rr_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#transform_reverse_supermatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.transform_reverse_supermatrix" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms a (3N,3N) matrix into a (N,N,3,3) matrix.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>zeta_tt_Tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translational friction matrix.</p>
+</dd>
+<dt><strong>zeta_tr_Tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translation-rotation coupling.</p>
+</dd>
+<dt><strong>zeta_rt_Tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Rotation-translation coupling.</p>
+</dd>
+<dt><strong>zeta_rr_Tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Rotational friction matrix.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float[N,N,3,3], float[N,N,3,3], float[N,N,3,3], float[N,N,3,3])</dt><dd><p>zeta_tt, zeta_tr, zeta_rt, zeta_rr</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.molecules.hydro_util.transform_supermatrix">
+<span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">transform_supermatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#transform_supermatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.transform_supermatrix" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms a (N,N,3,3) matrix into a (3N,3N) matrix.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>mu_tt</strong><span class="classifier"><cite>float64[N,N,3,3]</cite></span></dt><dd><p>Translational mobility tensor.</p>
+</dd>
+<dt><strong>mu_tr</strong><span class="classifier"><cite>float64[N,N,3,3]</cite></span></dt><dd><p>Translation-rotation coupling.</p>
+</dd>
+<dt><strong>mu_rt</strong><span class="classifier"><cite>float64[N,N,3,3]</cite></span></dt><dd><p>Rotation-translation coupling.</p>
+</dd>
+<dt><strong>mu_rr</strong><span class="classifier"><cite>float64[N,N,3,3]</cite></span></dt><dd><p>Rotational mobility tensor.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float[3N,3N], float[3N,3N], float[3N,3N], float[3N,3N])</dt><dd><p>mu_tt_Tf, mu_tr_Tf, mu_rt_Tf, mu_rr_Tf</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rigidbody_util.html" class="btn btn-neutral float-left" title="rigidbody_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../observables.html" class="btn btn-neutral float-right" title="observables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>particles_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="rigidbody_util" href="rigidbody_util.html" />
+    <link rel="prev" title="molecules" href="../molecules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_structures.html">data_structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../molecules.html">molecules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">particles_util</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#particles">Particles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rigidbody_util.html">rigidbody_util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hydro_util.html">hydro_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reactions.html">reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../molecules.html">molecules</a> &raquo;</li>
+      <li>particles_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/molecules/particles_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="particles-util">
+<h1>particles_util<a class="headerlink" href="#particles-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<section id="particles">
+<h2>Particles<a class="headerlink" href="#particles" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.molecules.particles_util.</span></span><span class="sig-name descname"><span class="pre">Particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.molecules.particles_util.Particles" title="Permalink to this definition"></a></dt>
+<dd><p>The Particles class stored all data for the particles in the simulation. Particles are the ‘atoms’ in PyRID. Molecules can be constructed from combining several particles to a rigid bead model. Particles can interact with each other via energy potentials and react with each other by user defined bimolecular reactions.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>length of the particles array</p>
+</dd>
+<dt><strong>Data</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Numpy structured array containing all data that define a particle state.
+dtype: np.dtype([(‘next’, np.int64), (‘pos’, (np.float64, (3,))), (‘pos_local’, (np.float64, (3,))), (‘coord_local’, (np.float64, (3,))), (‘force’, (np.float64, (3,))), (‘rb_id’, np.int64), (‘type’, ‘U20’), (‘type_id’, np.int64), (‘radius’, np.float64), (‘number_reactions’, np.int64), (‘reactions_head’, np.int64 , (2,)), (‘bound’, bool), (‘bound_with’, np.int64), (‘cutoff’, np.float64), (‘h’, np.int64), (‘next_transition’, np.float64),],  align=True)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 63%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>add_particle(System, type_name)</strong></p></td>
+<td><p>Adds a new particle to the array</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>next_up_reaction(System, i)</strong></p></td>
+<td><p>Calculates the time point of the next uni-particle reaction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>set_pos(k, x,y,z)</strong></p></td>
+<td><p>Sets the position of particle i given x,y,z</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>increase_pos(i, dx,dy,dz)</strong></p></td>
+<td><p>Incerases the particle position by dx,dy,dz</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>set_pos_local(i, xl,yl,zl)</strong></p></td>
+<td><p>Sets the position of particle i in the local coordinate frame</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>increase_pos_local(i, dxl,dyl,dzl)</strong></p></td>
+<td><p>Increases the position of particle i in the local coordinate frame</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>set_force(i, fx, fy, fz)</strong></p></td>
+<td><p>Sets the force vector of particle i</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>clear_force(i)</strong></p></td>
+<td><p>Resets the force vector of particle i to [0,0,0]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>increase_force(i, dfx, dfy, dfz)</strong></p></td>
+<td><p>Increases the force vector of particle i by dfx, dfy, dfz</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_coord(i, xc,yc, zc)</strong></p></td>
+<td><p>Sets the coordinates of particle i in the local reference frame</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>set_rb_id(i, rb_id)</strong></p></td>
+<td><p>Sets the id of the rigid bead molecule that particle i is part of</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_type(i,  particle_type, System)</strong></p></td>
+<td><p>Sets the type name and id of particle i</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>increase_number_reactions(i)</strong></p></td>
+<td><p>Increases the number of reactions particle i partakes in by 1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>decrease_number_reactions(i)</strong></p></td>
+<td><p>Decreases the number of reactions particle i partakes in by 1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>clear_number_reactions(i)</strong></p></td>
+<td><p>Sets the number of reactions particle i partakes in to zero</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.add_particle">
+<span class="sig-name descname"><span class="pre">add_particle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.add_particle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.add_particle" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new particle to the array</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>type_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of particle type</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.clear_force">
+<span class="sig-name descname"><span class="pre">clear_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.clear_force"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.clear_force" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the force vector of particle i to [0,0,0]</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.clear_number_reactions">
+<span class="sig-name descname"><span class="pre">clear_number_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.clear_number_reactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.clear_number_reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the number of reactions particle i partakes in to zero</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.decrease_number_reactions">
+<span class="sig-name descname"><span class="pre">decrease_number_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.decrease_number_reactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.decrease_number_reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Decreases the number of reactions particle i partakes in by 1</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.increase_force">
+<span class="sig-name descname"><span class="pre">increase_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dfx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dfy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dfz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.increase_force"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.increase_force" title="Permalink to this definition"></a></dt>
+<dd><p>Increases the force vector of particle i by dfx, dfy, dfz</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>dfx</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle force differental along x axis</p>
+</dd>
+<dt><strong>dfy</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle force differental along y axis</p>
+</dd>
+<dt><strong>dfz</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle force differental along z axis</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.increase_number_reactions">
+<span class="sig-name descname"><span class="pre">increase_number_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.increase_number_reactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.increase_number_reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Increases the number of reactions particle i partakes in by 1</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.increase_pos">
+<span class="sig-name descname"><span class="pre">increase_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.increase_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.increase_pos" title="Permalink to this definition"></a></dt>
+<dd><p>Incerases the particle position by dx,dy,dz</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>dx</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position differental along x axis</p>
+</dd>
+<dt><strong>dy</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position differental along y axis</p>
+</dd>
+<dt><strong>dz</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position differental along z axis</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.increase_pos_local">
+<span class="sig-name descname"><span class="pre">increase_pos_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dzl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.increase_pos_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.increase_pos_local" title="Permalink to this definition"></a></dt>
+<dd><p>Increases the position of particle i in the local coordinate frame</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>dxl</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position differental along x axis in local frame</p>
+</dd>
+<dt><strong>dyl</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position differental along y axis in local frame</p>
+</dd>
+<dt><strong>dzl</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position differental along z axis in local frame</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.next_up_reaction">
+<span class="sig-name descname"><span class="pre">next_up_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.next_up_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.next_up_reaction" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the time point of the next uni-particle reaction.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.set_coord">
+<span class="sig-name descname"><span class="pre">set_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.set_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.set_coord" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the coordinates of particle i in the local reference frame</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>xc</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle x coordinate in local frame</p>
+</dd>
+<dt><strong>yc</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle y coordinate in local frame</p>
+</dd>
+<dt><strong>zc</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle z coordinate in local frame</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.set_force">
+<span class="sig-name descname"><span class="pre">set_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.set_force"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.set_force" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the force vector of particle i</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>fx</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle force along x axis</p>
+</dd>
+<dt><strong>fy</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle force along y axis</p>
+</dd>
+<dt><strong>fz</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle force along z axis</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.set_pos" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the position of particle i given x,y,z</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position x value</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position y value</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle position z value</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.set_pos_local">
+<span class="sig-name descname"><span class="pre">set_pos_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.set_pos_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.set_pos_local" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the position of particle i in the local coordinate frame</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>xl</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle x position in local frame</p>
+</dd>
+<dt><strong>yl</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle y position in local frame</p>
+</dd>
+<dt><strong>zl</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Particle z position in local frame</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.set_rb_id">
+<span class="sig-name descname"><span class="pre">set_rb_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rb_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.set_rb_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.set_rb_id" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the id of the rigid bead molecule that particle i is part of</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>rb:id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Type index of the rigid bead molecule</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.molecules.particles_util.Particles.set_type">
+<span class="sig-name descname"><span class="pre">set_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/particles_util.html#Particles.set_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.particles_util.Particles.set_type" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the type name and id of particle i</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
+</dd>
+<dt><strong>particle_type</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the particle type</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../molecules.html" class="btn btn-neutral float-left" title="molecules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rigidbody_util.html" class="btn btn-neutral float-right" title="rigidbody_util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

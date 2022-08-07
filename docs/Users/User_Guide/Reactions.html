@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reactions &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compartments" href="Compartments.html" />
+    <link rel="prev" title="Interaction potentials" href="Interaction_Potentials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecules.html">Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interaction_Potentials.html">Interaction potentials</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reactions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#binding-reactions">Binding reactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fusion-reactions">Fusion reactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enzymatic-reactions">Enzymatic reactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fission-reactions">Fission reactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conversion-reactions">Conversion reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Compartments.html">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecule_Distribution.html">Molecule distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">User Guide</a> &raquo;</li>
+      <li>Reactions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/User_Guide/Reactions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reactions">
+<span id="userguide-reactions"></span><h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this headline"></a></h1>
+<p>PyRID supports various uni- and bimolecular reactions. For bimolecular reactions, PyRID uses the Doi scheme. Thereby, two particles/molecules react with some rate <span class="math notranslate nohighlight">\(k\)</span> if the inter-particle distance is below a certain reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>. Unimolecular reactions are handled using a variant of the Gillespie stochastic simulation algorithm, i.e. the time point of the next reaction is sampled from the expected lifetime distribution of the particle/molecule. Figure <a class="reference internal" href="#fig-reactions-graph"><span class="std std-numref">Fig. 3</span></a> gives an overview over the possible reactions that are supported by PyRID.</p>
+<figure class="align-default" id="fig-reactions-graph">
+<a class="reference internal image-reference" href="../../_images/Reactions_Graph1.png"><img alt="../../_images/Reactions_Graph1.png" src="../../_images/Reactions_Graph1.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text"><strong>PyRID subdivied reactions into bimolecular, unimolecular, biparticle and uniparticle reactions.</strong> For each of these categories various reaction types exist, such as binding, fusion or enzymatic reactions.</span><a class="headerlink" href="#fig-reactions-graph" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<section id="binding-reactions">
+<h2>Binding reactions<a class="headerlink" href="#binding-reactions" title="Permalink to this headline"></a></h2>
+<p>We can, e.g., define a binding reactions between particles belonging to different molecules. A binding reaction is a biparticle reaction (bp). Therefore, we call the add_bp_reaction() method. We can link a binding reaction to any interaction potential (even solely repulsive). In addition, we need to set the educt particle types, the reaction radius and the reaction rate. We can also pass two product particle types, in case we want the particle types to change upon binding. Changing the particle types, e.g., allows us to also define an unbinding reaction. Therefore, we define a conversion reaction for the product particles. Any bond between particles will be removed as soon as a particle or a molecule changes its type. Type changes can occur via conversion reactions or by enzymatic reactions. Of no such unbinding reaction has been defined, bonds are removed as soon as the inter-particle distance crosses the cutoff radius of the interaction potential. For the weak piecwise harmonic potential (harmonic_attraction), the cutoff radius is, e.g., <span class="math notranslate nohighlight">\(d_1+d_2+r_c\)</span> (see <a class="reference internal" href="Interaction_Potentials.html#userguide-potentials"><span class="std std-ref">Interaction potentials</span></a>).
+Let us define a binding reaction between the particle types ‘patch_1’ and ‘patch_2’:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">=</span><span class="mf">100.0</span>
+<span class="n">h</span><span class="o">=</span><span class="mf">50.0</span>
+<span class="n">d</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">rc</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+<span class="n">r_react</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">rate</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_2&#39;</span><span class="p">],</span> <span class="n">rate</span><span class="p">,</span> <span class="n">r_react</span><span class="p">,</span> <span class="s1">&#39;harmonic_attraction&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span><span class="n">h</span> <span class="p">,</span> <span class="s1">&#39;rc&#39;</span><span class="p">:</span><span class="n">rc</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>There are many other reactions we can define on our two molecules and the respective particles. The system we have defined so far is to small to be able to account for all. Therefore, in the following I will give an example for each type of reaction defined on the two molecules, however, all these reactions should not be applied at ones.</p>
+</section>
+<section id="fusion-reactions">
+<h2>Fusion reactions<a class="headerlink" href="#fusion-reactions" title="Permalink to this headline"></a></h2>
+<p><strong>Molecule fusion</strong></p>
+<p>For the fusion reaction we need to define a third molecule for the fusion product:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_particle_type</span><span class="p">(</span><span class="s1">&#39;core_4&#39;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+
+<span class="n">C_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">C_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core_4&#39;</span><span class="p">]</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">C_pos</span><span class="p">,</span> <span class="n">C_types</span><span class="p">)</span>
+
+<span class="n">D_tt</span><span class="p">,</span> <span class="n">D_tr</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">diffusion_tensor</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we define the fusion reaction <span class="math notranslate nohighlight">\(\ce{A + B -&gt;[\ce{k_1}] C }\)</span>. However, because in PyRID, molecules are represented by a set of particles, we actually need to tell PyRID, which particles are involved in the fusion reaction. Under the hood, PyRID only determines the distances between particles, but not molecules. We want the fusion reaction to occur whenever any of the molecules core particles are within some reaction distance. Since molecule A only consists of the core particle ‘core_1’ and molecule B of the two core particles ‘core_2’ and ‘core_3’, we may setup the fusion reaction like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">product_molecule</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="n">educt_particle_pairs</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;core_2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;core_3&#39;</span><span class="p">]]</span>
+<span class="n">reaction_rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">reaction_radii</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;fusion&#39;</span><span class="p">,</span> <span class="n">educt_molecules</span><span class="p">,</span> <span class="n">product_molecule</span><span class="p">,</span> <span class="n">educt_particle_pairs</span><span class="p">,</span> <span class="n">reaction_rates</span><span class="p">,</span> <span class="n">reaction_radii</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, ‘core_1’ and ‘core_2’ react with rate 0.5 if the inter-particle distance is below 1.0 nm. ‘core_1’ and ‘core_3’ react with rate 0.5 if the inter-particle distance is below 2.0 nm. In both cases, the corresponding educt molecules A and B are fused to form molecule C. If we are not interested in the effects of molecule topology and anisotropic reaction probabilities on the reaction kinetics we could also simplify the system. For example, we could take one particle each for the reaction or even define a particle at the molecule center for the purpose of handling the fusion reaction.
+Another thing to keep in mind is that not all bimolecular reactions are allowed. Restrictions on reactions an interactions are mainly imposed on the educt locations:</p>
+<ol class="arabic simple">
+<li><p>If both particles are in the same compartment</p>
+<ul class="simple">
+<li><p>and at least one is a volume molecule, interactions and reactions are always allowed. However, if a volume and a surface molecule fuse, the product will always be a surface molecule. Also, if there exists an obstacle (a mesh element) in the linear path connecting the two educt centers, the reaction always fails.</p></li>
+<li><p>If both particles are surface molecules, interactions are always valid but reactions are only allowed if the angle between the molecules’ triangle normals is less than 90 degree.</p></li>
+</ul>
+</li>
+<li><p>If both particles are in different compartments</p>
+<ul class="simple">
+<li><p>and both particles are volume molecules, neither interactions nor reactions are allowed.</p></li>
+<li><p>If both particles are surface particles, interactions are allowed, however, not reactions except binding reactions!</p></li>
+<li><p>If one of the particles belongs to a surface molecule and the other to a volume molecule reactions are always allowed if one of the compartments is the simulation box (System), otherwise neither reactions, nor interactions are allowed.</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Molecule-Particle absorption</strong></p>
+<p>The fusion reaction from above is only defined on molecule educts and products. However, a similar reaction can also be defined on molecule particle pairs. Thereby, a particle of molecule A absorbs molecule B.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_particles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;core_2&#39;</span><span class="p">]</span>
+<span class="n">product_particle</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;patch_2&#39;</span><span class="p">]</span>
+<span class="n">reaction_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">reaction_radius</span> <span class="o">=</span> <span class="mf">3.0</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;absorption&#39;</span><span class="p">,</span> <span class="n">educt_particles</span><span class="p">,</span> <span class="n">product_particle</span><span class="p">,</span> <span class="n">reaction_rate</span><span class="p">,</span> <span class="n">reaction_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The reaction is be executed as follows: particle ‘patch_1’ is converted to ‘patch_2’ and the molecule belonging to the particle ‘core_2’ is deleted. Note, that PyRID does in general not test to which type of molecule a particle belongs. Therefore, a reaction will be executed on all molecule types, where a specific particle type is used. To ensure that bimolecular reactions are unique to a specific molecule type, currently one should use different particle types for every molecule type. This is, however, a bit inconvenient and should be changed in future iteration of PyRID.</p>
+</section>
+<section id="enzymatic-reactions">
+<h2>Enzymatic reactions<a class="headerlink" href="#enzymatic-reactions" title="Permalink to this headline"></a></h2>
+<p><strong>Molecules</strong></p>
+<p>Enzymatic reactions can be defined on multiple particle pairs, analog to the molecule fusion reaction. Enzymatic reactions defined on rigid bead molecules are named ‘enzymatic_mol’ to differentiate from enzymatic reactions defined on particles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">product_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">educt_particle_pairs</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;core_2&#39;</span><span class="p">]]</span>
+<span class="n">reaction_rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">]</span>
+<span class="n">reaction_radii</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">]</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="s1">&#39;enzymatic_mol&#39;</span><span class="p">,</span> <span class="n">educt_molecules</span><span class="p">,</span> <span class="n">product_molecules</span><span class="p">,</span> <span class="n">educt_particle_pairs</span><span class="p">,</span> <span class="n">reaction_rates</span><span class="p">,</span> <span class="n">reaction_radii</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the second educt molecule (here B) is always defined to be the enzyme! Currently, a list of two products is passed, the reason being that I was thinking about generalizing the reaction by adding the possibility to also change the type of the enzyme. I am, however, not sure whether this would be useful in any scenario. Currently, such a reaction where both molecules change their type could, however, be implemented by two enzymatic reactions.</p>
+<p><strong>Particles</strong></p>
+<p>Enzymatic reactions can also be defined on particles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_particles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_2&#39;</span><span class="p">]</span>
+<span class="n">product_particles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;patch_2&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_2&#39;</span><span class="p">]</span>
+<span class="n">reaction_rate</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">reaction_radius</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="s1">&#39;enzymatic&#39;</span><span class="p">,</span> <span class="n">educt_particles</span><span class="p">,</span> <span class="n">product_particles</span><span class="p">,</span> <span class="n">reaction_rate</span><span class="p">,</span> <span class="n">reaction_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fission-reactions">
+<h2>Fission reactions<a class="headerlink" href="#fission-reactions" title="Permalink to this headline"></a></h2>
+<p><strong>Molecule fission</strong></p>
+<p>A fission reaction is the inverse of the molecule fusion reaction and thereby limited to two products.
+Also, if the educt is a surface molecule, we need to define whether to place the product on the surface or in the volume. If the product is placed in the volume, we also need to define for each product, if it is placed inside or outside the compartment. For volume molecules the situation is a bit easier as PyRID only allows for the products to also be volume molecules.
+The fission reaction <span class="math notranslate nohighlight">\(\ce{C-&gt;[\ce{k_{-1}] A + B}\)</span> is setup as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_molecule</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span>
+<span class="n">product_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">products_location</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">products_direction</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">rate</span> <span class="o">=</span> <span class="mf">5e-5</span><span class="p">,</span>
+<span class="n">reaction_radius</span> <span class="o">=</span> <span class="mf">4.5</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;fission&#39;</span><span class="p">,</span> <span class="n">educt_molecule</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_molecules</span><span class="p">,</span> <span class="n">products_location</span><span class="p">,</span> <span class="n">products_direction</span><span class="p">,</span> <span class="n">reaction_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, the product location can be either 0 (volume) or 1 (surface). The products direction can be either 1 (outside the compartment) or -1 (inside the compartment). In the example above, for a surface molecule C, the product A will also be a surface molecule (C will be converted into A) whereas molecule B is released into the compartment volume. The direction value for product A is not actually needed but currently still needs to be set.</p>
+<p><strong>Molecule production</strong></p>
+<p>The molecule production reaction is very similar to the fission reaction but allows for more than two products:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_molecule</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span>
+<span class="n">product_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">products_location</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">products_direction</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">rate</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+<span class="n">reaction_radius</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;production&#39;</span><span class="p">,</span> <span class="n">educt_molecule</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_molecules</span><span class="p">,</span> <span class="n">products_location</span><span class="p">,</span> <span class="n">products_direction</span><span class="p">,</span> <span class="n">reaction_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Molecule-Particle release</strong></p>
+<p>The release reaction is the inverse of the absorption reaction in that a new molecule is released from molecule’s particle. It is thereby analog to the fission reaction:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_particle</span> <span class="o">=</span> <span class="s1">&#39;patch_2&#39;</span>
+<span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;patch_1&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">products_location</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">products_direction</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">rate</span> <span class="o">=</span> <span class="mf">5e-5</span><span class="p">,</span>
+<span class="n">reaction_radius</span> <span class="o">=</span> <span class="mf">4.5</span>
+
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_up_reaction</span><span class="p">(</span><span class="s1">&#39;release&#39;</span><span class="p">,</span> <span class="n">educt_molecule</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_molecules</span><span class="p">,</span> <span class="n">products_location</span><span class="p">,</span> <span class="n">products_direction</span><span class="p">,</span> <span class="n">reaction_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, the particle ‘patch_2’, belonging to some surface molecule, is converted to ‘patch_1’ while releasing a molecule B into the compartment.</p>
+</section>
+<section id="conversion-reactions">
+<h2>Conversion reactions<a class="headerlink" href="#conversion-reactions" title="Permalink to this headline"></a></h2>
+<p><strong>Molecule conversion</strong></p>
+<p>For molecules, a conversion reaction can be setup by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;conversion_mol&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Particle conversion</strong></p>
+<p>For particles, a conversion reaction can be setup by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_up_reaction</span><span class="p">(</span><span class="s1">&#39;conversion&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_1&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;patch_2&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Molecule decay</strong></p>
+<p>Decay reactions are currently only supported for molecules, but not particles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;decay&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Due to the many possible combinations of reactions and other interactions it can become difficult keep to keep track over all the different relations in the system. Therefore, PyRID enables you to create interaction graphs (based on the pyvis library) for better visualization and analysis of the model (see figure <a class="reference internal" href="#fig-reactionsgraph2"><span class="std std-numref">Fig. 4</span></a>). This feature is available via PyRIDs evaluation module that is introduced in detail later on.
+To create reaction graphs, first create an instance of PyRIDs EValuation class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Graphs visualizing the bimolecular, unimolecular and interaction bonds in the system can then be create by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Bimolecular&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Interactions&#39;</span><span class="p">)</span>
+<span class="n">Evaluation</span><span class="o">.</span><span class="n">plot_reactions_graph</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Unimolecular&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-reactionsgraph2">
+<a class="reference internal image-reference" href="../../_images/ReactionsGraph.png"><img alt="../../_images/ReactionsGraph.png" src="../../_images/ReactionsGraph.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text"><strong>Graph showing the reactions and bond interactions.</strong> The number pairs on the edges show the reaction rate and radius respectively.</span><a class="headerlink" href="#fig-reactionsgraph2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Interaction_Potentials.html" class="btn btn-neutral float-left" title="Interaction potentials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Compartments.html" class="btn btn-neutral float-right" title="Compartments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

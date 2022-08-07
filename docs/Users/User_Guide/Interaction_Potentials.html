@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interaction potentials &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Reactions" href="Reactions.html" />
+    <link rel="prev" title="Molecules" href="Molecules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecules.html">Molecules</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Interaction potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compartments.html">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecule_Distribution.html">Molecule distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">User Guide</a> &raquo;</li>
+      <li>Interaction potentials</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/User_Guide/Interaction_Potentials.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interaction-potentials">
+<span id="userguide-potentials"></span><h1>Interaction potentials<a class="headerlink" href="#interaction-potentials" title="Permalink to this headline"></a></h1>
+<p>PyRID supports any short ranged pair interaction potential. However, PyRID is not optimized for long ranged interactions and these will result in significant performance loss. Very useful for Brownian dynamics simulations are the harmonic repulsion and the attractive weak piecewise harmonic interactions that are used by the simulation tool <a class="reference external" href="https://readdy.github.io/">ReaDDy</a> as these allow for relatively large integration time steps.</p>
+<p><strong>Weak piecewise harmonic</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U_{wph}(r)
+=
+ \begin{cases}
+     \frac{1}{2}k(r-(d_1+d_2))^2-h,&amp; \text{if } r&lt;(d_1+d_2), \\
+     \frac{h}{2}(\frac{r_c-(d_1+d_2)}{2})^{-2}(r-(d_1+d_2))^2-h,&amp; \text{if } d \le r &lt; d + \frac{r_c-(d_1+d_2)}{2}, \\
+     -\frac{h}{2}(\frac{r_c-(d_1+d_2)}{2})^{-2}(r-r_c)^2,&amp; \text{if } d + \frac{r_c-(d_1+d_2)}{2} \le r &lt; r_c, \\
+     0,              &amp; \text{otherwise}
+ \end{cases}\end{split}\]</div>
+<p><strong>Harmonic repulsion</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U_{hr}(r)
+=
+ \begin{cases}
+     \frac{1}{2}k(r-(d_1+d_2))^2 ,&amp; \text{if } r&lt;(d_1+d_2), \\
+     0,              &amp; \text{otherwise}
+ \end{cases}\end{split}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(k\)</span> is the force constant, <span class="math notranslate nohighlight">\(r\)</span> the inter-particle distance and <span class="math notranslate nohighlight">\(d_1\)</span> the radii of the two interacting particles. PyRID also comes with some plotting abilities based on the matplotlib, seaborn, and plotly (for 3D) libraries.
+You can, .e.g., plot the interaction potential energy and force (Fig. <a class="reference internal" href="#fig-interaction-potentials"><span class="std std-numref">Fig. 2</span></a>) by calling</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mf">100.0</span>
+<span class="n">h</span><span class="o">=</span><span class="mf">50.0</span>
+<span class="n">d</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">rc</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+<span class="n">prd</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_potential</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="p">[(</span><span class="n">prd</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">harmonic_repulsion</span><span class="p">,</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span><span class="n">k</span><span class="p">]),</span>
+                                    <span class="p">(</span><span class="n">prd</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">piecewise_harmonic</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">d</span><span class="p">])],</span>
+                                    <span class="n">yU_limits</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">yF_limits</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">60</span> <span class="p">,</span><span class="mi">300</span> <span class="p">],</span> <span class="n">r_limits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+                                    <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-interaction-potentials">
+<a class="reference internal image-reference" href="../../_images/interaction_potentials.png"><img alt="../../_images/interaction_potentials.png" src="../../_images/interaction_potentials.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text"><strong>Interaction energy and force for the harmonic repulsive and the weak piecewise harmonic interaction potential.</strong></span><a class="headerlink" href="#fig-interaction-potentials" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>We will only add repulsive interactions between the core particles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="mf">100.0</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;core_1&#39;</span><span class="p">,</span> <span class="s1">&#39;core_2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="mf">100.0</span><span class="p">})</span>
+<span class="n">Simulation</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="s1">&#39;harmonic_repulsion&#39;</span><span class="p">,</span> <span class="s1">&#39;core_2&#39;</span><span class="p">,</span> <span class="s1">&#39;core_2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span><span class="mf">100.0</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>The first argument is just the name of the interaction potential, the next two are the names of the interacting particles. A python dictionary with the required parameters is passed. For the repulsive interaction we only have two parameters, the force constant <span class="math notranslate nohighlight">\(k\)</span> and the particle radii. The particle radii do not need to be included in the dictionary as we have already defined these when we added the particle types (see <a class="reference internal" href="Molecules.html#userguide-molecules"><span class="std std-ref">Molecules</span></a>.).</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Molecules.html" class="btn btn-neutral float-left" title="Molecules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Reactions.html" class="btn btn-neutral float-right" title="Reactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

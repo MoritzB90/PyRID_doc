@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dynamic_array_util &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="h_grid_util" href="h_grid_util.html" />
+    <link rel="prev" title="cell_list_util" href="cell_list_util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyRID
+            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Contents.html">Developer API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../data_structures.html">data_structures</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cell_list_util.html">cell_list_util</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">dynamic_array_util</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#densearray">DenseArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#holesarray">HolesArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#holesarrayreact">HolesArrayReact</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#densearrayreact">DenseArrayReact</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="h_grid_util.html">h_grid_util</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation.html">evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../geometry.html">geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecules.html">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reactions.html">reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system.html">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run.html">run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
+          <li><a href="../data_structures.html">data_structures</a> &raquo;</li>
+      <li>dynamic_array_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/Developers/Developer API/data_structures/dynamic_array_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dynamic-array-util">
+<h1>dynamic_array_util<a class="headerlink" href="#dynamic-array-util" title="Permalink to this headline"></a></h1>
+<p>Short description</p>
+<section id="densearray">
+<h2>DenseArray<a class="headerlink" href="#densearray" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">DenseArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray" title="Permalink to this definition"></a></dt>
+<dd><p>Implementation of a dense dynamics array.</p>
+<p class="rubric">Notes</p>
+<p>A dense dynamic array is a dynamic array (similar to lists in python or vectors in C++) where elements can be quickly deleted via a pop and swap mechanism. The problem with standard numpy arrays but also lsist and C++ vectors is that deletion of elements is very expensive. If we want to delete an element at index m of a numpy array of size n, numpy would create a new array that is one element smaller and copy all te data from the original array to the new array. ALso, if we want to increase the size of a numpy array by appending an element, again, a new array would need to be created and all data needs to be copied. This is extremely computationaly expensive. One way to create a dynamic array (and python lists work in that way) is, to not increase the array size each time an element is added but invcrease the array size by some multiplicative factor (usually 2). This consumes more memory but saves us from creating new arrays all the time. Now we simply need to keep track of the number of elements in the array (the length of the array) and the actual capacity which can be much larger.
+To delete elements from the array, one strait forward method is to just take the last element of the array and copy its data to wherever we want to delete an element (swapping). Next, we simply pop out the last element by decreasing the array length by 1. We call this type of array a ‘dense array’ because it keeps the array tightly packed. One issue with this method is that, if we later on need to find an element by its original index, we need to keep track of that. One can easily solve this issue by keeping a second array that saves for each index the current location in the dense array.</p>
+<a class="reference internal image-reference" href="../../../_images/DenseArray.png"><img alt="../../../_images/DenseArray.png" src="../../../_images/DenseArray.png" style="width: 30%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Count actual elements in the array.</p>
+</dd>
+<dt><strong>capacity</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Total capacity of the array.</p>
+</dd>
+<dt><strong>index</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Array to keep track of element indices.</p>
+</dd>
+<dt><strong>index_capacity</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Total capacity of the index array.</p>
+</dd>
+<dt><strong>A</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Array containing the actual data.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>method_1(arguments)</strong></p></td>
+<td><p>Some general information about this method</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray._resize">
+<span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray._resize" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray._resize_index">
+<span class="sig-name descname"><span class="pre">_resize_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray._resize_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray._resize_index" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.add" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray.make_array">
+<span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.make_array" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new array with new_cap capacity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray.make_index">
+<span class="sig-name descname"><span class="pre">make_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.make_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.make_index" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new array with new_cap capacity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.remove" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="holesarray">
+<h2>HolesArray<a class="headerlink" href="#holesarray" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">HolesArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray" title="Permalink to this definition"></a></dt>
+<dd><p>Implementation of a dense dynamics array.</p>
+<p class="rubric">Notes</p>
+<p>A dynamic array with holes is a dynamic array (similar to lists in python or vectors in C++) where elements can be quickly deleted by creating ‘holes’ in the array. These holes are tracked via a free linked list. The array with holes has the benefit over ‘dense arrays’, that elements keep their original index, because they are not shifted/swapped at any point due to deletion of other elements. This makes accessing elements by index a bit faster compared to the dense array approach. However, iterating over the elements in the array becomes more complex, because we need to skip the holes. Therefore, we add a second array, which is a dense array, that saves the indices of all the occupie slots in the array with holes (alternatively we could add another linked list that connects all occupied slots). Now we can iterate over all elements in the holes array by iterating over the dense array. Keep in mind, however, that the order is not preserved in the dense array, since, whenever we delete an element from the holes array, we also need to delete this element from the dense array by the pop and swap mechanism. As such, this method does not work well if we need to iterate over a sorted array. 
+As with the dense dynamic array, the array size is increased by a multiplicative factor of 2 as soon as the capacity limit is reached.</p>
+<a class="reference internal image-reference" href="../../../_images/HolesArray.png"><img alt="../../../_images/HolesArray.png" src="../../../_images/HolesArray.png" style="width: 40%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Count actual elements in the array.</p>
+</dd>
+<dt><strong>capacity</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Total capacity of the array.</p>
+</dd>
+<dt><strong>occupied</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Dense array that keeps track of the occupied slots.</p>
+</dd>
+<dt><strong>Data</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Structured numpy array containing a linked list, connecting the holes in the array, and containing the actual data.
+<cite>dtype = np.dtype([(‘next’, np.uint64),(‘name’, ‘U20’), … , align = True)</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>method_1(arguments)</strong></p></td>
+<td><p>Some general information about this method</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.__getitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Return element at index k+1 (element 0 is reserved for the head of the free list).
+Any item will be returned, also holes, because checking whether an item is a hole at each access
+operation is too expensive.
+Also, there will be no test, whether the index is within bounds, as this can also reduce speed by up to 25%.
+To get a list of all items which are not holes, use the occupied attribute!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.__setitem__">
+<span class="sig-name descname"><span class="pre">__setitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.__setitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.__setitem__" title="Permalink to this definition"></a></dt>
+<dd><p>The k+1 element is returned, because element 0 is reserved for the head of the free list 
+which is used to find the holes in teh array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray._append">
+<span class="sig-name descname"><span class="pre">_append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ele</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray._append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray._append" title="Permalink to this definition"></a></dt>
+<dd><p>Add element to end of the array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray._resize">
+<span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray._resize" title="Permalink to this definition"></a></dt>
+<dd><p>Resize internal array to capacity new_cap</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.delete" title="Permalink to this definition"></a></dt>
+<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ele</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.insert" title="Permalink to this definition"></a></dt>
+<dd><p>Add element into an empty slot or the end of the array, if no empty slot is available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dtype</dt><dd><p>Some information</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.len">
+<span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.len"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.len" title="Permalink to this definition"></a></dt>
+<dd><p>Return number of elements sorted in array</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArray.make_array">
+<span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.make_array" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new array with new_cap capacity</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="holesarrayreact">
+<h2>HolesArrayReact<a class="headerlink" href="#holesarrayreact" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">HolesArrayReact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact" title="Permalink to this definition"></a></dt>
+<dd><p>DYNAMIC ARRAY CLASS WITH HOLES</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>attribute_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>attribute_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>allocate_slot()</strong></p></td>
+<td><p>Allocates a new slot by finding the next hole in the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>_resize(new_cap)</strong></p></td>
+<td><p>Increases the size of the array to capacity new_cap.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>make_array(new_cap)</strong></p></td>
+<td><p>Returns a new array with new_cap capacity</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>clear()</strong></p></td>
+<td><p>clears the array by setting the number of currently inserted elements to 0.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact._resize">
+<span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact._resize" title="Permalink to this definition"></a></dt>
+<dd><p>Increases the size of the array to capacity new_cap.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact.allocate_slot">
+<span class="sig-name descname"><span class="pre">allocate_slot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact.allocate_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact.allocate_slot" title="Permalink to this definition"></a></dt>
+<dd><p>Allocates a new slot by finding the next hole in the array (appends an element to the end of tze array if no empty slot/hole is available).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int</dt><dd><p>Index of the next hole in the array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact.clear" title="Permalink to this definition"></a></dt>
+<dd><p>clears the array by setting the number of currently inserted elements to 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact.make_array">
+<span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact.make_array" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new array with new_cap capacity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>array_like</dt><dd><p>array with dtype = self.item_t</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="densearrayreact">
+<h2>DenseArrayReact<a class="headerlink" href="#densearrayreact" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArrayReact">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">DenseArrayReact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_t_main</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact" title="Permalink to this definition"></a></dt>
+<dd><p>Dynamic array</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Number of reactions in list.</p>
+</dd>
+<dt><strong>n_success</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Number of successfull reactions.</p>
+</dd>
+<dt><strong>n_total</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Number of total reactions.</p>
+</dd>
+<dt><strong>capacity</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Current capacity of dynamic array.</p>
+</dd>
+<dt><strong>A</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Struct array containing reaction data reaction data.</p>
+<p><cite>dtype = np.dtype([(‘educts_index’, (np.int64, (2,))), (‘id’, np.uint64), (‘unique_educts_id’, np.float64)],  align=True)</cite></p>
+</dd>
+<dt><strong>item_t</strong><span class="classifier"><cite>numpy dtype</cite></span></dt><dd><p>dtype of reaction struct array A (np.dtype([(‘educts_index’, (np.int64, (2,))), (‘id’, np.uint64), (‘unique_educts_id’, np.float64)],  align=True))</p>
+</dd>
+<dt><strong>index</strong><span class="classifier"><cite>holes_array_react.class_type.instance_type</cite></span></dt><dd><p>Index saved in dynamic array with holes.</p>
+</dd>
+<dt><strong>slot</strong><span class="classifier"><cite>nb.uint64</cite></span></dt><dd><p>Current/last assigned slot of dynamic array (index).</p>
+</dd>
+<dt><strong>head</strong><span class="classifier"><cite>nb.types.DictType(nb.int64, nb.int64[:])</cite></span></dt><dd><p>Head of free linked list containing all reactions of an educt.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>_resize(new_cap)</strong></p></td>
+<td><p>Increases the size of the array to capacity new_cap.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>make_array(new_cap)</strong></p></td>
+<td><p>Creates a new array of size new_cap.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>clear()</strong></p></td>
+<td><p>Clears the array by setting the number of currently inserted elements to 0.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArrayReact.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_t_main</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArrayReact._resize">
+<span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact._resize" title="Permalink to this definition"></a></dt>
+<dd><p>Increases the size of the array to capacity new_cap.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArrayReact.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact.clear" title="Permalink to this definition"></a></dt>
+<dd><p>clears the array by setting the number of currently inserted elements to 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArrayReact.make_array">
+<span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact.make_array" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new array with new_cap capacity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>array_like</dt><dd><p>array with dtype = self.item_t</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cell_list_util.html" class="btn btn-neutral float-left" title="cell_list_util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="h_grid_util.html" class="btn btn-neutral float-right" title="h_grid_util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

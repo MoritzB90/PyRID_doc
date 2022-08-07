@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Observables &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Run simulation" href="Run_Simulation.html" />
+    <link rel="prev" title="Molecule distribution" href="Molecule_Distribution.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simulation_Setup.html">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecules.html">Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interaction_Potentials.html">Interaction potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compartments.html">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Molecule_Distribution.html">Molecule distribution</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run_Simulation.html">Run simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Blender_Addon.html">Blender Add-on</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">User Guide</a> &raquo;</li>
+      <li>Observables</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/User_Guide/Observables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="observables">
+<span id="userguide-observables"></span><h1>Observables<a class="headerlink" href="#observables" title="Permalink to this headline"></a></h1>
+<p>A simulation is worth little, if we are not able to sample system properties.
+PyRID supports several observables to be sampled:</p>
+<ol class="arabic simple">
+<li><p>Energy</p></li>
+<li><p>Pressure</p></li>
+<li><p>Virial</p></li>
+<li><p>Virial tensor</p></li>
+<li><p>Volume (only useful for NPT ensemble simulations)</p></li>
+<li><p>Number</p></li>
+<li><p>Bonds</p></li>
+<li><p>Reactions</p></li>
+<li><p>Position</p></li>
+<li><p>Orientation</p></li>
+<li><p>Force</p></li>
+<li><p>Torque</p></li>
+<li><p>Radial distribution function</p></li>
+</ol>
+<p>Each observable (except Volume) is sampled per molecule type or molecule/particle pair, in the case of bimolecular reactions and bonds.
+Observables are written into an .hdf5 file. In addition, system properties such as temperature, box size and the molecule topologies and diffusion properties are written to the .hdf5 file such that one can in principle recover the hole simulation even if the corresponding python script is lost (Not yet true, since the reaction details are not written to the file. However, I will try and add this feature within the next updates).
+I recommend to use the software HDF Compass if you want to visually inspect the .hdf5 file. In addition, PyRID has the Evaluation module with which the hdf5 file data can be read, plotted and analyzed.</p>
+<p>To observe a system property/measure you simply call the observe method and pass the property name and a list of the molecule types you would like to be observed:</p>
+<p><strong>Energy</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If no molecules list is passed, PyRID will sample the property for all molecule types. In addition you can set the stride by which PyRID will sample the respective measure. Also, you can tell PyRID to bin the data. If binned is set to True, PyRID will sum up values in between sampling steps. Especially if you sample the number of reactions it makes sense to turn on binning, since you usually want to know how many reactions occurred within a time interval. For other measures binning is mainly useful if you are interested in mean values. By default binned is False and stepwise is set to True. Stepwise sampling is just regular sampling without the binning. You can turn on stepwsie a binned sampling in parallel.</p>
+<p><strong>Pressure</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Pressure&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Virial</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Virial&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Virial tensor</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Virial Tensor&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Volume</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Number</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Bonds</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Bonds&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Reactions</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Reactions&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Position</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Position&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Orientation</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Force</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">,</span> <span class="n">binned</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Torque</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Radial distribution function</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">observe_rdf</span><span class="p">(</span><span class="n">rdf_pairs</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">],[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">],[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">]],</span> <span class="n">rdf_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="mf">10.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">],</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">obs_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you sample the radial distribution function (RDF), you need to define the number of bin (spatial resolution) and the cutoff distance for each molecule pair that is sampled.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Molecule_Distribution.html" class="btn btn-neutral float-left" title="Molecule distribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Run_Simulation.html" class="btn btn-neutral float-right" title="Run simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

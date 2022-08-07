@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anisotropic diffusion &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Diffusion tensor" href="diffusion_tensor.html" />
+    <link rel="prev" title="Rigid bead molecules" href="rigid_bead_molecules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Theory</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rigid_bead_molecules.html">Rigid bead molecules</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Anisotropic diffusion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#quaternion-propagator">Quaternion propagator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diffusion_tensor.html">Diffusion tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactions.html">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh_compartments.html">Mesh compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structures.html">Data structures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Theory</a> &raquo;</li>
+      <li>Anisotropic diffusion</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Developers/Theory/anisotropic_diffusion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="anisotropic-diffusion">
+<h1>Anisotropic diffusion<a class="headerlink" href="#anisotropic-diffusion" title="Permalink to this headline"></a></h1>
+<p>The motion of an isolated rigid bead molecule j in solution can be described in terms of the Langevin equation for translational and rotational motion. Note that we are always considering isolated molecules in dispersion and do not account for the hydrodynamic interaction between molecules as this is computationally very expensive (<span class="math notranslate nohighlight">\(O(N^2)-O(N^3)\)</span>) <span id="id1">[<a class="reference internal" href="../../References.html#id49" title="Tihamér Geyer and Uwe Winter. An o(n2) approximation for hydrodynamic interactions in brownian dynamics simulations. The Journal of Chemical Physics, 130(11):114905, mar 2009. doi:10.1063/1.3089668.">38</a>, <a class="reference internal" href="../../References.html#id47" title="Maciej Długosz and Joanna Trylska. Diffusion in crowded biological environments: applications of brownian dynamics. BMC Biophysics, mar 2011. doi:10.1186/2046-1682-4-3.">39</a>]</span>. In the most general case the Langevin equation for translational and rotational motion reads <span id="id2">[<a class="reference internal" href="../../References.html#id43" title="Donald L. Ermak and J. A. McCammon. Brownian dynamics with hydrodynamic interactions. The Journal of Chemical Physics, 69(4):1352–1360, aug 1978. doi:10.1063/1.436761.">40</a>, <a class="reference internal" href="../../References.html#id46" title="Eric Dickinson, Stuart A. Allison, and J. Andrew McCammon. Brownian dynamics with rotation–translation coupling. J. Chem. Soc., Faraday Trans. 2, 81(4):591–601, 1985. doi:10.1039/f29858100591.">41</a>, <a class="reference internal" href="../../References.html#id45" title="R B Jones and P N Pusey. Dynamics of suspended colloidal spheres. Annual Review of Physical Chemistry, 42(1):137–169, oct 1991. doi:10.1146/annurev.pc.42.100191.001033.">42</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[m \frac{d^2\boldsymbol{r}_j(t)}{dt^2} = \boldsymbol{F}_j - \Big(\boldsymbol{\Xi}^{tt} \frac{d\boldsymbol{r}_j}{dt} + \boldsymbol{\Xi}^{tr} \frac{d\boldsymbol{\phi}_j}{dt}\Big) + \boldsymbol{R}^t\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{d}{dt} \Big( I \frac{d \boldsymbol{\phi}_j(t)}{dt} \Big) = \boldsymbol{T}_j - \Big(\boldsymbol{\Xi}^{rr} \frac{d\boldsymbol{\phi}_j}{dt} + \boldsymbol{\Xi}^{rt} \frac{d\boldsymbol{r}_j}{dt}\Big) + \boldsymbol{R}^r,\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\langle \boldsymbol{R}^a(t)\rangle = 0\]</div>
+<div class="math notranslate nohighlight">
+\[\langle \boldsymbol{R}^a(t) \boldsymbol{R}^b(t')\rangle = 2 k_B T \boldsymbol{\Xi}_{ij}^{ab} \delta(t-t'),\]</div>
+<p>where <span class="math notranslate nohighlight">\(a,b \in \{t,r\}\)</span>. Here, <span class="math notranslate nohighlight">\(\boldsymbol{\Xi}^{tt}, \boldsymbol{\Xi}^{rr}, \boldsymbol{\Xi}^{tr}, \boldsymbol{\Xi}^{rt}\)</span> are the translational, rotational and translation-rotation coupling friction tensors of the rigid body in the lab frame. Also, <span class="math notranslate nohighlight">\(\boldsymbol{\Xi}^{ab} = k_B T (\boldsymbol{D}^{-1})^{ab}\)</span> (Einstein relation). Due to the translation-rotation coupling, the equations for rotation and translation are not independent. For low-mass particles, such as molecules, and for long enough time intervals, the acceleration of the molecules can be neglected in the description of the diffusion process. As such it is convenient to describe the motion of molecules by overdamped Langevin dynamics also called Brownian motion where <span class="math notranslate nohighlight">\(I \frac{d^2 \phi_j(t)}{dt^2} = m \frac{d^2 x_j(t)}{dt^2} = 0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{d\boldsymbol{r}_j(t)}{dt} = \boldsymbol{M}_{j}^{tt} \boldsymbol{F}_j + \boldsymbol{M}_{j}^{tr} \boldsymbol{T}_j + \boldsymbol{S}^t\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{d \boldsymbol{\phi}_j(t)}{dt} = \boldsymbol{M}_{j}^{rr} \boldsymbol{T}_j + \boldsymbol{M}_{j}^{rt} \boldsymbol{F}_j + \boldsymbol{S}^r.\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\langle \boldsymbol{S}^a(t)\rangle = 0\]</div>
+<div class="math notranslate nohighlight">
+\[\langle \boldsymbol{S}^a(t) \boldsymbol{S}^b(t')\rangle = 2 k_B T \boldsymbol{M}_{ij}^{ab} \delta(t-t'),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{M}^{tt}, \boldsymbol{M}^{rr}, \boldsymbol{M}^{tr}, \boldsymbol{M}^{rt}\)</span> are the translational, rotational and translation-rotation coupling mobility tensors of the rigid body in the lab frame and <span class="math notranslate nohighlight">\(\boldsymbol{M}^{ab} = \frac{\boldsymbol{D}^{ab}}{k_B T}\)</span>. Also  <span class="math notranslate nohighlight">\(\boldsymbol{M}^{rt} = \boldsymbol{M}^{tr,T}\)</span>. In most cases, the effect of the translation-rotation coupling on the molecular dynamics is negligible. However, translation-rotation coupling increases the complexity of the propagation algorithm for the translation and rotation vectors. Therefore, in the following, we will consider translation and rotation as being independent. In this case, the propagator for the Cartesian coordinates as well as the orientation angle can be formulated as</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{r}_j(t) = \boldsymbol{r}_j(t-\Delta t) + \boldsymbol{A}_j \boldsymbol{M}_{j}^{tt,b} \boldsymbol{A}_j^T \boldsymbol{F}_j \Delta t + \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{tt,b} k_B T}\, \boldsymbol{W}^t(\Delta t)\]</div>
+<div class="math notranslate nohighlight" id="equation-eq-dphidt">
+<span class="eqno">(32)<a class="headerlink" href="#equation-eq-dphidt" title="Permalink to this equation"></a></span>\[\boldsymbol{\phi}_j(t) = \boldsymbol{\phi}_j(t-\Delta t) + \boldsymbol{A}_j \boldsymbol{M}_{j}^{rr,b} \boldsymbol{A}_j^T \boldsymbol{T}_j \Delta t + \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{rr,b} k_B T}\, \boldsymbol{W}^r(\Delta t).\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\boldsymbol{W}(\Delta t)\)</span> is a 3-dimensional Wiener process, i.e. <span class="math notranslate nohighlight">\(\boldsymbol{W}(t+\Delta t) - \boldsymbol{W}(t) \sim \mathcal{N}(0, \Delta t)\)</span>, which can be argued from the central limit theorem and the assumption that the forces of the solvent molecules act with equal probability from all directions. The superscript <span class="math notranslate nohighlight">\(b\)</span> indicates that the mobility tensors <span class="math notranslate nohighlight">\(\boldsymbol{M}^{ab,b}\)</span> are given in terms of the body/local frame of the molecule, which is much more convenient when we talk about the propagation algorithm. In this context, <span class="math notranslate nohighlight">\(\boldsymbol{A}_j\)</span> is the rotation matrix of molecule j. One problem with the rotational equation of motion is that several issues arise depending on how rotations are represented. Propagating the rotation in terms of Euler angles, e.g., will result in numerical drift and singularities <span id="id3">[<a class="reference internal" href="../../References.html#id30" title="David Baraff. Physically based modeling: rigid body simulation. SIGGRAPH Course Notes, 2001. doi:10.1145/97880.97881.">43</a>, <a class="reference internal" href="../../References.html#id21" title="Ioana M. Ilie, Wouter K. den Otter, and Wim J. Briels. A coarse grained protein model with internal degrees of freedom. application to $\less $i$\greater $$\upalpha $$\less $/i$\greater $-synuclein aggregation. The Journal of Chemical Physics, 144(8):085103, feb 2016. doi:10.1063/1.4942115.">44</a>]</span>. Therefore, especially in computer graphics, it is standard to represent rotations in unit quaternions, which is much more stable and has fewer issues in general. An algorithm for the rotation propagator based on quaternions can, for example, be found in <span id="id4">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span>. Here, I follow a path very similar to <span id="id5">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span>. However, I will introduce a more concise derivation of the algorithm instead of the somewhat lengthy derivation in <span id="id6">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span> that is based on a reformulation of the problem in terms of generalized coordinates.</p>
+<section id="quaternion-propagator">
+<h2>Quaternion propagator<a class="headerlink" href="#quaternion-propagator" title="Permalink to this headline"></a></h2>
+<p>The goal is to derive a propagator for the rotation quaternion. A well-established connection between the angular velocity and the unit quaternion velocity is <span id="id7">[<a class="reference internal" href="../../References.html#id30" title="David Baraff. Physically based modeling: rigid body simulation. SIGGRAPH Course Notes, 2001. doi:10.1145/97880.97881.">43</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-dg-dphi">
+<span class="eqno">(33)<a class="headerlink" href="#equation-eq-dg-dphi" title="Permalink to this equation"></a></span>\[\frac{d\boldsymbol{q}}{dt} = \frac{1}{2} \frac{\boldsymbol{\phi}}{dt} \boldsymbol{q} = \boldsymbol{B} \frac{\boldsymbol{\phi}}{dt}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}\boldsymbol{B}
+= \frac{1}{2}
+\begin{pmatrix}
+    -q_1 &amp; -q_2 &amp; -q_3 \\
+    q_0 &amp; q_3 &amp; -q_2 \\
+    -q_3 &amp; q_0 &amp; q_1 \\
+    q_2 &amp; -q_1 &amp; q_0 \\
+\end{pmatrix}.
+\end{split}\end{split}\]</div>
+<p>Inserting <a class="reference internal" href="#equation-eq-dphidt">(32)</a> into <a class="reference internal" href="#equation-eq-dg-dphi">(33)</a>, we get:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}:label: eq:dqdt\\\boldsymbol{q}_j(t) = \boldsymbol{q}_j(t-\Delta t) + \boldsymbol{B}_j\boldsymbol{A}_j \boldsymbol{M}_{j}^{rr,b} \boldsymbol{A}_j^T \boldsymbol{T}_j \Delta t + \boldsymbol{B}_j \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{rr,b} k_B T}\, \boldsymbol{W}^r(\Delta t).\end{aligned}\end{align} \]</div>
+<p>The factor <span class="math notranslate nohighlight">\(\boldsymbol{B}\boldsymbol{A}\)</span> can, however, be simplified to a somewhat surprising degree:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+\boldsymbol{B}\boldsymbol{A}
+= &amp; \frac{1}{2}
+\begin{pmatrix}
+    -q_1 &amp; -q_2 &amp; -q_3 \\
+    q_0 &amp; q_3 &amp; -q_2 \\
+    -q_3 &amp; q_0 &amp; q_1 \\
+    q_2 &amp; -q_1 &amp; q_0 \\
+\end{pmatrix}
+\begin{pmatrix}
+    1-2(q_2^2+q_3^2) &amp; 2(q_1 q_2-q_0 q_3) &amp; 2(q_1 q_3+q_0 q_2) \\
+    2(q_1 q_2+q_0 q_3) &amp; 1-2(q_1^2+q_3^2) &amp; 2(q_2 q_3-q_0 q_1) \\
+2(q_1 q_3-q_0 q_2) &amp; 2(q_2 q_3+q_0 q_1) &amp; 1-2(q_1^2+q_2^2) \\
+\end{pmatrix}\\
+= &amp; \frac{1}{2}
+\begin{pmatrix}
+   -q_1 &amp; -q_2 &amp; -q_3 \\
+    q_0 &amp; q_3 (1-2 q^2 ) &amp; q_2 (2 q^2 -1) \\
+    q_3 (2 q^2 -1) &amp; q_0 &amp; q1 (1-2 q^2 ) \\
+    q_2 (1-2 q^2) &amp; q_1 (2 q^2-1) &amp; q_0 \\
+\end{pmatrix} \\
+= &amp; \frac{1}{2}
+\begin{pmatrix}
+   -q_1 &amp; -q_2 &amp; -q_3 \\
+    q_0 &amp; -q_3 &amp; q_2 \\
+    q_3 &amp; q_0 &amp; -q1 \\
+    -q_2 &amp; q_1 &amp; q_0 \\
+\end{pmatrix},
+\end{split}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(q^2 = q_0^2+q_1^2+q_2^2+q_3^2 = 1\)</span>.
+For the quaternion to accurately represent the rotation, we need to ensure that it keeps its unit length. However, due to the finite time step in simulations, the quaternion will diverge from unit length over time. Thus, it is necessary to frequently re-normalize the quaternion. <span id="id8">Ilie <em>et al.</em> [<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span> point out that re-normalization will introduce a bias by changing the sampled phase space distribution. Thereby, it is more appropriate to introduce a constraint force using the method of undetermined Lagrange multipliers as is used in molecular dynamics algorithms such as SHAKE. However, for integration time steps used in practice, I found the error introduced by re-normalization to be negligible.
+Fig. <a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 11</span></a> shows that the rotation and translation propagators result in the correct mean squared distribution and rotational time correlation. The translational and rotational diffusion tensors used are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}D_{tt} =
+\begin{pmatrix}
+   0.5 &amp; 0 &amp; 0 \\
+    0 &amp; 0.4 &amp; 0 \\
+    0 &amp; 0 &amp; 0.1 \\
+\end{pmatrix} \frac{nm^2}{ns},\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}D_{rr} =
+\begin{pmatrix}
+   0.005 &amp; 0 &amp; 0 \\
+    0 &amp; 0.04 &amp; 0 \\
+    0 &amp; 0 &amp; 0.1 \\
+\end{pmatrix} \frac{rad}{ns},\end{split}\]</div>
+<p>The mean squared displacement (MSD) is given by</p>
+<div class="math notranslate nohighlight">
+\[MSD = \langle |\boldsymbol{x}(t+\Delta t)-\boldsymbol{x}(t)|^2 \rangle\]</div>
+<p>The rotational time correlation function is given by</p>
+<div class="math notranslate nohighlight">
+\[MSD = \frac{3}{2} \langle (\hat{\boldsymbol{n}}(t+\Delta t)\hat{\boldsymbol{n}}(t))^2 \rangle - \frac{1}{2},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}(t)\)</span> is the normal vector of the molecule, representing it’s orientation at time point <span class="math notranslate nohighlight">\(t\)</span>. Fig. <a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 11</span></a> compares the simulation results to the theoretical prediction, which, for the rotational time correlation function, is given by a multi-exponential decay function <span id="id9">[<a class="reference internal" href="../../References.html#id51" title="J. Garc\'ıa de la Torre, Stephen E. Harding, and Beatriz Carrasco. Calculation of NMR relaxation, covolume, and scattering-related properties of bead models using the SOLPRO computer program. European Biophysics Journal, 28(2):119–132, jan 1999. doi:10.1007/s002490050191.">45</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}:label: eq:P2\\P_{2,l}(t) = \sum_{i=1}^5 a_{i,l} exp(-t/\tau_i),\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(l \in {1,2,3}\)</span>. The relaxation times are given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+\tau_1 = (6D - 2 \Delta)^{-1} \\
+\tau_2 = (3D - D^{rr,b}_1)^{-1} \\
+\tau_3 = (3D - D^{rr,b}_2)^{-1} \\
+\tau_4 = (3D - D^{rr,b}_3)^{-1} \\
+\tau_5 = (6D - 2 \Delta)^{-1}.
+\end{split}\end{split}\]</div>
+<p><cite>D^{rr,b}_1, D^{rr,b}_2, D^{rr,b}_3</cite> are the eigenvalues of the rotational diffusion tensor <span class="math notranslate nohighlight">\(\boldsymbol{D}^{rr,b}\)</span> in the molecule frame and D is the scalar rotational diffusion coefficient given by <span class="math notranslate nohighlight">\(D = \frac{Tr(\boldsymbol{D}^{rr,b})}{3}\)</span>.
+Parameter <span class="math notranslate nohighlight">\(\Delta\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\Delta = \sqrt{((D^{rr,b}_1)^2+(D^{rr,b}_2)^2+(D^{rr,b}_3)^2-D^{rr,b}_1 D^{rr,b}_2-D^{rr,b}_1 D^{rr,b}_3-D^{rr,b}_2D^{rr,b}_3)}\]</div>
+<p>The amplitudes of the individual exponential decays are given by</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}:label:eq:amplitude_rotrelax\\\begin{split}\begin{split}
+a_{1,l} = \frac{3}{4}(F+G) \\
+a_{2,l} = 3 \hat{n}_{l,2}^2 \hat{n}_{l,3}^2 \\
+a_{3,l} = 3 \hat{n}_{l,1}^2 \hat{n}_{l,3}^2 \\
+a_{4,l} = 3 \hat{n}_{l,1}^2 \hat{n}_{l,2}^2 \\
+a_{5,l} = \frac{3}{4}(F-G),
+\end{split}\end{split}\end{aligned}\end{align} \]</div>
+<p>with <span class="math notranslate nohighlight">\(F = - \frac{1}{3} + \sum_{k=1}^3 \hat{n}_k^4\)</span> and <span class="math notranslate nohighlight">\(G=\frac{1}{\Delta}\Big( -D + \sum_{k=1}^3 D^{rr,b}_k \Big[ \hat{n}_k^4 + 2 \hat{n}_m^2 \hat{n}_n^2 \Big] \Big)\)</span>, where <span class="math notranslate nohighlight">\(m, n \in \{1,2,3\}-\{k\}\)</span>.</p>
+<p>If we choose the normal vectors of each axis <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_l\)</span> such that these are identical with the basis vectors of the local frame, i.e. <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_1 = \boldsymbol{e}_x = [1,0,0]\)</span>, <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_2 = \boldsymbol{e}_y = [0,1,0]\)</span>, <span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_3 = \boldsymbol{e}_z = [0,0,1]\)</span>, <span class="math notranslate nohighlight">\(a_2-a_3\)</span> vanish such that we end up with a double exponential decay (Fig. <a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 11</span></a> B).</p>
+<figure class="align-default" id="fig-diff">
+<a class="reference internal image-reference" href="../../_images/Diffusion.png"><img alt="../../_images/Diffusion.png" src="../../_images/Diffusion.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text"><strong>MSD and rotational relaxation times of a rigid bead molecule matches the theoretical prediction.</strong> <strong>(A)</strong> Mean squared displacement (MSD) of the rigid bead molecule computed with PyRID. The displacement in each dimension (colored markers) is in very good agreement with the theory (black line). <strong>(B)</strong> The rotational relaxation of the rigid bead molecule is also in close agreement with the theory (gray lines) for each of the the rotation axes (colored markers).</span><a class="headerlink" href="#fig-diff" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rigid_bead_molecules.html" class="btn btn-neutral float-left" title="Rigid bead molecules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="diffusion_tensor.html" class="btn btn-neutral float-right" title="Diffusion tensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
