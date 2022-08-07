@@ -111,11 +111,10 @@
 <p>There are many ways in which one could want to analyze the data gathered during a simulation.
 Via the Evaluation class, PyRID offers a straight forward way to read the data from the hdf5 files and even to do some analysis on these or do basic plots (Fig. <a class="reference internal" href="#fig-evaluation"><span class="std std-ref">Plots of various observables.</span></a>).
 We can create an instance of the Evaluation class by</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
-
-<span class="ow">and</span> <span class="n">then</span> <span class="n">load</span> <span class="n">an</span> <span class="n">hdf5</span> <span class="n">file</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>and then load an hdf5 file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;my_hdf5_file&#39;</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;my_path//&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
