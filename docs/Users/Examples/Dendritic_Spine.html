@@ -97,8 +97,8 @@
              
   <section id="dendritic-spine">
 <h1>Dendritic Spine<a class="headerlink" href="#dendritic-spine" title="Permalink to this heading"></a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;Files//&#39;</span>
-<span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;Figures//&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;Files/&#39;</span>
+<span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;Figures/&#39;</span>
 <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;Dendritic_Spine&#39;</span>
 
 <span class="n">nsteps</span> <span class="o">=</span> <span class="mf">1e5</span>
@@ -234,7 +234,7 @@
 <span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;production&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">25</span><span class="p">,</span> <span class="n">product_loc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">25</span><span class="p">,</span> <span class="n">product_direction</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">25</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">Compartments</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">load_compartments</span><span class="p">(</span><span class="s1">&#39;Compartments//DendriticSpine2.obj&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">Compartments</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">load_compartments</span><span class="p">(</span><span class="s1">&#39;Compartments/DendriticSpine.obj&#39;</span><span class="p">)</span>
 
 <span class="n">Simulation</span><span class="o">.</span><span class="n">set_compartments</span><span class="p">(</span><span class="n">Compartments</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1e3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
 

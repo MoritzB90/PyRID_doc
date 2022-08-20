@@ -447,6 +447,33 @@
                     <span class="k">elif</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span><span class="o">&lt;-</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
                         <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">+=</span> <span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span></div>
                     
+
+    <span class="k">def</span> <span class="nf">update_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of Particles class  </span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Molecule index</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">pi0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]):</span>
+            <span class="n">pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="n">pi0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            
+            <span class="n">Particles</span><span class="o">.</span><span class="n">clear_force</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">Particles</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;number_reactions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
                     
 <div class="viewcode-block" id="RBs.update_force_torque"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_force_torque">[docs]</a>    <span class="k">def</span> <span class="nf">update_force_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         

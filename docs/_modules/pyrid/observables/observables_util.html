@@ -96,6 +96,7 @@
 <span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">..evaluation.rdf_util</span> <span class="kn">import</span> <span class="n">create_rb_hgrid</span><span class="p">,</span> <span class="n">radial_distr_function</span>
 
@@ -124,7 +125,7 @@
 <div class="viewcode-block" id="Observables.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">):</span>
         
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;/hdf5&#39;</span><span class="p">)</span> 
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span> <span class="o">/</span> <span class="s1">&#39;hdf5&#39;</span><span class="p">)</span> 
         <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
             <span class="c1"># directory already exists</span>
             <span class="k">pass</span>
@@ -159,7 +160,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observing_rdf</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span> <span class="o">/</span> <span class="s1">&#39;hdf5&#39;</span> <span class="o">/</span> <span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
         
         <span class="c1">#------------------</span>
         <span class="c1"># System Setup</span>
@@ -293,7 +294,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">observables_setup</span><span class="p">[</span><span class="n">Property</span><span class="p">][</span><span class="s1">&#39;current_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         
         <span class="c1"># if save==True:</span>
-        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span> <span class="o">/</span> <span class="s1">&#39;hdf5&#39;</span> <span class="o">/</span> <span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
             
         <span class="k">if</span> <span class="n">stepwise</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">group</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s1">&#39;stepwise/&#39;</span><span class="o">+</span><span class="n">Property</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -472,7 +473,7 @@
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_path</span> <span class="o">/</span> <span class="s1">&#39;hdf5&#39;</span> <span class="o">/</span> <span class="p">(</span><span class="n">Simulation</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">observing_rdf</span> <span class="o">=</span><span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rdf_nsteps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">Simulation</span><span class="o">.</span><span class="n">nsteps</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span>

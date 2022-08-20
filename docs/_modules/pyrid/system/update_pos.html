@@ -96,7 +96,114 @@
                     
 <span class="c1">#%%</span>
  
-       
+<span class="c1"># @nb.njit</span>
+<span class="c1"># def update_rb_compartments(RBs, Particles, System):</span>
+    
+<span class="c1">#     &quot;&quot;&quot;Loops through all volume and surface rigid bead molecules and updates their total force and torque, propagates the rotation quaternion and translation vectors. Adds any unimolecular reaction to reactions list if the next reaction is scheduled for the current time step.</span>
+    
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     RBs : object</span>
+<span class="c1">#         Rigid body class instance</span>
+<span class="c1">#     Particles : object</span>
+<span class="c1">#         Particles class instance</span>
+<span class="c1">#     Systems : object</span>
+<span class="c1">#         System class instance</span>
+    
+<span class="c1">#     &quot;&quot;&quot;</span>
+    
+<span class="c1">#     reactions_total = 0</span>
+<span class="c1">#     for key in range(len(System.Reactions_Dict)):</span>
+<span class="c1">#         reactions_total += System.Reactions_Dict[key].n</span>
+    
+<span class="c1">#     if reactions_total != System.reactions_left:</span>
+<span class="c1">#         print(&#39;Pos_0: Discrepancy in number of reactions: &#39;, reactions_total, System.reactions_left, System.current_step)</span>
+        
+<span class="c1">#     for i0 in range(RBs.occupied.n):</span>
+<span class="c1">#         i = RBs.occupied[i0] </span>
+        
+<span class="c1">#         RBs.update_force_torque(Particles,i)</span>
+        
+<span class="c1">#         if RBs[i][&#39;loc_id&#39;] == 0:</span>
+            
+<span class="c1">#             RBs.update_dq(System,i)</span>
+<span class="c1">#             RBs.update_dX(System,i)</span>
+            
+<span class="c1">#             RBs.update_orientation_quat(i)</span>
+            
+<span class="c1">#             RBs.update_particle_pos(Particles, System,i)</span>
+            
+<span class="c1">#         if RBs[i][&#39;loc_id&#39;] == 1:</span>
+            
+<span class="c1">#             RBs.update_dq(System,i)</span>
+<span class="c1">#             RBs.update_dX(System,i)</span>
+            
+<span class="c1">#             RBs.update_orientation_quat(i)</span>
+            
+<span class="c1">#             RBs.update_particle_pos_2D(System, Particles,i)</span>
+            
+            
+<span class="c1">#         # Unimolecular reaction:</span>
+
+<span class="c1">#         if RBs[i][&#39;next_transition&#39;]&lt;=System.current_step*System.dt:</span>
+        
+<span class="c1">#             mtype_idx_i = RBs[i][&#39;type_id&#39;]</span>
+
+<span class="c1">#             reaction_id = System.um_reaction_id[mtype_idx_i]</span>
+<span class="c1">#             System.reactions_left += 1</span>
+<span class="c1">#             System.Reactions_Dict[reaction_id].append_reaction(i)</span>
+
+<span class="c1">#     reactions_total = 0</span>
+<span class="c1">#     for key in range(len(System.Reactions_Dict)):</span>
+<span class="c1">#         reactions_total += System.Reactions_Dict[key].n</span>
+    
+<span class="c1">#     if reactions_total != System.reactions_left:</span>
+<span class="c1">#         print(&#39;Pos_1: Discrepancy in number of reactions: &#39;, reactions_total, System.reactions_left, System.current_step)</span>
+        
+    
+<span class="c1"># @nb.njit</span>
+<span class="c1"># def update_rb(RBs, Particles, System):</span>
+    
+<span class="c1">#     &quot;&quot;&quot;Loops through all volume rigid bead molecules and updates their total force and torque, propagates the rotation quaternion and translation vectors. Adds any unimolecular reaction to reactions list if the next reaction is scheduled for the current time step.</span>
+    
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     RBs : object</span>
+<span class="c1">#         Rigid body class instance</span>
+<span class="c1">#     Particles : object</span>
+<span class="c1">#         Particles class instance</span>
+<span class="c1">#     Systems : object</span>
+<span class="c1">#         System class instance</span>
+    
+<span class="c1">#     &quot;&quot;&quot;</span>
+    
+<span class="c1">#     for i0 in range(RBs.occupied.n):</span>
+<span class="c1">#         i = RBs.occupied[i0] </span>
+        
+<span class="c1">#         RBs.update_force_torque(Particles,i)</span>
+        
+<span class="c1">#         RBs.update_dq(System,i)</span>
+<span class="c1">#         RBs.update_dX(System,i)</span>
+        
+<span class="c1">#         RBs.update_orientation_quat(i)</span>
+        
+<span class="c1">#         RBs.update_particle_pos(Particles, System,i)</span>
+        
+        
+<span class="c1">#         # Unimolecular reaction:</span>
+
+<span class="c1">#         if RBs[i][&#39;next_transition&#39;]&lt;=System.current_step*System.dt:</span>
+        
+<span class="c1">#             mtype_idx_i = RBs[i][&#39;type_id&#39;]</span>
+
+<span class="c1">#             reaction_id = System.um_reaction_id[mtype_idx_i]</span>
+<span class="c1">#             System.reactions_left += 1</span>
+<span class="c1">#             System.Reactions_Dict[reaction_id].append_reaction(i)</span>
+            
+            
+            
+<span class="c1">#%%</span>
+
 <div class="viewcode-block" id="update_rb_compartments"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/update_pos.html#pyrid.system.update_pos.update_rb_compartments">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">update_rb_compartments</span><span class="p">(</span><span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
     
@@ -123,23 +230,29 @@
     <span class="k">for</span> <span class="n">i0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span> 
         
-        <span class="n">RBs</span><span class="o">.</span><span class="n">update_force_torque</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-        
         <span class="k">if</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             
-            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dq</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-            
-            <span class="n">RBs</span><span class="o">.</span><span class="n">update_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_force_torque</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_dq</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_force</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
             
             <span class="n">RBs</span><span class="o">.</span><span class="n">update_particle_pos</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
             
         <span class="k">if</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;loc_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             
-            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dq</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-            
-            <span class="n">RBs</span><span class="o">.</span><span class="n">update_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_force_torque</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_dq</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="c1"># RBs.update_orientation_quat(i) -&gt; is updated after surface ray marching in RBs.update_particle_pos_2D()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_force</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
             
             <span class="n">RBs</span><span class="o">.</span><span class="n">update_particle_pos_2D</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
             
@@ -181,12 +294,14 @@
     <span class="k">for</span> <span class="n">i0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">RBs</span><span class="o">.</span><span class="n">occupied</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span> 
         
-        <span class="n">RBs</span><span class="o">.</span><span class="n">update_force_torque</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-        
-        <span class="n">RBs</span><span class="o">.</span><span class="n">update_dq</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-        
-        <span class="n">RBs</span><span class="o">.</span><span class="n">update_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">RBs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">RBs</span><span class="o">.</span><span class="n">update_force_torque</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dq</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">RBs</span><span class="o">.</span><span class="n">update_orientation_quat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">RBs</span><span class="o">.</span><span class="n">update_force</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">RBs</span><span class="o">.</span><span class="n">update_dX</span><span class="p">(</span><span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
         
         <span class="n">RBs</span><span class="o">.</span><span class="n">update_particle_pos</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
         

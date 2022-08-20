@@ -198,7 +198,7 @@
 <div class="viewcode-block" id="cantor_pairing"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.cantor_pairing">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">cantor_pairing</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;The Cantor pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n.</span>
+    <span class="sd">&quot;&quot;&quot;The Cantor pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n. The cantor pairing is sensitive to the order, e.g. (0,1)-&gt;2.0 whereas (1,0)-&gt;1.0 .</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -225,7 +225,7 @@
 <div class="viewcode-block" id="unique_pairing"><a class="viewcode-back" href="../../../Developers/Developer%20API/math/transform_util.html#pyrid.math.transform_util.unique_pairing">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">unique_pairing</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;The unique pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n.</span>
+    <span class="sd">&quot;&quot;&quot;The unique pairing function maps a natural number (unsigned integer) pair k1,k2 to a unique natural number n such that the mapping is bijective, i.e. the original pair can always be recovered from n. In contrast to the cantor pairing method, this emtjod is insensitive to the order of the integer pair, e.g. (0,1)-&gt;1 just as (1,0)-&gt;1 .</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -236,8 +236,8 @@
 <span class="sd">    </span>
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This function is just needed when validating the reaction handling functions against</span>
-<span class="sd">    new implementations which may change the order in whcih reactions are resolved. The function enables to assign a unique id for each educt pair and thereby enables sorting the reactions by the educts! Educt order is exchangeable!</span>
+<span class="sd">    This function is used for mapping an educt pair to a unique node index when creating reaction graphs. Also, it is needed when validating the reaction handling functions against</span>
+<span class="sd">    new implementations which may change the order in which reactions are executed. The function enables to assign a unique id for each educt pair and thereby enables sorting the reactions by the educts! Educt order is exchangeable!</span>
 <span class="sd">    </span>
 <span class="sd">    from: https://math.stackexchange.com/questions/882877/produce-unique-number-given-two-integers</span>
 <span class="sd">    </span>

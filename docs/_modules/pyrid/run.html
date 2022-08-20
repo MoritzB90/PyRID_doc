@@ -98,6 +98,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">update_pos</span> <span class="k">as</span> <span class="n">upos</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">update_force</span> <span class="k">as</span> <span class="n">uf</span>
@@ -221,20 +222,8 @@
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">50.0</span><span class="p">,</span><span class="mf">50.0</span><span class="p">,</span><span class="mf">50.0</span><span class="p">]),</span> <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">Temp</span> <span class="o">=</span> <span class="mf">293.15</span><span class="p">,</span> <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-21</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">write_trajectory</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;Files//&#39;</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;PyRID&#39;</span><span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;Figures//&#39;</span><span class="p">,</span> <span class="n">boundary_condition</span> <span class="o">=</span> <span class="s1">&#39;periodic&#39;</span><span class="p">,</span> <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">sim_time</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wall_force</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length_unit</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span><span class="p">,</span> <span class="n">time_unit</span> <span class="o">=</span> <span class="s1">&#39;ns&#39;</span><span class="p">,</span> <span class="n">cells_per_dim</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_cells_per_dim</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">50.0</span><span class="p">,</span><span class="mf">50.0</span><span class="p">,</span><span class="mf">50.0</span><span class="p">]),</span> <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">Temp</span> <span class="o">=</span> <span class="mf">293.15</span><span class="p">,</span> <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-21</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">write_trajectory</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;Files/&#39;</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;PyRID&#39;</span><span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="s1">&#39;Figures/&#39;</span><span class="p">,</span> <span class="n">boundary_condition</span> <span class="o">=</span> <span class="s1">&#39;periodic&#39;</span><span class="p">,</span> <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">sim_time</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wall_force</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length_unit</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span><span class="p">,</span> <span class="n">time_unit</span> <span class="o">=</span> <span class="s1">&#39;ns&#39;</span><span class="p">,</span> <span class="n">cells_per_dim</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_cells_per_dim</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="p">:</span>
                       
-        
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> 
-        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
-            <span class="c1"># directory already exists</span>
-            <span class="k">pass</span>
-        
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fig_path</span><span class="p">)</span> 
-        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
-            <span class="c1"># directory already exists</span>
-            <span class="k">pass</span>
             
         <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">precision</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
         
@@ -248,9 +237,22 @@
         
         <span class="c1"># self.Observables = {}</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fig_path</span> <span class="o">=</span> <span class="n">fig_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fig_path</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">)</span> 
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="c1"># directory already exists</span>
+            <span class="k">pass</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig_path</span><span class="p">)</span> 
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="c1"># directory already exists</span>
+            <span class="k">pass</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">write_trajectory</span> <span class="o">=</span> <span class="n">write_trajectory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="mi">0</span>
@@ -303,8 +305,11 @@
         
         <span class="n">t_total</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="o">+</span><span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">],</span><span class="s1">&#39; it/s | &#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">)</span><span class="o">*</span><span class="mf">1e3</span><span class="p">,</span> <span class="s1">&#39; ms/it&#39;</span> <span class="p">)</span>
-            <span class="n">t_total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;pu/s&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="o">+</span><span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">],</span><span class="s1">&#39; it/s | &#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="mf">1e3</span><span class="p">,</span> <span class="s1">&#39; ms/it&#39;</span> <span class="p">)</span>
+                <span class="n">t_total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;total pu/s: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39; pu/s&#39;</span><span class="p">)</span>
             
     <span class="k">def</span> <span class="nf">k_micro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,</span> <span class="n">loc_type</span> <span class="o">=</span> <span class="s1">&#39;Volume&#39;</span><span class="p">):</span>
         
@@ -353,7 +358,7 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_barostat_berendsen</span><span class="p">(</span><span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
         
-<div class="viewcode-block" id="Simulation.set_compartments"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.set_compartments">[docs]</a>    <span class="k">def</span> <span class="nf">set_compartments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Compartments</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.set_compartments"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.set_compartments">[docs]</a>    <span class="k">def</span> <span class="nf">set_compartments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Compartments</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">adapt_box</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
 <span class="sd">        </span>
@@ -405,7 +410,7 @@
             
         <span class="c1"># --------------------</span>
         <span class="c1">#Add mesh:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">mesh_scale</span><span class="p">,</span> <span class="n">box_triangle_ids</span><span class="p">,</span> <span class="n">triangle_ids_transparent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">mesh_scale</span><span class="p">,</span> <span class="n">box_triangle_ids</span><span class="p">,</span> <span class="n">triangle_ids_transparent</span><span class="p">,</span> <span class="n">adapt_box</span><span class="p">)</span>
         
         <span class="c1"># -------------------</span>
         
@@ -440,9 +445,10 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_border_3d</span><span class="p">(</span><span class="n">triangle_ids_box</span><span class="p">)</span>
                 
                 
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">create_cell_list</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">create_cell_list</span><span class="p">()</span>
                 
-                
+        <span class="k">if</span> <span class="n">adapt_box</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Simulation box has been adapted. box_lengths = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span></div>
         
     <span class="k">def</span> <span class="nf">register_particle_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
@@ -503,7 +509,7 @@
         
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">add_bm_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">particle_pairs</span><span class="p">,</span> <span class="n">pair_rates</span><span class="p">,</span> <span class="n">pair_radii</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_bm_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">particle_pairs</span><span class="p">,</span> <span class="n">pair_rates</span><span class="p">,</span> <span class="n">pair_radii</span><span class="p">,</span> <span class="n">placement_factor</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
         
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">particle_types</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle_pairs</span><span class="p">):</span>
             <span class="n">educt_1_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="n">particle_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
@@ -512,7 +518,7 @@
             <span class="k">if</span> <span class="n">pair_radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">educt_1_radius</span><span class="o">+</span><span class="n">educt_2_radius</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: The reaction radius for the particle pair </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1"> is smaller than the sum of their radii. The reaction radius should not be smaller than </span><span class="si">{2:.3g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">particle_types</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">particle_types</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">educt_1_radius</span><span class="o">+</span><span class="n">educt_2_radius</span><span class="p">))</span>
             
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">educt_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">particle_pairs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_rates</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_radii</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">educt_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">particle_pairs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_rates</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_radii</span><span class="p">),</span> <span class="n">placement_factor</span><span class="p">)</span>
             
     <span class="c1">#%%</span>
     
@@ -1068,7 +1074,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">progress_properties</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;it/s&#39;</span><span class="p">,</span> <span class="s1">&#39;pu/s&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">progress_bar_properties</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="o">+</span><span class="s1">&#39;hdf5/&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">/</span> <span class="s1">&#39;hdf5&#39;</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
         
         <span class="n">print_system_count</span> <span class="o">=</span> <span class="kc">False</span>
         
@@ -1107,6 +1113,8 @@
         <span class="n">checkpoint_counter</span> <span class="o">=</span> <span class="mi">0</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;pu/s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;force&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;integrate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;reactions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -1153,16 +1161,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="n">j</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
                 
-    
+            
+            <span class="n">start_loop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+            
             <span class="c1">#%%</span>
             
             <span class="c1"># ------------------------------------------</span>
             <span class="c1"># Progress</span>
             <span class="c1"># ------------------------------------------</span>
-            <span class="k">if</span> <span class="n">keep_time</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span><span class="o">.</span><span class="n">Time_passed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">)</span>
-            
-            
+
             <span class="k">if</span> <span class="n">j</span><span class="o">%</span><span class="n">progress_stride</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># if (time.perf_counter()-time_stamp)&gt;0.0:</span>
                 <span class="n">itps</span> <span class="o">=</span> <span class="n">progress_stride</span><span class="o">/</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">time_stamp</span><span class="p">)</span>
@@ -1173,9 +1180,12 @@
                 
                 <span class="n">time_stamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
             
-            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># We start counting time after the first iteration so the result does not get biased by the initial jit compilation!</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># We start measuring time after the first iteration so the result does not get biased by the initial jit compilation!</span>
                 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
                 <span class="n">time_stamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                
+                <span class="k">if</span> <span class="n">keep_time</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span><span class="o">.</span><span class="n">Time_passed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">)</span>
                 
             <span class="c1">#%%</span>
             
@@ -1201,9 +1211,10 @@
                 <span class="n">upos</span><span class="o">.</span><span class="n">update_rb_compartments</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RBs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">upos</span><span class="o">.</span><span class="n">update_rb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RBs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="p">)</span>
-    
-            <span class="n">end_pos</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_pos</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;integrate&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_pos</span>
+                
+            <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">end_pos</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_pos</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;integrate&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_pos</span>
 
             
             <span class="c1">#%%</span>
@@ -1223,9 +1234,10 @@
                 <span class="c1">#Ideales Gas: P =2/3*N/V*Ekin, Ekin = 1/2*m*v^2 = f/2*kB*T (3D: f=3)</span>
                 
                 <span class="c1"># Pressure_Tensor = (self.System.N*self.System.kbt + Vir_Tensor)/self.System.volume</span>
-    
-            <span class="n">end_force</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_force</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;force&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_force</span>
+                
+            <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">end_force</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_force</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;force&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_force</span>
             
             
             <span class="c1">#%%</span>
@@ -1245,9 +1257,9 @@
                     <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;timepoint&#39;</span><span class="p">]:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">release_molecules</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                         
-                    
-                <span class="n">end_react</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_react</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;reactions&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_react</span>
+                <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="n">end_react</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_react</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;reactions&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_react</span>
                 
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">reactions_left</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1305,8 +1317,9 @@
                 
                 <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">update_rb_barostat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RBs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Particles</span><span class="p">)</span>
                 
-            <span class="n">end_barostat</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_barostat</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;barostat&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_barostat</span>
+            <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">end_barostat</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_barostat</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;barostat&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_barostat</span>
             
             
             <span class="c1">#%%</span>
@@ -1343,9 +1356,10 @@
                 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span><span class="o">.</span><span class="n">observing_rdf</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span><span class="o">.</span><span class="n">update_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span><span class="p">)</span>
-                
-            <span class="n">end_obs</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_obs</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;observables&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_obs</span>
+            
+            <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">end_obs</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_obs</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;observables&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_obs</span>
             
             
             <span class="c1">#%%</span>
@@ -1366,9 +1380,18 @@
             
                 <span class="n">wru</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Particles</span><span class="p">)</span>
                 
-            <span class="n">end_write</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_write</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;write&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_write</span>
+            <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">end_write</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_write</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;write&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">end_write</span>
+
+
+            <span class="c1">#%%</span>
             
+            <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">end_loop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_loop</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">end_loop</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="s1">&#39;pu/s&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Np</span><span class="o">/</span><span class="n">end_loop</span>
+                
             <span class="c1">#%%</span>
             
             <span class="k">if</span> <span class="n">j</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="ow">or</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_time</span><span class="p">:</span>
@@ -1383,6 +1406,8 @@
             <span class="k">if</span> <span class="n">j</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Simulation started!&#39;</span><span class="o">+</span><span class="s1">&#39;(JIT Compilation Time:</span><span class="si">{:1.1f}</span><span class="s1"> s)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">time_jit</span><span class="p">))</span>
                 
+
+             
         <span class="c1">#%%</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         

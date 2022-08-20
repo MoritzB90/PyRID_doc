@@ -129,7 +129,7 @@
 The .obj file may contain several meshes. Each will be handled as a separate compartment by PyRID.
 In addition, you can define face groups, which are groups of mesh triangles. These can be used, e.g., to distributed molecules in specific regions of the mesh surface.</p>
 <p>Once you have a correctly formatted mesh, you can import it into PyRID by</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">Compartments</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">load_compartments</span><span class="p">(</span><span class="s1">&#39;Compartments//my_mesh.obj&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">Compartments</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">load_compartments</span><span class="p">(</span><span class="s1">&#39;Compartments/my_mesh.obj&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Here, vertices is an array, containing all the vertices of all the meshes in my_mesh.obj and triangles contains the indices of all the vertices that make up the individual mesh faces. Compartments is a dictionary containing for each compartment the list of triangle indices and the triangle indices for the face groups, if defined.
