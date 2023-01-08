@@ -2,4 +2,6 @@
 
 Documentation for PyRID: A Brownian dynamics simulator for reacting and interacting particles written in python.
 
-https://github.com/MoritzB90/PyRID
+Go to the PyRID GitHub repository -> https://github.com/MoritzB90/PyRID
+
+Go to the PyRID documentation -> https://moritzb90.github.io/PyRID_doc/
