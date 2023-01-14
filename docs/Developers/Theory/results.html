@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results and validation &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Discussion" href="discussion.html" />
+    <link rel="prev" title="Theory and Methods" href="methods.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Theory</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="methods.html">Theory and Methods</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Results and validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#anisotropic-diffusion">Anisotropic diffusion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#diffusion-tensor-of-igg3">Diffusion tensor of igG3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fixed-concentration-boundary">Fixed concentration boundary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#choosing-the-right-reaction-rate-and-radius">Choosing the right reaction rate and radius</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bi-molecular-reactions-between-rigid-bead-molecules">Bi-molecular reactions between rigid bead molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reactions-between-surface-molecules">Reactions between surface molecules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toy-model-of-the-psd">Toy model of the PSD</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hard-sphere-fluid">Hard sphere fluid</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#radial-distribution-function">Radial distribution function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pressure">Pressure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#llps-of-patchy-particles">LLPs of Patchy Particles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#benchmarks">Benchmarks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#polydispersity">Polydispersity</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html">Appendix</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Theory</a> &raquo;</li>
+      <li>Results and validation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Developers/Theory/results.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="results-and-validation">
+<span id="sec-results-pyrid"></span><h1>Results and validation<a class="headerlink" href="#results-and-validation" title="Permalink to this heading"></a></h1>
+<section id="anisotropic-diffusion">
+<span id="sec-val-diff"></span><h2>Anisotropic diffusion<a class="headerlink" href="#anisotropic-diffusion" title="Permalink to this heading"></a></h2>
+<p>To validate the implementation of the algorithms for translational and
+rotationional diffusion introduced in
+<a class="reference internal" href="methods.html#sec-propagators"><span class="std std-ref">Propagation of translational and angular motion</span></a> I use the same example as in
+<span id="id1">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span>. Here, the translational and rotational
+diffusion tensors do not represent any specific molecule:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}D_{tt} =
+    \begin{pmatrix}
+       0.5 &amp; 0 &amp; 0 \\
+        0 &amp; 0.4 &amp; 0 \\
+        0 &amp; 0 &amp; 0.1 \\
+    \end{pmatrix} \frac{nm^2}{ns},\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}D_{rr} =
+    \begin{pmatrix}
+       0.005 &amp; 0 &amp; 0 \\
+        0 &amp; 0.04 &amp; 0 \\
+        0 &amp; 0 &amp; 0.1 \\
+    \end{pmatrix} \frac{rad^2}{ns},\end{split}\]</div>
+<p>In order to validate the algorithm, the mean squared displacement (MSD)
+and rotational time correlation are compared with theory. The mean
+squared displacement (MSD) is given by</p>
+<div class="math notranslate nohighlight">
+\[MSD = \langle |\boldsymbol{x}(t+\Delta t)-\boldsymbol{x}(t)|^2 \rangle\]</div>
+<p>The rotational time correlation function is given by
+<span id="id2">[<a class="reference internal" href="../../References.html#id51" title="J. Garc\'ıa de la Torre, Stephen E. Harding, and Beatriz Carrasco. Calculation of NMR relaxation, covolume, and scattering-related properties of bead models using the SOLPRO computer program. European Biophysics Journal, 28(2):119–132, jan 1999. doi:10.1007/s002490050191.">92</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[MSD = \frac{3}{2} \langle (\hat{\boldsymbol{n}}(t+\Delta t)\hat{\boldsymbol{n}}(t))^2 \rangle - \frac{1}{2},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}(t)\)</span> is some unitary vector that
+describes the current orientation of the molecule at time point
+<span class="math notranslate nohighlight">\(t\)</span>. Fig. <a class="reference external" href="#fig:Diff">1.1</a> compares the simulation results to
+the theoretical prediction, which, for the rotational time correlation
+function, is given by a multi-exponential decay function
+<span id="id3">[<a class="reference internal" href="../../References.html#id51" title="J. Garc\'ıa de la Torre, Stephen E. Harding, and Beatriz Carrasco. Calculation of NMR relaxation, covolume, and scattering-related properties of bead models using the SOLPRO computer program. European Biophysics Journal, 28(2):119–132, jan 1999. doi:10.1007/s002490050191.">92</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-p2">
+<span class="eqno">(54)<a class="headerlink" href="#equation-eq-p2" title="Permalink to this equation"></a></span>\[P_{2,l}(t) = \sum_{i=1}^5 a_{i,l} exp(-t/\tau_i),\]</div>
+<p>where <span class="math notranslate nohighlight">\(l \in {1,2,3}\)</span>. The relaxation times are given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+    \tau_1 = (6D - 2 \Delta)^{-1} \\
+    \tau_2 = (3D - D^{rr,b}_1)^{-1} \\
+    \tau_3 = (3D - D^{rr,b}_2)^{-1} \\
+    \tau_4 = (3D - D^{rr,b}_3)^{-1} \\
+    \tau_5 = (6D - 2 \Delta)^{-1}.
+    \end{split}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(D^{rr,b}_1, D^{rr,b}_2, D^{rr,b}_3\)</span> are the eigenvalues of the
+rotational diffusion tensor <span class="math notranslate nohighlight">\(\boldsymbol{D}^{rr,b}\)</span> in the
+molecule frame and D is the scalar rotational diffusion coefficient
+given by <span class="math notranslate nohighlight">\(D = \frac{Tr(\boldsymbol{D}^{rr,b})}{3}\)</span>. Parameter
+<span class="math notranslate nohighlight">\(\Delta\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\Delta = \sqrt{((D^{rr,b}_1)^2+(D^{rr,b}_2)^2+(D^{rr,b}_3)^2-D^{rr,b}_1 D^{rr,b}_2-D^{rr,b}_1 D^{rr,b}_3-D^{rr,b}_2D^{rr,b}_3)}\]</div>
+<p>The amplitudes of the individual exponential decays are given by</p>
+<div class="math notranslate nohighlight" id="equation-eq-amplitude-rotrelax">
+<span class="eqno">(55)<a class="headerlink" href="#equation-eq-amplitude-rotrelax" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+a_{1,l} = \frac{3}{4}(F+G) \\
+a_{2,l} = 3 \hat{n}_{l,2}^2 \hat{n}_{l,3}^2 \\
+a_{3,l} = 3 \hat{n}_{l,1}^2 \hat{n}_{l,3}^2 \\
+a_{4,l} = 3 \hat{n}_{l,1}^2 \hat{n}_{l,2}^2 \\
+a_{5,l} = \frac{3}{4}(F-G),
+\end{split}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(F = - \frac{1}{3} + \sum_{k=1}^3 \hat{n}_k^4\)</span> and
+<span class="math notranslate nohighlight">\(G=\frac{1}{\Delta}\Big( -D + \sum_{k=1}^3 D^{rr,b}_k \Big[ \hat{n}_k^4 + 2 \hat{n}_m^2 \hat{n}_n^2 \Big] \Big)\)</span>,
+where <span class="math notranslate nohighlight">\(m, n \in \{1,2,3\}-\{k\}\)</span>.</p>
+<p>If we choose the normal vectors of each axis
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_l\)</span> such that these are identical with the
+basis vectors of the local frame, i.e.
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_1 = \boldsymbol{e}_x = [1,0,0]\)</span>,
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_2 = \boldsymbol{e}_y = [0,1,0]\)</span>,
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_3 = \boldsymbol{e}_z = [0,0,1]\)</span>,
+<span class="math notranslate nohighlight">\(a_2-a_3\)</span> vanish such that we end up with a double exponential
+decay (Fig. <a class="reference external" href="#fig:Diff">1.1</a> B).</p>
+<p>Fig. <a class="reference external" href="#fig:Diff">1.1</a> shows that the rotation and translation
+propagators result in the correct mean squared distribution and
+rotational time correlation.</p>
+<figure class="align-default" id="fig-diff">
+<a class="reference internal image-reference" href="../../_images/Diffusion.png"><img alt="../../_images/Diffusion.png" src="../../_images/Diffusion.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text"><strong>MSD and rotational relaxation times of a rigid bead molecule
+matches the theoretical prediction.</strong> <strong>(A)</strong>  Mean squared
+displacement (MSD) of the rigid bead molecule computed with PyRID.
+The displacement in each dimension (colored markers) is in very good
+agreement with the theory (black line). <strong>(B)</strong> The rotational
+relaxation of the rigid bead molecule is also in close agreement with
+the theory (gray lines,
+Eqs.<a class="reference internal" href="#equation-eq-p2">(54)</a>-<a class="reference internal" href="#equation-eq-amplitude-rotrelax">(55)</a>)
+for each of the the rotation axes (colored markers).</span><a class="headerlink" href="#fig-diff" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="diffusion-tensor-of-igg3">
+<h2>Diffusion tensor of igG3<a class="headerlink" href="#diffusion-tensor-of-igg3" title="Permalink to this heading"></a></h2>
+<p>The methods outlined in section
+<a class="reference internal" href="methods.html#sec-mobility-tensors"><span class="std std-ref">Mobility tensor for rigid bead models</span></a> have, at least to my
+knowledge, only been implemented in the freely available tool Hydro++.
+The source code for Hydro++ is, however, not publicly available. To
+efficiently set up a system of rigid bead molecules, the method has now
+also been implemented directly into PyRID. The implementation is tested
+against Hydro++ using a model of the protein igG3 that comes with the
+documentation of Hydro++. The results are in good agreement at up to 4
+digits (Table <a class="reference external" href="#tab:igG3">1.4</a>). The slight difference is probably
+due to numerical errors that accumulate when numerically inverting the
+large supermatrices.</p>
+<figure class="align-default" id="fig-difftensor-igg3">
+<a class="reference internal image-reference" href="../../_images/DiffTensor_igg3.png"><img alt="../../_images/DiffTensor_igg3.png" src="../../_images/DiffTensor_igg3.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text"><strong>The diffusion tensor of igG3 calculated with PyRID.</strong> <strong>(A)</strong> Rigid
+bead molecule representation of igG3 as found in
+<span id="id4">[<a class="reference internal" href="../../References.html#id35" title="José Garc\'ıa de la Torre and Álvaro Ortega. HYDRO suite of computer programs for solution properties of rigid macromolecules. In Encyclopedia of Biophysics, pages 1002–1006. Springer Berlin Heidelberg, 2013. doi:10.1007/978-3-642-16712-6_291.">93</a>]</span>. The black cross marks the center of
+diffusion. <strong>(B)</strong> Translational and rotational diffusion tensor of
+igG3. A comparison of the result from PyRID with those of the Hydro++
+suite can be found in table <a class="reference external" href="#tab:igG3">1.4</a>.</span><a class="headerlink" href="#fig-difftensor-igg3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="tab-igg3">
+<a class="reference internal image-reference" href="../../_images/Diff_Table.png"><img alt="../../_images/Diff_Table.png" src="../../_images/Diff_Table.png" style="width: 35%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text"><strong>Translational and rotational diffusion tensors of the IgG3 rigid bead model.</strong> Here, the result from PyRID is compared to the result gained from the Hydro++ suite. We find small deviations originating from numerical errors that build up mainly during the super-matrix inversion calculations.</span><a class="headerlink" href="#tab-igg3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="fixed-concentration-boundary">
+<h2>Fixed concentration boundary<a class="headerlink" href="#fixed-concentration-boundary" title="Permalink to this heading"></a></h2>
+<p>As mentioned in the methods chapter, fixed concentration boundary
+conditions couple the simulation box to a particle bath. Thereby, we can
+simulate, e.g., a sub-region within a larger system without the need to
+simulate the dynamics of the molecules outside simulation box directly.
+As an example system we take a 3d model of synapse. The post- and
+presynaptic spine are both contained inside the simulation volume
+whereas dendrite and axon are cutoff at the simulation box border (Fig.
+<a class="reference external" href="#fig:fixed_concentration_val">1.3</a> A). We define three molecular
+species: Species A diffuses in the volume outside the spines (in the
+extracellular space), species B is located inside the postsynaptic spine
+and species C on the surface (within the membrane) of the postsynaptic
+spine. All species consist of a single particle with radius
+<span class="math notranslate nohighlight">\(2\,nm\)</span>. The diffusion coefficient is calculated from the the
+Einstein relation where the temperature is set to <span class="math notranslate nohighlight">\(293.15\,K\)</span>. The
+viscosity is set to <span class="math notranslate nohighlight">\(1\,mPa\cdot s\)</span> and the time step to
+<span class="math notranslate nohighlight">\(10\,ns\)</span>. The simulation box size is set to
+<span class="math notranslate nohighlight">\(250\,nm \cdot 250\,nm \cdot 350\,nm\)</span>. At the beginning there are
+no molecules inside the simulation box. However, the outside
+concentration of each species is set to <span class="math notranslate nohighlight">\(1000\)</span> molecules per total
+volume or total surface area respectively. Thereby, there should be 1000
+molecules of each species in the volume and on the surface of each
+compartment as soon as the system has reached its equilibrium state.
+Indeed, after about <span class="math notranslate nohighlight">\(0.5\,ms\)</span> the system has reached equilibrium
+and the number of each species fluctuates around the number 1000 (Fig.
+<a class="reference external" href="#fig:fixed_concentration_val">1.3</a> B). As one would expect, species A
+fills the simulation volume the fastest as the border area is the
+largest. Species B and C which are located in the volume and on the
+surfaces of the postsynaptic compartment fill the simulation volume at
+about the same rate.</p>
+<figure class="align-default" id="fig-fixed-concentration-val">
+<a class="reference internal image-reference" href="../../_images/fixed_concentration_2.png"><img alt="../../_images/fixed_concentration_2.png" src="../../_images/fixed_concentration_2.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text"><strong>Fixed concentration boundary conditions result in the system
+approaching a target molecule concentration per compartment.</strong>
+<strong>(A)</strong> We start with an empty scene (left). However, because the
+molecule concentration of virtual molecules outside the simulation
+box is above zero, surface and volume molecules enter the system via
+the boundary (middle). After around 500 ns, the molecule
+concentration inside the simulation box reaches the target
+concentration <strong>(A)</strong> right, <strong>(B)</strong>.</span><a class="headerlink" href="#fig-fixed-concentration-val" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="choosing-the-right-reaction-rate-and-radius">
+<h2>Choosing the right reaction rate and radius<a class="headerlink" href="#choosing-the-right-reaction-rate-and-radius" title="Permalink to this heading"></a></h2>
+<p><a class="reference internal" href="../Developer%20API/reactions/reactions_util.html#pyrid.reactions.reactions_util.k_macro" title="pyrid.reactions.reactions_util.k_macro"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.reactions.reactions_util.k_macro</span></code></a>
+<a class="reference internal" href="../Developer%20API/reactions/reactions_util.html#pyrid.reactions.reactions_util.k_micro" title="pyrid.reactions.reactions_util.k_micro"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.reactions.reactions_util.k_micro</span></code></a></p>
+<p>As described in <span id="id5">[<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span>, the reaction
+radius <span class="math notranslate nohighlight">\(R_{react}\)</span> may be interpreted as the distance at which two
+particles can no longer be treated as moving independently, because
+there interactions becomes significant. Furthermore,
+<span id="id6">[<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> suggest that the length scale of
+electrostatic interactions can be used to define <span class="math notranslate nohighlight">\(R_{react}\)</span>. In
+general, the reaction radius should not be so large that in dense
+settings molecules would react with a partner that is not among the
+nearest neighbours. However, <span class="math notranslate nohighlight">\(R_{react}\)</span> should also not be
+smaller than the average change in the distance between molecules, which
+is given by <span class="math notranslate nohighlight">\(\lambda_{AB} = \sqrt{4(D^t_A +D^t_B) \Delta t}\)</span>,
+where <span class="math notranslate nohighlight">\(D^t_A\)</span> and <span class="math notranslate nohighlight">\(D^t_B\)</span> are the translational diffusion
+constants of two molecular species <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Otherwise, a
+molecule might pass many reaction partners in between two time steps
+where the bi-molecular reactions are not evaluated
+<span id="id7">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span>. However, even if
+<span class="math notranslate nohighlight">\(\lambda_{AB} \approx R_{react}\)</span> the system would still correctly
+reproduce the deterministic rate equation description of the reaction
+kinetics. Of course, in any case, <span class="math notranslate nohighlight">\(R_{react}\)</span> should not be chosen
+smaller than the radius of excluded volume of the molecule species in
+the presence of repulsive interactions. A description of the reaction
+kinetics in terms of a system of differential equations assumes a well
+mixed system. Therefore, the simulation results are also only directly
+comparable with the ODE approach, if the reactions are reaction rate
+limited, not diffusion limited such that the system has enough time to
+equilibrate in between reactions. Let us take a very simple example
+where <span class="math notranslate nohighlight">\(\ce{A + B -&gt; C }\)</span>. If the reaction kinetics are rate
+limited, the reaction products do not have enough time to mix with the
+rest of the system. Thereby, regions of low educt concentration evolve
+where reactions had occurred, while in the regions where no reactions
+occurred yet, the concentration of educts stays approximately same as in
+the beginning. Therefore, for the remaining educts in the system, the
+probability of encounter stays approximately the same. In contrast, if
+we assume a well stirred system, the concentration of educts would
+globaly decrease in time, lowering the probability of educt encounters.
+Therefore, the reaction kinetics are sped up in the stochastic
+simulation compared to the ode approach (Fig.
+<a class="reference external" href="#fig:ReactionKinetics_RateVal">1.4</a>). Interestingly,
+<span id="id8">[<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> found exactly the opposite effect,
+as the reaction kinetics where slowed down in the stochastic simulation.
+The reason for this discrepancy in the results is unclear. However, I
+simulated the very same system in ReaDDy and got the same result as with
+PyRID.</p>
+<figure class="align-default" id="fig-reactionkinetics-rateval">
+<a class="reference internal image-reference" href="../../_images/Reaction_kinetics_RateVal.png"><img alt="../../_images/Reaction_kinetics_RateVal.png" src="../../_images/Reaction_kinetics_RateVal.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text"><strong>Diffusion limited bi-molecular reactions are not accurately
+described by ODEs.</strong> Shown is the minimal system
+<span class="math notranslate nohighlight">\(\ce{A + B -&gt;[\ce{k_1}] C }\)</span> with <span class="math notranslate nohighlight">\(R_{react} = 4.5 nm\)</span>
+and <span class="math notranslate nohighlight">\(\sigma_A = 3 nm\)</span>, <span class="math notranslate nohighlight">\(\sigma_B = 4.5 nm\)</span>,
+<span class="math notranslate nohighlight">\(\sigma_C = 3.12 nm\)</span>. The same system has been used for
+validation of ReaDDy in <span id="id9">[<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span>. The ODE
+approach to the description of the reaction kinetics assumes a well
+mixed system. If the reaction rate is small, the system has enough
+time to equilibrate in between reactions and the ODE approach (black
+dotted lines) and the particle-based SSA approach (colored lines)
+match (<strong>A</strong>). As the reaction rate increases (<strong>B</strong>-<strong>C</strong>) this is
+no longer the case, as the system is no longer well mixed at any
+point in time. Here, the system can be divided into regions of high
+and low educt concentrations (depicted by the small insets). Thereby,
+at the onset, the reaction kinetics in the stochastic simulation are
+faster than predicted by the ODE approach (<strong>B</strong>, <strong>C</strong>). However,
+when a critical mass of educts have reacted, the slow diffusion has
+an opposite effect on the reaction kinetics as the probability of
+isolated single educts to collide becomes lower than in the well
+mixed case. The slow down effect is especially prominent in <strong>B</strong>,
+<strong>C</strong> at around 500 ns. The reaction kinetics are therefore better
+described by two exponential functions instead of one.</span><a class="headerlink" href="#fig-reactionkinetics-rateval" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Given a reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>, we would like to know at what
+reaction rate <span class="math notranslate nohighlight">\(k_t\)</span> a simulation would match an experimentally
+measured macroscopic reaction rate <span class="math notranslate nohighlight">\(k^{macro}\)</span>. For two
+non-interacting molecule species <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> with
+translational diffusion constants <span class="math notranslate nohighlight">\(D^t_A\)</span> and <span class="math notranslate nohighlight">\(D^t_B\)</span> and
+<span class="math notranslate nohighlight">\(\lambda_{AB}&lt;&lt;R_{react}\)</span>, <span class="math notranslate nohighlight">\(k_{macro}\)</span> is given by
+<span id="id10">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span></p>
+<div class="math notranslate nohighlight" id="equation-eq-k-macro">
+<span class="eqno">(56)<a class="headerlink" href="#equation-eq-k-macro" title="Permalink to this equation"></a></span>\[k_{macro} = 4 \pi (D^t_A+D^t_B) \left[R_{react}-\sqrt{\frac{D^t_A+D^t_B}{k_t}} \, \tanh\left(R_{react} \, \sqrt{\frac{k_t}{D^t_A+D^t_B}}\right)\right]\]</div>
+<p>Equation <a class="reference internal" href="#equation-eq-k-macro">(56)</a> can solved numerically for
+<span class="math notranslate nohighlight">\(k_t\)</span>. Also, if the <span class="math notranslate nohighlight">\(k_t \rightarrow \infty\)</span>,
+<a class="reference internal" href="#equation-eq-k-macro">(56)</a> simplifies to the Smoluchowski equation
+where we can express the reaction radius in terms of the macroscopic
+reaction rate <span id="id11">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-k-macro2">
+<span class="eqno">(57)<a class="headerlink" href="#equation-eq-k-macro2" title="Permalink to this equation"></a></span>\[R_{react} = \frac{k_{macro}}{4 \pi (D^t_A + D^t_B)}\]</div>
+<p>In the limit where <span class="math notranslate nohighlight">\(k_t &lt;&lt; \frac{D_A^t+D_B^t}{R_{react}^2}\)</span>, Eq.
+<a class="reference internal" href="#equation-eq-k-macro">(56)</a> can be Taylor expanded and simplifies to
+<span id="id12">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-k-macro3">
+<span class="eqno">(58)<a class="headerlink" href="#equation-eq-k-macro3" title="Permalink to this equation"></a></span>\[k_t = \frac{k_{macro}}{4/3 \pi R_{react}^3}\]</div>
+<p>The above equations are, however, only valid in the case where molecules
+are represented by single particles and also only in 3 dimensions. PyRID
+has a build in method to calculate the reaction rates and radii based on
+equation <a class="reference internal" href="#equation-eq-k-macro">(56)</a>.</p>
+</section>
+<section id="bi-molecular-reactions-between-rigid-bead-molecules">
+<h2>Bi-molecular reactions between rigid bead molecules<a class="headerlink" href="#bi-molecular-reactions-between-rigid-bead-molecules" title="Permalink to this heading"></a></h2>
+<p>The representation of molecules by single particles neglects the complex
+structure of molecules. Bi-molecular reactions between proteins can
+occur via different reaction sites. Therefore, also here, the isotropic
+picture breaks down. PyRID enables the simulation of reactions between
+complex molecules having different reaction sites. Different reaction
+sites are represented by beads/patches that are part of the rigid bead
+molecules topology. Similar to uni-molecular reactions, bi-molecular
+reactions can be defined on particles or molecules. However, because
+PyRID only computes the distances between the particles in the system,
+also reactions that are defined on the molecule level need to be linked
+to a particle type pair. If the the two particles are within the
+reaction distance and if the reaction is successful, the reaction itself
+will, however, be executed on the respective molecule types. As an
+example, we again consider the simple system
+<span class="math notranslate nohighlight">\(\ce{A + B &lt;=&gt;[\ce{k_1}][\ce{k_{-1}}] C }\)</span>. However, molecules
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are each represented by two beads
+<span class="math notranslate nohighlight">\(a_1, a_2\)</span> and <span class="math notranslate nohighlight">\(b_1, b_2\)</span>. Also, we add another reaction
+path <span class="math notranslate nohighlight">\(\ce{A + B -&gt;[\ce{k_2}] D }\)</span>. We now may define reactions for
+different pair permutations of the available beads:</p>
+<div class="math notranslate nohighlight" id="equation-eq-bimol-reaction-rb">
+<span class="eqno">(59)<a class="headerlink" href="#equation-eq-bimol-reaction-rb" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+   \ce{A(a_1) + B(b_1) -&gt;[\ce{k_1, R_1}] C } \\
+   \ce{A(a_1) + B(b_1) -&gt;[\ce{k_2, R_2}] D } \\
+   \ce{A(a_1) + B(b_2) -&gt;[\ce{k_3, R_3}] C } \\
+   \ce{A(a_2) + B(b_2) -&gt;[\ce{k_4, R_4}] C } \\
+\end{split}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_i\)</span> are the microscopic reaction rates and <span class="math notranslate nohighlight">\(R_i\)</span> the
+reaction radii. For better visualization, also see figure
+<a class="reference external" href="#fig:ReactionKinetics_RBM">1.5</a> A and B. As such, molecules
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> can undergo fusion to molecule <span class="math notranslate nohighlight">\(C\)</span> via
+three pathways, defined by three bead pairs
+<span class="math notranslate nohighlight">\((a_1, b_1), (a_1, b_2), (a_2, b_2)\)</span>. Whereas for the particle
+pairs <span class="math notranslate nohighlight">\((a_1, b_2)\)</span> and <span class="math notranslate nohighlight">\((a_2, b_2)\)</span> only one reaction
+pathway is defined respectively, for the particle pair
+<span class="math notranslate nohighlight">\((a_1, b_1)\)</span> a second reaction path has been defined for the
+fusion of molecules <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> to molecule <span class="math notranslate nohighlight">\(C\)</span>. We
+may also describe this system in terms of a system of ODEs:</p>
+<div class="math notranslate nohighlight" id="equation-eq-bimol-reaction-rb-ode">
+<span class="eqno">(60)<a class="headerlink" href="#equation-eq-bimol-reaction-rb-ode" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+   &amp;\frac{dA}{dt} = -(k_{macro}^1 + k_{macro}^3 + k_{macro}^4) A B - k_{macro}^2 A B + k_{macro}^{-1} C \\
+   &amp;\frac{dB}{dt} = -(k_{macro}^1 + k_{macro}^3 + k_{macro}^4) A B - k_{macro}^2 A B + k_{macro}^{-1} C \\
+   &amp;\frac{dC}{dt} = (k_{macro}^1 + k_{macro}^3 + k_{macro}^4) A B - k_{macro}^{-1} C \\
+   &amp;\frac{dD}{dt} = k_{macro}^2 A B \\
+\end{split}\end{split}\]</div>
+<p>The macroscopic rate constants <span class="math notranslate nohighlight">\(k_{macro}^i\)</span> can be calculated
+from Eq. <a class="reference internal" href="#equation-eq-k-macro">(56)</a>. Note, however, that for more
+complex molecules Eq. <a class="reference internal" href="#equation-eq-k-macro">(56)</a> does not hold true,
+because we would also need to take into account the rotational motion of
+the molecule in addition to the translational diffusion constant that
+describes the motion of the molecule center. In our example, the bead
+motion is, however, close enough to that of a single spherical particle
+such that the results from the Brownian dynamics simulation are in close
+agreement with the ODE formulation (Fig.
+<a class="reference external" href="#fig:ReactionKinetics_RBM">1.5</a> C).</p>
+<figure class="align-default" id="fig-reactionkinetics-rbm">
+<a class="reference internal image-reference" href="../../_images/Reaction_kinetics_RBM.png"><img alt="../../_images/Reaction_kinetics_RBM.png" src="../../_images/Reaction_kinetics_RBM.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text"><strong>Bi-molecular reaction between two rigid bead
+molecules.(A)</strong> Depiction of the two rigid bead molecules and the
+different reactions defined on their respective particles/beads.
+<strong>(B)</strong> Reaction graphs showing the different reaction paths for the
+fusion reactions <span class="math notranslate nohighlight">\(\ce{A + B -&gt; C}\)</span> and <span class="math notranslate nohighlight">\(\ce{A + B -&gt; D}\)</span>
+as well as the fission reaction <span class="math notranslate nohighlight">\(\ce{C -&gt; A + B}\)</span>. The lower
+right graph simply depicts the different reaction paths between the
+two educts A and B without specifying the products. In total there
+are 4 paths (Eq. <a class="reference internal" href="#equation-eq-bimol-reaction-rb">(59)</a>).
+<strong>(C)</strong>  If not accounting for any repulsive interaction between
+molecules A and B, the simulation results are in good agreement with
+the ODE description (Eq.
+<a class="reference internal" href="#equation-eq-bimol-reaction-rb-ode">(60)</a>). <strong>(D)</strong>
+However, if we account for the excluded volume of the molecules by a
+repulsive interaction potential, the results of the two approaches
+(particle dynamics and ODE description) differ.</span><a class="headerlink" href="#fig-reactionkinetics-rbm" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>At this point one might argue that there is only little to no benefit of
+the rigid bead model description over other SSA schemes. And in
+principle that is true. Systems such as the above could also be modeled
+using single particle Brownian dynamics or even ODEs. However, if we
+take into account the excluded volume of the molecules by introducing a
+repulsive interactions between the beads, the reaction kinetics differ
+from the ODE solution (Fig. <a class="reference external" href="#fig:ReactionKinetics_RBM">1.5</a> D). The
+bead radii are chosen equal to the reaction radius, where
+<span class="math notranslate nohighlight">\(\sigma_{a_1} = 2.0 nm\)</span>, <span class="math notranslate nohighlight">\(\sigma_{a_2} = 1.5 nm\)</span>,
+<span class="math notranslate nohighlight">\(\sigma_{b_1} = 2.0 nm\)</span>, <span class="math notranslate nohighlight">\(\sigma_{b_2} = 3.0 nm\)</span>. Thereby,
+the molecules react upon contact. For such simple molecules one could,
+however, neglect the bead topology and approximate the molecules by
+single beads with repulsive interactions and get a very similar result.
+For more complex molecules where the reaction volumes are much more
+anisotropic, one would, however, expect a larger deviation from the
+repulsive sphere approximation. The benefits of the rigid bead model
+approach become more important when we consider binding reactions.</p>
+</section>
+<section id="reactions-between-surface-molecules">
+<h2>Reactions between surface molecules<a class="headerlink" href="#reactions-between-surface-molecules" title="Permalink to this heading"></a></h2>
+<p>As a model, let us consider a four component system and implement a
+simple autocatalytic reaction scheme. The system consists of a freely
+diffusing transmembrane molecule <span class="math notranslate nohighlight">\(U\)</span>. In addition, we add a
+second, freely diffusing, surface molecule <span class="math notranslate nohighlight">\(P\)</span>. Let <span class="math notranslate nohighlight">\(U\)</span> and
+<span class="math notranslate nohighlight">\(P\)</span> form a complex <span class="math notranslate nohighlight">\(B\)</span> via a fusion reaction:</p>
+<div class="math notranslate nohighlight" id="equation-eq-up-b">
+<span class="eqno">(61)<a class="headerlink" href="#equation-eq-up-b" title="Permalink to this equation"></a></span>\[\ce{U + P -&gt;[\ce{k_{on}}] B }\]</div>
+<p>The reaction rates are set to <span class="math notranslate nohighlight">\(k_{on} = 1e-5 ns^{-1}\)</span> and
+<span class="math notranslate nohighlight">\(R_{react}= 4nm\)</span>. In addition, we add an enzymatic/katalytic
+reaction:</p>
+<div class="math notranslate nohighlight" id="equation-eq-bp-bp2">
+<span class="eqno">(62)<a class="headerlink" href="#equation-eq-bp-bp2" title="Permalink to this equation"></a></span>\[\ce{B + P -&gt;[\ce{k_{enz}}] B + P^{\prime} }.\]</div>
+<p>We also account for a reverse reaction where</p>
+<div class="math notranslate nohighlight" id="equation-eq-p2-p">
+<span class="eqno">(63)<a class="headerlink" href="#equation-eq-p2-p" title="Permalink to this equation"></a></span>\[\ce{P^{\prime} -&gt;[\ce{k_{-enz}}] P }.\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(k_{enz} = 1e-3 ns^{-1}\)</span>, <span class="math notranslate nohighlight">\(k_{-enz} = 5e-5 ns^{-1}\)</span>
+and <span class="math notranslate nohighlight">\(R_{react}= 4nm\)</span>. The reaction product <span class="math notranslate nohighlight">\(P^{\prime}\)</span> has
+a much higher binding affinity for <span class="math notranslate nohighlight">\(U\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-up2-b">
+<span class="eqno">(64)<a class="headerlink" href="#equation-eq-up2-b" title="Permalink to this equation"></a></span>\[\ce{U + P^{\prime} -&gt;[\ce{k_{on}^{\prime}}] B },\]</div>
+<p>with <span class="math notranslate nohighlight">\(k_{on}^{\prime} = 1e-2 ns^{-1}\)</span> and <span class="math notranslate nohighlight">\(R_{react}= 4nm\)</span>
+(note that <span class="math notranslate nohighlight">\(k_{on}^{\prime} &gt;&gt; k_{on}\)</span>). The break up of the
+complex is accounted for by a fission reaction</p>
+<div class="math notranslate nohighlight" id="equation-eq-b-pu">
+<span class="eqno">(65)<a class="headerlink" href="#equation-eq-b-pu" title="Permalink to this equation"></a></span>\[\ce{B -&gt;[\ce{k_{off}}] P + U }.\]</div>
+<p>As expected from an autocatalytic reaction, the product <span class="math notranslate nohighlight">\(B\)</span>
+follows a sigmoid function (Fig. <a class="reference external" href="#fig:reaction_diffusion_2D">1.6</a>).
+We may compare the simulation result to the corresponding ODE
+description. The above system expressed in terms of a system of ODEs
+reads</p>
+<div class="math notranslate nohighlight" id="equation-eq-react-diff-2d">
+<span class="eqno">(66)<a class="headerlink" href="#equation-eq-react-diff-2d" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
+   &amp;\frac{dU}{dt} = -U\,P\,k_{macro}^{on}-U\,P^{\prime}\,k_{macro}^{on\prime}+B\,k_{macro}^{off} \\
+   &amp;\frac{dB}{dt} = U\,P\,k_{macro}^{on}+U\,P^{\prime}\,k_{macro}^{on\prime}-B\,k_{macro}^{off} \\
+   &amp;\frac{dP}{dt} = -U\,P\,k_{macro}^{on}-P\,B\,k_{macro}^{enz}+P^{\prime}\,k_{macro}^{-enz}+B\,k_{macro}^{off} \\
+   &amp;\frac{dP^{\prime}}{dt} = B\,P\,k_{macro}^{enz} - P^{\prime}\,k_{macro}^{-enz}-U\,P_act\,k_{macro}^{on\prime}
+\end{split}\end{split}\]</div>
+<p>However, equation <a class="reference internal" href="#equation-eq-k-macro">(56)</a> is only valid in the 3D
+case and a solution for the 2D case is difficult to derive as the rate
+constant is concentration dependent. A closed form analytical expression
+has not yet been derived for the Doi scheme
+<span id="id13">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>, <a class="reference internal" href="../../References.html#id74" title="Marta Galanti, Duccio Fanelli, Sergey D. Traytak, and Francesco Piazza. Diffusion to capture and the concept of diffusive interactions. In Chemical Kinetics, pages 321–352. WORLD SCIENTIFIC (EUROPE), sep 2019. doi:10.1142/9781786347015_0014.">95</a>, <a class="reference internal" href="../../References.html#id75" title="John Crank. The Mathematics of Diffusion. Oxford University Press, USA, 1980. ISBN 9780198534112.">96</a>, <a class="reference internal" href="../../References.html#id76" title="Howard C. Berg. Random Walks in Biology. Princeton University Press, jan 1984. doi:10.1515/9781400820023.">97</a>]</span>. A more
+in depth discussion on this topic and theoretical results for the
+Smoluchowski theory can be found in <span id="id14">[<a class="reference internal" href="../../References.html#id113" title="Osman N. Yogurtcu and Margaret E. Johnson. Theory of bi-molecular association dynamics in 2d for accurate model and experimental parameterization of binding rates. The Journal of Chemical Physics, 143(8):084117, aug 2015. doi:10.1063/1.4929390.">98</a>]</span>.
+However, for the current system the simulation result can be matched
+using a constant reaction rate <span class="math notranslate nohighlight">\(k_{macro}^{2D} = k_{macro}/5.6\)</span>
+despite the decay in molecule density over time (Fig.
+<a class="reference external" href="#fig:reaction_diffusion_2D">1.6</a>A). A closed form expression for
+<span class="math notranslate nohighlight">\(k_{macro}\)</span> is extremely useful when setting up a reaction
+diffusion simulation. Even if results do not match exactly, the ODE
+approach can help to choose the correct parameters for a particle-based
+simulation that might take several order longer than solving the system
+of ODEs. Whereas the ODE description is useful in many regards, we
+usually decide to do a particle based simulation because we are
+interested in settings that are not well mixed, or where interactions
+between molecules play a role.</p>
+<section id="toy-model-of-the-psd">
+<h3>Toy model of the PSD<a class="headerlink" href="#toy-model-of-the-psd" title="Permalink to this heading"></a></h3>
+<p>As an example, where the particle-based approach becomes essential, we
+may transfer the autocatalytic system from above to a simplified model
+of the postsynapse. In our new setting, <span class="math notranslate nohighlight">\(P\)</span>, <span class="math notranslate nohighlight">\(P^{\prime}\)</span>
+and <span class="math notranslate nohighlight">\(B\)</span> no longer diffuse but are fixed to a region that we
+interpret as being the PSD. In addition, a 3d mesh of a postsynaptic
+spine is introduced to the simulation and species <span class="math notranslate nohighlight">\(U\)</span> enters the
+simulation volume where the extrasynaptic region intersects the
+simulation box via a fixed concentration boundary. <span class="math notranslate nohighlight">\(P\)</span> now
+represents a receptor binding site, <span class="math notranslate nohighlight">\(U\)</span> the freely diffusing
+receptors and <span class="math notranslate nohighlight">\(B\)</span> the bound receptor or an occupied binding site.
+In this adapted system the autocatalytic reaction scheme results in
+receptor clustering (Fig. <a class="reference external" href="#fig:reaction_diffusion_2D">1.6</a>B). Note
+that whereas the reaction
+<span class="math notranslate nohighlight">\(\ce{B + P -&gt;[\ce{k_{enz}}] B + P^{\prime} }\)</span> is implemented as an
+enzymatic reaction in PyRID, the physical interpretation could be very
+different. For example, the conversion of <span class="math notranslate nohighlight">\(\ce{P -&gt; P^\prime}\)</span>
+could occur only indirectly via the complex <span class="math notranslate nohighlight">\(B\)</span> and by a local
+signaling pathway that includes other molecules that we do not model
+here explicitly. Important is only that this pathway is triggered by
+<span class="math notranslate nohighlight">\(B\)</span> and that it is locally restricted for receptor clusters to
+evolve.</p>
+<figure class="align-default" id="fig-reaction-diffusion-2d">
+<a class="reference internal image-reference" href="../../_images/reaction_diffusion_2d.png"><img alt="../../_images/reaction_diffusion_2d.png" src="../../_images/reaction_diffusion_2d.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text"><strong>Autocatalytic reaction diffusion system in 2D.</strong> <strong>(A)</strong>  Number of
+the different molecular species evolving according to the reactions
+defined by equations
+<a class="reference internal" href="#equation-eq-up-b">(61)</a>-<a class="reference internal" href="#equation-eq-b-pu">(65)</a>. The simulation
+results are matched by the ODE description by fitting the macroscopic
+reaction rates (dotted grey lines). <strong>(B)</strong>  Toy model of the PSD.
+Using the reaction scheme defined by equations
+<a class="reference internal" href="#equation-eq-up-b">(61)</a>-<a class="reference internal" href="#equation-eq-b-pu">(65)</a> but fixing the
+position of species <span class="math notranslate nohighlight">\(P\)</span>, <span class="math notranslate nohighlight">\(P^{\prime}\)</span> and <span class="math notranslate nohighlight">\(B\)</span> we
+observe the formation of species cluster (<span class="math notranslate nohighlight">\(U\)</span> in red, <span class="math notranslate nohighlight">\(P\)</span>
+in green, <span class="math notranslate nohighlight">\(P^{\prime}\)</span> in blue and <span class="math notranslate nohighlight">\(B\)</span> in yellow).
+<strong>(C)</strong>  Evolution of the autocatalytic reaction system shown in
+<strong>(A)</strong> at different points in time (<span class="math notranslate nohighlight">\(U\)</span> in red, <span class="math notranslate nohighlight">\(P\)</span> in
+green, <span class="math notranslate nohighlight">\(P^{\prime}\)</span> in blue and <span class="math notranslate nohighlight">\(B\)</span> in yellow).</span><a class="headerlink" href="#fig-reaction-diffusion-2d" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="hard-sphere-fluid">
+<h2>Hard sphere fluid<a class="headerlink" href="#hard-sphere-fluid" title="Permalink to this heading"></a></h2>
+<p>A hard sphere fluid is very useful for validation as there exist
+analytic expressions for the radial distribution function but also for
+the pressure.</p>
+<section id="radial-distribution-function">
+<h3>Radial distribution function<a class="headerlink" href="#radial-distribution-function" title="Permalink to this heading"></a></h3>
+<p>Figure <a class="reference external" href="#fig:rdf_hard_sphere">1.7</a> shows the radial distribution
+function for a hard sphere fluid that is modelled using the harmonic
+repulsive interaction potential (Eq.
+<a class="reference internal" href="methods.html#equation-eq-harmonic-repulsion">(51)</a>). The sphere
+diameter is set to <span class="math notranslate nohighlight">\(1\,nm\)</span>. The simulation result is is in good
+agreement with a closed-form analytical expressions of the hard sphere
+radial distribution function <span id="id15">[<a class="reference internal" href="../../References.html#id64" title="Andrij Trokhymchuk, Ivo Nezbeda, Jan Jirsák, and Douglas Henderson. Hard-sphere radial distribution function again. The Journal of Chemical Physics, 123(2):024501, jul 2005. doi:10.1063/1.1979488.">99</a>]</span> (Fig.
+<a class="reference external" href="#fig:rdf_hard_sphere">1.7</a> B). The analytical expression for the
+radial distribution function is too long to be presented here. The
+interested reader is referred to <span id="id16">[<a class="reference internal" href="../../References.html#id64" title="Andrij Trokhymchuk, Ivo Nezbeda, Jan Jirsák, and Douglas Henderson. Hard-sphere radial distribution function again. The Journal of Chemical Physics, 123(2):024501, jul 2005. doi:10.1063/1.1979488.">99</a>]</span>.</p>
+<figure class="align-default" id="fig-rdf-hard-sphere">
+<a class="reference internal image-reference" href="../../_images/RDF_Hard_sphere.png"><img alt="../../_images/RDF_Hard_sphere.png" src="../../_images/RDF_Hard_sphere.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text"><strong>Hard-sphere radial distribution function.</strong> <strong>(A)</strong> The system is
+set up with a packing fraction of <span class="math notranslate nohighlight">\(\eta = 0.3\)</span>. The particle
+diameter is set to 1 nm and pair interactions occur via a harmonic
+repulsive potential. <strong>(B)</strong> The resulting radial distribution
+function (blue line) is in close agreement with theoretical
+prediction (red line). <strong>(C)</strong> The pressure of the hard-sphere fluid
+obtained from simulations is also in close agreement with theory
+<span id="id17">[<a class="reference internal" href="../../References.html#id64" title="Andrij Trokhymchuk, Ivo Nezbeda, Jan Jirsák, and Douglas Henderson. Hard-sphere radial distribution function again. The Journal of Chemical Physics, 123(2):024501, jul 2005. doi:10.1063/1.1979488.">99</a>]</span>. (D) A hard-sphere fluid NPT
+ensemble simulation. From time 0.5 ns, the Berendsen barostat is
+activated and drives the system to the target pressure
+<span class="math notranslate nohighlight">\(P_0 = 10\, \text{kJ}/(\text{mol}\, \text{nm}^3) = 16.6\, \text{MPa} = 166\, \text{bar}\)</span>
+.</span><a class="headerlink" href="#fig-rdf-hard-sphere" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="pressure">
+<h3>Pressure<a class="headerlink" href="#pressure" title="Permalink to this heading"></a></h3>
+<p>We can use a hard sphere fluid for validation of the pressure
+calculation. For a hard sphere fluid, an analytical expression for the
+pressure is given in terms of the radial distribution function at
+contact and the second virial coefficient <span id="id18">[<a class="reference internal" href="../../References.html#id139" title="Fu-Ming Tao, Yuhua Song, and E. A. Mason. Derivative of the hard-sphere radial distribution function at contact. Physical Review A, 46(12):8007–8008, dec 1992. doi:10.1103/physreva.46.8007.">100</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[p = \rho k_B T + \rho^2 k_B T b g(\sigma^+),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the hard-sphere diameter, <span class="math notranslate nohighlight">\(\rho\)</span> the
+number density and <span class="math notranslate nohighlight">\(b = (2 \pi/3) \sigma^3\)</span> the second virial
+coefficient. The radial distribution function at contact can be
+approximated by the solution to the Percus-Yevick equation
+<span id="id19">[<a class="reference internal" href="../../References.html#id65" title="McDonald Ian R Hansen Jean-Pierre. Theory of Simple Liquids. Elsevier, 2013. doi:10.1016/c2010-0-66723-x.">101</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[g_{PY}(\sigma) = \frac{1+\eta/2}{(1-\eta)^2},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\eta = (\pi/6) \rho \sigma^3\)</span> is the packing fraction. The
+pressure obtained from the simulation of a hard sphere fluid is in close
+agreement with this theoretical result (Fig.
+<a class="reference external" href="#fig:rdf_hard_sphere">1.7</a> <strong>C</strong>). In addition, the system does
+reach the target pressure using the Berendsen barostat (Fig.
+<a class="reference external" href="#fig:rdf_hard_sphere">1.7</a> D)</p>
+</section>
+</section>
+<section id="llps-of-patchy-particles">
+<h2>LLPs of Patchy Particles<a class="headerlink" href="#llps-of-patchy-particles" title="Permalink to this heading"></a></h2>
+<p>Liquid-liquid phase separation (LLPS) gained a lot of interest in recent
+years as more experimental evidence has been gathered that many cell
+structures are formed by LLPS. LLPS is a compelling mechanism as it
+might answer, how cells are able to organize in the presence of a
+crowded environment with thousands of molecular species
+<span id="id20">[<a class="reference internal" href="../../References.html#id68" title="Salman F. Banani, Hyun O. Lee, Anthony A. Hyman, and Michael K. Rosen. Biomolecular condensates: organizers of cellular biochemistry. Nature Reviews Molecular Cell Biology, 18(5):285–298, feb 2017. doi:10.1038/nrm.2017.7.">61</a>]</span>. Examples include nucleoli, Cajal
+bodies, stress granules but also the PSD <span id="id21">[<a class="reference internal" href="../../References.html#id69" title="Menglong Zeng, Yuan Shang, Yoichi Araki, Tingfeng Guo, Richard L. Huganir, and Mingjie Zhang. Phase transition in postsynaptic densities underlies formation of synaptic complexes and synaptic plasticity. Cell, 166(5):1163–1175.e12, aug 2016. doi:10.1016/j.cell.2016.07.008.">58</a>]</span>.
+In an number of papers Zeng et al. have shown that many of the proteins
+found in the PSD are able to phase separate
+<span id="id22">[<a class="reference internal" href="../../References.html#id69" title="Menglong Zeng, Yuan Shang, Yoichi Araki, Tingfeng Guo, Richard L. Huganir, and Mingjie Zhang. Phase transition in postsynaptic densities underlies formation of synaptic complexes and synaptic plasticity. Cell, 166(5):1163–1175.e12, aug 2016. doi:10.1016/j.cell.2016.07.008.">58</a>, <a class="reference internal" href="../../References.html#id70" title="Menglong Zeng, Xudong Chen, Dongshi Guan, Jia Xu, Haowei Wu, Penger Tong, and Mingjie Zhang. Reconstituted postsynaptic density as a molecular platform for understanding synapse formation and plasticity. Cell, 174(5):1172–1187.e16, aug 2018. doi:10.1016/j.cell.2018.06.047.">59</a>, <a class="reference internal" href="../../References.html#id71" title="Menglong Zeng, Javier D\'ıaz-Alonso, Fei Ye, Xudong Chen, Jia Xu, Zeyang Ji, Roger A. Nicoll, and Mingjie Zhang. Phase separation-mediated TARP/MAGUK complex condensation and AMPA receptor synaptic transmission. Neuron, 104(3):529–543.e6, nov 2019. doi:10.1016/j.neuron.2019.08.001.">60</a>]</span>. We would like to
+better understand the phase behaviour of the PSD as this might have an
+impact especially on the expression of late phase LTP. PSD substructures
+change in morphology within half an hour or stay rigid for many hours
+<span id="id23">[<a class="reference internal" href="../../References.html#id72" title="Waja Wegner, Alexander C. Mott, Seth G. N. Grant, Heinz Steffens, and Katrin I. Willig. In vivo STED microscopy visualizes PSD95 sub-structures and morphological changes over several hours in the mouse visual cortex. Scientific Reports, jan 2018. doi:10.1038/s41598-017-18640-z.">62</a>]</span>, indicating that the PSD might switch
+back and forth between crystalline, gel like and liquid states. Another
+study has shown that synaptic nanomodules, including the PSD are
+reallocated and change in size in response to synaptic plasticity
+induction <span id="id24">[<a class="reference internal" href="../../References.html#id136" title="Miquel Bosch, Jorge Castro, Takeo Saneyoshi, Hitomi Matsuno, Mriganka Sur, and Yasunori Hayashi. Structural and molecular remodeling of dendritic spine substructures during long-term potentiation. Neuron, 82(2):444–459, apr 2014. URL: https://doi.org/10.1016/j.neuron.2014.03.021, doi:10.1016/j.neuron.2014.03.021.">54</a>, <a class="reference internal" href="../../References.html#id73" title="Martin Hruska, Nathan Henderson, Sylvain J. Le Marchand, Haani Jafri, and Matthew B. Dalva. Synaptic nanomodules underlie the organization and plasticity of spine synapses. Nature Neuroscience, 21(5):671–682, apr 2018. doi:10.1038/s41593-018-0138-9.">57</a>]</span>. The issue that
+arises when investigating the phase behaviour of complex molecules is
+that even modern computers are able to only simulate 10-20 small
+proteins <span id="id25">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. Therefore, coarse graining
+methods are needed. With models that describe the disordered region of
+proteins on the level of amino-sequences simulations with a few hundred
+copy numbers are already feasible
+<span id="id26">[<a class="reference internal" href="../../References.html#id62" title="Gregory L. Dignon, Wenwei Zheng, Young C. Kim, Robert B. Best, and Jeetain Mittal. Sequence determinants of protein phase behavior from a coarse-grained model. PLOS Computational Biology, 14(1):e1005941, jan 2018. doi:10.1371/journal.pcbi.1005941.">72</a>, <a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. A minimal coarse graining
+approach represents proteins by patchy particles where the multivalent
+interaction sites of the proteins are modeled by attractive patches
+whereas the excluded volume is represented by a core particle with
+repulsive interactions. <span id="id27">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> have used such
+a model to investigate the stability and composition of biomolecular
+condensates. PyRID is well suited for simulations of patchy particles.
+For validation I here reproduce one of the results from
+<span id="id28">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. In their work, patches interact via
+an attractive square well interaction potential
+<span id="id29">[<a class="reference internal" href="../../References.html#id5" title="J. R. Espinosa, C. Vega, and E. Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. The Journal of Chemical Physics, 141(13):134709, oct 2014. doi:10.1063/1.4896621.">27</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[U_{CSW}(r) = - \frac{\epsilon_{CSW}}{2} \Big[1 - \tanh\Big(\frac{r-r_w}{\alpha}\Big)\Big],\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha = 0.01 \sigma\)</span> with <span class="math notranslate nohighlight">\(\sigma\)</span> being the hard
+sphere radius. The core particles interact via a pseudo hard sphere
+potential <span id="id30">[<a class="reference internal" href="../../References.html#id3" title="J. Jover, A. J. Haslam, A. Galindo, G. Jackson, and E. A. Müller. Pseudo hard-sphere potential for use in continuous molecular-dynamics simulation of spherical and chain molecules. The Journal of Chemical Physics, 137(14):144505, oct 2012. doi:10.1063/1.4754275.">29</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[U_{HS}
+       =
+       \Biggl \lbrace
+       {
+       \lambda_r (\frac{\lambda_r}{\lambda_a})^{\lambda_a} \epsilon_R [(\frac{\sigma}{r})^{\lambda_r}-(\frac{\sigma}{r})^{\lambda_a}]+\epsilon_R,\text{ if }
+          { r &lt; (\frac{\lambda_r}{\lambda_a}) \sigma }
+       \atop
+       0, \text{ if }
+          { r &lt; (\frac{\lambda_r}{\lambda_a}) \sigma },
+       }\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_a = 49\)</span> and <span class="math notranslate nohighlight">\(\lambda_r = 50\)</span>.
+<span class="math notranslate nohighlight">\(\epsilon_R\)</span> is the energy constant, <span class="math notranslate nohighlight">\(r_w\)</span> is the radius of
+the attractive well and <span class="math notranslate nohighlight">\(\alpha\)</span> determines the steepness of the
+potential well edge. To ensure that each patch does at maximum interact
+with one other patch at any time, in <span id="id31">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>
+<span class="math notranslate nohighlight">\(r_w\)</span> has been set to <span class="math notranslate nohighlight">\(0.12 \sigma\)</span>. Here, I did the same,
+however, note that thanks to the ability to define binding reactions in
+PyRID we could in principle also choose a larger radius for the
+attractive interaction potential. To compute the phase diagram/the
+coexistence curve for a patchy particle fluid,
+<span id="id32">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> used the direct coexistence method.
+The system is initialized at a volume density of <span class="math notranslate nohighlight">\(\approx 0.3\)</span> in
+a cubic box with <span class="math notranslate nohighlight">\(2000\)</span> patchy particles and at a temperature of
+<span class="math notranslate nohighlight">\(179.71 K\)</span>. Periodic boundary conditions are used. The integration
+time step was set to <span class="math notranslate nohighlight">\(2.5 ps\)</span>. A small integration time step is
+necessary due to the very short and steep attractive interaction between
+patches. Note that for Brownian dynamics simulations one would ideally
+use a weaker, soft interaction potential. Also, for such small
+integration time steps, the Brownian assumption is not necessarily valid
+anymore, e.i. the diffusive motion is not accurately described by a
+Markov process. However, we will see that, nevertheless, the results
+from <span id="id33">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> can be reproduced fairly
+accurately using the Brownian dynamics approach. In the following I
+briefly describe the direct coexistence method as used in
+<span id="id34">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. In a first step, the patchy particle
+fluid is equilibrated in an NPT simulation at zero pressure and an
+energy constant <span class="math notranslate nohighlight">\(\epsilon_{CSW}\)</span> that is high enough to ensure
+phase separation. Thereby, the value of <span class="math notranslate nohighlight">\(\epsilon_{CSW}\)</span> depends
+on the system temperature and the patchy particle valency. As a rule of
+thumb, <span class="math notranslate nohighlight">\(\frac{k_B T}{\epsilon_{CSW}}\)</span> should be smaller than
+<span class="math notranslate nohighlight">\(0.1\)</span>. For the equilibration phase I used the highest value that
+is given in table <a class="reference external" href="#tab:LLPS_parameters">1.5</a> for the different
+valencies respectively. After the equilibration phase the simulation box
+is elongated along the x-axis by a factor of 3. Thereby, a two phase
+system is created with infinite dense and dilute sheets. The elongated
+system is then simulated in the NVT ensemble for various different
+values of <span class="math notranslate nohighlight">\(\epsilon_{CSW}\)</span> (see table
+<a class="reference external" href="#tab:LLPS_parameters">1.5</a>). The simulation is continued until the
+system reaches a new equilibrium, which was the case after
+<span class="math notranslate nohighlight">\(\approx 2e7\)</span> steps at approximately <span class="math notranslate nohighlight">\(120\, it/s\)</span>. Thereby,
+a single simulation took <span class="math notranslate nohighlight">\(\approx 2\, days\)</span>. In total 33 such
+simulations, 11 for each of the three valency cases, were executed on a
+high compute cluster. In a final step, a concentration profile is
+sampled, from which the volume fraction of the dense and dilute phase
+are estimated <span id="id35">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>]</span>. I found that the
+coexistence curves acquired with PyRID were in good agreement with
+<span id="id36">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> (Fig. <a class="reference external" href="#fig:LLPS">1.8</a>). However,
+for the 5-valency case, <span id="id37">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> found a
+slightly higher volume fraction in the dense phase close to the critical
+point. Also, <span id="id38">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> found that the
+coexistence curve shows minimum below the critical for the 4-valence
+case, which I did not observe. The reason could lie in inaccuracies that
+are a result of to the Brownian approximation. More probable is,
+however, that the choice of the thermostat is responsible for the
+discrepancy as <span id="id39">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> used a Nosé-Hoover
+thermostat instead of a Langevin thermostat. However, I would argue that
+a Langevin thermostat, or in this case overdamped langevin
+dynamics/Brownian dynamics, represent the dilute phase more accurately
+as it accounts for the interaction with the solvent molecules.</p>
+<div class="docutils container" id="tab-llps-parameters">
+<table class="docutils align-default" id="id46">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text"><strong>Parameters for the patchy particle LLPS simulation.</strong></span><a class="headerlink" href="#id46" title="Permalink to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>valency</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\epsilon_{CSW}\)</span> in <span class="math notranslate nohighlight">\(\frac{kJ}{mol}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sites</p></td>
+<td><p><span class="math notranslate nohighlight">\(14.5-23.3\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>sites</p></td>
+<td><p><span class="math notranslate nohighlight">\(12.0-20.0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>sites</p></td>
+<td><p><span class="math notranslate nohighlight">\(10.5-16.0\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="fig-llps">
+<a class="reference internal image-reference" href="../../_images/LLPS_Espinosa.png"><img alt="../../_images/LLPS_Espinosa.png" src="../../_images/LLPS_Espinosa.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text"><strong>LLPS of patchy particles.</strong> <strong>(A)</strong> Patchy particles with 3, 4 and
+5 sites. Left: The translational and rotational diffusion tensor.
+<strong>(B)</strong> Graph of the continuous square-well potential (CSW) used for
+the attractive patches and the pseudo hard sphere potential (PHS)
+used for the core particle. <strong>(C)</strong> Coexistence curves for the 3, 4
+and 5 sided patchy particle systems and comparison with the results
+from <span id="id40">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. <strong>(D)</strong> Side view showing the
+dilute and dense phase for the 4-sided patchy particle system.</span><a class="headerlink" href="#fig-llps" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="benchmarks">
+<h2>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this heading"></a></h2>
+<p>To benchmark PyRID I directly compare it to ReaDDy. As a benchmark test
+I will therefore use the same that has been used in
+<span id="id41">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>. The system consists of the molecule
+types A, B and C with radii <span class="math notranslate nohighlight">\(1.5\, nm\)</span>, <span class="math notranslate nohighlight">\(3.0\, nm\)</span>, and
+<span class="math notranslate nohighlight">\(3.12\, nm\)</span>. The viscosity is set to <span class="math notranslate nohighlight">\(1.0 mPa \cdot s\)</span>,
+which is the value for water at about 293 Kelvin (20°C). The molecules
+all interact via a harmonic repulsive potential
+<span id="id42">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[U(r)
+   =
+   \Biggl \lbrace
+   {
+   \frac{\kappa}{2}(r-\sigma)^2,\text{ if }
+    { r \leq \sigma }
+   \atop
+   0, \text{ otherwise },
+   }\]</div>
+<p>where the force constant <span class="math notranslate nohighlight">\(\kappa = 10 kJ/mol\)</span>. The interaction
+distance <span class="math notranslate nohighlight">\(\sigma\)</span> is given by the radii of the interacting
+molecule pair. In addition, the molecules take part in the reaction
+<span class="math notranslate nohighlight">\(\ce{A + B &lt;=&gt;[\ce{k_1}][\ce{k_{-1}}] C }\)</span>. The rate for the
+fusion reaction is <span class="math notranslate nohighlight">\(k_1 = 0.001 ns^{-1}\)</span> and the reaction radius
+<span class="math notranslate nohighlight">\(R_{react} = 4.5 nm\)</span>. The fission reaction rate is set to
+<span class="math notranslate nohighlight">\(k_{-1}=5 \cdot 10^{-5} ns^{-1}\)</span> and the dissociation radius is
+set equal to <span class="math notranslate nohighlight">\(R_{react}\)</span>. The benchmark is carried out for
+different values of the total initial molecule number <span class="math notranslate nohighlight">\(N_{tot}\)</span>,
+with <span class="math notranslate nohighlight">\(N_A = N_{tot}/4\)</span>, <span class="math notranslate nohighlight">\(N_B = N_{tot}/4\)</span>,
+<span class="math notranslate nohighlight">\(N_C = N_{tot}/2\)</span>. The number density is, however, kept constant
+at <span class="math notranslate nohighlight">\(\rho_{tot} = 0.00341 nm^{-3}\)</span> by scaling the simulation box
+accordingly. Simulations are carried out for <span class="math notranslate nohighlight">\(300 ns\)</span> with an
+integration time step of <span class="math notranslate nohighlight">\(0.1 ns\)</span>. The result of the performance
+test is shown in figure <a class="reference external" href="#fig:hgrid">1.9</a> B. For particle numbers
+between 1.000 and 10.000, the computation time per particle update stays
+approximately constant at <span class="math notranslate nohighlight">\(1.25 \mu s\)</span>, which corresponds to about
+800.000 particle updates per second. For particle numbers above 10.000,
+the performance starts to drop slightly (Fig. <a class="reference external" href="#fig:hgrid">1.9</a> B,
+blue line). The benchmark test has been performed on a machine with an
+Intel Core i5-9300H with 2.4 GHz and 24 GB DDR4 RAM. Interestingly,
+PyRID always performed better than ReaDDy for this benchmark test (Fig.
+<a class="reference external" href="#fig:hgrid">1.9</a> B, yellow line). Also, ReaDDy scaled less linear
+for large particle numbers than PyRID. Shown are the results for ReaDDy
+ran on the sequential kernel. In addition, I performed the benchmark
+test for the parallel kernel but the results were always worse. However,
+in <span id="id43">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>, where the same benchmark test has
+been used, ReaDDy scaled much better and there was almost no performance
+drop even at 100.000 particles for the sequential kernel (Fig.
+<a class="reference external" href="#fig:hgrid">1.9</a> B, green line). Also, performance increased
+significantly when using the parallel kernel (down to
+<span class="math notranslate nohighlight">\(\approx 0.5 \mu s\)</span>). The performance has been tested on a
+slightly faster but comparable machine with an Intel Core i7 6850K
+processor at 3.8GHz and 32GB DDR4 RAM. The faster machine is probably
+the cause for the better performance at particle numbers below 10.000
+particles in comparison with my results. However, I can only speculate
+why ReaDDys’ scaling behavior for large particle numbers is much less
+linear in my benchmark test and why multi-threading only let to a
+performance loss. The reason might be that in
+<span id="id44">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span> ReaDDy was compiled for their
+benchmark system whereas I used the binaries distributed by the
+developers behind ReaDDy. Nonetheless, the benchmark test shows that
+PyRIDs performance is very much comparable with ReaDDy, and at least in
+certain situation PyRID can even outperform ReaDDy. Thereby, for a
+system with <span class="math notranslate nohighlight">\(10^4\)</span> particles, PyRID is able to perform at
+<span class="math notranslate nohighlight">\(\approx 80 it/s\)</span> and <span class="math notranslate nohighlight">\(\approx 7\cdot 10^6 /day\)</span>. At an
+integration time step of <span class="math notranslate nohighlight">\(1 ns\)</span>, therefore, <span class="math notranslate nohighlight">\(7 ms\)</span> per day
+can be simulated on medium machine.</p>
+<section id="polydispersity">
+<h3>Polydispersity<a class="headerlink" href="#polydispersity" title="Permalink to this heading"></a></h3>
+<p>As mentioned in the methods chapter, PyRID uses a hierarchical to
+efficiently handle polydispersity. As a test, a two component system is
+used. Both components consist of a single particle. Component A has a
+radius of <span class="math notranslate nohighlight">\(10\,nm\)</span>, component B has a radius of <span class="math notranslate nohighlight">\(2.5\,nm\)</span>.
+The simulation box measures <span class="math notranslate nohighlight">\(75\,nm\cdot 75\,nm\cdot 75\,nm\)</span>. The
+simulation volume is densely packed with both components such that we
+reach a volume fraction of <span class="math notranslate nohighlight">\(52\%\)</span>. The simulation ran for
+<span class="math notranslate nohighlight">\(1e4\)</span> steps. When not using the hierarchical grid approach but the
+classical linked cell list algorithm, PyRID only reaches about 80000
+particle updates per second (pu/s) on average (Fig. <a class="reference external" href="#fig:hgrid">1.9</a>
+A). However, when using the hierarchical grid, more than 500000 pu/s are
+reached (Fig. <a class="reference external" href="#fig:hgrid">1.9</a> A). If instead of the two component
+system we only simulate a one component system, PyRID also only reaches
+about 500000 pu/s (Fig. <a class="reference external" href="#fig:hgrid">1.9</a> A). Thereby, PyRID performs
+similar independent of whether the system is mono- or polydisperse.</p>
+<figure class="align-default" id="fig-hgrid">
+<a class="reference internal image-reference" href="../../_images/benchmark_hgrid.png"><img alt="../../_images/benchmark_hgrid.png" src="../../_images/benchmark_hgrid.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 34 </span><span class="caption-text"><strong>Performance test of the hierarchical grid approach.</strong> <strong>(A)</strong>
+Performance hierarchical grid. <strong>(B)</strong> Performance comparison between
+PyRID and ReaDDy. On a benchmark system with an Intel Core i5-9300H
+with 2.4 GHz and 24 GB DDR4 RAM, PyRID (blue line) outperforms ReaDDy
+(yellow). However, <span id="id45">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span> obtained a
+better performance and especially scaling for ReaDDy on a different
+machine with an Intel Core i7 6850K processor at 3.8GHz and 32GB DDR4
+RAM (green line).</span><a class="headerlink" href="#fig-hgrid" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="methods.html" class="btn btn-neutral float-left" title="Theory and Methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="discussion.html" class="btn btn-neutral float-right" title="Discussion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

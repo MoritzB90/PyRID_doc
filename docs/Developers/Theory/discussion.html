@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discussion &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Appendix" href="appendix.html" />
+    <link rel="prev" title="Results and validation" href="results.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Users/Examples/Contents.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Theory</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="methods.html">Theory and Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html">Results and validation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Discussion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-hydrodynamic-interactions">On hydrodynamic interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations-of-the-brownian-dynamics-approach">Limitations of the Brownian dynamics approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html">Appendix</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Theory</a> &raquo;</li>
+      <li>Discussion</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Developers/Theory/discussion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="discussion">
+<span id="sec-discussion-pyrid"></span><h1>Discussion<a class="headerlink" href="#discussion" title="Permalink to this heading"></a></h1>
+<p>PyRID is a fast and flexible tool for particle-based reaction diffusion
+simulations with pair-interactions. However, a challenge remains in that
+PyRID is not able simulate processes that take several seconds or even
+minutes. However, in cell biology we find many processes that act on
+such time scales. This is true for signaling processes, for
+self-assembly processes, e.g., of clathrin, and for protein trafficking.
+Other tools that follow a similar approach such as ReaDDy
+<span id="id1">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>, <a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> also do not provide
+methods that would enable simulations on such long time scales. Tools
+such a MCell <span id="id2">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span> and Smoldyn
+<span id="id3">[<a class="reference internal" href="../../References.html#id114" title="Steven S Andrews. Smoldyn: particle-based simulation with rule-based modeling, improved molecular interaction and a library interface. Bioinformatics, 33(5):710–717, dec 2016. doi:10.1093/bioinformatics/btw700.">102</a>]</span> enable simulations on larger time
+scales but do not resolve molecular structure and are not able to
+simulate protein binding and assembly. However, alternative
+reaction-rate based approaches have been developed that account for
+molecule structure, binding, and diffusion. A prominent example is
+NERDSS <span id="id4">[<a class="reference internal" href="../../References.html#id115" title="Matthew J. Varga, Yiben Fu, Spencer Loggia, Osman N. Yogurtcu, and Margaret E. Johnson. NERDSS: a nonequilibrium simulator for multibody self-assembly at the cellular scale. Biophysical Journal, 118(12):3026–3040, jun 2020. doi:10.1016/j.bpj.2020.05.002.">103</a>]</span> that is able to resolve fast
+binding reactions as well as processes on large time and- spatial
+scales. In NERDSS, molecules are represented by rigid bodies, similar to
+PyRID. Also, excluded volume is accounted for by rejection sampling.
+However, NERDSS avoids any energy interaction functions but instead
+molecules “snap” into place in a predefined way when a binding reaction
+is executed. Thereby, assembly processes can be simulated very
+efficiently. Still, since the resulting assembly has a predefined form
+NERDSS is not able make predictions about the structure of protein
+assemblies. Also, binding reactions are not orientation dependent which
+can result in unrealistic binding events, whereas in PyRID orientation
+dependence is accounted for by construction. Also, with NERDSS, one
+relies on reaction rates that have been measured either in experiment or
+by molecular dynamics simulations to describe assembly and disassembly
+processes. However, also with PyRID such processes can not accurately be
+modeled without exactly specifying the energy functions of the binding
+interaction which can even be harder than estimating rates. At last, due
+to the lack of interaction forces in NERDSS, any physical properties
+that are derived from the interaction forces or the energy functions can
+not be computed and flexible chains of beads or molecules are not
+supported. Still, such solely rate based approaches are very promising
+if one is interested in the kinetics of complex assembly processes and
+could also be a valuable addition to PyRID. In principle the PyRID
+framework would allow rigid body assembly growth so this could be a
+useful future extension. However, as indicated above, there exist many
+settings in which we need to include energy functions and where, as a
+result, there is a an upper limit for the integration time step that we
+can choose. We can slightly shift this threshold towards larger time
+steps by using different approximations to the inter-molecular
+interaction energy functions but even then we are restricted to
+integration time steps <span class="math notranslate nohighlight">\(\leq 1 ns\)</span>. As such we need to speed up
+computation, e.g. by parallelization. For very large system simulations
+many molecular dynamics tools such as LAMMPS support parallel
+implementations of their algorithms for the message passing interface
+standard (MPI). However, here, we only gain a benefit in speed for large
+systems as message passing otherwise becomes a bottle neck. For
+intermediate sized system such as those that we want to simulate with
+PyRID containing 10.000-100.000 particles, algorithms that run on the
+GPU are much more promising. A good example is the molecular dynamics
+tool HooMD <span id="id5">[<a class="reference internal" href="../../References.html#id79" title="Joshua A. Anderson, Jens Glaser, and Sharon C. Glotzer. HOOMD-blue: a python package for high-performance molecular dynamics and hard particle monte carlo simulations. Computational Materials Science, 173:109363, feb 2020. doi:10.1016/j.commatsci.2019.109363.">71</a>]</span> that is optimized for the
+GPU and that can reach speed ups of up to two order of magnitude
+compared to a single CPU and more than one order of magnitude compared
+to a modern multi-core CPU <span id="id6">[<a class="reference internal" href="../../References.html#id79" title="Joshua A. Anderson, Jens Glaser, and Sharon C. Glotzer. HOOMD-blue: a python package for high-performance molecular dynamics and hard particle monte carlo simulations. Computational Materials Science, 173:109363, feb 2020. doi:10.1016/j.commatsci.2019.109363.">71</a>]</span>. As such,
+bringing particle-based reaction diffusion simulations to the GPU could
+be the key for simulations on time scales of even minutes. The question
+remains to what degree the required algorithms and data structures can
+be efficiently ported to the GPU. However, this is beyond the scope of
+this work. At last, machine learning long found its way into MD
+simulations and is used in coarse graining, molecular kinetics and more
+<span id="id7">[<a class="reference internal" href="../../References.html#id116" title="Frank Noé, Alexandre Tkatchenko, Klaus-Robert Müller, and Cecilia Clementi. Machine learning for molecular simulation. Annual Review of Physical Chemistry, 71(1):361–390, apr 2020. doi:10.1146/annurev-physchem-042018-052331.">104</a>]</span>.</p>
+<section id="on-hydrodynamic-interactions">
+<h2>On hydrodynamic interactions<a class="headerlink" href="#on-hydrodynamic-interactions" title="Permalink to this heading"></a></h2>
+<p>As mentioned above, PyRID does not account for hydrodynamic interactions
+between molecules because, in this case, the kind of simulations for
+which PyRID has been developed would become unfeasible. Here, the 6Nx6N
+diffusion tensor of the entire system is needed to propagate the
+molecule positions. As the molecule positions change each time step,
+this diffusion tensor needs to be recalculated each iteration. A
+discussion on this topic in terms of many particle simulations can also
+be found in <span id="id8">[<a class="reference internal" href="../../References.html#id48" title="Tihamér Geyer. Many-particle brownian and langevin dynamics simulations with the brownmove package. BMC Biophysics, apr 2011. doi:10.1186/2046-1682-4-7.">105</a>]</span>. A new algorithm that scales
+<span class="math notranslate nohighlight">\(O(N^2)\)</span> has been introduced by <span id="id9">[<a class="reference internal" href="../../References.html#id49" title="Tihamér Geyer and Uwe Winter. An o(n2) approximation for hydrodynamic interactions in brownian dynamics simulations. The Journal of Chemical Physics, 130(11):114905, mar 2009. doi:10.1063/1.3089668.">74</a>]</span>
+making larger simulations with hydrodynamic interactions more feasible.</p>
+</section>
+<section id="limitations-of-the-brownian-dynamics-approach">
+<h2>Limitations of the Brownian dynamics approach<a class="headerlink" href="#limitations-of-the-brownian-dynamics-approach" title="Permalink to this heading"></a></h2>
+<p>Brownian dynamics simulations come with some limitations that one should
+consider <span id="id10">[<a class="reference internal" href="../../References.html#id42" title="Ian Snook. The Langevin and Generalised Langevin Approach to the Dynamics of Atomic, Polymeric and Colloidal Systems. Elsevier, 2007. doi:10.1016/b978-0-444-52129-3.x5000-7.">106</a>]</span>: In BD, only time steps are
+considered that are much longer than the velocity relaxation time
+<span class="math notranslate nohighlight">\(\tau_{rel} =\frac{m}{\gamma} = \frac{2 \rho r^2}{9 \eta}\)</span>. Due to
+the strong damping forces in a viscous fluid the kinetic energy of large
+molecules rapidly dissipates. Thereby, the erratic movement of the
+molecules in between two time steps is memory less and can be described
+as a Markov process. However, when accounting for interactions between
+molecules, the integration time step must also not be too small such
+that forces stay approximately constant in one time step. This becomes a
+problem for small interacting molecules or atoms, where the time step
+needs to be chosen small enough to resolve the interactions but large
+enough for the the approximation of over-damped kinetics. Thereby, if
+the molecules are of similar size as the solvent molecules, BD may not
+correctly describe the dynamics. <span id="id11">[<a class="reference internal" href="../../References.html#id44" title="Uwe Winter and Tihame\'r Geyer. Coarse grained simulations of a small peptide: effects of finite damping and hydrodynamic interactions. The Journal of Chemical Physics, 131(10):104102, 2009. doi:10.1063/1.3216573.">107</a>]</span>
+introduced a Langevin integration scheme that enables the accurate
+simulation of small molecules. Here, we will however use the well
+established BD scheme introduced by <span id="id12">[<a class="reference internal" href="../../References.html#id43" title="Donald L. Ermak and J. A. McCammon. Brownian dynamics with hydrodynamic interactions. The Journal of Chemical Physics, 69(4):1352–1360, aug 1978. doi:10.1063/1.436761.">76</a>]</span>.
+Another thing to keep in mind is that BD is only applicable for
+Newtonian fluids. Also, since the details of the interaction between
+solvent particles and bead particles are neglected, simulations of
+molecule aggregation may not be correctly described. However, in the
+case where aggregation is dominated by the interaction between the
+proteins, the latter may be negligible.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="results.html" class="btn btn-neutral float-left" title="Results and validation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="appendix.html" class="btn btn-neutral float-right" title="Appendix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

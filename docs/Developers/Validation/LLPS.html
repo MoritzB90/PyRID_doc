@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,6 +18,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -117,7 +119,7 @@ In the following I show as an example how such a simulation can be setup on a Li
 </pre></div>
 </div>
 </div>
-<p>We will pass 3 parameters which python will read from sys.argv. The first parameter will be a string that tells python, which type of molecule component we want to simulate, in case we want to run the simulation for different types of components. In our example the components are patchy particles with 3,4 or 5 attractive patches to reproduce the results from Fig 1C in <span id="id1">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">57</a>]</span>.
+<p>We will pass 3 parameters which python will read from sys.argv. The first parameter will be a string that tells python, which type of molecule component we want to simulate, in case we want to run the simulation for different types of components. In our example the components are patchy particles with 3,4 or 5 attractive patches to reproduce the results from Fig 1C in <span id="id1">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>.
 The second parameter defines the simulation phase. As stated above, we first need to prepare the system in the NPT ensemble to find a proper volume for the simulation box and to release the system from any mechanical stress.
 The third parameter is an integer index that we use to get different values of the pair interaction strength. It makes sense to use different lists of interaction strength for the the three different components since the ‘3_sites’ system we phase separate at higher values of the interaction strength that the ‘4_sites’ and ‘5_sites’ component system.</p>
 <p>Next, we create a bash script that we use to start jobs of the first phase (run_NPT.sh):</p>
@@ -466,15 +468,15 @@ $SLURM_ARRAY_TASK_ID is an array of integers that we defined by -a 0-10. This me
 </pre></div>
 </div>
 </div>
-<p>Figure <a class="reference internal" href="#fig-phase-diagram-esp"><span class="std std-ref">Phase diagram.</span></a> shows the phase diagrams for 3,4, and 5 sites of interactions and compares the result with those from <span id="id2">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">57</a>]</span>. The analysis of the data is not discussed here for now, however, you can have a look at <span id="id3">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">57</a>]</span>.</p>
+<p>Figure <a class="reference internal" href="#fig-phase-diagram-esp"><span class="std std-ref">Phase diagram.</span></a> shows the phase diagrams for 3,4, and 5 sites of interactions and compares the result with those from <span id="id2">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. The analysis of the data is not discussed here for now, however, you can have a look at <span id="id3">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>.</p>
 <figure class="align-default" id="fig-phase-diagram-esp">
 <a class="reference internal image-reference" href="../../_images/Phase-diagram_Esp.png"><img alt="../../_images/Phase-diagram_Esp.png" src="../../_images/Phase-diagram_Esp.png" style="width: 30%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 24 </span><span class="caption-text"><strong>Phase diagram.</strong></span><a class="headerlink" href="#fig-phase-diagram-esp" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 38 </span><span class="caption-text"><strong>Phase diagram.</strong></span><a class="headerlink" href="#fig-phase-diagram-esp" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="fig-llps-tetrahedral">
-<a class="reference internal image-reference" href="../../_images/LLPS_Tetrahedral.png"><img alt="../../_images/LLPS_Tetrahedral.png" src="../../_images/LLPS_Tetrahedral.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="../../_images/LLPS_5_sites.png"><img alt="../../_images/LLPS_5_sites.png" src="../../_images/LLPS_5_sites.png" style="width: 50%;" /></a>
 </figure>
 </section>
 

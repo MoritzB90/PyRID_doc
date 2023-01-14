@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,6 +18,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/design-tabs.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -964,30 +966,47 @@ line-height:10px;
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Developers/Theory/Contents.html">Theory</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/rigid_bead_molecules.html">Rigid bead molecules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/anisotropic_diffusion.html">Anisotropic diffusion</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/anisotropic_diffusion.html#quaternion-propagator">Quaternion propagator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/introduction.html">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/introduction.html#the-cell-environment">The cell environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/introduction.html#modeling-approaches">Modeling approaches</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html">Diffusion tensor</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#the-oseen-tensor-and-hydrodynamic-interaction-between-beads">The Oseen tensor and hydrodynamic interaction between beads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#the-friction-tensor-for-rigid-bead-molecules">The friction tensor for rigid bead molecules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#validation">Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/diffusion_tensor.html#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/methods.html">Theory and Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#rigid-bead-molecules">Rigid bead molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#compartments">Compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#boundary-conditions">Boundary Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#reactions">Reactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#potentials">Potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#observables">Observables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#berendsen-barostat">Berendsen barostat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#distribution-of-molecules">Distribution of molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#fast-algorithms-for-brownian-dynamics-of-reacting-and-interacting-particles">Fast algorithms for Brownian dynamics of reacting and interacting particles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#polydispersity">Polydispersity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#simulation-loop">Simulation loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/methods.html#visualization">Visualization</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/reactions.html">Reactions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/reactions.html#unimolecular-reactions">Unimolecular reactions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/reactions.html#bi-molecular-reactions">Bi-molecular reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/results.html">Results and validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#anisotropic-diffusion">Anisotropic diffusion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#diffusion-tensor-of-igg3">Diffusion tensor of igG3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#fixed-concentration-boundary">Fixed concentration boundary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#choosing-the-right-reaction-rate-and-radius">Choosing the right reaction rate and radius</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#bi-molecular-reactions-between-rigid-bead-molecules">Bi-molecular reactions between rigid bead molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#reactions-between-surface-molecules">Reactions between surface molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#hard-sphere-fluid">Hard sphere fluid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#llps-of-patchy-particles">LLPs of Patchy Particles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/results.html#benchmarks">Benchmarks</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/mesh_compartments.html">Mesh compartments</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/mesh_compartments.html#volume-molecules">Volume molecules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/mesh_compartments.html#surface-molecules">Surface molecules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/mesh_compartments.html#distribution-of-molecules">Distribution of molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/discussion.html">Discussion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/discussion.html#on-hydrodynamic-interactions">On hydrodynamic interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/discussion.html#limitations-of-the-brownian-dynamics-approach">Limitations of the Brownian dynamics approach</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/data_structures.html">Data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developers/Theory/appendix.html">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Developers/Theory/appendix.html#appendix-a">Appendix A</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Developers/Validation/Contents.html">Validation</a><ul>
