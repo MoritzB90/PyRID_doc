@@ -102,24 +102,15 @@
 <div class="viewcode-block" id="update_rb_level"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.update_rb_level">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">update_rb_level</span><span class="p">(</span><span class="n">RBs</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Updates the level h of rigid bead molecules in the hierarchical grid.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of RBs class</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -134,24 +125,19 @@
 <div class="viewcode-block" id="update_rb_hgrid"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.update_rb_hgrid">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">update_rb_hgrid</span><span class="p">(</span><span class="n">HGrid</span><span class="p">,</span> <span class="n">box_lengths</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Updates the hierarchical grid for the rigid bead molecules.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    HGrid : `array like`</span>
+<span class="sd">        Hierarchical grid</span>
+<span class="sd">    box_lengths : `float64[3]`</span>
+<span class="sd">        Simulation box lengths</span>
+<span class="sd">    N : `int64`</span>
+<span class="sd">        Number of molecules</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of System class</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -187,24 +173,28 @@
     
 <div class="viewcode-block" id="create_rb_hgrid"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.create_rb_hgrid">[docs]</a><span class="k">def</span> <span class="nf">create_rb_hgrid</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">RB_Types</span><span class="p">,</span> <span class="n">box_lengths</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Creates the hierarchical grid for the rigid bead molecules.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of the RBs class</span>
+<span class="sd">    RB_Types : `list of strings`</span>
+<span class="sd">        List of molecule types.</span>
+<span class="sd">    box_lengths : `float64[3]`</span>
+<span class="sd">        Simulation box lengths   </span>
+<span class="sd">    N : `int64`</span>
+<span class="sd">        Number of molecules</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of the System class</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    array like</span>
+<span class="sd">        Hierarchical grid</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -307,8 +297,25 @@
 <div class="viewcode-block" id="radial_distr_function"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/rdf_util.html#pyrid.evaluation.rdf_util.radial_distr_function">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">radial_distr_function</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">RDF_types</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">HGrid</span><span class="p">,</span> <span class="n">RDF_cutoff</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">,</span> <span class="n">rdf_hist</span><span class="p">):</span>
     
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Samples the radial distribution function from the positions of a molecule population.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of the System class</span>
+<span class="sd">    RB_Types : `list of strings`</span>
+<span class="sd">        List of molecule types.</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of the RBs class</span>
+<span class="sd">    HGrid : `array like`</span>
+<span class="sd">        Hierarchical grid</span>
+<span class="sd">    RDF_cutoff : `float64`</span>
+<span class="sd">        Cutoff distance for the rdf sampling.</span>
+<span class="sd">    rdf_bins : `int64`</span>
+<span class="sd">        Number of bins (resolution).</span>
+<span class="sd">    rdf_hist : `float64[:]`</span>
+<span class="sd">        Empty array of length rdf_bins.</span>
+
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     

@@ -117,25 +117,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.MSD">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">MSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#MSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.MSD" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the MSD for each dimension (x,y, and z) of a molecule population.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>position_trace</strong><span class="classifier"><cite>float64[t,N,3]</cite></span></dt><dd><p>Position data for a molecule population of size N at t different time steps.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Delta_t</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Time step.</p>
+</dd>
+<dt><strong>time_interaval</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>The time step until which the molecule positions are sampled for the MSD calculation. Note: Currently sampling always starts at time step 0.</p>
+</dd>
+<dt><strong>stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride with which the molecule positions are sampled.</p>
+</dd>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(list(float64[:],float64[:],float64[:]), float64[:])</dt><dd><p>MSD in each dimension and the corresponding time vector.</p>
 </dd>
 </dl>
 </dd>
@@ -145,25 +145,32 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.P2">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">P2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orientation_trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theory_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#P2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.P2" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the rotational time correlation function P2 from the orientation traces of a molecule population 
+as well as the corresponding theoretical prediction for validation purposes.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>orientation_trace</strong><span class="classifier"><cite>float64[t,N,4]</cite></span></dt><dd><p>Orientations (in quaternion representation) of a molecule population of size N at t different time steps.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Delta_t</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Time step.</p>
+</dd>
+<dt><strong>D_rr</strong><span class="classifier"><cite>float64[:,:]</cite></span></dt><dd><p>Rotational diffusion tensor.</p>
+</dd>
+<dt><strong>time_interaval</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Target time step. Note: Currently sampling always starts at time step 0.</p>
+</dd>
+<dt><strong>stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride with which the molecule orientations are sampled.</p>
+</dd>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
+</dd>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Molecule type</p>
+</dd>
+<dt><strong>theory_only</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, only the theoretical prediction of P2 is returned. Default = False.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(list(float64[:], float64[:], float64[:]), list(float64[:], float64[:], float64[:]), float64[:])</dt><dd><p>P2 (Simulation), P2 (Theory), time vector</p>
 </dd>
 </dl>
 </dd>
@@ -173,25 +180,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.calcP2_anisotropic">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">calcP2_anisotropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation_trace</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#calcP2_anisotropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.calcP2_anisotropic" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the rotational time correlation function P2 regarding one rotation axis from the orientations of a molecule population.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>time_steps</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Time steps.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>orientation_trace</strong><span class="classifier"><cite>float64[t,N]</cite></span></dt><dd><p>Orientations regarding one axis of a molecule population of size N at t different time steps.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><cite>float64[:]</cite></dt><dd><p>P2 regarding one rotation axis.</p>
 </dd>
 </dl>
 </dd>
@@ -201,25 +202,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.calcP2_anisotropic_Population">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">calcP2_anisotropic_Population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation_trace</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#calcP2_anisotropic_Population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.calcP2_anisotropic_Population" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the rotational time correlation function P2 around each of the three rotation axis of a molecule population.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>time_interaval</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Target time step. Note: Currently sampling always starts at time step 0.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride with which the molecule orientations are sampled.</p>
+</dd>
+<dt><strong>orientation_trace</strong><span class="classifier"><cite>float64[t,N,4]</cite></span></dt><dd><p>Orientations (in quaternion representation) of a molecule population of size N at t different time steps.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(float64[:], float64[:], float64[:])</dt><dd><p>P2 for each rotation axis.</p>
 </dd>
 </dl>
 </dd>
@@ -229,25 +226,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.calc_A_B">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">calc_A_B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Drot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#calc_A_B"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.calc_A_B" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the parameters A (F) and B (G) used in the theoretical prediction of the rotational time correlation function P2.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>u</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Basis vector.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Drot</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Rotational diffusion constant.</p>
+</dd>
+<dt><strong>D_rr</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Rotational diffusion tensor.</p>
+</dd>
+<dt><strong>Delta</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Delta.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(float64, float64)</dt><dd><p>A (F) and B (G).</p>
 </dd>
 </dl>
 </dd>
@@ -257,25 +252,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.calc_MSD_population">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">calc_MSD_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#calc_MSD_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.calc_MSD_population" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the Mean Squared Distance (MSD) from the position data (one dimension x, y or z) of a molecule population.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>time_steps</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Time steps.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>position</strong><span class="classifier"><cite>float64[t,N]</cite></span></dt><dd><p>Position vectors for t timesteps of a molecule population of size N (one dimension x, y or z).</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><cite>list</cite></dt><dd><p>MSD in one dimension (x, y or z).</p>
 </dd>
 </dl>
 </dd>
@@ -285,25 +274,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.calc_P_theory">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">calc_P_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#calc_P_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.calc_P_theory" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Theoretical prediction of the rotational time correlation function P2.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>t</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Time vector</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>u</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Basis vector</p>
+</dd>
+<dt><strong>D_rr</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Rotational diffusion tensor.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>float64[:]</dt><dd><p>P2 (Theory)</p>
 </dd>
 </dl>
 </dd>
@@ -313,25 +298,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.diffusion_util.calc_orientation_quat">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.diffusion_util.</span></span><span class="sig-name descname"><span class="pre">calc_orientation_quat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/diffusion_util.html#calc_orientation_quat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.diffusion_util.calc_orientation_quat" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the rotation matrix from a rotation / orientation quaternion.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
-</dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float64[4]</cite></span></dt><dd><p>Rotation quaternion.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><cite>float64[3,3]</cite></dt><dd><p>Rotation / Orientation matrix.</p>
 </dd>
 </dl>
 </dd>

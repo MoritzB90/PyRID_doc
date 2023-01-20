@@ -128,8 +128,21 @@
 <span class="sd">        </span>
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    method_1(arguments)</span>
-<span class="sd">        Some general information about this method</span>
+<span class="sd">    add(self, pid)</span>
+<span class="sd">        Adds a particle index to the array.</span>
+<span class="sd">    remove(self, k)</span>
+<span class="sd">        Removes the element with index k from the array.</span>
+<span class="sd">    _resize(self, new_cap)</span>
+<span class="sd">        Resize internal data array to a new capacity (new_cap).</span>
+<span class="sd">    _resize_index(self, new_cap)</span>
+<span class="sd">        Resize the index array to a new capacity (new_cap).</span>
+<span class="sd">    make_array(self, new_cap)</span>
+<span class="sd">        Returns a new array with capacity new_cap.</span>
+<span class="sd">    make_index(self, new_cap)</span>
+<span class="sd">        Returns a new array with capacity new_cap.</span>
+<span class="sd">    clear(self)</span>
+<span class="sd">        Clears the array by setting the number of elements in the array to 0.</span>
+
 <span class="sd">        </span>
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -154,6 +167,16 @@
         
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return element at index k.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array like</span>
+<span class="sd">            Data at index k</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
@@ -162,30 +185,25 @@
         
         <span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        Set value of item at index k.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
+<span class="sd">        value : `array like`</span>
+<span class="sd">            Value to which the element at index k is set to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     
 <div class="viewcode-block" id="DenseArray.add"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pid</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Adds a particle index to the array.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        pid : `int64`</span>
+<span class="sd">            particle index</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -202,29 +220,13 @@
         
 <div class="viewcode-block" id="DenseArray.remove"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Removes the element with index k from the array. Attention: k does not refer to the index of the array but the id of a specific element!</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
-<span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Attention: k does not refer to the index of the array but the id of a specific element!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="c1"># Get the id (id_swap) of the last item in the reactions list</span>
@@ -236,29 +238,13 @@
 
 <div class="viewcode-block" id="DenseArray._resize"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray._resize">[docs]</a>    <span class="k">def</span> <span class="nf">_resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Resize internal data array to a new capacity (new_cap).</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        new_cap : `int64`</span>
+<span class="sd">            New array capacity.</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
-<span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resize internal array to capacity new_cap</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">Data_resized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_array</span><span class="p">(</span><span class="n">new_cap</span><span class="p">)</span> <span class="c1"># New bigger array</span>
@@ -271,29 +257,13 @@
         
 <div class="viewcode-block" id="DenseArray._resize_index"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray._resize_index">[docs]</a>    <span class="k">def</span> <span class="nf">_resize_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Resize the index array to a new capacity (new_cap).</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
-<span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resize internal array to capacity new_cap</span>
+<span class="sd">        new_cap : `int64`</span>
+<span class="sd">            New array capacity.</span>
+<span class="sd">          </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">index_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_index</span><span class="p">(</span><span class="n">new_cap</span><span class="p">)</span> <span class="c1"># New bigger array</span>
@@ -306,20 +276,45 @@
           
 <div class="viewcode-block" id="DenseArray.make_array"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray.make_array">[docs]</a>    <span class="k">def</span> <span class="nf">make_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a new array with new_cap capacity</span>
+<span class="sd">        Returns a new array with capacity new_cap</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_cap : `int64`</span>
+<span class="sd">            New array capacity.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int64[:]</span>
+<span class="sd">            numpy zeros array of size new_cap.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_cap</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DenseArray.make_index"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray.make_index">[docs]</a>    <span class="k">def</span> <span class="nf">make_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a new array with new_cap capacity</span>
+<span class="sd">        Returns a new array with capacity new_cap</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_cap : `int64`</span>
+<span class="sd">            New array capacity.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int64[:]</span>
+<span class="sd">            numpy zeros array of size new_cap.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_cap</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span></div>
     
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="viewcode-block" id="DenseArray.clear"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArray.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the array by setting the number of elements in the array to 0.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span></div>
         
         
         
@@ -329,7 +324,7 @@
 <div class="viewcode-block" id="HolesArray"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray">[docs]</a><span class="k">class</span> <span class="nc">HolesArray</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Implementation of a dense dynamics array.</span>
+<span class="sd">    Implementation of a dynamics array &quot;with holes&quot;.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -342,11 +337,31 @@
 <span class="sd">    Data : `array_like`</span>
 <span class="sd">        Structured numpy array containing a linked list, connecting the holes in the array, and containing the actual data.</span>
 <span class="sd">        `dtype = np.dtype([(&#39;next&#39;, np.uint64),(&#39;name&#39;, &#39;U20&#39;), ... , align = True)`</span>
+<span class="sd">    slot : `int64`</span>
+<span class="sd">        saves the current slot when a new item is added. </span>
+<span class="sd">    item_t : `np.dtype`</span>
+<span class="sd">        structured array data type that contains fields for the free linked list and the actual data. dtype = np.dtype([(&#39;next&#39;, np.uint64),(&#39;name&#39;, &#39;U20&#39;), ... , align = True)</span>
+
 <span class="sd">        </span>
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    method_1(arguments)</span>
-<span class="sd">        Some general information about this method</span>
+<span class="sd">    len(self)</span>
+<span class="sd">        Returns the length of the array. The length is defined by the number of elements in the array not counting the holes.</span>
+<span class="sd">    iterator(self)</span>
+<span class="sd">        Iterates through all nonempty (no-hole) elements in the Data array. Note: This method is not supported by Numba at the time.</span>
+<span class="sd">    insert(self, value)</span>
+<span class="sd">        Inserts a new item into an empty slot (a hole) of the array or appends it if no empty slots are available.</span>
+<span class="sd">    add_to_occupied(self, slot)</span>
+<span class="sd">        Adds a slot index to the occupied indices list.</span>
+<span class="sd">    _append(self, value)</span>
+<span class="sd">        Appends an item to the end of the array. If the capacity of the array is reached, the array is resized.</span>
+<span class="sd">    delete(self, i)</span>
+<span class="sd">        Deletes an item from the array. It does so by creating a hole in the array.</span>
+<span class="sd">    _resize(self, new_cap)</span>
+<span class="sd">        Resizes the Data array to capacity new_cap.</span>
+<span class="sd">    make_array(self, new_cap)</span>
+<span class="sd">        Returns a new array with new_cap capacity.</span>
+
 <span class="sd">        </span>
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -372,7 +387,7 @@
     
 <div class="viewcode-block" id="HolesArray.len"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.len">[docs]</a>    <span class="k">def</span> <span class="nf">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return number of elements sorted in array</span>
+<span class="sd">        Returns the length of the array. The length is defined by the number of elements in the array not counting the holes. The actual size of the array can be accessed by the capacity attribute.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span></div>
       
@@ -387,20 +402,14 @@
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        array like</span>
+<span class="sd">            Value of the structured array at index k (actually k+1)</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -418,107 +427,93 @@
 <div class="viewcode-block" id="HolesArray.__setitem__"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.__setitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">        The k+1 element is returned, because element 0 is reserved for the head of the free list </span>
-<span class="sd">        which is used to find the holes in teh array.</span>
+<span class="sd">        Sets the value of the array at index k+1. Index 0 is reserved for the head of the free list </span>
+<span class="sd">        which is used to find the holes in the array.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
+<span class="sd">        value : self.item_t</span>
+<span class="sd">            value to insert at index k. The data type is whatever has been set for the np.dtype of the structured array that is the Data attribute. The data type is kept by the item_t attribute.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
         
-    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="HolesArray.iterator"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.iterator">[docs]</a>    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Iterates through all nonempty (no-hole) elements in the Data array. Note: This method is not supported by Numba at the time.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">while</span> <span class="n">i</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
                 
             <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
                 
         
 
-<div class="viewcode-block" id="HolesArray.insert"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ele</span><span class="p">):</span>
+<div class="viewcode-block" id="HolesArray.insert"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">        Add element into an empty slot or the end of the array, if no empty slot is available</span>
+<span class="sd">        Inserts a new item into an empty slot (a hole) of the array or appends it if no empty slots are available. </span>
+<span class="sd">        The method does so by accessing the next pointer of the head element. If the next pointer is 0, i.e. it points to the head element itself, no empty slots are available and the </span>
+<span class="sd">        new item is appended to the array by calling the _append method. If the next pointer is greater zero, the new item is added at the index the next pointer points to.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        value : self.item_t</span>
+<span class="sd">            value to insert at index k. The data type is whatever has been set for the np.dtype of the structured array that is the Data attribute. The data type is kept by the item_t attribute.</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         
-        <span class="c1"># ele = np.zeros(1, dtype = self.item_t)[0]</span>
+        <span class="c1"># value = np.zeros(1, dtype = self.item_t)[0]</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
         <span class="c1"># If the freelist is empty, slot will be 0, because the header</span>
         <span class="c1"># item will point to itself.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">]</span> <span class="o">=</span> <span class="n">ele</span> <span class="c1"># Set self.slot index to element</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="c1"># Set self.slot index to element</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
  
             <span class="bp">self</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
             
             
-    <span class="k">def</span> <span class="nf">add_to_occupied</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">slot</span><span class="p">))</span>
-        
-<div class="viewcode-block" id="HolesArray._append"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray._append">[docs]</a>    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ele</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add element to end of the array</span>
+<div class="viewcode-block" id="HolesArray.add_to_occupied"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.add_to_occupied">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_occupied</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Adds a slot index to the occupied indices list.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        slot : `int64`</span>
+<span class="sd">            Slot index.</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">slot</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="HolesArray._append"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray._append">[docs]</a>    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends an item to the end of the array. If the capacity of the array is reached, the array is resized.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : self.item_t</span>
+<span class="sd">            value to insert at index k. The data type is whatever has been set for the np.dtype of the structured array that is the Data attribute. The data type is kept by the item_t attribute.</span>
+<span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -529,7 +524,7 @@
             <span class="c1"># Double capacity if not enough room</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_resize</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span> 
           
-        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">]</span> <span class="o">=</span> <span class="n">ele</span> <span class="c1"># Set self.slot index to element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="c1"># Set self.slot index to element</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">occupied</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span></div>
@@ -538,24 +533,16 @@
 <div class="viewcode-block" id="HolesArray.delete"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<span class="sd">        Deletes an item from the array. It does so by creating a hole in the array. The holes are kept track of by a free linked list. </span>
+<span class="sd">        A hole is created by removing the item from the list of of occupied indices and updating the free linked list:</span>
+<span class="sd">        The head of the free linked list now points to the deleted item and the next pointer at the index of the deleted item points to the hole where the head originally pointed to.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        i : `int64`</span>
+<span class="sd">            Index</span>
 <span class="sd">        parameter_2 : dtype</span>
 <span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -577,24 +564,13 @@
 <div class="viewcode-block" id="HolesArray._resize"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray._resize">[docs]</a>    <span class="k">def</span> <span class="nf">_resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resize internal array to capacity new_cap</span>
+<span class="sd">        Resizes the Data array to capacity new_cap.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        new_cap : `int64`</span>
+<span class="sd">            Array capacity.</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -607,9 +583,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span> <span class="o">=</span> <span class="n">B</span> <span class="c1"># Call A the new bigger array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">new_cap</span> <span class="c1"># Reset the capacity</span></div>
           
+
 <div class="viewcode-block" id="HolesArray.make_array"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArray.make_array">[docs]</a>    <span class="k">def</span> <span class="nf">make_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cap</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a new array with new_cap capacity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_cap : `int64`</span>
+<span class="sd">            Array capacity.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_cap</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_t</span><span class="p">)</span></div></div>
     
@@ -632,14 +615,23 @@
 <span class="k">class</span> <span class="nc">HolesArrayReact</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    DYNAMIC ARRAY CLASS WITH HOLES</span>
+<span class="sd">    Implementation of a dynamics array &quot;with holes&quot; that is used for the index attribute in PyRIDs Reaction class. </span>
+<span class="sd">    In the Reaction class this array keeps track of the reaction indices :func:`pyrid.reactions.reactions_registry_util.Reaction`.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    attribute_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    attribute_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    n : `int`</span>
+<span class="sd">        Count actual elements in the array.</span>
+<span class="sd">    capacity : `int`</span>
+<span class="sd">        Total capacity of the array.</span>
+<span class="sd">    occupied : `obj`</span>
+<span class="sd">        Dense array that keeps track of the occupied slots.</span>
+<span class="sd">    Data : `array_like`</span>
+<span class="sd">        Structured numpy array containing a linked list, connecting the holes in the array, and containing the actual data.</span>
+<span class="sd">    slot : `int64`</span>
+<span class="sd">        saves the current slot when a new item is added. </span>
+<span class="sd">    item_t : `np.dtype`</span>
+<span class="sd">        structured array data type that contains fields for the free linked list and the actual data.</span>
 <span class="sd">    </span>
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
@@ -651,6 +643,9 @@
 <span class="sd">        Returns a new array with new_cap capacity</span>
 <span class="sd">    clear()</span>
 <span class="sd">        clears the array by setting the number of currently inserted elements to 0.</span>
+
+
+
 <span class="sd">    &quot;&quot;&quot;</span>
     
 
@@ -664,7 +659,15 @@
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return element at index k+1.</span>
+<span class="sd">        Returns element at index k+1 (element 0 is reserved for the head of the free list).</span>
+
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array like</span>
+<span class="sd">            Value of the structured array at index k (actually k+1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
@@ -672,7 +675,16 @@
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">        Set value of item at index k+1.</span>
+<span class="sd">        Sets the value of the array at index k+1. Index 0 is reserved for the head of the free list </span>
+<span class="sd">        which is used to find the holes in the array.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : `int64`</span>
+<span class="sd">            Index</span>
+<span class="sd">        value : self.item_t</span>
+<span class="sd">            value to insert at index k. The data type is whatever has been set for the np.dtype of the structured array that is the Data attribute. The data type is kept by the item_t attribute.</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
@@ -680,18 +692,24 @@
 
 <div class="viewcode-block" id="HolesArrayReact.allocate_slot"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.HolesArrayReact.allocate_slot">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;Allocates a new slot by finding the next hole in the array (appends an element to the end of tze array if no empty slot/hole is available).</span>
+        <span class="sd">&quot;&quot;&quot;Allocates a new slot by finding the next hole in the array. If no empty slot/hole is available the array is resized.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The allocate_slot method does only allocate a new slot but does not insert a new item / value at that slots´ location. It only returns the index of that allocated slot. </span>
+<span class="sd">        However, allocate_slot automatically assumes that the slot will be filled with Data after it has been called and therefore already updates </span>
+<span class="sd">        the free linked list and resizes the array (in case no holes are available and the array capacity has been reached).</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        int</span>
-<span class="sd">            Index of the next hole in the array.</span>
+<span class="sd">        int64</span>
+<span class="sd">            Index of the next available slot in the array.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="c1"># First, we assume that there exist empty slots:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;next_hole&#39;</span><span class="p">]</span>
-        <span class="c1"># Since this hole is now occupied, udate the head of the holes linked list,</span>
+        <span class="c1"># Since this hole is now occupied, update the head of the holes linked list,</span>
         <span class="c1"># i.e. take the next_hole that the current hole, which is no longer a hole</span>
         <span class="c1"># and therefore not part of the linked list anymore, points to and set it as the head (self.Data[0]).</span>
         <span class="c1"># Note: if self.slot = 0, the head points to itself, so the next step does basically nothing.</span>
@@ -825,7 +843,7 @@
 <div class="viewcode-block" id="DenseArrayReact"><a class="viewcode-back" href="../../../Developers/Developer%20API/data_structures/dynamic_array_util.html#pyrid.data_structures.dynamic_array_util.DenseArrayReact">[docs]</a><span class="k">class</span> <span class="nc">DenseArrayReact</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Dynamic array</span>
+<span class="sd">    Implementation of a dense dynamics array that is used as a parent class for PyRIDs Reaction class :func:`pyrid.reactions.reactions_registry_util.Reaction`.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>

@@ -109,24 +109,24 @@
 
 <div class="viewcode-block" id="center_profile"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.center_profile">[docs]</a><span class="k">def</span> <span class="nf">center_profile</span><span class="p">(</span><span class="n">Histograms0</span><span class="p">,</span> <span class="n">box_lengths</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span><span class="n">cells_axes</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Centers the molecule density profile.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    Histogram0 : `float64[:]`</span>
+<span class="sd">        Density profile.</span>
+<span class="sd">    box_lengths : `float64[3]`</span>
+<span class="sd">        Simulation box lengths</span>
+<span class="sd">    axes : 0, 1 or 2</span>
+<span class="sd">        Coordinate axis corresponding to the density profile (axis along which the profile has been sampled).</span>
+<span class="sd">    cells_axes : `int64`</span>
+<span class="sd">        Number of cells / bins along the chosen axis.</span>
+
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    float64</span>
+<span class="sd">        Value by which to shift the density profile such that it is centered.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -139,24 +139,28 @@
 
 <div class="viewcode-block" id="calc_profile"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.calc_profile">[docs]</a><span class="k">def</span> <span class="nf">calc_profile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">moltype</span><span class="p">,</span> <span class="n">box_lengths</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">cells_axes</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the density profile of a molecule population along a given coordinate axis.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    path : `string`</span>
+<span class="sd">        directory of the hdf5 file.</span>
+<span class="sd">    moltype : `string`</span>
+<span class="sd">        Molecule type</span>
+<span class="sd">    box_lengths : `float64[3]`</span>
+<span class="sd">        Simulation box lengths</span>
+<span class="sd">    axes : 0, 1 or 2</span>
+<span class="sd">        Coordinate axis along which to calculate the density profile.</span>
+<span class="sd">    cells_axes : `int64`</span>
+<span class="sd">        Number of cells /  bins by which to divide the simulation box along the chosen axis.</span>
+<span class="sd">    section : `int64[2]`</span>
+<span class="sd">        Time interval (section) over which the density profile is averaged.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    float64[:]</span>
+<span class="sd">        Density profile / histogram</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
         
@@ -212,24 +216,20 @@
 
 <div class="viewcode-block" id="calc_phase_diagram"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.calc_phase_diagram">[docs]</a><span class="k">def</span> <span class="nf">calc_phase_diagram</span><span class="p">(</span><span class="n">Histograms</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the phase diagram from a given density profile by identifying the dense and the dilute phase.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    Histogram : `float64[:]`</span>
+<span class="sd">        Density profile.</span>
+<span class="sd">    cutoff : `float64`</span>
+<span class="sd">        Fraction of the maximum density at which to distinguish between dilute and dense phase.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(float64, float64)</span>
+<span class="sd">        Volume fractions of the dense and the dilute phase.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -253,24 +253,26 @@
 
 <div class="viewcode-block" id="density_hyperbolic_tangent"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.density_hyperbolic_tangent">[docs]</a><span class="k">def</span> <span class="nf">density_hyperbolic_tangent</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">z0</span><span class="p">,</span><span class="n">d</span><span class="p">,</span> <span class="n">dense</span><span class="p">,</span> <span class="n">dilute</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;The hyperbolic tangent function can be used to fit the density profile.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    z : `float64[:]`</span>
+<span class="sd">        Location / Distance values along z-axis.</span>
+<span class="sd">    z0 : `float64`</span>
+<span class="sd">        Location shift.</span>
+<span class="sd">    d : `float64`</span>
+<span class="sd">        fitting parameter</span>
+<span class="sd">    dense: `float64`</span>
+<span class="sd">        Volume fraction dense phase.</span>
+<span class="sd">    dilute : `float64`</span>
+<span class="sd">        Volume fraction dilute phase.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    float64[:]</span>
+<span class="sd">        Fit of the density profile.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -288,30 +290,25 @@
 
 <div class="viewcode-block" id="critical_Temp"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.critical_Temp">[docs]</a><span class="k">def</span> <span class="nf">critical_Temp</span><span class="p">(</span><span class="n">eps_csw</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">eps_c</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Equation to estimate the critical temperature (inverse interaction strength). critical_Temp() is called by critical_point_fit() for fitting. Based on: Silmore 2017, &quot;Vapour–liquid phase equilibrium and surface tension of fully flexible Lennard–Jones chains&quot;</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    eps_csw : `float64`</span>
+<span class="sd">        Interaction energy constant</span>
+<span class="sd">    d : `float64`</span>
+<span class="sd">        fitting parameter</span>
+<span class="sd">    eps_c : `float64`</span>
+<span class="sd">        Critical interaction energy constant of the highest-valency molecule (interaction energy at the critical point where the two phase regime ends).</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    float64</span>
+<span class="sd">        Critical temperature (inverse interaction strength)</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Based on: Silmore 2017, &quot;Vapour–liquid phase equilibrium and surface tension of fully flexible Lennard–Jones chains&quot;</span>
-<span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="c1"># kbt = 2.4</span>
     <span class="c1"># return d*(1-(kbt/eps_csw)/Tc)</span>
@@ -321,30 +318,25 @@
 
 <div class="viewcode-block" id="critical_Density"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.critical_Density">[docs]</a><span class="k">def</span> <span class="nf">critical_Density</span><span class="p">(</span><span class="n">eps_csw</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">phi_c</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Equation to estimate the critical density / volume fraction. critical_Density() is called by critical_point_fit() for fitting. Based on: Silmore 2017, &quot;Vapour–liquid phase equilibrium and surface tension of fully flexible Lennard–Jones chains&quot;</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    eps_csw : `float64`</span>
+<span class="sd">        Interaction energy constant</span>
+<span class="sd">    s2 : `float64`</span>
+<span class="sd">        fitting parameter</span>
+<span class="sd">    phi_c : `float64`</span>
+<span class="sd">        Volume fraction of the condensed (dense) phase.</span>
+
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    float64</span>
+<span class="sd">        Critical density.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Based on: Silmore 2017, &quot;Vapour–liquid phase equilibrium and surface tension of fully flexible Lennard–Jones chains&quot;</span>
-<span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="c1"># kbt = 2.4</span>
     <span class="c1"># return d*(1-(kbt/eps_csw)/Tc)</span>
@@ -354,24 +346,22 @@
 
 <div class="viewcode-block" id="critical_point_fit"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/direct_coexistence_method_util.html#pyrid.evaluation.direct_coexistence_method_util.critical_point_fit">[docs]</a><span class="k">def</span> <span class="nf">critical_point_fit</span><span class="p">(</span><span class="n">pp_strength</span><span class="p">,</span> <span class="n">dense</span><span class="p">,</span> <span class="n">dilute</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Estimates the critical temperature (inverse interaction strength) and density / volume fraction from a selection of phase diagram points.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    pp_strength : `float64[:]`</span>
+<span class="sd">        List of particle-particle interaction strengths.</span>
+<span class="sd">    dense : `float64[:]`</span>
+<span class="sd">        Volume fractions of the dense phase (condensate) corresponding to particle-particle interaction strengths kept in pp_strength.</span>
+<span class="sd">    dilute : `float64[:]`</span>
+<span class="sd">        Volume fractions of the dilute phase corresponding to particle-particle interaction strengths kept in pp_strength.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(float64, float64)</span>
+<span class="sd">        Estimates for the critical temperature (inverse interaction strength) and the critical density (volume fraction).</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     

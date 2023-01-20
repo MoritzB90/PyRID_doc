@@ -119,25 +119,29 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.create_cell_list_mesh">
 <span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">create_cell_list_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_per_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_length_per_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid_in_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loose_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#create_cell_list_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.create_cell_list_mesh" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Creates a cell list for a triangulated 3D mesh.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Compartment class.</p>
+</dd>
+<dt><strong>cells_per_dim</strong><span class="classifier"><cite>int64[3]</cite></span></dt><dd><p>Cells per dimension.</p>
+</dd>
+<dt><strong>cell_length_per_dim</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Length of a cell in each dimension.</p>
+</dd>
+<dt><strong>triangle_ids</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List of triangle indices.</p>
+</dd>
+<dt><strong>centroid_in_box</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, a test is run of whether a triangle’s centroid is inside the Compartment AABB. Default = False</p>
+</dd>
+<dt><strong>loose_grid</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, a loose grid approach is used. Default = False</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(object, float64[:,3])</dt><dd><p>An instance of the CellList class keeping the cell list of the 3D mesh, a list of each cell’s center coordinates.</p>
 </dd>
 </dl>
 </dd>
@@ -147,25 +151,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.create_cell_list_points">
 <span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">create_cell_list_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#create_cell_list_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.create_cell_list_points" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Creates a cell list for a set of points.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>rc</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>cutoff radius</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>sample points</strong><span class="classifier"><cite>float64[:,3]</cite></span></dt><dd><p>Some Information</p>
+</dd>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Compartment class</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(list, int64[:], list, int64, int64[3])</dt><dd><p>cell list, array with the number of samples in each cell, list with all indices of nonempty cells, Total number of cells, cells per dimension</p>
 </dd>
 </dl>
 </dd>
@@ -175,25 +175,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.reverse_cell_mapping">
 <span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">reverse_cell_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_per_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#reverse_cell_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.reverse_cell_mapping" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the indices of a cell  in 3 dimensions given the flattened 1D cell index and the total number of cells per dimension.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>cell</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Cell index of the flattened array (1D).</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>cells_per_dim</strong><span class="classifier"><cite>int64[3]</cite></span></dt><dd><p>Number of cells in each dimension.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(int64, int64, int64)</dt><dd><p>Indices of the cell in 3 dimensions cx, cy, cz</p>
 </dd>
 </dl>
 </dd>
@@ -213,8 +207,12 @@
 </dd>
 <dt><strong>capacity</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Capacity of the dynamic array</p>
 </dd>
+<dt><strong>item_t</strong><span class="classifier"><cite>np.dtype</cite></span></dt><dd><p>dtype of the structured array that is the cell list.</p>
+</dd>
 <dt><strong>Data</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Structured array with fields conatining a free linked list and the triangle ids.
 dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
+</dd>
+<dt><strong>head</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Head vector of the cell list.</p>
 </dd>
 </dl>
 </dd>
@@ -222,8 +220,20 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>method_1(arguments)</strong></p></td>
-<td><p>Some general information about this method</p></td>
+<tr class="row-odd"><td><p><strong>allocate_slot(self)</strong></p></td>
+<td><p>Allocates a new slot.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>_resize(self, new_cap)</strong></p></td>
+<td><p>Resize internal array to new capacity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>make_head(self, Ncell)</strong></p></td>
+<td><p>Creates the head vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>make_array(self, new_cap)</strong></p></td>
+<td><p>Returns a new array with new capacity</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_triangles(self, cell)</strong></p></td>
+<td><p>Returns a list of triangles intersecting a cell.</p></td>
 </tr>
 </tbody>
 </table>
@@ -235,13 +245,83 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.CellListMesh._resize">
 <span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh._resize" title="Permalink to this definition"></a></dt>
-<dd><p>Resize internal array to capacity new_cap</p>
+<dd><p>Resize internal array to a new capacity (new_cap).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.CellListMesh.allocate_slot">
+<span class="sig-name descname"><span class="pre">allocate_slot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.allocate_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.allocate_slot" title="Permalink to this definition"></a></dt>
+<dd><p>Allocates a new slot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int64</dt><dd><p>slot index</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.CellListMesh.get_triangles">
+<span class="sig-name descname"><span class="pre">get_triangles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.get_triangles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.get_triangles" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of triangles intersecting a cell.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cell</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Cell index at which to look for any intersecting triangles.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>list</dt><dd><p>List of triangles intersecting the cell.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.CellListMesh.make_array">
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with new_cap capacity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>array like</dt><dd><p>cell list array of dtype self.item_t.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.CellListMesh.make_head">
+<span class="sig-name descname"><span class="pre">make_head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ncell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.make_head"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.make_head" title="Permalink to this definition"></a></dt>
+<dd><p>Creates the head vector.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>NCell</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of cells.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

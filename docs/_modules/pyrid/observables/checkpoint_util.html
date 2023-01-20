@@ -104,24 +104,22 @@
 
 <div class="viewcode-block" id="load_checkpoint"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/checkpoint_util.html#pyrid.observables.checkpoint_util.load_checkpoint">[docs]</a><span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">directory</span> <span class="o">=</span> <span class="s1">&#39;checkpoints/&#39;</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Loads a system state from a checkpoint file.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of the System class.</span>
+<span class="sd">    directory : `string`</span>
+<span class="sd">        Directory of the checkpoint files. Default = &#39;checkpoints/&#39;.</span>
+<span class="sd">    file : `string`</span>
+<span class="sd">        Name of the checkpoint file.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(object, object, array like)</span>
+<span class="sd">        RBs, Particles, HGrid</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -212,24 +210,23 @@
 
 <div class="viewcode-block" id="save"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/checkpoint_util.html#pyrid.observables.checkpoint_util.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">HGrid</span><span class="p">,</span> <span class="n">checkpoint_counter</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Save the system state to a npz file.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of the System class.</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of the RBs class.</span>
+<span class="sd">    Particles : `object`</span>
+<span class="sd">        Instance of the Particles class</span>
+<span class="sd">    HGrid : `array like`</span>
+<span class="sd">        Structured array representing a hierarchical grid.</span>
+<span class="sd">    checkpoint_counter : `int64`</span>
+<span class="sd">        checkpoint index (index goes from 0 to the maximum number of files that has been set by the user).</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     

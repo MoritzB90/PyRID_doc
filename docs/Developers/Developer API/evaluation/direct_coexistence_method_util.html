@@ -117,25 +117,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.calc_phase_diagram">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">calc_phase_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Histograms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#calc_phase_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.calc_phase_diagram" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the phase diagram from a given density profile by identifying the dense and the dilute phase.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Histogram</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Density profile.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>cutoff</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Fraction of the maximum density at which to distinguish between dilute and dense phase.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(float64, float64)</dt><dd><p>Volume fractions of the dense and the dilute phase.</p>
 </dd>
 </dl>
 </dd>
@@ -145,25 +139,27 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.calc_profile">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">calc_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moltype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_lengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#calc_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.calc_profile" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Calculates the density profile of a molecule population along a given coordinate axis.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>directory of the hdf5 file.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>moltype</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Molecule type</p>
+</dd>
+<dt><strong>box_lengths</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Simulation box lengths</p>
+</dd>
+<dt><strong>axes</strong><span class="classifier">0, 1 or 2</span></dt><dd><p>Coordinate axis along which to calculate the density profile.</p>
+</dd>
+<dt><strong>cells_axes</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of cells /  bins by which to divide the simulation box along the chosen axis.</p>
+</dd>
+<dt><strong>section</strong><span class="classifier"><cite>int64[2]</cite></span></dt><dd><p>Time interval (section) over which the density profile is averaged.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>float64[:]</dt><dd><p>Density profile / histogram</p>
 </dd>
 </dl>
 </dd>
@@ -173,25 +169,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.center_profile">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">center_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Histograms0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_lengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_axes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#center_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.center_profile" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Centers the molecule density profile.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Histogram0</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Density profile.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>box_lengths</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Simulation box lengths</p>
+</dd>
+<dt><strong>axes</strong><span class="classifier">0, 1 or 2</span></dt><dd><p>Coordinate axis corresponding to the density profile (axis along which the profile has been sampled).</p>
+</dd>
+<dt><strong>cells_axes</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of cells / bins along the chosen axis.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>float64</dt><dd><p>Value by which to shift the density profile such that it is centered.</p>
 </dd>
 </dl>
 </dd>
@@ -201,25 +195,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.critical_Density">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">critical_Density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps_csw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#critical_Density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.critical_Density" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Equation to estimate the critical density / volume fraction. critical_Density() is called by critical_point_fit() for fitting. Based on: Silmore 2017, “Vapour–liquid phase equilibrium and surface tension of fully flexible Lennard–Jones chains”</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>eps_csw</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Interaction energy constant</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>s2</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>fitting parameter</p>
+</dd>
+<dt><strong>phi_c</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Volume fraction of the condensed (dense) phase.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>float64</dt><dd><p>Critical density.</p>
 </dd>
 </dl>
 </dd>
@@ -229,25 +219,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.critical_Temp">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">critical_Temp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps_csw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#critical_Temp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.critical_Temp" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Equation to estimate the critical temperature (inverse interaction strength). critical_Temp() is called by critical_point_fit() for fitting. Based on: Silmore 2017, “Vapour–liquid phase equilibrium and surface tension of fully flexible Lennard–Jones chains”</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>eps_csw</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Interaction energy constant</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>d</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>fitting parameter</p>
+</dd>
+<dt><strong>eps_c</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Critical interaction energy constant of the highest-valency molecule (interaction energy at the critical point where the two phase regime ends).</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>float64</dt><dd><p>Critical temperature (inverse interaction strength)</p>
 </dd>
 </dl>
 </dd>
@@ -257,25 +243,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.critical_point_fit">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">critical_point_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pp_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#critical_point_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.critical_point_fit" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Estimates the critical temperature (inverse interaction strength) and density / volume fraction from a selection of phase diagram points.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>pp_strength</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>List of particle-particle interaction strengths.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>dense</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Volume fractions of the dense phase (condensate) corresponding to particle-particle interaction strengths kept in pp_strength.</p>
+</dd>
+<dt><strong>dilute</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Volume fractions of the dilute phase corresponding to particle-particle interaction strengths kept in pp_strength.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(float64, float64)</dt><dd><p>Estimates for the critical temperature (inverse interaction strength) and the critical density (volume fraction).</p>
 </dd>
 </dl>
 </dd>
@@ -285,25 +267,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.direct_coexistence_method_util.density_hyperbolic_tangent">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.direct_coexistence_method_util.</span></span><span class="sig-name descname"><span class="pre">density_hyperbolic_tangent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/direct_coexistence_method_util.html#density_hyperbolic_tangent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.direct_coexistence_method_util.density_hyperbolic_tangent" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>The hyperbolic tangent function can be used to fit the density profile.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>z</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Location / Distance values along z-axis.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>z0</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Location shift.</p>
+</dd>
+<dt><strong>d</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>fitting parameter</p>
+</dd>
+<dt><strong>dense: `float64`</strong></dt><dd><p>Volume fraction dense phase.</p>
+</dd>
+<dt><strong>dilute</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Volume fraction dilute phase.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>float64[:]</dt><dd><p>Fit of the density profile.</p>
 </dd>
 </dl>
 </dd>

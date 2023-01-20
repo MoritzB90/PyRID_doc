@@ -130,20 +130,88 @@
 <div class="viewcode-block" id="Evaluation"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation">[docs]</a><span class="k">class</span> <span class="nc">Evaluation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A brief summary of the classes purpose and behavior</span>
+<span class="sd">    The Evaluation class has several methods that are useful for evaluating simulation results such as reading observables from hdf5 files, calculating MSDs </span>
+<span class="sd">    and plotting observables and reactions graphs.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    attribute_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    attribute_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
+<span class="sd">    file_name : `string`</span>
+<span class="sd">        file name</span>
+<span class="sd">    self.path : `string`</span>
+<span class="sd">        file directory</span>
+<span class="sd">    self.fig_path : `string`</span>
+<span class="sd">        Figures directory</span>
+<span class="sd">    self.Observables : `dictionary`</span>
+<span class="sd">        Dictionary keeping the observables / system measures (except rdf).</span>
+<span class="sd">    self.rdf : `dictionary`</span>
+<span class="sd">        Dictionary keeping the rdf data.</span>
+<span class="sd">    self.Measures : `list`</span>
+<span class="sd">        List of all available observables / measures</span>
+<span class="sd">    self.time_MSD : `dictionary`</span>
+<span class="sd">        Dictionary keeping the time vectors for the MSD data.</span>
+<span class="sd">    self.MSD_data : `dictionary`</span>
+<span class="sd">        Dictionary keeping the MSD data for each molecule type.</span>
+<span class="sd">    self.time_P2 : `dictionary`</span>
+<span class="sd">        Dictionary keeping the time vectors for the P2 data.</span>
+<span class="sd">    self.P2_data : `dictionary`</span>
+<span class="sd">        Dictionary keeping the P2 data for each molecule type.</span>
+<span class="sd">    self.P2_t : `dictionary`</span>
+<span class="sd">        Dictionary keeping the theoretical P2 data for each molecule type.</span>
+<span class="sd">    self.molecules_colors : `float64[:,4]`</span>
+<span class="sd">        Molecule colors rgba [0,1].</span>
+<span class="sd">    self.molecules_colors_rgb : `float64[:,3]`</span>
+<span class="sd">        Molecule colors rgb [0,255].</span>
+<span class="sd">    self.molecules_colors_hex : `list`</span>
+<span class="sd">        Molecule colors hex.</span>
+<span class="sd">    self.reactions_color : `dictionary`</span>
+<span class="sd">        Reactions colors used in reaction graph plots.</span>
+<span class="sd">    self.color_pallete : `dictionary`</span>
+<span class="sd">        Color palettes used for the different observable plots (Energy, Pressure, ...)</span>
+<span class="sd">    self.units : `dictionary`</span>
+<span class="sd">        Unit system</span>
+<span class="sd">    self.Temp : `float64`</span>
+<span class="sd">        Temperature</span>
+<span class="sd">    self.box_lengths : `float64[3]`</span>
+<span class="sd">        Simulation box lengths</span>
+<span class="sd">    self.dt : `float64`</span>
+<span class="sd">        Integration time step</span>
+<span class="sd">    self.eta : `float64`</span>
+<span class="sd">        Viscosity</span>
+<span class="sd">    self.kbt : `float64`</span>
+<span class="sd">        Boltzmann constant times Temperature.</span>
+<span class="sd">    self.nsteps : `int64`</span>
+<span class="sd">        Number of simulation steps.</span>
+<span class="sd">    self.Molecules : `dictionary`</span>
+<span class="sd">        Molecule data per molecule type (bead position, bead radii, molecule volume, mobility tensors).</span>
+<span class="sd">    self.hdf : `object`</span>
+<span class="sd">        hdf5 file loaded using the h5py library.</span>
+
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    method_1(arguments)</span>
-<span class="sd">        Some general information about this method</span>
-<span class="sd">    </span>
+<span class="sd">    load_file(self, file_name, path = None)</span>
+<span class="sd">        Loads an hdf5 file and extracts simulation properties such as temperature and simulation box size.</span>
+<span class="sd">    read_molecule_data(self)</span>
+<span class="sd">        Reads molecule data from the hdf5 file (mobility tensor, bead position and radii, etc.)</span>
+<span class="sd">    load_hdf(self)</span>
+<span class="sd">        Loads any hdf5 file from self.path directory.</span>
+<span class="sd">    close_hdf(self)</span>
+<span class="sd">        Closes the hdf5 file.</span>
+<span class="sd">    MSD(self, time_interval, stride, Simulation, molecule)</span>
+<span class="sd">        Calculates the Mean Squared Distance (MSD) from the molecule positions and from theory.</span>
+<span class="sd">    plot_MSD(self, Simulation, molecule, save_fig = False, fig_name = None, fig_path=None)</span>
+<span class="sd">        Plots the molecules&#39; Mean Squared Distance (MSD).</span>
+<span class="sd">    P2(self, time_interval, stride, Simulation, molecule, theory_only = False, Delta_t = None)</span>
+<span class="sd">        Calculates the rotational time correlation function P2 from the molecule orientations and from theory.</span>
+<span class="sd">    plot_P2(self, Simulation, molecule, theory_only = False, save_fig = False, fig_name = None, fig_path=None, limits = None)</span>
+<span class="sd">        Plots the rotational time correlation function P2.</span>
+<span class="sd">    plot_rdf(self, mol_pairs, steps = [0], save_fig = False, fig_name = None , fig_path = None, average = False)</span>
+<span class="sd">        Plots the radial distribution function (RDF) from the hdf5 file.</span>
+<span class="sd">    read_observable(self, measure, sampling = None, molecules = &#39;All&#39;, educts = &#39;All&#39;, Reaction_Type = None, steps = &#39;All&#39;, file_path = None)</span>
+<span class="sd">        Reads an observable / measure from the hdf5 file.</span>
+<span class="sd">    plot_observable(self, measure, molecules = &#39;All&#39;, Reaction_Type = None, educt = None, bond_pairs = &#39;All&#39;, particle_educt = None, step = 0, save_fig = False, fig_name = None , fig_path = None, sampling = None, formats = [&#39;png&#39;], show = True)</span>
+<span class="sd">        Plots an observable / measure found in the hdf5 file.</span>
+<span class="sd">    plot_reactions_graph(self, Simulation, graph_type = &#39;Bimolecular&#39;, graph_subtype = &#39;&#39;)</span>
+<span class="sd">        Plots a reactions graph using the pyvis library.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
 <div class="viewcode-block" id="Evaluation.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;PyRID&#39;</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="p">:</span>
@@ -235,8 +303,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">color_pallete</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;icefire&quot;</span></div>
         
         
-    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        
+<div class="viewcode-block" id="Evaluation.load_file"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.load_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Loads an hdf5 file and extracts simulation properties such as temperature and simulation box size.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        file_name : `string`</span>
+<span class="sd">            Name of the hdf5 file.</span>
+<span class="sd">        path : `string`</span>
+<span class="sd">            self.path is set to this directory. By default, self.path = Path(os.getcwd()) / &#39;Files&#39;. Default = None.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="s1">&#39;.h5&#39;</span> <span class="ow">in</span> <span class="n">file_name</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -271,10 +350,14 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">read_molecule_data</span><span class="p">()</span>
         
-        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
         
-    <span class="k">def</span> <span class="nf">read_molecule_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.read_molecule_data"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.read_molecule_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_molecule_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Reads molecule data from the hdf5 file (mobility tensor, bead position and radii, etc.)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Molecules</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -288,23 +371,46 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">Molecules</span><span class="p">[</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules&#39;</span><span class="p">][</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">][()]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Molecules</span><span class="p">[</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Molecules&#39;</span><span class="p">][</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">][()]</span>
             
-        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
         
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">load_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.load_hdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.load_hdf">[docs]</a>    <span class="k">def</span> <span class="nf">load_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Loads any hdf5 file from self.path directory.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
     
-    <span class="k">def</span> <span class="nf">close_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.close_hdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.close_hdf">[docs]</a>    <span class="k">def</span> <span class="nf">close_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Closes the hdf5 file.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
         
         
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">MSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.MSD"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.MSD">[docs]</a>    <span class="k">def</span> <span class="nf">MSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Calculates the Mean Squared Distance (MSD) from the molecule positions and from theory.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_interval : `int64`</span>
+<span class="sd">            The time step until which the molecule positions are sampled for the MSD calculation. Note: Currently sampling always starts at time step 0.</span>
+<span class="sd">        stride : `int64`</span>
+<span class="sd">            Stride with which the molecule positions are sampled.</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the Simulation class.</span>
+<span class="sd">        molecule : `string`</span>
+<span class="sd">            Name of the molecule type.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Position&#39;</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="s1">&#39;stepwise&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="n">molecule</span><span class="p">],</span> <span class="n">steps</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">)</span>
         
         <span class="n">position_trace</span> <span class="o">=</span> <span class="p">[]</span>
@@ -315,12 +421,29 @@
         <span class="n">pos_stride</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observables</span><span class="p">[</span><span class="s1">&#39;stride&#39;</span><span class="p">][</span><span class="s1">&#39;Position&#39;</span><span class="p">]</span> 
         <span class="n">Delta_t</span> <span class="o">=</span> <span class="n">pos_stride</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">MSD_data</span><span class="p">[</span><span class="n">molecule</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_MSD</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">MSD</span><span class="p">(</span><span class="n">position_trace</span><span class="p">,</span> <span class="n">Delta_t</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">molecule</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MSD_data</span><span class="p">[</span><span class="n">molecule</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_MSD</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">MSD</span><span class="p">(</span><span class="n">position_trace</span><span class="p">,</span> <span class="n">Delta_t</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">molecule</span><span class="p">)</span></div>
         
         
 
-    <span class="k">def</span> <span class="nf">plot_MSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.plot_MSD"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_MSD">[docs]</a>    <span class="k">def</span> <span class="nf">plot_MSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Plots the molecules&#39; Mean Squared Distance (MSD).</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the Simulation class.</span>
+<span class="sd">        molecule : `string`</span>
+<span class="sd">            Name of the molecule type.</span>
+<span class="sd">        save_fig : `boolean`</span>
+<span class="sd">            Default = False</span>
+<span class="sd">        fig_name : `string`</span>
+<span class="sd">            Default = None</span>
+<span class="sd">        fig_path : `string`</span>
+<span class="sd">             Default = None</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
         
         <span class="n">MSD_x</span><span class="p">,</span> <span class="n">MSD_y</span><span class="p">,</span> <span class="n">MSD_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MSD_data</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span>
@@ -345,13 +468,32 @@
             <span class="k">if</span> <span class="n">fig_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">fig_path</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">fig_path</span>
                 
-            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_path</span> <span class="o">/</span> <span class="p">(</span><span class="n">fig_name</span><span class="o">+</span><span class="s1">&#39;_MSD.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_path</span> <span class="o">/</span> <span class="p">(</span><span class="n">fig_name</span><span class="o">+</span><span class="s1">&#39;_MSD.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span></div>
             
 
     <span class="c1">#%%</span>
 
-    <span class="k">def</span> <span class="nf">P2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">Delta_t</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.P2"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.P2">[docs]</a>    <span class="k">def</span> <span class="nf">P2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">Delta_t</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Calculates the rotational time correlation function P2 from the molecule orientations and from theory.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time_interval : `int64`</span>
+<span class="sd">            The time step until which the molecule positions are sampled for the MSD calculation. Note: Currently sampling always starts at time step 0.</span>
+<span class="sd">        stride : `int64`</span>
+<span class="sd">            Stride with which the molecule positions are sampled.</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the Simulation class.</span>
+<span class="sd">        molecule : `string`</span>
+<span class="sd">            Name of the molecule type.</span>
+<span class="sd">        theory_only : `boolean`</span>
+<span class="sd">            If set to True, only the theoretical values for P2 are calculated. Default = False.</span>
+<span class="sd">        Delta_t : `float64`</span>
+<span class="sd">            Time step.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">read_observable</span><span class="p">(</span><span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="s1">&#39;stepwise&#39;</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="n">molecule</span><span class="p">],</span> <span class="n">steps</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">)</span>
         
         <span class="n">D_rr</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span><span class="o">.</span><span class="n">D_rr</span>
@@ -372,11 +514,32 @@
             <span class="n">P2_1</span><span class="p">,</span> <span class="n">P2_2</span><span class="p">,</span> <span class="n">P2_3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P2_data</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">P2_t</span><span class="p">[</span><span class="n">molecule</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_P2</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
-            <span class="n">P2_1_t</span><span class="p">,</span> <span class="n">P2_2_t</span><span class="p">,</span> <span class="n">P2_3_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P2_t</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span>
+            <span class="n">P2_1_t</span><span class="p">,</span> <span class="n">P2_2_t</span><span class="p">,</span> <span class="n">P2_3_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P2_t</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span></div>
         
     
-    <span class="k">def</span> <span class="nf">plot_P2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limits</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.plot_P2"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_P2">[docs]</a>    <span class="k">def</span> <span class="nf">plot_P2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limits</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Plots the rotational time correlation function P2.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the Simulation class.</span>
+<span class="sd">        molecule : `string`</span>
+<span class="sd">            Name of the molecule type.</span>
+<span class="sd">        theory_only : `boolean`</span>
+<span class="sd">            If set to True, only the theoretical values for P2 are calculated. Default = False.</span>
+<span class="sd">        save_fig : `boolean`</span>
+<span class="sd">            Default = False</span>
+<span class="sd">        fig_name : `string`</span>
+<span class="sd">            Default = None</span>
+<span class="sd">        fig_path : `string`</span>
+<span class="sd">             Default = None</span>
+<span class="sd">        limits : `float64[2,2]`</span>
+<span class="sd">            x- and y-axis limits. Default = None.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
         
         <span class="n">P2_1_t</span><span class="p">,</span> <span class="n">P2_2_t</span><span class="p">,</span> <span class="n">P2_3_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P2_t</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span>
@@ -411,7 +574,7 @@
             <span class="k">if</span> <span class="n">fig_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">fig_path</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">fig_path</span>
                 
-            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_path</span> <span class="o">/</span> <span class="p">(</span><span class="n">fig_name</span><span class="o">+</span><span class="s1">&#39;_RotDiff_Pu.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_path</span> <span class="o">/</span> <span class="p">(</span><span class="n">fig_name</span><span class="o">+</span><span class="s1">&#39;_RotDiff_Pu.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span></div>
                 
     
     <span class="c1">#%%</span>
@@ -421,8 +584,35 @@
     <span class="c1">#     plot_observable(self, measure, molecules = molecules, step = step, save_fig = save_fig, fig_name = fig_name , fig_path = fig_path, binned = binned)</span>
         
         
-    <span class="k">def</span> <span class="nf">plot_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_pairs</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.plot_rdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">plot_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_pairs</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Plots the radial distribution function (RDF) from the hdf5 file.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mol_pairs : `nested list of strings`</span>
+<span class="sd">            Molecule pairs for which the rdf is plotted.</span>
+<span class="sd">        steps : `int64[1]`</span>
+<span class="sd">            Time steps. Default = [0]</span>
+<span class="sd">        theory_only : `boolean`</span>
+<span class="sd">            If set to True, only the theoretical values for P2 are calculated. Default = False.</span>
+<span class="sd">        save_fig : `boolean`</span>
+<span class="sd">            Default = False</span>
+<span class="sd">        fig_name : `string`</span>
+<span class="sd">            Default = None</span>
+<span class="sd">        fig_path : `string`</span>
+<span class="sd">             Default = None</span>
+<span class="sd">        average : `boolean`</span>
+<span class="sd">            Average over rdfs at different points in time if more than one time step is given in parameter &quot;steps&quot;. Default = False</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple(fig, ax)</span>
+<span class="sd">            figure and corresponding axes object.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
         
         <span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -490,30 +680,30 @@
       
         <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         
-        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
         
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="Evaluation.read_observable"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.read_observable">[docs]</a>    <span class="k">def</span> <span class="nf">read_observable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measure</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">educts</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">file_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Reads an observable / measure from the hdf5 file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        measure : `string`</span>
+<span class="sd">            observable / measure which to read from the hdf5 file.</span>
+<span class="sd">        sampling : stepwise&#39; or &#39;binned&#39; or None</span>
+<span class="sd">            Sampling method used. If None, the sampling method is chosen automatically based on the measure type. Default = None.</span>
+<span class="sd">        molecules : `list of strings`</span>
+<span class="sd">            List of molecule types for which to read the observable data. If set to &#39;All&#39;, all molecules found in the hdf5 file are loaded. Default = &#39;All&#39;.</span>
+<span class="sd">        educts : `list of strings`</span>
+<span class="sd">            List of reaction educts for which to read the reactions data. If set to &#39;All&#39;, all reactions found in the hdf5 file are loaded. Default = &#39;All&#39;.</span>
+<span class="sd">        Reaction_Type : &#39;bind&#39;, &#39;enzymatic&#39;, &#39;conversion&#39;, &#39;conversion_rb&#39;, &#39;decay_rb&#39;, &#39;production_rb&#39;, &#39;release&#39;, &#39;fusion&#39;, &#39;enzymatic_rb&#39;</span>
+<span class="sd">            Type of the reaction whose data is read from the hdf5 file.</span>
+<span class="sd">        steps : `int64[:]` or `All`</span>
+<span class="sd">            Time steps at which to read the observable data. Default = `All`</span>
+<span class="sd">        file_path : `string`</span>
+<span class="sd">            File path. Default = None</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -645,8 +835,49 @@
     
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">plot_observable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measure</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bond_pairs</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">particle_educt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;png&#39;</span><span class="p">],</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.plot_observable"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_observable">[docs]</a>    <span class="k">def</span> <span class="nf">plot_observable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measure</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bond_pairs</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">particle_educt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;png&#39;</span><span class="p">],</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Plots an observable / measure found in the hdf5 file.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        measure : `string`</span>
+<span class="sd">            observable / measure which to read from the hdf5 file.</span>
+<span class="sd">        sampling : stepwise&#39; or &#39;binned&#39; or None</span>
+<span class="sd">            Sampling method used. If None, the sampling method is chosen automatically based on the measure type. Default = None.</span>
+<span class="sd">        molecules : `list of strings`</span>
+<span class="sd">            List of molecule types for which to read the observable data. If set to &#39;All&#39;, all molecules found in the hdf5 file are loaded. Default = &#39;All&#39;.</span>
+<span class="sd">        educt : `list of strings`</span>
+<span class="sd">            List of reaction educts for which to read the reactions data. If set to &#39;All&#39;, all reactions found in the hdf5 file are loaded. Default = &#39;All&#39;.</span>
+<span class="sd">        bond_pairs : `list of strings`</span>
+<span class="sd">            List of bond pair types for which to read particle bond data. If set to &#39;All&#39;, all bonds found in the hdf5 file are loaded. Default = &#39;All&#39;.</span>
+<span class="sd">        particle_educts : `list of strings`</span>
+<span class="sd">            List of particle reaction educts for which to read the reactions data. If set to &#39;All&#39;, all particle reactions found in the hdf5 file are loaded. Default = &#39;All&#39;.</span>
+<span class="sd">        Reaction_Type : &#39;bind&#39;, &#39;enzymatic&#39;, &#39;conversion&#39;, &#39;conversion_rb&#39;, &#39;decay_rb&#39;, &#39;production_rb&#39;, &#39;release&#39;, &#39;fusion&#39;, &#39;enzymatic_rb&#39;</span>
+<span class="sd">            Type of the reaction whose data is read from the hdf5 file.</span>
+<span class="sd">        step : `int64`</span>
+<span class="sd">            Time step at which to read the observable data. Default = 0</span>
+<span class="sd">        save_fig : `boolean`</span>
+<span class="sd">            Default = False</span>
+<span class="sd">        fig_name : `string`</span>
+<span class="sd">            Default = None</span>
+<span class="sd">        fig_path : `string`</span>
+<span class="sd">             Default = None</span>
+<span class="sd">        sampling : stepwise&#39; or &#39;binned&#39; or None</span>
+<span class="sd">            Sampling method used. If None, the sampling method is chosen automatically based on the measure type. Default = None.</span>
+<span class="sd">        formats : `list of strings`</span>
+<span class="sd">            File formats in which figures are saved. Default = [&#39;png&#39;]</span>
+<span class="sd">        show : `boolean`</span>
+<span class="sd">            If True, figures are shown directly after they have been plotted. Otherwise figures are not shown (make sure to set save_fig = True). Default = True.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple(fig, ax)</span>
+<span class="sd">            figure and corresponding axes object.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="c1"># Measures = [&#39;Position&#39;, &#39;Energy&#39;, &#39;Pressure&#39;, &#39;Volume&#39;, &#39;Virial&#39;, &#39;Virial Tensor&#39;, &#39;Number&#39;, &#39;Orientation&#39;, &#39;Bonds&#39;, &#39;Reactions&#39;, &#39;Force&#39;, &#39;Torque&#39;, &#39;RDF&#39;]</span>
         
         <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
@@ -767,12 +998,24 @@
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
             
-        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
     
     <span class="c1">#%%</span>
             
-    <span class="k">def</span> <span class="nf">plot_reactions_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Bimolecular&#39;</span><span class="p">,</span> <span class="n">graph_subtype</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Evaluation.plot_reactions_graph"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_reactions_graph">[docs]</a>    <span class="k">def</span> <span class="nf">plot_reactions_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Bimolecular&#39;</span><span class="p">,</span> <span class="n">graph_subtype</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;Plots a reactions graph using the pyvis library.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of Simulation class</span>
+<span class="sd">        graph_type : &#39;Bimolecular&#39;, &#39;Biparticle&#39;, &#39;Unimolecular&#39;, &#39;Interactions&#39;</span>
+<span class="sd">            Reaction graph type. Default = &#39;Bimolecular&#39;</span>
+<span class="sd">        graph_subtype : &#39;pair relations&#39;, &#39;product relations&#39;</span>
+<span class="sd">            Reaction graph subtype. Default = &#39;product_relations&#39;.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="c1"># np.dtype([(&#39;defined&#39;, bool), (&#39;bond&#39;, bool), (&#39;id&#39;, np.int64), (&#39;enzyme&#39;, np.int64), (&#39;rate&#39;, np.float64), (&#39;radius&#39;, np.float64), (&#39;cutoff&#39;, np.float64), (&#39;type&#39;, &#39;U20&#39;), (&#39;type_id&#39;, np.int64), (&#39;type_BP_BM&#39;, &#39;U2&#39;),],  align=True)</span>
         
@@ -1066,7 +1309,7 @@
             <span class="k">pass</span>
             
         <span class="c1"># g.set_options(&#39;{&quot;layout&quot;: {&quot;randomSeed&quot;:0}}&#39;)</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig_path</span> <span class="o">/</span> <span class="s1">&#39;Graphs&#39;</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">graph_type</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">graph_subtype</span><span class="o">+</span><span class="s1">&#39;.html&#39;</span><span class="p">)))</span></div>
+        <span class="n">g</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig_path</span> <span class="o">/</span> <span class="s1">&#39;Graphs&#39;</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">graph_type</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">graph_subtype</span><span class="o">+</span><span class="s1">&#39;.html&#39;</span><span class="p">)))</span></div></div>
         
 <span class="c1">#%%</span>
 

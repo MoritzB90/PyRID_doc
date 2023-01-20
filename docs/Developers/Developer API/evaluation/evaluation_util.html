@@ -116,13 +116,60 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.evaluation_util.</span></span><span class="sig-name descname"><span class="pre">Evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyRID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation" title="Permalink to this definition"></a></dt>
-<dd><p>A brief summary of the classes purpose and behavior</p>
-<dl class="field-list simple">
+<dd><p>The Evaluation class has several methods that are useful for evaluating simulation results such as reading observables from hdf5 files, calculating MSDs 
+and plotting observables and reactions graphs.</p>
+<dl class="field-list">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>attribute_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>file name</p>
 </dd>
-<dt><strong>attribute_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>self.path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>file directory</p>
+</dd>
+<dt><strong>self.fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Figures directory</p>
+</dd>
+<dt><strong>self.Observables</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the observables / system measures (except rdf).</p>
+</dd>
+<dt><strong>self.rdf</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the rdf data.</p>
+</dd>
+<dt><strong>self.Measures</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>List of all available observables / measures</p>
+</dd>
+<dt><strong>self.time_MSD</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the time vectors for the MSD data.</p>
+</dd>
+<dt><strong>self.MSD_data</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the MSD data for each molecule type.</p>
+</dd>
+<dt><strong>self.time_P2</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the time vectors for the P2 data.</p>
+</dd>
+<dt><strong>self.P2_data</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the P2 data for each molecule type.</p>
+</dd>
+<dt><strong>self.P2_t</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Dictionary keeping the theoretical P2 data for each molecule type.</p>
+</dd>
+<dt><strong>self.molecules_colors</strong><span class="classifier"><cite>float64[:,4]</cite></span></dt><dd><p>Molecule colors rgba [0,1].</p>
+</dd>
+<dt><strong>self.molecules_colors_rgb</strong><span class="classifier"><cite>float64[:,3]</cite></span></dt><dd><p>Molecule colors rgb [0,255].</p>
+</dd>
+<dt><strong>self.molecules_colors_hex</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>Molecule colors hex.</p>
+</dd>
+<dt><strong>self.reactions_color</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Reactions colors used in reaction graph plots.</p>
+</dd>
+<dt><strong>self.color_pallete</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Color palettes used for the different observable plots (Energy, Pressure, …)</p>
+</dd>
+<dt><strong>self.units</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Unit system</p>
+</dd>
+<dt><strong>self.Temp</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Temperature</p>
+</dd>
+<dt><strong>self.box_lengths</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Simulation box lengths</p>
+</dd>
+<dt><strong>self.dt</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Integration time step</p>
+</dd>
+<dt><strong>self.eta</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Viscosity</p>
+</dd>
+<dt><strong>self.kbt</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Boltzmann constant times Temperature.</p>
+</dd>
+<dt><strong>self.nsteps</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of simulation steps.</p>
+</dd>
+<dt><strong>self.Molecules</strong><span class="classifier"><cite>dictionary</cite></span></dt><dd><p>Molecule data per molecule type (bead position, bead radii, molecule volume, mobility tensors).</p>
+</dd>
+<dt><strong>self.hdf</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>hdf5 file loaded using the h5py library.</p>
 </dd>
 </dl>
 </dd>
@@ -130,38 +177,291 @@
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>method_1(arguments)</strong></p></td>
-<td><p>Some general information about this method</p></td>
+<tr class="row-odd"><td><p><strong>load_file(self, file_name, path = None)</strong></p></td>
+<td><p>Loads an hdf5 file and extracts simulation properties such as temperature and simulation box size.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>read_molecule_data(self)</strong></p></td>
+<td><p>Reads molecule data from the hdf5 file (mobility tensor, bead position and radii, etc.)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>load_hdf(self)</strong></p></td>
+<td><p>Loads any hdf5 file from self.path directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>close_hdf(self)</strong></p></td>
+<td><p>Closes the hdf5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>MSD(self, time_interval, stride, Simulation, molecule)</strong></p></td>
+<td><p>Calculates the Mean Squared Distance (MSD) from the molecule positions and from theory.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>plot_MSD(self, Simulation, molecule, save_fig = False, fig_name = None, fig_path=None)</strong></p></td>
+<td><p>Plots the molecules’ Mean Squared Distance (MSD).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>P2(self, time_interval, stride, Simulation, molecule, theory_only = False, Delta_t = None)</strong></p></td>
+<td><p>Calculates the rotational time correlation function P2 from the molecule orientations and from theory.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>plot_P2(self, Simulation, molecule, theory_only = False, save_fig = False, fig_name = None, fig_path=None, limits = None)</strong></p></td>
+<td><p>Plots the rotational time correlation function P2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>plot_rdf(self, mol_pairs, steps = [0], save_fig = False, fig_name = None , fig_path = None, average = False)</strong></p></td>
+<td><p>Plots the radial distribution function (RDF) from the hdf5 file.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>read_observable(self, measure, sampling = None, molecules = ‘All’, educts = ‘All’, Reaction_Type = None, steps = ‘All’, file_path = None)</strong></p></td>
+<td><p>Reads an observable / measure from the hdf5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>plot_observable(self, measure, molecules = ‘All’, Reaction_Type = None, educt = None, bond_pairs = ‘All’, particle_educt = None, step = 0, save_fig = False, fig_name = None , fig_path = None, sampling = None, formats = [‘png’], show = True)</strong></p></td>
+<td><p>Plots an observable / measure found in the hdf5 file.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>plot_reactions_graph(self, Simulation, graph_type = ‘Bimolecular’, graph_subtype = ‘’)</strong></p></td>
+<td><p>Plots a reactions graph using the pyvis library.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.MSD">
+<span class="sig-name descname"><span class="pre">MSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.MSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.MSD" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the Mean Squared Distance (MSD) from the molecule positions and from theory.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>time_interval</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>The time step until which the molecule positions are sampled for the MSD calculation. Note: Currently sampling always starts at time step 0.</p>
+</dd>
+<dt><strong>stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride with which the molecule positions are sampled.</p>
+</dd>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
+</dd>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.P2">
+<span class="sig-name descname"><span class="pre">P2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theory_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.P2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.P2" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the rotational time correlation function P2 from the molecule orientations and from theory.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>time_interval</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>The time step until which the molecule positions are sampled for the MSD calculation. Note: Currently sampling always starts at time step 0.</p>
+</dd>
+<dt><strong>stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride with which the molecule positions are sampled.</p>
+</dd>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
+</dd>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
+</dd>
+<dt><strong>theory_only</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If set to True, only the theoretical values for P2 are calculated. Default = False.</p>
+</dd>
+<dt><strong>Delta_t</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Time step.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyRID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.__init__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.read_observable">
-<span class="sig-name descname"><span class="pre">read_observable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Reaction_Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.read_observable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.read_observable" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.close_hdf">
+<span class="sig-name descname"><span class="pre">close_hdf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.close_hdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.close_hdf" title="Permalink to this definition"></a></dt>
+<dd><p>Closes the hdf5 file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.load_file">
+<span class="sig-name descname"><span class="pre">load_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.load_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.load_file" title="Permalink to this definition"></a></dt>
+<dd><p>Loads an hdf5 file and extracts simulation properties such as temperature and simulation box size.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the hdf5 file.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>self.path is set to this directory. By default, self.path = Path(os.getcwd()) / ‘Files’. Default = None.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.load_hdf">
+<span class="sig-name descname"><span class="pre">load_hdf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.load_hdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.load_hdf" title="Permalink to this definition"></a></dt>
+<dd><p>Loads any hdf5 file from self.path directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.plot_MSD">
+<span class="sig-name descname"><span class="pre">plot_MSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.plot_MSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.plot_MSD" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the molecules’ Mean Squared Distance (MSD).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
+</dd>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
+</dd>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Default = False</p>
+</dd>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.plot_P2">
+<span class="sig-name descname"><span class="pre">plot_P2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theory_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.plot_P2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.plot_P2" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the rotational time correlation function P2.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
+</dd>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
+</dd>
+<dt><strong>theory_only</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If set to True, only the theoretical values for P2 are calculated. Default = False.</p>
+</dd>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Default = False</p>
+</dd>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>limits</strong><span class="classifier"><cite>float64[2,2]</cite></span></dt><dd><p>x- and y-axis limits. Default = None.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.plot_observable">
+<span class="sig-name descname"><span class="pre">plot_observable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Reaction_Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_educt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['png']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.plot_observable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.plot_observable" title="Permalink to this definition"></a></dt>
+<dd><p>Plots an observable / measure found in the hdf5 file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>measure</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>observable / measure which to read from the hdf5 file.</p>
+</dd>
+<dt><strong>sampling</strong><span class="classifier">stepwise’ or ‘binned’ or None</span></dt><dd><p>Sampling method used. If None, the sampling method is chosen automatically based on the measure type. Default = None.</p>
+</dd>
+<dt><strong>molecules</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of molecule types for which to read the observable data. If set to ‘All’, all molecules found in the hdf5 file are loaded. Default = ‘All’.</p>
+</dd>
+<dt><strong>educt</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of reaction educts for which to read the reactions data. If set to ‘All’, all reactions found in the hdf5 file are loaded. Default = ‘All’.</p>
+</dd>
+<dt><strong>bond_pairs</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of bond pair types for which to read particle bond data. If set to ‘All’, all bonds found in the hdf5 file are loaded. Default = ‘All’.</p>
+</dd>
+<dt><strong>particle_educts</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of particle reaction educts for which to read the reactions data. If set to ‘All’, all particle reactions found in the hdf5 file are loaded. Default = ‘All’.</p>
+</dd>
+<dt><strong>Reaction_Type</strong><span class="classifier">‘bind’, ‘enzymatic’, ‘conversion’, ‘conversion_rb’, ‘decay_rb’, ‘production_rb’, ‘release’, ‘fusion’, ‘enzymatic_rb’</span></dt><dd><p>Type of the reaction whose data is read from the hdf5 file.</p>
+</dd>
+<dt><strong>step</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Time step at which to read the observable data. Default = 0</p>
+</dd>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Default = False</p>
+</dd>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>sampling</strong><span class="classifier">stepwise’ or ‘binned’ or None</span></dt><dd><p>Sampling method used. If None, the sampling method is chosen automatically based on the measure type. Default = None.</p>
+</dd>
+<dt><strong>formats</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>File formats in which figures are saved. Default = [‘png’]</p>
+</dd>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, figures are shown directly after they have been plotted. Otherwise figures are not shown (make sure to set save_fig = True). Default = True.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt>tuple(fig, ax)</dt><dd><p>figure and corresponding axes object.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.plot_rdf">
+<span class="sig-name descname"><span class="pre">plot_rdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.plot_rdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.plot_rdf" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the radial distribution function (RDF) from the hdf5 file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>mol_pairs</strong><span class="classifier"><cite>nested list of strings</cite></span></dt><dd><p>Molecule pairs for which the rdf is plotted.</p>
+</dd>
+<dt><strong>steps</strong><span class="classifier"><cite>int64[1]</cite></span></dt><dd><p>Time steps. Default = [0]</p>
+</dd>
+<dt><strong>theory_only</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If set to True, only the theoretical values for P2 are calculated. Default = False.</p>
+</dd>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Default = False</p>
+</dd>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Default = None</p>
+</dd>
+<dt><strong>average</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Average over rdfs at different points in time if more than one time step is given in parameter “steps”. Default = False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(fig, ax)</dt><dd><p>figure and corresponding axes object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.plot_reactions_graph">
+<span class="sig-name descname"><span class="pre">plot_reactions_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bimolecular'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_subtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.plot_reactions_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.plot_reactions_graph" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a reactions graph using the pyvis library.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Simulation class</p>
+</dd>
+<dt><strong>graph_type</strong><span class="classifier">‘Bimolecular’, ‘Biparticle’, ‘Unimolecular’, ‘Interactions’</span></dt><dd><p>Reaction graph type. Default = ‘Bimolecular’</p>
+</dd>
+<dt><strong>graph_subtype</strong><span class="classifier">‘pair relations’, ‘product relations’</span></dt><dd><p>Reaction graph subtype. Default = ‘product_relations’.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.read_molecule_data">
+<span class="sig-name descname"><span class="pre">read_molecule_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.read_molecule_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.read_molecule_data" title="Permalink to this definition"></a></dt>
+<dd><p>Reads molecule data from the hdf5 file (mobility tensor, bead position and radii, etc.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.evaluation.evaluation_util.Evaluation.read_observable">
+<span class="sig-name descname"><span class="pre">read_observable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Reaction_Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/evaluation_util.html#Evaluation.read_observable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.evaluation_util.Evaluation.read_observable" title="Permalink to this definition"></a></dt>
+<dd><p>Reads an observable / measure from the hdf5 file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>measure</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>observable / measure which to read from the hdf5 file.</p>
+</dd>
+<dt><strong>sampling</strong><span class="classifier">stepwise’ or ‘binned’ or None</span></dt><dd><p>Sampling method used. If None, the sampling method is chosen automatically based on the measure type. Default = None.</p>
+</dd>
+<dt><strong>molecules</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of molecule types for which to read the observable data. If set to ‘All’, all molecules found in the hdf5 file are loaded. Default = ‘All’.</p>
+</dd>
+<dt><strong>educts</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of reaction educts for which to read the reactions data. If set to ‘All’, all reactions found in the hdf5 file are loaded. Default = ‘All’.</p>
+</dd>
+<dt><strong>Reaction_Type</strong><span class="classifier">‘bind’, ‘enzymatic’, ‘conversion’, ‘conversion_rb’, ‘decay_rb’, ‘production_rb’, ‘release’, ‘fusion’, ‘enzymatic_rb’</span></dt><dd><p>Type of the reaction whose data is read from the hdf5 file.</p>
+</dd>
+<dt><strong>steps</strong><span class="classifier"><cite>int64[:]</cite> or <cite>All</cite></span></dt><dd><p>Time steps at which to read the observable data. Default = <cite>All</cite></p>
+</dd>
+<dt><strong>file_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>File path. Default = None</p>
 </dd>
 </dl>
 </dd>

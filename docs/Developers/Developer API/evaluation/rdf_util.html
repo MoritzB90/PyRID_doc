@@ -117,25 +117,27 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.rdf_util.create_rb_hgrid">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.rdf_util.</span></span><span class="sig-name descname"><span class="pre">create_rb_hgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RB_Types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_lengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/rdf_util.html#create_rb_hgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.rdf_util.create_rb_hgrid" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Creates the hierarchical grid for the rigid bead molecules.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the RBs class</p>
+</dd>
+<dt><strong>RB_Types</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of molecule types.</p>
+</dd>
+<dt><strong>box_lengths</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Simulation box lengths</p>
+</dd>
+<dt><strong>N</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of molecules</p>
+</dd>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>array like</dt><dd><p>Hierarchical grid</p>
 </dd>
 </dl>
 </dd>
@@ -145,30 +147,43 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.rdf_util.radial_distr_function">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.rdf_util.</span></span><span class="sig-name descname"><span class="pre">radial_distr_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RDF_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HGrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RDF_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdf_bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdf_hist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/rdf_util.html#radial_distr_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.rdf_util.radial_distr_function" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Samples the radial distribution function from the positions of a molecule population.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class</p>
+</dd>
+<dt><strong>RB_Types</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of molecule types.</p>
+</dd>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the RBs class</p>
+</dd>
+<dt><strong>HGrid</strong><span class="classifier"><cite>array like</cite></span></dt><dd><p>Hierarchical grid</p>
+</dd>
+<dt><strong>RDF_cutoff</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Cutoff distance for the rdf sampling.</p>
+</dd>
+<dt><strong>rdf_bins</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of bins (resolution).</p>
+</dd>
+<dt><strong>rdf_hist</strong><span class="classifier"><cite>float64[:]</cite></span></dt><dd><p>Empty array of length rdf_bins.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.rdf_util.update_rb_hgrid">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.rdf_util.</span></span><span class="sig-name descname"><span class="pre">update_rb_hgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">HGrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_lengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/rdf_util.html#update_rb_hgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.rdf_util.update_rb_hgrid" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Updates the hierarchical grid for the rigid bead molecules.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>HGrid</strong><span class="classifier"><cite>array like</cite></span></dt><dd><p>Hierarchical grid</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>box_lengths</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Simulation box lengths</p>
 </dd>
-</dl>
+<dt><strong>N</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of molecules</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
 </dd>
 </dl>
 </dd>
@@ -178,25 +193,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.evaluation.rdf_util.update_rb_level">
 <span class="sig-prename descclassname"><span class="pre">pyrid.evaluation.rdf_util.</span></span><span class="sig-name descname"><span class="pre">update_rb_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/evaluation/rdf_util.html#update_rb_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.evaluation.rdf_util.update_rb_level" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Updates the level h of rigid bead molecules in the hierarchical grid.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of RBs class</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
 </dd>
 </dl>
 </dd>

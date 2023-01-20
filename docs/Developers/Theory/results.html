@@ -128,7 +128,7 @@
 <p>To validate the implementation of the algorithms for translational and
 rotationional diffusion introduced in
 <a class="reference internal" href="methods.html#sec-propagators"><span class="std std-ref">Propagation of translational and angular motion</span></a> I use the same example as in
-<span id="id1">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span>. Here, the translational and rotational
+<span id="id1">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span>. Here, the translational and rotational
 diffusion tensors do not represent any specific molecule:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}D_{tt} =
@@ -233,7 +233,7 @@ large supermatrices.</p>
 <figcaption>
 <p><span class="caption-number">Fig. 26 </span><span class="caption-text"><strong>The diffusion tensor of igG3 calculated with PyRID.</strong> <strong>(A)</strong> Rigid
 bead molecule representation of igG3 as found in
-<span id="id4">[<a class="reference internal" href="../../References.html#id35" title="José Garc\'ıa de la Torre and Álvaro Ortega. HYDRO suite of computer programs for solution properties of rigid macromolecules. In Encyclopedia of Biophysics, pages 1002–1006. Springer Berlin Heidelberg, 2013. doi:10.1007/978-3-642-16712-6_291.">93</a>]</span>. The black cross marks the center of
+<span id="id4">de la Torre and Ortega [<a class="reference internal" href="../../References.html#id35" title="José Garc\'ıa de la Torre and Álvaro Ortega. HYDRO suite of computer programs for solution properties of rigid macromolecules. In Encyclopedia of Biophysics, pages 1002–1006. Springer Berlin Heidelberg, 2013. doi:10.1007/978-3-642-16712-6_291.">93</a>]</span>. The black cross marks the center of
 diffusion. <strong>(B)</strong> Translational and rotational diffusion tensor of
 igG3. A comparison of the result from PyRID with those of the Hydro++
 suite can be found in table <a class="reference external" href="#tab:igG3">1.4</a>.</span><a class="headerlink" href="#fig-difftensor-igg3" title="Permalink to this image"></a></p>
@@ -299,7 +299,7 @@ concentration <strong>(A)</strong> right, <strong>(B)</strong>.</span><a class="
 radius <span class="math notranslate nohighlight">\(R_{react}\)</span> may be interpreted as the distance at which two
 particles can no longer be treated as moving independently, because
 there interactions becomes significant. Furthermore,
-<span id="id6">[<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> suggest that the length scale of
+<span id="id6">Schöneberg and Noé [<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> suggest that the length scale of
 electrostatic interactions can be used to define <span class="math notranslate nohighlight">\(R_{react}\)</span>. In
 general, the reaction radius should not be so large that in dense
 settings molecules would react with a partner that is not among the
@@ -333,7 +333,7 @@ globaly decrease in time, lowering the probability of educt encounters.
 Therefore, the reaction kinetics are sped up in the stochastic
 simulation compared to the ode approach (Fig.
 <a class="reference external" href="#fig:ReactionKinetics_RateVal">1.4</a>). Interestingly,
-<span id="id8">[<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> found exactly the opposite effect,
+<span id="id8">Schöneberg and Noé [<a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span> found exactly the opposite effect,
 as the reaction kinetics where slowed down in the stochastic simulation.
 The reason for this discrepancy in the results is unclear. However, I
 simulated the very same system in ReaDDy and got the same result as with
@@ -676,18 +676,18 @@ copy numbers are already feasible
 approach represents proteins by patchy particles where the multivalent
 interaction sites of the proteins are modeled by attractive patches
 whereas the excluded volume is represented by a core particle with
-repulsive interactions. <span id="id27">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> have used such
+repulsive interactions. <span id="id27">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> have used such
 a model to investigate the stability and composition of biomolecular
 condensates. PyRID is well suited for simulations of patchy particles.
 For validation I here reproduce one of the results from
-<span id="id28">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. In their work, patches interact via
+<span id="id28">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. In their work, patches interact via
 an attractive square well interaction potential
-<span id="id29">[<a class="reference internal" href="../../References.html#id5" title="J. R. Espinosa, C. Vega, and E. Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. The Journal of Chemical Physics, 141(13):134709, oct 2014. doi:10.1063/1.4896621.">27</a>]</span>:</p>
+<span id="id29">[<a class="reference internal" href="../../References.html#id5" title="J. R. Espinosa, C. Vega, and E. Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. The Journal of Chemical Physics, 141(13):134709, oct 2014. doi:10.1063/1.4896621.">29</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[U_{CSW}(r) = - \frac{\epsilon_{CSW}}{2} \Big[1 - \tanh\Big(\frac{r-r_w}{\alpha}\Big)\Big],\]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha = 0.01 \sigma\)</span> with <span class="math notranslate nohighlight">\(\sigma\)</span> being the hard
 sphere radius. The core particles interact via a pseudo hard sphere
-potential <span id="id30">[<a class="reference internal" href="../../References.html#id3" title="J. Jover, A. J. Haslam, A. Galindo, G. Jackson, and E. A. Müller. Pseudo hard-sphere potential for use in continuous molecular-dynamics simulation of spherical and chain molecules. The Journal of Chemical Physics, 137(14):144505, oct 2012. doi:10.1063/1.4754275.">29</a>]</span>:</p>
+potential <span id="id30">[<a class="reference internal" href="../../References.html#id3" title="J. Jover, A. J. Haslam, A. Galindo, G. Jackson, and E. A. Müller. Pseudo hard-sphere potential for use in continuous molecular-dynamics simulation of spherical and chain molecules. The Journal of Chemical Physics, 137(14):144505, oct 2012. doi:10.1063/1.4754275.">31</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[U_{HS}
        =
@@ -743,17 +743,17 @@ a single simulation took <span class="math notranslate nohighlight">\(\approx 2\
 simulations, 11 for each of the three valency cases, were executed on a
 high compute cluster. In a final step, a concentration profile is
 sampled, from which the volume fraction of the dense and dilute phase
-are estimated <span id="id35">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>]</span>. I found that the
+are estimated <span id="id35">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">30</a>]</span>. I found that the
 coexistence curves acquired with PyRID were in good agreement with
 <span id="id36">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> (Fig. <a class="reference external" href="#fig:LLPS">1.8</a>). However,
-for the 5-valency case, <span id="id37">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> found a
+for the 5-valency case, <span id="id37">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> found a
 slightly higher volume fraction in the dense phase close to the critical
-point. Also, <span id="id38">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> found that the
+point. Also, <span id="id38">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> found that the
 coexistence curve shows minimum below the critical for the 4-valence
 case, which I did not observe. The reason could lie in inaccuracies that
 are a result of to the Brownian approximation. More probable is,
 however, that the choice of the thermostat is responsible for the
-discrepancy as <span id="id39">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> used a Nosé-Hoover
+discrepancy as <span id="id39">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span> used a Nosé-Hoover
 thermostat instead of a Langevin thermostat. However, I would argue that
 a Langevin thermostat, or in this case overdamped langevin
 dynamics/Brownian dynamics, represent the dilute phase more accurately
@@ -788,7 +788,7 @@ as it accounts for the interaction with the solvent molecules.</p>
 the attractive patches and the pseudo hard sphere potential (PHS)
 used for the core particle. <strong>(C)</strong> Coexistence curves for the 3, 4
 and 5 sided patchy particle systems and comparison with the results
-from <span id="id40">[<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. <strong>(D)</strong> Side view showing the
+from <span id="id40">Espinosa <em>et al.</em> [<a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. <strong>(D)</strong> Side view showing the
 dilute and dense phase for the 4-sided patchy particle system.</span><a class="headerlink" href="#fig-llps" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
@@ -797,12 +797,12 @@ dilute and dense phase for the 4-sided patchy particle system.</span><a class="h
 <h2>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this heading"></a></h2>
 <p>To benchmark PyRID I directly compare it to ReaDDy. As a benchmark test
 I will therefore use the same that has been used in
-<span id="id41">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>. The system consists of the molecule
+<span id="id41">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>. The system consists of the molecule
 types A, B and C with radii <span class="math notranslate nohighlight">\(1.5\, nm\)</span>, <span class="math notranslate nohighlight">\(3.0\, nm\)</span>, and
 <span class="math notranslate nohighlight">\(3.12\, nm\)</span>. The viscosity is set to <span class="math notranslate nohighlight">\(1.0 mPa \cdot s\)</span>,
 which is the value for water at about 293 Kelvin (20°C). The molecules
 all interact via a harmonic repulsive potential
-<span id="id42">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>:</p>
+<span id="id42">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[U(r)
    =
@@ -839,7 +839,7 @@ PyRID always performed better than ReaDDy for this benchmark test (Fig.
 for large particle numbers than PyRID. Shown are the results for ReaDDy
 ran on the sequential kernel. In addition, I performed the benchmark
 test for the parallel kernel but the results were always worse. However,
-in <span id="id43">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>, where the same benchmark test has
+in <span id="id43">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>, where the same benchmark test has
 been used, ReaDDy scaled much better and there was almost no performance
 drop even at 100.000 particles for the sequential kernel (Fig.
 <a class="reference external" href="#fig:hgrid">1.9</a> B, green line). Also, performance increased
@@ -852,7 +852,7 @@ particles in comparison with my results. However, I can only speculate
 why ReaDDys’ scaling behavior for large particle numbers is much less
 linear in my benchmark test and why multi-threading only let to a
 performance loss. The reason might be that in
-<span id="id44">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span> ReaDDy was compiled for their
+<span id="id44">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span> ReaDDy was compiled for their
 benchmark system whereas I used the binaries distributed by the
 developers behind ReaDDy. Nonetheless, the benchmark test shows that
 PyRIDs performance is very much comparable with ReaDDy, and at least in
@@ -885,7 +885,7 @@ similar independent of whether the system is mono- or polydisperse.</p>
 Performance hierarchical grid. <strong>(B)</strong> Performance comparison between
 PyRID and ReaDDy. On a benchmark system with an Intel Core i5-9300H
 with 2.4 GHz and 24 GB DDR4 RAM, PyRID (blue line) outperforms ReaDDy
-(yellow). However, <span id="id45">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span> obtained a
+(yellow). However, <span id="id45">Hoffmann <em>et al.</em> [<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span> obtained a
 better performance and especially scaling for ReaDDy on a different
 machine with an Intel Core i7 6850K processor at 3.8GHz and 32GB DDR4
 RAM (green line).</span><a class="headerlink" href="#fig-hgrid" title="Permalink to this image"></a></p>

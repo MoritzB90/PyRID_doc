@@ -113,24 +113,19 @@
 <div class="viewcode-block" id="calc_MSD_population"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.calc_MSD_population">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">calc_MSD_population</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span><span class="n">position</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the Mean Squared Distance (MSD) from the position data (one dimension x, y or z) of a molecule population. </span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    time_steps : `int64[:]`</span>
+<span class="sd">        Time steps.</span>
+<span class="sd">    position : `float64[t,N]`</span>
+<span class="sd">        Position vectors for t timesteps of a molecule population of size N (one dimension x, y or z).</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    `list`</span>
+<span class="sd">        MSD in one dimension (x, y or z).</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -153,24 +148,25 @@
 
 <div class="viewcode-block" id="MSD"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.MSD">[docs]</a><span class="k">def</span> <span class="nf">MSD</span><span class="p">(</span><span class="n">position_trace</span><span class="p">,</span> <span class="n">Delta_t</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the MSD for each dimension (x,y, and z) of a molecule population.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
+<span class="sd">    position_trace : `float64[t,N,3]`</span>
+<span class="sd">        Position data for a molecule population of size N at t different time steps.</span>
+<span class="sd">    Delta_t : `int64`</span>
+<span class="sd">        Time step.</span>
+<span class="sd">    time_interaval : `int64`</span>
+<span class="sd">        The time step until which the molecule positions are sampled for the MSD calculation. Note: Currently sampling always starts at time step 0.</span>
+<span class="sd">    stride : `int64`</span>
+<span class="sd">        Stride with which the molecule positions are sampled.</span>
+<span class="sd">    molecule : `string`</span>
+<span class="sd">        Name of the molecule type.</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(list(float64[:],float64[:],float64[:]), float64[:])</span>
+<span class="sd">        MSD in each dimension and the corresponding time vector.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -197,24 +193,20 @@
 <div class="viewcode-block" id="calcP2_anisotropic"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.calcP2_anisotropic">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">calcP2_anisotropic</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span><span class="n">orientation_trace</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the rotational time correlation function P2 regarding one rotation axis from the orientations of a molecule population.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    time_steps : `int64[:]`</span>
+<span class="sd">        Time steps.</span>
+<span class="sd">    orientation_trace : `float64[t,N]`</span>
+<span class="sd">        Orientations regarding one axis of a molecule population of size N at t different time steps.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    `float64[:]`</span>
+<span class="sd">        P2 regarding one rotation axis.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -241,24 +233,18 @@
 <div class="viewcode-block" id="calc_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.calc_orientation_quat">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">calc_orientation_quat</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the rotation matrix from a rotation / orientation quaternion.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    q : `float64[4]`</span>
+<span class="sd">        Rotation quaternion.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    `float64[3,3]`</span>
+<span class="sd">        Rotation / Orientation matrix.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
         
@@ -283,24 +269,22 @@
 <div class="viewcode-block" id="calcP2_anisotropic_Population"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.calcP2_anisotropic_Population">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
 <span class="k">def</span> <span class="nf">calcP2_anisotropic_Population</span><span class="p">(</span><span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">orientation_trace</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the rotational time correlation function P2 around each of the three rotation axis of a molecule population.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    time_interaval : `int64`</span>
+<span class="sd">        Target time step. Note: Currently sampling always starts at time step 0.</span>
+<span class="sd">    stride : `int64`</span>
+<span class="sd">        Stride with which the molecule orientations are sampled.</span>
+<span class="sd">    orientation_trace : `float64[t,N,4]`</span>
+<span class="sd">        Orientations (in quaternion representation) of a molecule population of size N at t different time steps.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(float64[:], float64[:], float64[:])</span>
+<span class="sd">        P2 for each rotation axis.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -343,24 +327,24 @@
 
 <div class="viewcode-block" id="calc_A_B"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.calc_A_B">[docs]</a><span class="k">def</span> <span class="nf">calc_A_B</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">Drot</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">Delta</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the parameters A (F) and B (G) used in the theoretical prediction of the rotational time correlation function P2.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    u : `float64[3]`</span>
+<span class="sd">        Basis vector.</span>
+<span class="sd">    Drot : `float64`</span>
+<span class="sd">        Rotational diffusion constant.</span>
+<span class="sd">    D_rr : `float64[3,3]`</span>
+<span class="sd">        Rotational diffusion tensor.</span>
+<span class="sd">    Delta : `float64`</span>
+<span class="sd">        Delta.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(float64, float64)</span>
+<span class="sd">        A (F) and B (G).</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -379,24 +363,22 @@
 
 <div class="viewcode-block" id="calc_P_theory"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.calc_P_theory">[docs]</a><span class="k">def</span> <span class="nf">calc_P_theory</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Theoretical prediction of the rotational time correlation function P2.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    t : `float64[:]`</span>
+<span class="sd">        Time vector</span>
+<span class="sd">    u : `float64[3]`</span>
+<span class="sd">        Basis vector</span>
+<span class="sd">    D_rr : `float64[3,3]`</span>
+<span class="sd">        Rotational diffusion tensor.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    float64[:]</span>
+<span class="sd">        P2 (Theory)</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -441,24 +423,33 @@
 
 <div class="viewcode-block" id="P2"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/diffusion_util.html#pyrid.evaluation.diffusion_util.P2">[docs]</a><span class="k">def</span> <span class="nf">P2</span><span class="p">(</span><span class="n">orientation_trace</span><span class="p">,</span> <span class="n">Delta_t</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the rotational time correlation function P2 from the orientation traces of a molecule population </span>
+<span class="sd">    as well as the corresponding theoretical prediction for validation purposes.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    orientation_trace : `float64[t,N,4]`</span>
+<span class="sd">        Orientations (in quaternion representation) of a molecule population of size N at t different time steps.</span>
+<span class="sd">    Delta_t : `float64`</span>
+<span class="sd">        Time step.</span>
+<span class="sd">    D_rr : `float64[:,:]`</span>
+<span class="sd">        Rotational diffusion tensor.</span>
+<span class="sd">    time_interaval : `int64`</span>
+<span class="sd">        Target time step. Note: Currently sampling always starts at time step 0.</span>
+<span class="sd">    stride : `int64`</span>
+<span class="sd">        Stride with which the molecule orientations are sampled.</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    molecule : `string`</span>
+<span class="sd">        Molecule type</span>
+<span class="sd">    theory_only : `boolean`</span>
+<span class="sd">        If True, only the theoretical prediction of P2 is returned. Default = False.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    tuple(list(float64[:], float64[:], float64[:]), list(float64[:], float64[:], float64[:]), float64[:])</span>
+<span class="sd">        P2 (Simulation), P2 (Theory), time vector</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     

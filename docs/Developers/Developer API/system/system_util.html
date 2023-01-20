@@ -330,6 +330,8 @@ all triangles centroids, weighted by their area.</p>
 </dd>
 <dt><strong>l_perp</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Mean diffusive displacement of molecule perpendicular to a plane.</p>
 </dd>
+<dt><strong>h_membrane</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Distance of the molecules´ center of diffusion from the membrane surface.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -360,7 +362,7 @@ lifetime distribution is known in case there is no interruption by any bimolecul
 <div class="math notranslate nohighlight" id="equation-rho">
 <span class="eqno">(29)<a class="headerlink" href="#equation-rho" title="Permalink to this equation"></a></span>\[\rho(t) = k*e^{-k t},\]</div>
 <p>where <span class="math notranslate nohighlight">\(k = \sum_i^n(k_i)\)</span>.
-As such, we can schedule a reaction event by using the upper equation <span id="id1">Stiles and Bartol [<a class="reference internal" href="../../../References.html#id7" title="Joel Stiles and Thomas Bartol. Monte Carlo Methods for Simulating Realistic Synaptic Microphysiology Using MCell, pages 87–127. CRC Press, 2001. doi:10.1201/9781420039290.ch4.">9</a>]</span>, <span id="id2">Erban <em>et al.</em> [<a class="reference internal" href="../../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">10</a>]</span>. 
+As such, we can schedule a reaction event by using the upper equation <span id="id1">Stiles and Bartol [<a class="reference internal" href="../../../References.html#id7" title="Joel Stiles and Thomas Bartol. Monte Carlo Methods for Simulating Realistic Synaptic Microphysiology Using MCell, pages 87–127. CRC Press, 2001. doi:10.1201/9781420039290.ch4.">11</a>]</span>, <span id="id2">Erban <em>et al.</em> [<a class="reference internal" href="../../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">12</a>]</span>. 
 For a unimolecular reaction occuring between t+dt we add this reaction to the reaction list 
 evaluated at time t+dt. The reaction is then processed as any other bimolecular reaction that may 
 occur within that timestep. If the unimolecular reaction is picked, it needs to be checked if different 
@@ -552,67 +554,70 @@ In case a bimolecular reaction is picked before the unimolecular reaction and in
 <tr class="row-even"><td><p><strong>add_barostat_berendsen(Tau_P, P0, start)</strong></p></td>
 <td><p>Adds a berendsen barostat to the system.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>register_molecule_type(molecule_name, particle_pos, particle_types, collision_type = 0)</strong></p></td>
+<tr class="row-odd"><td><p><strong>update_rb_barostat(self, RBs, Particles)</strong></p></td>
+<td><p>Updates the rigid bead molecule positions according to the scaling factor <span class="math notranslate nohighlight">\(\mu\)</span> of the Berendsen barostat.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>register_molecule_type(molecule_name, particle_pos, particle_types, collision_type = 0)</strong></p></td>
 <td><p>Regsiters a molecule type.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>set_diffusion_tensor(molecule_name, D_tt, D_rr, mu_tb, mu_rb, mu_tb_sqrt, mu_rb_sqrt)</strong></p></td>
+<tr class="row-odd"><td><p><strong>set_diffusion_tensor(molecule_name, D_tt, D_rr, mu_tb, mu_rb, mu_tb_sqrt, mu_rb_sqrt)</strong></p></td>
 <td><p>Sets the diffusion tensor for a molecule type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>fixed_concentration_at_boundary(molecule_name, C, comp_name, location)</strong></p></td>
+<tr class="row-even"><td><p><strong>fixed_concentration_at_boundary(molecule_name, C, comp_name, location)</strong></p></td>
 <td><p>Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>register_particle_type(Type, radius)</strong></p></td>
+<tr class="row-odd"><td><p><strong>register_particle_type(Type, radius)</strong></p></td>
 <td><p>Registers a particle type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>set_compartments(comp_name, triangle_ids)</strong></p></td>
+<tr class="row-even"><td><p><strong>set_compartments(comp_name, triangle_ids)</strong></p></td>
 <td><p>Sets a compartment given its triangle ids.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>add_border_3d(triangle_ids_border)</strong></p></td>
+<tr class="row-odd"><td><p><strong>add_border_3d(triangle_ids_border)</strong></p></td>
 <td><p>Registers the border faces of an intersection between compartments and the simulation box (Needed for fixed concentration boundary condition)</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_mesh(vertices, triangles, mesh_scale = 1.0, box_triangle_ids = None, triangle_ids_transparent = None)</strong></p></td>
+<tr class="row-even"><td><p><strong>add_mesh(vertices, triangles, mesh_scale = 1.0, box_triangle_ids = None, triangle_ids_transparent = None)</strong></p></td>
 <td><p>Set up the mesh for the mesh compartments.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>add_edges()</strong></p></td>
+<tr class="row-odd"><td><p><strong>add_edges()</strong></p></td>
 <td><p>Finds the edges of each triangle and adds them to the Mesh struct.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_neighbours()</strong></p></td>
+<tr class="row-even"><td><p><strong>add_neighbours()</strong></p></td>
 <td><p>Finds the neighbours of each triangle and adds them to the Mesh struct.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>get_AABB_centers()</strong></p></td>
+<tr class="row-odd"><td><p><strong>get_AABB_centers()</strong></p></td>
 <td><p>Calculates the center of each cell of the system grid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>create_CellList()</strong></p></td>
+<tr class="row-even"><td><p><strong>create_CellList()</strong></p></td>
 <td><p>Creates the linked cell list for the triangulated meshes (Used during collision detection).</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>..</strong></p></td>
+<tr class="row-odd"><td><p><strong>..</strong></p></td>
 <td><p><strong>Particle interactions</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_interaction(self, interaction_type, type1, type2, parameters, bond = False, breakable = False)</strong></p></td>
+<tr class="row-even"><td><p><strong>add_interaction(self, interaction_type, type1, type2, parameters, bond = False, breakable = False)</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>..</strong></p></td>
+<tr class="row-odd"><td><p><strong>..</strong></p></td>
 <td><p><strong>Uniparticle reactions</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_up_reaction(self, reaction_type, educt_type, rate, product_types, product_loc, product_direction, radius)</strong></p></td>
+<tr class="row-even"><td><p><strong>add_up_reaction(self, reaction_type, educt_type, rate, product_types, product_loc, product_direction, radius)</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>..</strong></p></td>
+<tr class="row-odd"><td><p><strong>..</strong></p></td>
 <td><p><strong>Unimolecular reactions</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_um_reaction(self, reaction_type, educt_type, rate, product_types, product_loc, product_direction, radius)</strong></p></td>
+<tr class="row-even"><td><p><strong>add_um_reaction(self, reaction_type, educt_type, rate, product_types, product_loc, product_direction, radius)</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>..</strong></p></td>
+<tr class="row-odd"><td><p><strong>..</strong></p></td>
 <td><p><strong>Biparticle reactions</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_bp_reaction(self, reaction_type, educt_types, product_types, rate, radius, interaction_type = None, interaction_parameters = None)</strong></p></td>
+<tr class="row-even"><td><p><strong>add_bp_reaction(self, reaction_type, educt_types, product_types, rate, radius, interaction_type = None, interaction_parameters = None)</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>..</strong></p></td>
+<tr class="row-odd"><td><p><strong>..</strong></p></td>
 <td><p><strong>Bimolecular reactions</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>add_bm_reaction(self, reaction_type, educt_types, product_types, particle_pairs, pair_rates, pair_Radii)</strong></p></td>
+<tr class="row-even"><td><p><strong>add_bm_reaction(self, reaction_type, educt_types, product_types, particle_pairs, pair_rates, pair_Radii)</strong></p></td>
 <td></td>
 </tr>
 </tbody>
@@ -634,8 +639,8 @@ In case a bimolecular reaction is picked before the unimolecular reaction and in
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The Berendsen barostat is frequently used in molecular dynamics simulations due to its simplicity and fast equilibration. While the Berendsen barostat results in the correct particle density, it does not correctly sample from the (NPT) thermodynamical ensemble, i.e. the fluctuation in the pressure are not 100% accurate. Therefore, one needs to be carefull when to use this Barostat. However, if the barostat is used in the preparation step but not during sampling, e.g. when doing LLPs simualtions where the barostat is used to relax the system’s shape but afterwards one simulates in the NVT ensemble <span id="id3">Muller <em>et al.</em> [<a class="reference internal" href="../../../References.html#id24" title="Erich A. Muller, Åsmund Ervik, and Andrés Mej\'ıa. A guide to computing interfacial properties of fluids from molecular simulations [article v1.0]. Living Journal of Computational Molecular Science, 2020. doi:10.33011/livecoms.2.1.21385.">30</a>]</span>, this should not be a problem. 
-Note: <span id="id4">Baruffi <em>et al.</em> [<a class="reference internal" href="../../../References.html#id23" title="Carolina Baruffi, Alphonse Finel, Yann Le Bouar, Brigitte Bacroix, and Oguz Umut Salman. Overdamped langevin dynamics simulations of grain boundary motion. Materials Theory, may 2019. doi:10.1186/s41313-019-0016-1.">31</a>]</span> introduced a barostat for overdamped Langevin dynamics that settles to the correct thermodynamic equilibrium distribution.</p>
+<p>The Berendsen barostat is frequently used in molecular dynamics simulations due to its simplicity and fast equilibration. While the Berendsen barostat results in the correct particle density, it does not correctly sample from the (NPT) thermodynamical ensemble, i.e. the fluctuation in the pressure are not 100% accurate. Therefore, one needs to be carefull when to use this Barostat. However, if the barostat is used in the preparation step but not during sampling, e.g. when doing LLPs simualtions where the barostat is used to relax the system’s shape but afterwards one simulates in the NVT ensemble <span id="id3">Muller <em>et al.</em> [<a class="reference internal" href="../../../References.html#id24" title="Erich A. Muller, Åsmund Ervik, and Andrés Mej\'ıa. A guide to computing interfacial properties of fluids from molecular simulations [article v1.0]. Living Journal of Computational Molecular Science, 2020. doi:10.33011/livecoms.2.1.21385.">32</a>]</span>, this should not be a problem. 
+Note: <span id="id4">Baruffi <em>et al.</em> [<a class="reference internal" href="../../../References.html#id23" title="Carolina Baruffi, Alphonse Finel, Yann Le Bouar, Brigitte Bacroix, and Oguz Umut Salman. Overdamped langevin dynamics simulations of grain boundary motion. Materials Theory, may 2019. doi:10.1186/s41313-019-0016-1.">33</a>]</span> introduced a barostat for overdamped Langevin dynamics that settles to the correct thermodynamic equilibrium distribution.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -654,6 +659,11 @@ Note: <span id="id4">Baruffi <em>et al.</em> [<a class="reference internal" href
 <dt><strong>pair_rates</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>List of reaction rates for each particle pair</p>
 </dd>
 <dt><strong>pair_Radii</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>List of reaction radii for each particle pair</p>
+</dd>
+<dt><strong>placement_factor</strong><span class="classifier"><cite>float64</cite> [0,1]</span></dt><dd><p>Only for fusion reactions: Affects where between the educt molecules the product molecule is placed. A factor of 0.5 means in the middle. 
+A smaller factor will shift the product towards the first educt, a larger value towards the second educt molecule. 
+A value different from 0.5 may increase accuracy in the case of a strong size difference between the two educts (a strong difference in the diffusion tensors). 
+Default = 0.5</p>
 </dd>
 </dl>
 </dd>
@@ -770,12 +780,14 @@ As for the uni-moelcular reactions, several reaction paths can be defined. Each 
 </dd>
 <dt><strong>triangle_ids_transparent</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Triangle ids of any transparent faces (To be excluded from self.triangle_ids)</p>
 </dd>
+<dt><strong>adapt_box</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If true, the simulation box size is adapted such that the mesh fits exactly in the simulation box. Default = False</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>A Compartment is defined by a triangulated manifold mesh (a mesh without holes and disconnected vertices or edges),
-i.e. it has no gaps and separates the space on the inside of the surface from the space outside. It also looks like a surface everywhere on the mesh <span id="id5">Shirley <em>et al.</em> [<a class="reference internal" href="../../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">32</a>]</span>.
+i.e. it has no gaps and separates the space on the inside of the surface from the space outside. It also looks like a surface everywhere on the mesh <span id="id5">Shirley <em>et al.</em> [<a class="reference internal" href="../../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">34</a>]</span>.
 The mesh is stored as a shared vertex mesh. This data structure has triangles which point to vertices which contain the vertex data:</p>
 <blockquote>
 <div><div class="line-block">
@@ -894,7 +906,7 @@ when a particle hops between two triangles. We may take the same data structure 
 </dl>
 <p class="rubric">Notes</p>
 <p>Uni-particle reactions are evaluated using a variant of the Gillespie stochastic simulation algorithm. Thereby, for a particle type, the time point of the next uni-particle reaction occuring is calculated in advance and executed when the simualtion reaches the respective time point. 
-For unimolecular reactions we can draw the time point of the next reaction from a distribution using a variant of the Gillespie Stochastic Simulation Algorithm (SSA) <span id="id6">Stiles and Bartol [<a class="reference internal" href="../../../References.html#id7" title="Joel Stiles and Thomas Bartol. Monte Carlo Methods for Simulating Realistic Synaptic Microphysiology Using MCell, pages 87–127. CRC Press, 2001. doi:10.1201/9781420039290.ch4.">9</a>]</span>, <span id="id7">Erban <em>et al.</em> [<a class="reference internal" href="../../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">10</a>]</span>. For a single molecule having <span class="math notranslate nohighlight">\(n\)</span> possible transition reactions/reaction paths each having a reaction rate <span class="math notranslate nohighlight">\(k_i\)</span>, let <span class="math notranslate nohighlight">\(k_t = \sum_i^n k_i\)</span> be the total reaction rate.</p>
+For unimolecular reactions we can draw the time point of the next reaction from a distribution using a variant of the Gillespie Stochastic Simulation Algorithm (SSA) <span id="id6">Stiles and Bartol [<a class="reference internal" href="../../../References.html#id7" title="Joel Stiles and Thomas Bartol. Monte Carlo Methods for Simulating Realistic Synaptic Microphysiology Using MCell, pages 87–127. CRC Press, 2001. doi:10.1201/9781420039290.ch4.">11</a>]</span>, <span id="id7">Erban <em>et al.</em> [<a class="reference internal" href="../../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">12</a>]</span>. For a single molecule having <span class="math notranslate nohighlight">\(n\)</span> possible transition reactions/reaction paths each having a reaction rate <span class="math notranslate nohighlight">\(k_i\)</span>, let <span class="math notranslate nohighlight">\(k_t = \sum_i^n k_i\)</span> be the total reaction rate.</p>
 <p>Now, let <span class="math notranslate nohighlight">\(\rho(\tau) d\tau\)</span> be the probability that the next reaction occurs within <span class="math notranslate nohighlight">\([t+\tau,t+\tau+d\tau)\)</span> and let <span class="math notranslate nohighlight">\(g(\tau)\)</span> be the probability that no reaction occurs within <span class="math notranslate nohighlight">\([t,t+\tau)\)</span>. The probability that a reaction occurs within the time interval <span class="math notranslate nohighlight">\(d\tau\)</span> is simply <span class="math notranslate nohighlight">\(k_t d\tau\)</span>. Thereby</p>
 <div class="math notranslate nohighlight">
 \[\rho(\tau) d\tau = g(\tau) k_t d\tau\]</div>
@@ -939,7 +951,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>fixed_concentration_at_boundary() calculates some properties that are necessary to properly distribute molecules inside the simulation box that hit the simulation box boundary from the outside (Thereby, ‘virtual molecules’ become <cite>real</cite> molecules in our simualtion). The number of hits per time step a boundary of area A experiences is <span class="math notranslate nohighlight">\(N = l_{perp}*A*C\)</span>. Where <span class="math notranslate nohighlight">\(C\)</span> is the concentration in molecules per volume and <span class="math notranslate nohighlight">\(l_{perp}\)</span> is the average net displacement in one tiem step towards or away from any plane, where <span class="math notranslate nohighlight">\(l_{perp} = \sqrt{(4*D*\Delta t/\pi)}\)</span> <span id="id8">Stiles and Bartol [<a class="reference internal" href="../../../References.html#id7" title="Joel Stiles and Thomas Bartol. Monte Carlo Methods for Simulating Realistic Synaptic Microphysiology Using MCell, pages 87–127. CRC Press, 2001. doi:10.1201/9781420039290.ch4.">9</a>]</span>.</p>
+<p>fixed_concentration_at_boundary() calculates some properties that are necessary to properly distribute molecules inside the simulation box that hit the simulation box boundary from the outside (Thereby, ‘virtual molecules’ become <cite>real</cite> molecules in our simualtion). The number of hits per time step a boundary of area A experiences is <span class="math notranslate nohighlight">\(N = l_{perp}*A*C\)</span>. Where <span class="math notranslate nohighlight">\(C\)</span> is the concentration in molecules per volume and <span class="math notranslate nohighlight">\(l_{perp}\)</span> is the average net displacement in one tiem step towards or away from any plane, where <span class="math notranslate nohighlight">\(l_{perp} = \sqrt{(4*D*\Delta t/\pi)}\)</span> <span id="id8">Stiles and Bartol [<a class="reference internal" href="../../../References.html#id7" title="Joel Stiles and Thomas Bartol. Monte Carlo Methods for Simulating Realistic Synaptic Microphysiology Using MCell, pages 87–127. CRC Press, 2001. doi:10.1201/9781420039290.ch4.">11</a>]</span>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -962,6 +974,8 @@ To get the reaction path we compare a second random number, uninformly distribut
 <dt><strong>particle_types</strong><span class="classifier"><cite>array_like (dtype = ‘U20’)</cite></span></dt><dd><p>Array of names for each of the molecule’s particles.</p>
 </dd>
 <dt><strong>collision_type</strong><span class="classifier"><cite>int {0,1}</cite></span></dt><dd><p>Collision type of the molecule (Default = 0). 0: Collisions with compartments are handled via interaction force. 1: Collisions with compartments are handled by raytracing algorithm (recommended for molcules whose diffusion speed and/or interaction radius is small compared to the chosen integration time step).</p>
+</dd>
+<dt><strong>h_membrane</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Distance of the molecules´ center of diffusion from the membrane surface. Default = None</p>
 </dd>
 </dl>
 </dd>
@@ -1003,7 +1017,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrid.system.system_util.System.set_diffusion_tensor">
 <span class="sig-name descname"><span class="pre">set_diffusion_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tb_sqrt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rb_sqrt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.set_diffusion_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.set_diffusion_tensor" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
+<dd><p>Sets the diffusion tensor for a given molecule type.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1025,7 +1039,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>PyRID offers a module for the calculation of the diffusion tensors of rigid bead models (see molecules_util.hydro_util). It uses the Kirkwood-Riseman calculation with modified Oseen tensor as introduced by <span id="id9">Carrasco and de la Torre [<a class="reference internal" href="../../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span>, <span id="id10">Carrasco and de la Torre [<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>. The same method has been implemented in the <a class="reference external" href="http://leonardo.inf.um.es/macromol/programs/hydro++/hydro++.htm">HYDRO++</a> tool, which is free to use but not open source! As such, you may also use HYDRO++ for the calculation of the diffusion tensors. Or even better, use both and tell me if you you get inconsistent results ;) !</p>
+<p>PyRID offers a module for the calculation of the diffusion tensors of rigid bead models (see molecules_util.hydro_util). It uses the Kirkwood-Riseman calculation with modified Oseen tensor as introduced by <span id="id9">Carrasco and de la Torre [<a class="reference internal" href="../../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span>, <span id="id10">Carrasco and de la Torre [<a class="reference internal" href="../../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>]</span>. The same method has been implemented in the <a class="reference external" href="http://leonardo.inf.um.es/macromol/programs/hydro++/hydro++.htm">HYDRO++</a> tool, which is free to use but not open source! As such, you may also use HYDRO++ for the calculation of the diffusion tensors. Or even better, use both and tell me if you you get inconsistent results ;) !</p>
 <div class="admonition-note admonition">
 <p class="admonition-title">Note</p>
 <p>Diffusion tensor should be a real positive semidefinite matrix!</p>

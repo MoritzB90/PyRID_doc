@@ -221,6 +221,33 @@ G = \frac{1 + \sqrt{5}}{2} \\
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyrid.system.distribute_surface_util.mc">
+<span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#mc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.mc" title="Permalink to this definition"></a></dt>
+<dd><p>Does Monte Carlo sampling for N molecules on the surface of a triangulated mesh compartment returning vectors for the molecule positions, types and orientations 
+and triangle indices.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
+</dd>
+<dt><strong>mol_types</strong><span class="classifier"><cite>list of strings</cite></span></dt><dd><p>List of molecule types to distribute.</p>
+</dd>
+<dt><strong>N</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Total number of molecules to distribute per molecule type.</p>
+</dd>
+<dt><strong>face_group</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the face group on whose triangles to distribute the molecules.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(float64[:,3], int64[:], float64[:,4], int64[:])</dt><dd><p>molecule positions, molecule types, molecule orientations in quaternion representation</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyrid.system.distribute_surface_util.monte_carlo_distribution_2D">
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">monte_carlo_distribution_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facegroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#monte_carlo_distribution_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.monte_carlo_distribution_2D" title="Permalink to this definition"></a></dt>
 <dd><p>Does Monte Carlo sampling for N points inside a compartment.</p>
@@ -277,7 +304,7 @@ G = \frac{1 + \sqrt{5}}{2} \\
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.system.distribute_surface_util.pds">
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">pds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facegroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#pds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.pds" title="Permalink to this definition"></a></dt>
-<dd><p>Uniformly distributes molecules of different types on the mesh surface of a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id1">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">23</a>]</span>.</p>
+<dd><p>Uniformly distributes molecules of different types on the mesh surface of a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id1">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">25</a>]</span>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -350,7 +377,7 @@ G = \frac{1 + \sqrt{5}}{2} \\
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.system.distribute_surface_util.poisson_disc_sampling_2D">
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">poisson_disc_sampling_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facegroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#poisson_disc_sampling_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.poisson_disc_sampling_2D" title="Permalink to this definition"></a></dt>
-<dd><p>Uniformly distributes spheres of different radii inside a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id2">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">23</a>]</span> to distribute points on triangulated mesh surfaces but that has been adapted here for volume distributions. PyRID also uses a variant of the original algorithm to distribute molecules on mesh surfaces.</p>
+<dd><p>Uniformly distributes spheres of different radii inside a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id2">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">25</a>]</span> to distribute points on triangulated mesh surfaces but that has been adapted here for volume distributions. PyRID also uses a variant of the original algorithm to distribute molecules on mesh surfaces.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -425,7 +452,7 @@ G = \frac{1 + \sqrt{5}}{2} \\
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Random points, uniformly distributed inside a triangle can be sampled using an algorithm introduced by <span id="id3">Osada <em>et al.</em> [<a class="reference internal" href="../../../References.html#id54" title="Robert Osada, Thomas Funkhouser, Bernard Chazelle, and David Dobkin. Shape distributions. ACM Transactions on Graphics, 21(4):807–832, oct 2002. doi:10.1145/571647.571648.">24</a>]</span>:</p>
+<p>Random points, uniformly distributed inside a triangle can be sampled using an algorithm introduced by <span id="id3">Osada <em>et al.</em> [<a class="reference internal" href="../../../References.html#id54" title="Robert Osada, Thomas Funkhouser, Bernard Chazelle, and David Dobkin. Shape distributions. ACM Transactions on Graphics, 21(4):807–832, oct 2002. doi:10.1145/571647.571648.">26</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[P(\boldsymbol{r}) = (1-\sqrt{\mu_1})*\boldsymbol{p}_0+(\sqrt{\mu_1}*(1-\mu_2))*\boldsymbol{p}_1+(\mu_2*\sqrt{\mu_1})*\boldsymbol{p}_2  ,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mu_1, \mu_2\)</span> are random numbers between 0 and 1. <span class="math notranslate nohighlight">\(\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2\)</span> are the three vertices of the triangle.</p>
@@ -469,7 +496,7 @@ G = \frac{1 + \sqrt{5}}{2} \\
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The average number of molecules that hit a boundary of edge length <span class="math notranslate nohighlight">\(L\)</span> from one side within a time step <span class="math notranslate nohighlight">\(\Delta t\)</span> can be calculated from the molecule surface concentration <span class="math notranslate nohighlight">\(C\)</span> and the average distance a diffusing molecule travels normal to an line <span class="math notranslate nohighlight">\(l_{n}\)</span> within <span class="math notranslate nohighlight">\(\Delta t\)</span> <span id="id4">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>:</p>
+<p>The average number of molecules that hit a boundary of edge length <span class="math notranslate nohighlight">\(L\)</span> from one side within a time step <span class="math notranslate nohighlight">\(\Delta t\)</span> can be calculated from the molecule surface concentration <span class="math notranslate nohighlight">\(C\)</span> and the average distance a diffusing molecule travels normal to an line <span class="math notranslate nohighlight">\(l_{n}\)</span> within <span class="math notranslate nohighlight">\(\Delta t\)</span> <span id="id4">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">10</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[N_{hits} = \frac{L l_{n}}{2 C},\]</div>
 <p>where</p>
@@ -477,7 +504,7 @@ G = \frac{1 + \sqrt{5}}{2} \\
 \[l_{n} = \sqrt{\frac{4D\Delta t}{\pi}}.\]</div>
 <p>Here <span class="math notranslate nohighlight">\(D = Tr(\boldsymbol{D}_{xy}^{tt,b})/2\)</span> is the scalar translational diffusion constant.
 The boundary crossing of molecules can be described as a poisson process. As such, the number of molecules that cross the boundary each time step is drawn from a poisson distribution with a rate <span class="math notranslate nohighlight">\(N_{hits}\)</span>.</p>
-<p>The normalized distance that a crossing molecule ends up away from the plane/boundary follows the following distribution <span id="id5">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>:</p>
+<p>The normalized distance that a crossing molecule ends up away from the plane/boundary follows the following distribution <span id="id5">[<a class="reference internal" href="../../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">10</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[P(d\tilde{x}) = 1-e^{-d\tilde{x}^2}+\sqrt{\pi}*dx*\text{erfc}(d\tilde{x})\]</div>
 <p>The distance vector normal to the plane after the crossing can then be calculated from the diffusion length constant <span class="math notranslate nohighlight">\(\lambda\)</span> and the edges’s normal vector <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}\)</span> by <span class="math notranslate nohighlight">\(d\boldsymbol{x} = \lambda \, d\tilde{x} \, \hat{\boldsymbol{n}} = \sqrt{4Dt} \, d\tilde{x} \, \hat{\boldsymbol{n}}\)</span>.</p>

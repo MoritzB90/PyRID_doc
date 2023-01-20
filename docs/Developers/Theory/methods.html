@@ -190,7 +190,7 @@ Implementation<div class="sd-summary-down docutils">
 the interactions between proteins are not accurately described by
 isotropic energy potentials. Instead, the physical properties of
 bio-molecular systems emerge from an-isotropic multivalent interactions
-<span id="id2">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>, <a class="reference internal" href="../../References.html#id62" title="Gregory L. Dignon, Wenwei Zheng, Young C. Kim, Robert B. Best, and Jeetain Mittal. Sequence determinants of protein phase behavior from a coarse-grained model. PLOS Computational Biology, 14(1):e1005941, jan 2018. doi:10.1371/journal.pcbi.1005941.">72</a>]</span>. Protein-protein
+<span id="id2">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">30</a>, <a class="reference internal" href="../../References.html#id62" title="Gregory L. Dignon, Wenwei Zheng, Young C. Kim, Robert B. Best, and Jeetain Mittal. Sequence determinants of protein phase behavior from a coarse-grained model. PLOS Computational Biology, 14(1):e1005941, jan 2018. doi:10.1371/journal.pcbi.1005941.">72</a>]</span>. Protein-protein
 interaction can be accurately simulated in all-atom molecular dynamics
 simulations. However, even modern computers and algorithms are not
 efficient enough to simulate systems with more than a few molecules on
@@ -314,7 +314,7 @@ complexity of the propagation algorithm for the translation and rotation
 vectors. Therefore, in the following, we will consider translation and
 rotation as being independent. In this case, the propagator for the
 Cartesian coordinates as well as the orientation angle can be formulated
-as <span id="id7">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span></p>
+as <span id="id7">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span></p>
 <div class="math notranslate nohighlight" id="equation-eq-drdt">
 <span class="eqno">(32)<a class="headerlink" href="#equation-eq-drdt" title="Permalink to this equation"></a></span>\[\boldsymbol{r}_j(t) = \boldsymbol{r}_j(t-\Delta t) + \boldsymbol{A}_j \boldsymbol{M}_{j}^{tt,b} \boldsymbol{A}_j^T \boldsymbol{F}_j \Delta t + \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{tt,b} k_B T}\, \boldsymbol{W}^t(\Delta t)\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-dphidt">
@@ -336,7 +336,7 @@ and singularities <span id="id8">[<a class="reference internal" href="../../Refe
 especially in computer graphics, it is standard to represent rotations
 in unit quaternions, which is much more stable and has fewer issues in
 general. An algorithm for the rotation propagator based on quaternions
-can, for example, be found in <span id="id9">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span>. In the
+can, for example, be found in <span id="id9">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span>. In the
 following, I will introduce a more concise derivation of the very same
 algorithm.</p>
 <section id="quaternion-propagator">
@@ -434,7 +434,7 @@ accurately represent the rotation, we need to ensure that it keeps its
 unit length. However, due to the finite time step in simulations, the
 quaternion will diverge from unit length over time. Thus, it is
 necessary to frequently re-normalize the quaternion.
-<span id="id13">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">11</a>]</span> point out that re-normalization will
+<span id="id13">Ilie <em>et al.</em> [<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span> point out that re-normalization will
 introduce a bias by changing the sampled phase space distribution.
 Thereby, it is more appropriate to introduce a constraint force using
 the method of undetermined Lagrange multipliers as is used in molecular
@@ -472,13 +472,13 @@ Implementation<div class="sd-summary-down docutils">
 </details><p>In order simulate the motion of molecules with the algorithms introduced
 above, we need to calculate the molecule’s diffusion tensor. Diffusion
 tensors have also been estimated experimentally
-<span id="id14">[<a class="reference internal" href="../../References.html#id22" title="Marc Niethammer, Raul San Jose Estepar, Sylvain Bouix, Martha Shenton, and Carl-Fredrik Westin. On diffusion tensor estimation. In 2006 International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE, aug 2006. doi:10.1109/iembs.2006.259826.">12</a>]</span> or using molecular dynamics
+<span id="id14">[<a class="reference internal" href="../../References.html#id22" title="Marc Niethammer, Raul San Jose Estepar, Sylvain Bouix, Martha Shenton, and Carl-Fredrik Westin. On diffusion tensor estimation. In 2006 International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE, aug 2006. doi:10.1109/iembs.2006.259826.">14</a>]</span> or using molecular dynamics
 simulations <span id="id15">[<a class="reference internal" href="../../References.html#id52" title="Guillaume Chevrot, Konrad Hinsen, and Gerald R. Kneller. Model-free simulation approach to molecular diffusion tensors. The Journal of Chemical Physics, 139(15):154110, oct 2013. doi:10.1063/1.4823996.">82</a>]</span>. However, for many
 proteins, the diffusion tensor is unknown. Therefore, it would often be
 more convenient to calculate the diffusion tensor directly from the
 coarse-grained representation of a molecule in terms of the rigid bead
 model. Pioneering work in this direction has been done by
-<span id="id16">[<a class="reference internal" href="../../References.html#id31" title="V. Bloomfield, W. O. Dalton, and K. E. Van Holde. Frictional coefficients of multisubunit structures. i. theory. Biopolymers, 5(2):135–148, feb 1967. doi:10.1002/bip.1967.360050202.">83</a>]</span> and <span id="id17">[<a class="reference internal" href="../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">16</a>]</span>.
+<span id="id16">Bloomfield <em>et al.</em> [<a class="reference internal" href="../../References.html#id31" title="V. Bloomfield, W. O. Dalton, and K. E. Van Holde. Frictional coefficients of multisubunit structures. i. theory. Biopolymers, 5(2):135–148, feb 1967. doi:10.1002/bip.1967.360050202.">83</a>]</span> and <span id="id17">Torre and Bloomfield [<a class="reference internal" href="../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">18</a>]</span>.
 In the following I will only present the main results that are needed
 for the calculation of the rigid bead model diffusion tensor. For the
 interested reader, a more in depth introduction can be found in
@@ -507,9 +507,9 @@ translational, rotational and translation-rotation coupling tensors of
 the friction super matrix
 <span class="math notranslate nohighlight">\(\boldsymbol{\Xi}^{tt}, \boldsymbol{\Xi}^{rr}, \boldsymbol{\Xi}^{tr}=\boldsymbol{\Xi}^{rt,T}\)</span>.
 PyRID uses a method based on a modified Oseen tensor
-<span id="id19">[<a class="reference internal" href="../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>, <a class="reference internal" href="../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">16</a>]</span> to account for the
+<span id="id19">[<a class="reference internal" href="../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>, <a class="reference internal" href="../../References.html#id13" title="Jose Garcia De La Torre and Victor A. Bloomfield. Hydrodynamic properties of macromolecular complexes. i. translation. Biopolymers, 16(8):1747–1763, aug 1977. doi:10.1002/bip.1977.360160811.">18</a>]</span> to account for the
 hydrodynamic interaction between the beads of a rigid bead molecule in a
-first order approximation <span id="id20">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>. For a
+first order approximation <span id="id20">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>]</span>. For a
 rigid molecule consisting of <span class="math notranslate nohighlight">\(N\)</span> different beads, the friction
 tensors read</p>
 <div class="math notranslate nohighlight" id="equation-eq-mobility-supermatrix-rbm">
@@ -534,7 +534,7 @@ position vector of bead i in the molecule’s local reference frame.
 rotational and translation-rotation coupling friction tensors of the
 system of <span class="math notranslate nohighlight">\(N\)</span> freely diffusing beads. <span class="math notranslate nohighlight">\(\boldsymbol{\xi}\)</span>,
 are calculated from the inverse of the mobility supermatrix
-<span id="id21">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>:</p>
+<span id="id21">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mobility-supermatrix-2">
 <span class="eqno">(38)<a class="headerlink" href="#equation-eq-mobility-supermatrix-2" title="Permalink to this equation"></a></span>\[\begin{split}\begin{pmatrix}
 \boldsymbol{\xi}^{tt} &amp; \boldsymbol{\xi}^{tr} \\
@@ -550,7 +550,7 @@ friction supermatrix of dimension (6N,6N). <span class="math notranslate nohighl
 are the (3Nx3N) dimensional elements of the mobility supermatrix. The
 translational mobility tensor <span class="math notranslate nohighlight">\(\boldsymbol{\mu}^{tt}\)</span> for a system
 of different sized beads is, in first order approximation, given by
-<span id="id22">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>:</p>
+<span id="id22">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-mu-tt-methods">
 <span class="eqno">(39)<a class="headerlink" href="#equation-mu-tt-methods" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
 \boldsymbol{\mu}^{tt}_{ij} = &amp; \delta_{ij} (6 \pi \eta_0 \sigma_i)^{-1} \boldsymbol{I} + (1-\delta_{ij})(8 \pi \eta_0 r_{ij}^{-1})(\boldsymbol{I}+\boldsymbol{P}_{ij}) \\
@@ -562,7 +562,7 @@ of different sized beads is, in first order approximation, given by
 vector between bead i and bead j. <span class="math notranslate nohighlight">\(\boldsymbol{I}\)</span> is the identity
 matrix. The mobility tensor for rotation, however, not accounting for
 the bead radii in the hydrodynamic interaction term, is given by
-<span id="id23">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>:</p>
+<span id="id23">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-mu-rr-methods">
 <span class="eqno">(40)<a class="headerlink" href="#equation-mu-rr-methods" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
 \boldsymbol{\mu}^{rr}_{ij} = &amp; \delta_{ij} (8 \pi \eta_0 \sigma_i^3)^{-1} \boldsymbol{I} \\
@@ -573,12 +573,12 @@ missing. This correction consists of adding
 <span class="math notranslate nohighlight">\(6 \eta_0 V_m \boldsymbol{I}\)</span> to the diagonal components of the
 rotational friction tensor <span class="math notranslate nohighlight">\(\boldsymbol{\Xi}^{rr}_O\)</span>, where
 <span class="math notranslate nohighlight">\(V_m\)</span> is the total volume of the rigid bead molecule
-<span id="id24">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>, <a class="reference internal" href="../../References.html#id16" title="José Garc\'ıa de la Torre and Vicente Rodes. Effects from bead size and hydrodynamic interactions on the translational and rotational coefficients of macromolecular bead models. The Journal of Chemical Physics, 79(5):2454–2460, sep 1983. doi:10.1063/1.446054.">18</a>]</span>. The rotation-translation
-coupling is given by <span id="id25">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">14</a>]</span>:</p>
+<span id="id24">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>, <a class="reference internal" href="../../References.html#id16" title="José Garc\'ıa de la Torre and Vicente Rodes. Effects from bead size and hydrodynamic interactions on the translational and rotational coefficients of macromolecular bead models. The Journal of Chemical Physics, 79(5):2454–2460, sep 1983. doi:10.1063/1.446054.">20</a>]</span>. The rotation-translation
+coupling is given by <span id="id25">[<a class="reference internal" href="../../References.html#id9" title="B. Carrasco and J. Garcı\'a de la Torre. Improved hydrodynamic interaction in macromolecular bead models. The Journal of Chemical Physics, 111(10):4817–4826, sep 1999. doi:10.1063/1.479743.">16</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-mu-rt-methods">
 <span class="eqno">(41)<a class="headerlink" href="#equation-mu-rt-methods" title="Permalink to this equation"></a></span>\[\boldsymbol{\mu}^{rt}_{ij} = (1-\delta_{ij}) (8 \pi \eta_0 r_{ij}^2)^{-1} \boldsymbol{\epsilon}\boldsymbol{\hat{r}}_{ij},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is the Levi-Civita symbol with
-<span id="id26">[<a class="reference internal" href="../../References.html#id15" title="J. Garc\'ıa de la Torre, G. del Rio Echenique, and A. Ortega. Improved calculation of rotational diffusion and intrinsic viscosity of bead models for macromolecules and nanoparticles. The Journal of Physical Chemistry B, 111(5):955–961, jan 2007. doi:10.1021/jp0647941.">17</a>]</span></p>
+<span id="id26">[<a class="reference internal" href="../../References.html#id15" title="J. Garc\'ıa de la Torre, G. del Rio Echenique, and A. Ortega. Improved calculation of rotational diffusion and intrinsic viscosity of bead models for macromolecules and nanoparticles. The Journal of Physical Chemistry B, 111(5):955–961, jan 2007. doi:10.1021/jp0647941.">19</a>]</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\epsilon \cdot \boldsymbol{r}_{ij}
     =
@@ -595,8 +595,8 @@ equation <a class="reference internal" href="#equation-eq-mobility-supermatrix-r
 <span class="math notranslate nohighlight">\(\boldsymbol{M}=[[\boldsymbol{M}_1, \boldsymbol{M}_2], [\boldsymbol{M}_3, \boldsymbol{M}_4]]\)</span>
 is invertible, if both the diagonal blocks, <span class="math notranslate nohighlight">\(\boldsymbol{M}_1\)</span> and
 <span class="math notranslate nohighlight">\(\boldsymbol{M}_4\)</span> are invertible The inverse of a (2x2)
-supermatrix can be calculated by <span id="id27">[<a class="reference internal" href="../../References.html#id17" title="V. Varadarajan. Supersymmetry for Mathematicians: An Introduction. American Mathematical Society, jul 2004. doi:10.1090/cln/011.">19</a>]</span>,
-<span id="id28">[<a class="reference internal" href="../../References.html#id18" title="P Deligne and J Morgan. Notes on supersymmetry following Bernstein. Quantum ﬁelds and strings; a course for mathematicians, pages 41–96. Volume 1. Amer. Math. Soc, Princeton, NJ; Providence, RI, 1996.">20</a>]</span>:</p>
+supermatrix can be calculated by <span id="id27">[<a class="reference internal" href="../../References.html#id17" title="V. Varadarajan. Supersymmetry for Mathematicians: An Introduction. American Mathematical Society, jul 2004. doi:10.1090/cln/011.">21</a>]</span>,
+<span id="id28">[<a class="reference internal" href="../../References.html#id18" title="P Deligne and J Morgan. Notes on supersymmetry following Bernstein. Quantum ﬁelds and strings; a course for mathematicians, pages 41–96. Volume 1. Amer. Math. Soc, Princeton, NJ; Providence, RI, 1996.">22</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-supermatrix-inverse">
 <span class="eqno">(42)<a class="headerlink" href="#equation-supermatrix-inverse" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
 &amp; \boldsymbol{T}_1 = (\boldsymbol{M}_1 - \boldsymbol{M}_2 \boldsymbol{M}_4^{-1} \boldsymbol{M}_3)^{-1} \\
@@ -621,7 +621,7 @@ Implementation<div class="sd-summary-down docutils">
 yet formulated an expression for the center of diffusion of the rigid
 bead molecule. For a rigid body immersed in a fluid, the force and
 torque act at the body’s center of diffusion
-<span id="id29">[<a class="reference internal" href="../../References.html#id19" title="Steven Harvey and Jose Garcia de la Torre. Coordinate systems for modeling the hydrodynamic resistance and diffusion coefficients of irregularly shaped rigid macromolecules. Macromolecules, 13(4):960–964, jul 1980. doi:10.1021/ma60076a037.">13</a>]</span>, which, in general, is different from
+<span id="id29">[<a class="reference internal" href="../../References.html#id19" title="Steven Harvey and Jose Garcia de la Torre. Coordinate systems for modeling the hydrodynamic resistance and diffusion coefficients of irregularly shaped rigid macromolecules. Macromolecules, 13(4):960–964, jul 1980. doi:10.1021/ma60076a037.">15</a>]</span>, which, in general, is different from
 the center of mass except for spherically symmetric molecules. The
 center of diffusion can, however, be calculated from a diffusion tensor
 referring to an arbitrary origin by <span id="id30">[<a class="reference internal" href="../../References.html#id8" title="Beatriz Carrasco and José Garc\'ıa de la Torre. Hydrodynamic properties of rigid particles: comparison of different modeling and computational procedures. Biophysical Journal, 76(6):3044–3057, jun 1999. doi:10.1016/s0006-3495(99)77457-6.">2</a>]</span></p>
@@ -726,10 +726,10 @@ inefficient. On the other hand this method does not support surface
 diffusion in a straight forward way. Another approach would be to add
 external potentials/force fields that restrict the motion of particles
 either to the volume or the surface of a compartment. This method is
-used in ReaDDy <span id="id31">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>. However, complex
+used in ReaDDy <span id="id31">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>. However, complex
 geometries/compartment shapes are more difficult to establish. A third
 approach is to represent the compartment geometry by triangulated meshes
-as is done, e.g. in MCell <span id="id32">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>. This approach
+as is done, e.g. in MCell <span id="id32">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">10</a>]</span>. This approach
 has several benefits over alternative approaches, such as representing
 compartments by force fields or other particles. Triangulated meshes are
 heavily used in computer graphics. Therefore, a large number of highly
@@ -755,9 +755,9 @@ a triangle points outside the mesh compartment. In PyRID, a compartment
 is defined by a triangulated manifold mesh, which is a mesh without
 holes and disconnected vertices or edges, i.e. it has no gaps and
 separates the space on the inside of the compartment from the space
-outside <span id="id33">[<a class="reference internal" href="../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">32</a>]</span>. As one vertex is shared by at
+outside <span id="id33">[<a class="reference internal" href="../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">34</a>]</span>. As one vertex is shared by at
 minimum three triangles it is most convenient to store meshes in a
-shared vertex mesh data structure <span id="id34">[<a class="reference internal" href="../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">32</a>]</span> where
+shared vertex mesh data structure <span id="id34">[<a class="reference internal" href="../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">34</a>]</span> where
 an array with all vertex position vectors is kept as well as an array
 holding for each triangle the indices of the three vertices that make up
 the triangle (Fig. <a class="reference external" href="#fig:gedodesic_StanfordBunny">1.1</a> A).</p>
@@ -798,7 +798,7 @@ overlaps with faces as valid contacts but not edges or vertices. If
 element is used to calculate the repulsive force, which in this case is
 either an edge or a vertex. To calculate the distance between the bead
 and a triangle, PyRID uses the “Point to Triangle” algorithm by
-<span id="id36">[<a class="reference internal" href="../../References.html#id39" title="David Eberly. 3D Game Engine Design. Morgan Kaufmann Publishers, 2001.">7</a>]</span>.</p>
+<span id="id36">Eberly [<a class="reference internal" href="../../References.html#id39" title="David Eberly. 3D Game Engine Design. Morgan Kaufmann Publishers, 2001.">9</a>]</span>.</p>
 </section>
 <section id="ray-tracing">
 <h4>Ray tracing<a class="headerlink" href="#ray-tracing" title="Permalink to this heading"></a></h4>
@@ -806,7 +806,7 @@ and a triangle, PyRID uses the “Point to Triangle” algorithm by
 molecules because they require a very small integration time step. Here,
 ray tracing is more convenient as it works independently of the chosen
 integration time step. In this approach, which is similar to the contact
-detection used in MCell <span id="id37">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>, the displacement
+detection used in MCell <span id="id37">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">10</a>]</span>, the displacement
 vector <span class="math notranslate nohighlight">\(\boldsymbol{\Delta R}\)</span> of the molecule is traced through
 the simulation volume and collisions with the compartment boundary (the
 mesh) are resolved via reflection.</p>
@@ -814,7 +814,7 @@ mesh) are resolved via reflection.</p>
 \[\boldsymbol{\Delta R}_{refl} = \boldsymbol{\Delta R} - 2 (\boldsymbol{\Delta R} \cdot \hat{\boldsymbol{n}}) \hat{\boldsymbol{n}},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}\)</span> is the normal vector of the triangle
 face. Collision tests are done using the “Fast Voxel Traversal Algorithm
-for Ray Tracing” introduced by <span id="id38">[<a class="reference internal" href="../../References.html#id38" title="John Amanatides and Andrew Woo. A fast voxel traversal algorithm for ray tracing. In In Eurographics ’87, 3–10. 1987.">3</a>]</span>.</p>
+for Ray Tracing” introduced by <span id="id38">Amanatides and Woo [<a class="reference internal" href="../../References.html#id38" title="John Amanatides and Andrew Woo. A fast voxel traversal algorithm for ray tracing. In In Eurographics ’87, 3–10. 1987.">5</a>]</span>.</p>
 </section>
 </section>
 <section id="surface-molecules">
@@ -840,7 +840,7 @@ details of the method sketched above.</p>
 <p><span class="caption-number">Fig. 15 </span><span class="caption-text"><strong>Mesh compartments and surface molecules.</strong> <strong>(A)</strong> PyRID uses
 triangulated meshes to represent compartments. These are kept in a
 shared vertex mesh data structure (top left, right)
-<span id="id39">[<a class="reference internal" href="../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">32</a>]</span>. In addition, for neighbour search,
+<span id="id39">[<a class="reference internal" href="../../References.html#id10" title="Peter Shirley, Michael Ashikhmin, and Steve Marschner. Fundamentals of Computer Graphics. A K Peters/CRC Press, jul 2009. doi:10.1201/9781439865521.">34</a>]</span>. In addition, for neighbour search,
 two array that hold for each triangle the vertex indices of the three
 triangle edges and the triangle indices of the three triangle
 neighbours are used. <strong>(A)</strong> Triangle vertices belonging to a
@@ -878,7 +878,7 @@ barycentric coordinates by</p>
 <div class="math notranslate nohighlight">
 \[\boldsymbol{\Delta R} = du(\boldsymbol{p}_1-\boldsymbol{p}_0) + dv (\boldsymbol{p}_2-\boldsymbol{p}_0),\]</div>
 <p>Efficient algorithms to compute the barycentric coordinates <span class="math notranslate nohighlight">\(u\)</span>
-and <span class="math notranslate nohighlight">\(v\)</span> can, e.g., be found in <span id="id40">[<a class="reference internal" href="../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">4</a>]</span>.
+and <span class="math notranslate nohighlight">\(v\)</span> can, e.g., be found in <span id="id40">[<a class="reference internal" href="../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">6</a>]</span>.
 The triangle edges are sorted in counter clockwise order, starting from
 the triangle origin <span class="math notranslate nohighlight">\(\boldsymbol{p}_0\)</span>. As such, we are on the
 line <span class="math notranslate nohighlight">\(\boldsymbol{p}_0 + u(\boldsymbol{p}_1-\boldsymbol{p}_0)\)</span>
@@ -1015,7 +1015,7 @@ molecules that hit a boundary of area <span class="math notranslate nohighlight"
 time step <span class="math notranslate nohighlight">\(\Delta t\)</span> can be calculated from the molecule
 concentration <span class="math notranslate nohighlight">\(C\)</span> and the average distance a diffusing molecule
 travels normal to a plane <span class="math notranslate nohighlight">\(l_{n}\)</span> within <span class="math notranslate nohighlight">\(\Delta t\)</span>
-<span id="id41">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>:</p>
+<span id="id41">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">10</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[N_{hits} = \frac{A l_{n}}{2 C},\]</div>
 <p>where</p>
@@ -1031,7 +1031,7 @@ crossing of molecules can be described as a Poisson process. As such,
 the number of molecules that cross the boundary each time step is drawn
 from a Poisson distribution with a rate <span class="math notranslate nohighlight">\(N_{hits}\)</span>.</p>
 <p>The normalized distance that a crossing molecule ends up away from the
-plane/boundary follows distribution <span id="id42">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">8</a>]</span>:</p>
+plane/boundary follows distribution <span id="id42">[<a class="reference internal" href="../../References.html#id33" title="Rex A. Kerr, Thomas M. Bartol, Boris Kaminsky, Markus Dittrich, Jen-Chien Jack Chang, Scott B. Baden, Terrence J. Sejnowski, and Joel R. Stiles. Fast monte carlo simulation methods for biological reaction-diffusion systems in solution and on surfaces. SIAM Journal on Scientific Computing, 30(6):3126–3149, jan 2008. doi:10.1137/070692017.">10</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[P(d\tilde{x}) = 1-e^{-d\tilde{x}^2}+\sqrt{\pi}*dx*\text{erfc}(d\tilde{x})\]</div>
 <p>The distance vector normal to the plane after the crossing can then be
@@ -1051,7 +1051,7 @@ Since the diffusion along each dimension is independent we can simply
 pick a random point uniformly distributed on the respective plane. For
 triangulated mesh surfaces, triangles are picked randomly, weighted by
 their area. Sampling a uniformly distributed random point in a triangle
-is done by <span id="id43">[<a class="reference internal" href="../../References.html#id54" title="Robert Osada, Thomas Funkhouser, Bernard Chazelle, and David Dobkin. Shape distributions. ACM Transactions on Graphics, 21(4):807–832, oct 2002. doi:10.1145/571647.571648.">24</a>]</span></p>
+is done by <span id="id43">[<a class="reference internal" href="../../References.html#id54" title="Robert Osada, Thomas Funkhouser, Bernard Chazelle, and David Dobkin. Shape distributions. ACM Transactions on Graphics, 21(4):807–832, oct 2002. doi:10.1145/571647.571648.">26</a>]</span></p>
 <div class="math notranslate nohighlight">
 \[P(\boldsymbol{r}) = (1-\sqrt{\mu_1})*\boldsymbol{p}_0+(\sqrt{\mu_1}*(1-\mu_2))*\boldsymbol{p}_1+(\mu_2*\sqrt{\mu_1})*\boldsymbol{p}_2  ,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mu_1, \mu_2\)</span> are random numbers between 0 and 1.
@@ -1182,7 +1182,7 @@ reaction paths.</span><a class="headerlink" href="#fig-reactionsgraph" title="Pe
 <p>Unimolecular reactions include fission, conversion, and decay reactions.
 These can be efficiently simulated using a variant of the Gillespie
 Stochastic Simulation Algorithm (SSA)
-<span id="id44">[<a class="reference internal" href="../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">10</a>, <a class="reference internal" href="../../References.html#id32" title="Daniel T. Gillespie. Exact stochastic simulation of coupled chemical reactions. The Journal of Physical Chemistry, 81(25):2340–2361, dec 1977. doi:10.1021/j100540a008.">85</a>]</span>. Thereby, the time point
+<span id="id44">[<a class="reference internal" href="../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">12</a>, <a class="reference internal" href="../../References.html#id32" title="Daniel T. Gillespie. Exact stochastic simulation of coupled chemical reactions. The Journal of Physical Chemistry, 81(25):2340–2361, dec 1977. doi:10.1021/j100540a008.">85</a>]</span>. Thereby, the time point
 of the next reaction is sampled from the probability distribution of
 expected molecule lifetimes, assuming that in between two time points no
 interfering event occurs. An interfering event could, e.g., be a
@@ -1202,7 +1202,7 @@ time interval <span class="math notranslate nohighlight">\(d\tau\)</span>, which
 Thereby,</p>
 <div class="math notranslate nohighlight">
 \[\rho(\tau) d\tau = g(\tau) k_t d\tau,\]</div>
-<p>where <span class="math notranslate nohighlight">\(g(\tau) = e^{-k_t \tau}\)</span> <span id="id45">[<a class="reference internal" href="../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">10</a>]</span>.
+<p>where <span class="math notranslate nohighlight">\(g(\tau) = e^{-k_t \tau}\)</span> <span id="id45">[<a class="reference internal" href="../../References.html#id6" title="Radek Erban, Jonathan Chapman, and Philip Maini. A practical guide to stochastic simulations of reaction-diffusion processes. 2007. doi:10.48550/ARXIV.0704.1908.">12</a>]</span>.
 From the above equation we find <span class="math notranslate nohighlight">\(P(\tau) = 1-e^{-k_t \tau}\)</span> by
 integration. To sample from this distribution, we can use the inverse
 distribution function.</p>
@@ -1242,7 +1242,7 @@ fission reactions:</p>
 <li><p>release reactions.</p></li>
 </ol>
 <p><em>Standard fission reactions</em> can only be defined on the molecule level
-and are executed similar to ReaDDy <span id="id46">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>.
+and are executed similar to ReaDDy <span id="id46">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>.
 Here, the number of product molecules is limited to two. In the case
 where educt and products are volume molecules, the product molecules are
 placed within a sphere of radius <span class="math notranslate nohighlight">\(R_{fission}\)</span>. Therefore, an
@@ -1308,9 +1308,9 @@ conversion and decay. For details see text.</span><a class="headerlink" href="#f
 reactions since we cannot sample from the corresponding probability
 space as we have done for the uni-molecular reactions, because we do not
 know when two molecules meet in advance. Here, we use a reaction scheme
-introduced by <span id="id47">[<a class="reference internal" href="../../References.html#id29" title="M Doi. Stochastic theory of diffusion-controlled reaction. Journal of Physics A: Mathematical and General, 9(9):1479–1495, sep 1976. doi:10.1088/0305-4470/9/9/009.">22</a>]</span>, which is also used in the
+introduced by <span id="id47">Doi [<a class="reference internal" href="../../References.html#id29" title="M Doi. Stochastic theory of diffusion-controlled reaction. Journal of Physics A: Mathematical and General, 9(9):1479–1495, sep 1976. doi:10.1088/0305-4470/9/9/009.">24</a>]</span>, which is also used in the
 Brownian dynamics simulation tool ReaDDy
-<span id="id48">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>, <a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span>. In this scheme, two
+<span id="id48">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>, <a class="reference internal" href="../../References.html#id58" title="Johannes Schöneberg and Frank Noé. ReaDDy - a software for particle-based reaction-diffusion dynamics in crowded cellular environments. PLoS ONE, 8(9):e74261, sep 2013. doi:10.1371/journal.pone.0074261.">86</a>]</span>. In this scheme, two
 molecules can only react if the inter-molecular distance
 <span class="math notranslate nohighlight">\(|\boldsymbol{r}_{ij}|\)</span> is below a reaction radius
 <span class="math notranslate nohighlight">\(R_{react}\)</span>. The probability of having at least one reaction is
@@ -1429,7 +1429,7 @@ Implementation<div class="sd-summary-down docutils">
 <p class="sd-card-text"><a class="reference internal" href="../Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.piecewise_harmonic" title="pyrid.system.potentials_util.piecewise_harmonic"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.potentials_util.piecewise_harmonic</span></code></a></p>
 </div>
 </details><p>The very same interaction potential is also used in ReaDDy
-<span id="id50">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>.</p>
+<span id="id50">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-weak-piecewise-harmonic">
 <span class="eqno">(50)<a class="headerlink" href="#equation-eq-weak-piecewise-harmonic" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}U_{ha}(r)
 =
@@ -1452,7 +1452,7 @@ Implementation<div class="sd-summary-down docutils">
 <p class="sd-card-text"><a class="reference internal" href="../Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.harmonic_repulsion" title="pyrid.system.potentials_util.harmonic_repulsion"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.potentials_util.harmonic_repulsion</span></code></a></p>
 </div>
 </details><p>The very same interaction potential is also used in ReaDDy
-<span id="id51">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">21</a>]</span>.</p>
+<span id="id51">[<a class="reference internal" href="../../References.html#id4" title="Moritz Hoffmann, Christoph Fröhner, and Frank Noé. ReaDDy 2: fast and flexible software framework for interacting-particle reaction dynamics. PLOS Computational Biology, 15(2):e1006830, feb 2019. doi:10.1371/journal.pcbi.1006830.">23</a>]</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-harmonic-repulsion">
 <span class="eqno">(51)<a class="headerlink" href="#equation-eq-harmonic-repulsion" title="Permalink to this equation"></a></span>\[U(r)
 =
@@ -1476,7 +1476,7 @@ Implementation<div class="sd-summary-down docutils">
 <p class="sd-card-text"><a class="reference internal" href="../Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.CSW" title="pyrid.system.potentials_util.CSW"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.potentials_util.CSW</span></code></a></p>
 </div>
 </details><p>The Continuous Square-Well (CSW) potential has been introduced in
-<span id="id52">[<a class="reference internal" href="../../References.html#id5" title="J. R. Espinosa, C. Vega, and E. Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. The Journal of Chemical Physics, 141(13):134709, oct 2014. doi:10.1063/1.4896621.">27</a>]</span>.</p>
+<span id="id52">[<a class="reference internal" href="../../References.html#id5" title="J. R. Espinosa, C. Vega, and E. Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. The Journal of Chemical Physics, 141(13):134709, oct 2014. doi:10.1063/1.4896621.">29</a>]</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-csw">
 <span class="eqno">(52)<a class="headerlink" href="#equation-eq-csw" title="Permalink to this equation"></a></span>\[U_{CSW}(r) = - \frac{\epsilon_{CSW}}{2} \Big[1 - \tanh\Big(\frac{r-r_w}{\alpha}\Big)\Big].\]</div>
 </section>
@@ -1492,7 +1492,7 @@ Implementation<div class="sd-summary-down docutils">
 <p class="sd-card-text"><a class="reference internal" href="../Developer%20API/system/potentials_util.html#pyrid.system.potentials_util.PHS" title="pyrid.system.potentials_util.PHS"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.potentials_util.PHS</span></code></a></p>
 </div>
 </details><p>The Pseudo Hard Sphere (PHS) potential has been introduced in
-<span id="id53">[<a class="reference internal" href="../../References.html#id3" title="J. Jover, A. J. Haslam, A. Galindo, G. Jackson, and E. A. Müller. Pseudo hard-sphere potential for use in continuous molecular-dynamics simulation of spherical and chain molecules. The Journal of Chemical Physics, 137(14):144505, oct 2012. doi:10.1063/1.4754275.">29</a>]</span>.</p>
+<span id="id53">[<a class="reference internal" href="../../References.html#id3" title="J. Jover, A. J. Haslam, A. Galindo, G. Jackson, and E. A. Müller. Pseudo hard-sphere potential for use in continuous molecular-dynamics simulation of spherical and chain molecules. The Journal of Chemical Physics, 137(14):144505, oct 2012. doi:10.1063/1.4754275.">31</a>]</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-phs">
 <span class="eqno">(53)<a class="headerlink" href="#equation-eq-phs" title="Permalink to this equation"></a></span>\[U_{HS}
 =
@@ -1591,7 +1591,7 @@ of particles i and j! In Brownian dynamics simulations,
 <span class="math notranslate nohighlight">\(P_{mol}^{kin} = N_{mol} k_B T\)</span>, where <span class="math notranslate nohighlight">\(N_{mol}\)</span> is the
 number of molecules. Also, the origin of molecules is represented by the
 center of diffusion around which the molecule rotates about, which is
-not the center of mass <span id="id55">[<a class="reference internal" href="../../References.html#id19" title="Steven Harvey and Jose Garcia de la Torre. Coordinate systems for modeling the hydrodynamic resistance and diffusion coefficients of irregularly shaped rigid macromolecules. Macromolecules, 13(4):960–964, jul 1980. doi:10.1021/ma60076a037.">13</a>]</span>. The net
+not the center of mass <span id="id55">[<a class="reference internal" href="../../References.html#id19" title="Steven Harvey and Jose Garcia de la Torre. Coordinate systems for modeling the hydrodynamic resistance and diffusion coefficients of irregularly shaped rigid macromolecules. Macromolecules, 13(4):960–964, jul 1980. doi:10.1021/ma60076a037.">15</a>]</span>. The net
 frictional force and torque act through the center of diffusion. This is
 because when doing Brownian dynamics (and equaly for Langevin dynamics),
 we do account for the surrounding fluid. Different parts of the molecule
@@ -1618,7 +1618,7 @@ Implementation<div class="sd-summary-down docutils">
 ensemble, e.g., in preparation steps to release the system from
 stresses. This can become necessary, e.g. when computing inter-facial
 properties of fluids or computing phase diagrams via direct coexistence
-methods <span id="id56">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">28</a>, <a class="reference internal" href="../../References.html#id24" title="Erich A. Muller, Åsmund Ervik, and Andrés Mej\'ıa. A guide to computing interfacial properties of fluids from molecular simulations [article v1.0]. Living Journal of Computational Molecular Science, 2020. doi:10.33011/livecoms.2.1.21385.">30</a>, <a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. The
+methods <span id="id56">[<a class="reference internal" href="../../References.html#id2" title="Jorge R. Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. The Journal of Chemical Physics, 150(22):224510, jun 2019. doi:10.1063/1.5098551.">30</a>, <a class="reference internal" href="../../References.html#id24" title="Erich A. Muller, Åsmund Ervik, and Andrés Mej\'ıa. A guide to computing interfacial properties of fluids from molecular simulations [article v1.0]. Living Journal of Computational Molecular Science, 2020. doi:10.33011/livecoms.2.1.21385.">32</a>, <a class="reference internal" href="../../References.html#id28" title="Jorge R. Espinosa, Jerelle A. Joseph, Ignacio Sanchez-Burgos, Adiran Garaizar, Daan Frenkel, and Rosana Collepardo-Guevara. Liquid network connectivity regulates the stability and composition of biomolecular condensates with many components. Proceedings of the National Academy of Sciences, 117(24):13238–13247, jun 2020. doi:10.1073/pnas.1917569117.">90</a>]</span>. The
 Berendsen barostat <span id="id57">[<a class="reference internal" href="../../References.html#id66" title="H. J. C. Berendsen, J. P. M. Postma, W. F. van Gunsteren, A. DiNola, and J. R. Haak. Molecular dynamics with coupling to an external bath. The Journal of Chemical Physics, 81(8):3684–3690, oct 1984. doi:10.1063/1.448118.">91</a>]</span> is simple to
 implement and results in the correct target density of the system,
 however, it does not sample from the correct statistical ensemble
@@ -1676,10 +1676,10 @@ we would need to choose a larger than target compartment size and shrink
 it until we reach the target size. If the density is too large, we may
 randomly delete molecules until the target density is also reached. A
 second approach would be to utilize the Metropolis Monte Carlo method
-<span id="id59">[<a class="reference internal" href="../../References.html#id26" title="Michael P. Allen and Dominic J. Tildesley. Computer Simulation of Liquids. Oxford University Press, nov 2017. doi:10.1093/oso/9780198803195.001.0001.">33</a>]</span> to distribute the molecules. However,
+<span id="id59">[<a class="reference internal" href="../../References.html#id26" title="Michael P. Allen and Dominic J. Tildesley. Computer Simulation of Liquids. Oxford University Press, nov 2017. doi:10.1093/oso/9780198803195.001.0001.">3</a>]</span> to distribute the molecules. However,
 this approach is more time-consuming. A third approach, which is the one
 we use in PyRID, uses a so-called Poisson-Disc sampling algorithm
-<span id="id60">[<a class="reference internal" href="../../References.html#id36" title="Robert Bridson. Fast poisson disk sampling in arbitrary dimensions. In ACM SIGGRAPH 2007 sketches on - SIGGRAPH \textquotesingle 07. ACM Press, 2007. doi:10.1145/1278780.1278807.">25</a>]</span>. This approach has the benefit of being
+<span id="id60">[<a class="reference internal" href="../../References.html#id36" title="Robert Bridson. Fast poisson disk sampling in arbitrary dimensions. In ACM SIGGRAPH 2007 sketches on - SIGGRAPH \textquotesingle 07. ACM Press, 2007. doi:10.1145/1278780.1278807.">27</a>]</span>. This approach has the benefit of being
 computationally efficient and relatively simple to implement. It,
 however, has the disadvantage of not reaching densities above 30% and is
 only well suited for approximately spherical molecules. To distribute
@@ -1719,7 +1719,7 @@ Implementation<div class="sd-summary-down docutils">
 </div>
 </details><p>The distribution of molecules on the surface of a mesh compartment is a
 little more involved. Here, we utilize an algorithm introduced by
-<span id="id62">[<a class="reference internal" href="../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">23</a>]</span>:</p>
+<span id="id62">Corsini <em>et al.</em> [<a class="reference internal" href="../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">25</a>]</span>:</p>
 <ol class="arabic simple">
 <li><p>Generate a sample pool S by uniformly distributing points on the mesh
 surface.</p></li>
@@ -1986,7 +1986,7 @@ take into account Newtons third law, this will decrease the number of
 computations (<span class="math notranslate nohighlight">\(O(\frac{1}{2}N(N-1))\)</span>), but the computational
 complexity still is quadratic in N. A straight forward method to
 significantly improve the situation is the linked cell list approach
-<span id="id65">[<a class="reference internal" href="../../References.html#id26" title="Michael P. Allen and Dominic J. Tildesley. Computer Simulation of Liquids. Oxford University Press, nov 2017. doi:10.1093/oso/9780198803195.001.0001.">33</a>]</span> (pp.195: 5.3.2 Cell structures and linked
+<span id="id65">[<a class="reference internal" href="../../References.html#id26" title="Michael P. Allen and Dominic J. Tildesley. Computer Simulation of Liquids. Oxford University Press, nov 2017. doi:10.1093/oso/9780198803195.001.0001.">3</a>]</span> (pp.195: 5.3.2 Cell structures and linked
 lists) where the simulation box is divided into
 <span class="math notranslate nohighlight">\(n \times n \times n\)</span> cells. The number of cells must be chosen
 such that the side length of the cells in each dimension
@@ -2020,7 +2020,7 @@ calculation if the radius of particle i is larger than the radius of
 particle j. If the radii are equal, we only do the calculation if index
 i is smaller than index j.</p>
 <p>A much better approach has been introduced by
-<span id="id66">[<a class="reference internal" href="../../References.html#id27" title="V. Ogarko and S. Luding. A fast multilevel algorithm for contact detection of arbitrarily polydisperse objects. Computer Physics Communications, 183(4):931–936, apr 2012. doi:10.1016/j.cpc.2011.12.019.">34</a>]</span> that makes use of a so called
+<span id="id66">Ogarko and Luding [<a class="reference internal" href="../../References.html#id27" title="V. Ogarko and S. Luding. A fast multilevel algorithm for contact detection of arbitrarily polydisperse objects. Computer Physics Communications, 183(4):931–936, apr 2012. doi:10.1016/j.cpc.2011.12.019.">4</a>]</span> that makes use of a so called
 hierarchical grid. This approach is the one I use in PyRID. In the
 hierarchical grid approach, each particle is assigned to a different
 cell grid depending on its cutoff radius, i.e. the grid consists of
@@ -2030,7 +2030,7 @@ reduces the number of distance calculations we need to do for the larger
 particles and also takes advantage of Newtons third law, enabling
 polydisperse system simulations with almost no performance loss. The
 algorithm for the distance checks works as follows
-<span id="id67">[<a class="reference internal" href="../../References.html#id27" title="V. Ogarko and S. Luding. A fast multilevel algorithm for contact detection of arbitrarily polydisperse objects. Computer Physics Communications, 183(4):931–936, apr 2012. doi:10.1016/j.cpc.2011.12.019.">34</a>]</span>:</p>
+<span id="id67">[<a class="reference internal" href="../../References.html#id27" title="V. Ogarko and S. Luding. A fast multilevel algorithm for contact detection of arbitrarily polydisperse objects. Computer Physics Communications, 183(4):931–936, apr 2012. doi:10.1016/j.cpc.2011.12.019.">4</a>]</span>:</p>
 <ol class="arabic simple">
 <li><p>Iterate over all particles</p></li>
 <li><p>Assign each particle to a cell on their respective level in the

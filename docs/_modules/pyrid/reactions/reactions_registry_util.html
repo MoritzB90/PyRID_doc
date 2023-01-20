@@ -305,6 +305,11 @@
 <span class="sd">            In case of a surface moelcule having a volume moelcule product indicates whether the product is to be released into the simulation box volume (0) or the mesh compartment (1). Default = None</span>
 <span class="sd">        radius : `float64`</span>
 <span class="sd">            Reaction radius in case of a bimolecular/biparticle reaction. Default = None</span>
+<span class="sd">        placement_factor : `float64` [0,1]</span>
+<span class="sd">            Only for fusion reactions: Affects where between the educt molecules the product molecule is placed. A factor of 0.5 means in the middle. </span>
+<span class="sd">            A smaller factor will shift the product towards the first educt, a larger value towards the second educt molecule. </span>
+<span class="sd">            A value different from 0.5 may increase accuracy in the case of a strong size difference between the two educts (a strong difference in the diffusion tensors). </span>
+<span class="sd">            Default = 0.5</span>
 <span class="sd">            </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>

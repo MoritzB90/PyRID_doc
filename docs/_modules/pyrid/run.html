@@ -122,30 +122,14 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 
-<span class="k">def</span> <span class="nf">convert_dict</span><span class="p">(</span><span class="n">untyped_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_dict"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.convert_dict">[docs]</a><span class="k">def</span> <span class="nf">convert_dict</span><span class="p">(</span><span class="n">untyped_dict</span><span class="p">):</span>
     
-    <span class="n">key_type</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">untyped_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">value_type</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">untyped_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
-    
-    <span class="n">typed_dict</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typed</span><span class="o">.</span><span class="n">Dict</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">key_type</span><span class="p">,</span> <span class="n">value_type</span><span class="p">)</span>
-    
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">untyped_dict</span><span class="p">:</span>
-        <span class="n">typed_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">untyped_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    
-    <span class="k">return</span> <span class="n">typed_dict</span>
-
-
-<div class="viewcode-block" id="random_quaternion"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.random_quaternion">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="c1">#(cache=True)</span>
-<span class="k">def</span> <span class="nf">random_quaternion</span><span class="p">():</span>
-    
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Converts a python dictionary to a Numba typed dictionary.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    untyped_dict : `dict`</span>
+<span class="sd">        Untyped python dictionary</span>
 <span class="sd">    </span>
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -154,12 +138,46 @@
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    nb.types.DictType</span>
+<span class="sd">        Numba typed dictionary</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">key_type</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">untyped_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">value_type</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">untyped_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">typed_dict</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">typed</span><span class="o">.</span><span class="n">Dict</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">key_type</span><span class="p">,</span> <span class="n">value_type</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">untyped_dict</span><span class="p">:</span>
+        <span class="n">typed_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">untyped_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">typed_dict</span></div>
+
+
+<div class="viewcode-block" id="random_quaternion"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.random_quaternion">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="c1">#(cache=True)</span>
+<span class="k">def</span> <span class="nf">random_quaternion</span><span class="p">():</span>
+    
+    <span class="sd">&quot;&quot;&quot;Returns a random rotation quaternion.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The method can be found in K. Shoemake, Graphics Gems III by D. Kirk, pages 124-132 :cite:p:`Kirk2012` and on http://planning.cs.uiuc.edu/node198.html:</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            </span>
+<span class="sd">            \\boldsymbol{q} = [\\sqrt{1-u_1} \\, \\sin(2 \\pi u_2), \\sqrt{1-u_1} \\, \\cos(2 \\pi u_2), \\sqrt{u_1} \\, \\sin(2 \\pi u_3), \\sqrt{u_1} \\, \\cos(2 \\pi u_3)] ,</span>
+<span class="sd">    </span>
+<span class="sd">            </span>
+<span class="sd">    where :math:`u_1,u_2,u_3 \\in [0,1]` are uniformly distributed random numbers. :math:`\\boldsymbol{q}` is a uniformly distributed, random rotation quaternion.</span>
+<span class="sd">                                                   </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float64[4]</span>
+<span class="sd">        Unit quaternion representing a uniformly distributed random rotation / orientation.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="c1"># Based on K. Shoemake. Uniform random rotations. In D. Kirk, editor, Graphics Gems III, pages 124-132. Academic, New York, 1992. http://planning.cs.uiuc.edu/node198.html</span>
     
     <span class="n">u1</span><span class="p">,</span><span class="n">u2</span><span class="p">,</span><span class="n">u3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     
@@ -172,12 +190,14 @@
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Simulation : `ob`</span>
-<span class="sd">        Simulation instance</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
 <span class="sd">    </span>
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    When doing rigid body molecular dynamics or Brownian dynamics simulations, we need to be careful how to calculate the virial tensor. Taking the interparticle distances will result in the wrong pressure. Instead, one needs to use the pairwise distance between the centers of mass of the rigid bodies :cite:p:`Glaser2020` :</span>
+<span class="sd">    When doing rigid body molecular dynamics or Brownian dynamics simulations, we need to be careful how to calculate the virial tensor. </span>
+<span class="sd">    Taking the interparticle distances will result in the wrong pressure. </span>
+<span class="sd">    Instead, one needs to use the pairwise distance between the centers of mass of the rigid bodies :cite:p:`Glaser2020` :</span>
 <span class="sd">        </span>
 <span class="sd">    .. math::</span>
 <span class="sd">        :label: Pressure</span>
@@ -208,19 +228,121 @@
 <div class="viewcode-block" id="Simulation"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation">[docs]</a><span class="k">class</span> <span class="nc">Simulation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A brief summary of the classes purpose and behavior</span>
+<span class="sd">    The Simulation class takes care of most of the user communication with PyRIDs numba compiled functions that are the core of the PyRID simulator. </span>
+<span class="sd">    The Simulation class thereby represents the biggest part of the user API. </span>
+<span class="sd">    By creating an instance of the Simulation class and calling its methods, the user can define molecule types, setup the simulation volume, </span>
+<span class="sd">    define reactions etc. and, last but not least, start the simulation.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    attribute_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    attribute_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of the System class</span>
+<span class="sd">    Particles : `object`</span>
+<span class="sd">        Instance of the Particles class</span>
+<span class="sd">    RBs : `object`</span>
+<span class="sd">        Instance of the RBs class</span>
+<span class="sd">    file_path : `object`</span>
+<span class="sd">        Directory for simulation results. Uses the pathlib library.</span>
+<span class="sd">    file_name : `string`</span>
+<span class="sd">        Project name for the simulation files.</span>
+<span class="sd">    fig_path : `object`</span>
+<span class="sd">        Directory for any figures created with PyRID. Uses the pathlib library.</span>
+<span class="sd">    write_trajectory : `boolean`</span>
+<span class="sd">        If false, PyRID will not save any molecule trajectory data. Default = True</span>
+<span class="sd">    stride : `int64`</span>
+<span class="sd">        Stride used for saving molecule trajectories to the hard drive.</span>
+<span class="sd">    current_step : `int64`</span>
+<span class="sd">        Current simulation time step.</span>
+<span class="sd">    release_events = `list`</span>
+<span class="sd">        List of molecule release events</span>
+<span class="sd">    nsteps : `int64`</span>
+<span class="sd">        Number of simulation steps.</span>
+<span class="sd">    sim_time : `float64`</span>
+<span class="sd">        Instead of a number of simulation steps, the user can also define the simulation time/duration. </span>
+<span class="sd">        This option is useful, e.g., when running PyRID on a cluster with maximum runtime for users.</span>
+<span class="sd">    Observer : `object`</span>
+<span class="sd">        Instance of the Observables class.</span>
+<span class="sd">    Measures : `list`</span>
+<span class="sd">        List of all measures / observables supported by PyRID.</span>
+<span class="sd">    length_units : `dict`</span>
+<span class="sd">        Dictionary assigning written out unit name and unit short form.</span>
+<span class="sd">    units : `dict`</span>
+<span class="sd">        Dictionary containing for each system property / observable the corresponding unit.</span>
+<span class="sd">    time_unit : &#39;ns&#39;, &#39;mus&#39;, &#39;ms&#39;, &#39;s&#39;</span>
+<span class="sd">        Unit of time</span>
+<span class="sd">    checkpoint : `array like`</span>
+<span class="sd">        Structured array that contains fields for different checkpoint parameters (stride, directory, maximum number of saves).</span>
+<span class="sd">    Timer : `dict`</span>
+<span class="sd">        Dictionary that saves the runtime for different parts of the simulation loop such as integration, reaction handling and writing data to files.</span>
+<span class="sd">    progress_properties : `list`</span>
+<span class="sd">        List of simulation properties to print/log while the simulation is running. </span>
+<span class="sd">        Supported are &#39;it/s&#39; (iterations per second), &#39;pu/s&#39; (particle updates per second), &#39;Time passed&#39;, &#39;step&#39;, &#39;N&#39; (Number of molecules), &#39;Pressure&#39;, </span>
+<span class="sd">        &#39;Volume&#39; (Simulation box volume), &#39;Vol_Frac&#39; (Volume fraction per molecule type), &#39;Bonds&#39; (Number of particle-particle bonds).</span>
+<span class="sd">    hdf : `object`</span>
+<span class="sd">        hdf5 file that PyRID writes all observable data to.</span>
+<span class="sd">    HGrid : `array like`</span>
+<span class="sd">        Hierarchical grid represented by a numpy structures array.</span>
+<span class="sd">    particles_left_box : `list`</span>
+<span class="sd">        List of particles that have left the simulation volume. </span>
+<span class="sd">        If this list is not empty this is always a sign that some system parameters need to changed because the simulation is unstable.</span>
+
+
+
+
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    method_1(arguments)</span>
-<span class="sd">        Some general information about this method</span>
+<span class="sd">    print_timer(self)</span>
+<span class="sd">        Prints the runtime of different parts of the simulation loop such as integration, reaction handling and writing data to files.</span>
+<span class="sd">    k_micro(self, mol_type_1, mol_type_2, k_macro, R_react, loc_type = &#39;Volume&#39;)</span>
+<span class="sd">        Calculates the microscopic reaction rate from a given macroscopic rate, reaction radius and the educts´ diffusion coefficients. </span>
+<span class="sd">        Calls :func:`pyrid.reactions.reactions_util.k_micro`.</span>
+<span class="sd">    k_macro(self, D1, D2, k_micro, R_react)</span>
+<span class="sd">        Calculates the macroscopic reaction rate from a given microscopic rate, reaction radius and the educts´ diffusion coefficients. </span>
+<span class="sd">        Calls :func:`pyrid.reactions.reactions_util.k_macro`.</span>
+<span class="sd">    add_checkpoints(self, stride, directory, max_saves)</span>
+<span class="sd">        Registers the parameters for saving checkpoints.</span>
+<span class="sd">    add_barostat_berendsen(self, Tau_P, P0, start)</span>
+<span class="sd">        Adds a Berendsen barostat. Calls :func:`pyrid.system.system_util.System.add_barostat_berendsen`.</span>
+<span class="sd">    set_compartments(self, Compartments, triangles, vertices, mesh_scale = 1.0, adapt_box = False)</span>
+<span class="sd">        Sets up 3d mesh compartments.</span>
+<span class="sd">    register_particle_type(self, Type, radius)</span>
+<span class="sd">        Registers a particle type. Calls :func:`pyrid.system.system_util.System.register_particle_type`.</span>
+<span class="sd">    add_interaction(self, interaction_type, type1, type2, parameters, bond = False)</span>
+<span class="sd">        Assigns a particle-particle interaction potential to a particle type pair. Calls :func:`pyrid.system.system_util.System.add_interaction`.</span>
+<span class="sd">    add_up_reaction(self, reaction_type, educt_type, rate, product_types = None, product_loc = None, product_direction = None, radius = None)</span>
+<span class="sd">        Registeres a Uni-Particle (UP) reaction for an educt particle. Calls :func:`pyrid.system.system_util.System.add_up_reaction`.</span>
+<span class="sd">    add_um_reaction(self, reaction_type, educt_type, rate, product_types = None, product_loc = None, product_direction = None, radius = None)</span>
+<span class="sd">        Registeres a Uni-Molecular (UM) reaction for an educt Molecule. Calls :func:`pyrid.system.system_util.System.add_um_reaction`.</span>
+<span class="sd">    add_bp_reaction(self, reaction_type, educt_types, product_types, rate, radius, interaction_type = None, interaction_parameters = None)</span>
+<span class="sd">        Registeres a Bi-Particle (BP) reaction for an educt particle. Calls :func:`pyrid.system.system_util.System.add_bp_reaction`.</span>
+<span class="sd">    add_bm_reaction(self, reaction_type, educt_types, product_types, particle_pairs, pair_rates, pair_radii, placement_factor = 0.5)</span>
+<span class="sd">        Registeres a Bi-Molecular (BM) reaction for an educt molecule. Calls :func:`pyrid.system.system_util.System.add_bm_reaction`.</span>
+<span class="sd">    register_molecule_type(self, molecule_name, particle_pos, particle_types, collision_type = 0, h_membrane = None)</span>
+<span class="sd">        Regsiters a molecule type. Calls :func:`pyrid.system.system_util.System.register_molecule_type`.</span>
+<span class="sd">    set_diffusion_tensor(self, molecule_name, D_tt, D_rr)</span>
+<span class="sd">        Checks whether a given diffusion tensor is valid (physically meaningful) and sets the diffusion tensor for a given molecule type. </span>
+<span class="sd">        Calls :func:`pyrid.system.system_util.System.set_diffusion_tensor`.</span>
+<span class="sd">    fixed_concentration_at_boundary(self, molecule_name, C, comp_name, location)</span>
+<span class="sd">        Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.</span>
+<span class="sd">        Calls :func:`pyrid.system.system_util.System.fixed_concentration_at_boundary`.</span>
+<span class="sd">    add_molecules(self, Location, Compartment_Number, points, quaternion, points_type, face_ids = None)</span>
+<span class="sd">        Places molecules in the simulation box given their location, orientation, type, and compartment number.</span>
+<span class="sd">    distribute(self, Method, Location, Compartment_Number, Types, Number, clustering_factor=1, max_trials=100, jitter = None, triangle_id = None, multiplier = 100, facegroup = None)</span>
+<span class="sd">        Calculates the distribution of molecules in the simulation box / the surface or volume of a compartment using one of several different methods.</span>
+<span class="sd">    observe(self, Measure, molecules = &#39;All&#39;, reactions = &#39;All&#39;, obs_stride = 1, bin_width = None, n_bins = None, stepwise = True, binned= False)</span>
+<span class="sd">        Sets up an observer for a certain system property / measure.</span>
+<span class="sd">    observe_rdf(self, rdf_pairs = None, rdf_bins = 100, rdf_cutoff = None, stride = None)</span>
+<span class="sd">        Sets up an observer for the radial distribution function.</span>
+<span class="sd">    add_release_site(self, Location, timepoint, compartment_id, Number = None, Types = None, origin = None, jitter = None, Molecules_id = None, Positions = None, Quaternion = None, triangle_id = None)</span>
+<span class="sd">        Adds a molecule release site that releases a number of molecules at a defined time point into the system.</span>
+<span class="sd">    progress(self, sim_time, nsteps, j, time_passed, it_per_s, Np, Pressure_total, N_bonds, Volume, out_linebreak, N, width=30)</span>
+<span class="sd">        prints / logs several different simulation parameters such as iterations per second, molecule number and pressure.</span>
+<span class="sd">    load_checkpoint(self, file_name, index, directory = &#39;checkpoints/&#39;)</span>
+<span class="sd">        Loads a system state from a checkpoint file.</span>
+<span class="sd">    run(self, progress_stride = 100, keep_time = False, out_linebreak = False, progress_bar_properties = None, start_reactions = 0)</span>
+<span class="sd">        Simulation loop. Runs the simulation.</span>
+
+
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -304,7 +426,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;max_saves&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         
         
-    <span class="k">def</span> <span class="nf">print_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.print_timer"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.print_timer">[docs]</a>    <span class="k">def</span> <span class="nf">print_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Prints the runtime of different parts of the simulation loop such as integration, reaction handling and writing data to files.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">t_total</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">:</span>
@@ -312,40 +439,85 @@
                 <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="o">+</span><span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">],</span><span class="s1">&#39; it/s | &#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="mf">1e3</span><span class="p">,</span> <span class="s1">&#39; ms/it&#39;</span> <span class="p">)</span>
                 <span class="n">t_total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;total pu/s: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39; pu/s&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;total pu/s: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Timer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39; pu/s&#39;</span><span class="p">)</span></div>
             
-    <span class="k">def</span> <span class="nf">k_micro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,</span> <span class="n">loc_type</span> <span class="o">=</span> <span class="s1">&#39;Volume&#39;</span><span class="p">):</span>
-        
-        <span class="n">k</span> <span class="o">=</span> <span class="n">ru</span><span class="o">.</span><span class="n">k_micro</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="p">,</span> <span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,</span> <span class="n">loc_type</span> <span class="o">=</span> <span class="n">loc_type</span><span class="p">)</span>
-            
-        <span class="k">return</span> <span class="n">k</span>
-    
-    <span class="k">def</span> <span class="nf">k_macro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_micro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">):</span>
-        
-        <span class="n">k</span> <span class="o">=</span> <span class="n">ru</span><span class="o">.</span><span class="n">k_macro</span><span class="p">(</span><span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_micro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">)</span>
-            
-        <span class="k">return</span> <span class="n">k</span>
-    
-<div class="viewcode-block" id="Simulation.add_checkpoints"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_checkpoints">[docs]</a>    <span class="k">def</span> <span class="nf">add_checkpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">max_saves</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.k_micro"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.k_micro">[docs]</a>    <span class="k">def</span> <span class="nf">k_micro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,</span> <span class="n">loc_type</span> <span class="o">=</span> <span class="s1">&#39;Volume&#39;</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the microscopic reaction rate from a given macroscopic rate, reaction radius and the educts´ diffusion coefficients. </span>
+<span class="sd">        Calls :func:`pyrid.reactions.reactions_util.k_micro`.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        mol_type_1 : `string`</span>
+<span class="sd">            Name of educt moelcule 1.</span>
+<span class="sd">        mol_type_2 : `string`</span>
+<span class="sd">            Name of educt moelcule 2.</span>
+<span class="sd">        k_macro : `float`</span>
+<span class="sd">            Macroscopic reaction rate.</span>
+<span class="sd">        R_react : `float`</span>
+<span class="sd">            Reaction radius.</span>
+<span class="sd">        loc_type : `string`</span>
+<span class="sd">            Location type of the educts (&#39;Volume&#39; or &#39;Surface&#39;).</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The method used here is only valid for volume molecules, i.e. diffusion in 3D. For surface molecules a value is also returned, however with a warning.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        `float64`</span>
+<span class="sd">            Microscopic reaction rate</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">k</span> <span class="o">=</span> <span class="n">ru</span><span class="o">.</span><span class="n">k_micro</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="p">,</span> <span class="n">mol_type_1</span><span class="p">,</span> <span class="n">mol_type_2</span><span class="p">,</span> <span class="n">k_macro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">,</span> <span class="n">loc_type</span> <span class="o">=</span> <span class="n">loc_type</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">k</span></div>
+    
+<div class="viewcode-block" id="Simulation.k_macro"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.k_macro">[docs]</a>    <span class="k">def</span> <span class="nf">k_macro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_micro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Calculates the macroscopic reaction rate from a given microscopic rate, reaction radius and the educts´ diffusion coefficients. </span>
+<span class="sd">        Calls :func:`pyrid.reactions.reactions_util.k_macro`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        D1 : `float`</span>
+<span class="sd">            Translational diffusion coefficient of educt 1.</span>
+<span class="sd">        D2 : `float`</span>
+<span class="sd">            Translational diffusion coefficient of educt 2.</span>
+<span class="sd">        k_micro : `float`</span>
+<span class="sd">            Microscopic reaction rate.</span>
+<span class="sd">        R_react : `float`</span>
+<span class="sd">            Reaction radius.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `float64`</span>
+<span class="sd">            Macroscopic reaction rate</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">k</span> <span class="o">=</span> <span class="n">ru</span><span class="o">.</span><span class="n">k_macro</span><span class="p">(</span><span class="n">D1</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">k_micro</span><span class="p">,</span> <span class="n">R_react</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">k</span></div>
+    
+<div class="viewcode-block" id="Simulation.add_checkpoints"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_checkpoints">[docs]</a>    <span class="k">def</span> <span class="nf">add_checkpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">max_saves</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Registers the parameters for saving checkpoints such as stride, maximum number of saves and target directory.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stride : `int64`</span>
+<span class="sd">            Stride for making checkpoints.</span>
+<span class="sd">        directory : `string`</span>
+<span class="sd">            Target directory for the checkpoint files.</span>
+<span class="sd">        max_saves : `int64`</span>
+<span class="sd">            Maximum number of files that are saved. Old files will be overwritten to keep the number of checkpoint files at the value of max_saves.</span>
+<span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
     
@@ -357,30 +529,47 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;max_saves&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_saves</span></div>
         
         
-    <span class="k">def</span> <span class="nf">add_barostat_berendsen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_barostat_berendsen</span><span class="p">(</span><span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
-        
-<div class="viewcode-block" id="Simulation.set_compartments"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.set_compartments">[docs]</a>    <span class="k">def</span> <span class="nf">set_compartments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Compartments</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">adapt_box</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+<div class="viewcode-block" id="Simulation.add_barostat_berendsen"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_barostat_berendsen">[docs]</a>    <span class="k">def</span> <span class="nf">add_barostat_berendsen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Adds a Berendsen barostat. Calls :func:`pyrid.system.system_util.System.add_barostat_berendsen`.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        Tau_P : `float`</span>
+<span class="sd">            Time constant of berendsen barostat</span>
+<span class="sd">        P0 : `float`</span>
+<span class="sd">            Target pressure of berendsen barostat</span>
+<span class="sd">        start : `int`</span>
+<span class="sd">            Simulation step from which to start simulating in NPT ensemble.</span>
+<span class="sd">            </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        The Berendsen barostat is frequently used in molecular dynamics simulations due to its simplicity and fast equilibration. While the Berendsen barostat results in the correct particle density, it does not correctly sample from the (NPT) thermodynamical ensemble, i.e. the fluctuation in the pressure are not 100% accurate. Therefore, one needs to be carefull when to use this Barostat. However, if the barostat is used in the preparation step but not during sampling, e.g. when doing LLPs simualtions where the barostat is used to relax the system&#39;s shape but afterwards one simulates in the NVT ensemble :cite:t:`Muller2020`, this should not be a problem. </span>
+<span class="sd">        Note: :cite:t:`Baruffi2019` introduced a barostat for overdamped Langevin dynamics that settles to the correct thermodynamic equilibrium distribution.</span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_barostat_berendsen</span><span class="p">(</span><span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Simulation.set_compartments"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.set_compartments">[docs]</a>    <span class="k">def</span> <span class="nf">set_compartments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Compartments</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">adapt_box</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Sets up 3d mesh compartments.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Compartments : `dict`</span>
+<span class="sd">            Dictionary containing for each compartment number the triangle indices and face groups. Also see :func:`pyrid.geometry.load_wavefront.load_compartments`.</span>
+<span class="sd">        triangles : `int64[:,3]`</span>
+<span class="sd">            List of vertex indices (3) per triangle.</span>
+<span class="sd">        vertices : `float64[:,3]`</span>
+<span class="sd">            List of vertex coordinates.</span>
+<span class="sd">        meshscale : `float64`</span>
+<span class="sd">            Factor by which to scale the 3d mesh. Default = 1.0</span>
+<span class="sd">        adapt_box : `boolean`</span>
+<span class="sd">            If true, the simulation box size is adapted such that the mesh fits exactly in the simulation box. Default = False</span>
+<span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -388,7 +577,7 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_system_grid</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please register all particle types used in the simulation or manualy define a grid size for the simulation box before adding a mesh compartment! &#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please register all particle types used in the simulation or manually define a grid size for the simulation box before adding a mesh compartment! &#39;</span><span class="p">)</span>
             
         <span class="c1"># Check if there are any transparent face groups:</span>
         <span class="n">triangle_ids_transparent</span> <span class="o">=</span> <span class="p">[]</span>
@@ -453,22 +642,122 @@
         <span class="k">if</span> <span class="n">adapt_box</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Simulation box has been adapted. box_lengths = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span></div>
         
-    <span class="k">def</span> <span class="nf">register_particle_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+<div class="viewcode-block" id="Simulation.register_particle_type"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.register_particle_type">[docs]</a>    <span class="k">def</span> <span class="nf">register_particle_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Registers a particle type. Calls :func:`pyrid.system.system_util.System.register_particle_type`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Type : `str`</span>
+<span class="sd">            Name of the particle type.</span>
+<span class="sd">        radius : `float`</span>
+<span class="sd">            radius of the particle.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">register_particle_type</span><span class="p">(</span><span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
         
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">add_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">,</span> <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.add_interaction"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_interaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">,</span> <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Assigns a particle-particle interaction potential to a particle type pair. Calls :func:`pyrid.system.system_util.System.add_interaction`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        interaction_type : `str` {&#39;harmonic_repulsion&#39;, &#39;PHS&#39;, &#39;harmonic_attraction&#39;, &#39;CSW&#39;}</span>
+<span class="sd">            Type of interaction potential</span>
+<span class="sd">        type1 : `str`</span>
+<span class="sd">            Names of the educt particle type 1</span>
+<span class="sd">        type2 : `str`</span>
+<span class="sd">            Names of the educt particle type 2</span>
+<span class="sd">        parameters : `dict`</span>
+<span class="sd">            Parameters for the interaction potential function.</span>
+<span class="sd">        bond : `bool`</span>
+<span class="sd">            True if interaction is initialized as part of a bindign reaction. (Default: False)</span>
+<span class="sd">        breakable : `bool`</span>
+<span class="sd">            If set to True, bonds that have been formed by a binding reaction are deleted if the interparticle distance is above the cutoff radius of the interaction potenial.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Bi-particle reactions are evaluated using the Doi scheme. Thereby, two educt particles react with a reaction rate k if the inter-particle distance is below the reaction radius.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">parameters</span> <span class="o">=</span> <span class="n">convert_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="n">interaction_type</span><span class="p">,</span> <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">bond</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="n">interaction_type</span><span class="p">,</span> <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">bond</span><span class="p">)</span></div>
         
 
 <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">add_up_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_direction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-            
+<div class="viewcode-block" id="Simulation.add_up_reaction"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_up_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_up_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_direction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Registeres a Uni-Particle (UP) reaction for an educt particle. Calls :func:`pyrid.system.system_util.System.add_up_reaction`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reaction_type : `str` {&#39;relase&#39;, &#39;conversion&#39;}</span>
+<span class="sd">            Name of the reaction type</span>
+<span class="sd">        educt_type : `str`</span>
+<span class="sd">            Name of the educt particle type</span>
+<span class="sd">        rate : `float64`</span>
+<span class="sd">            Reaction rate</span>
+<span class="sd">        product_types : `array_like`</span>
+<span class="sd">            List of products</span>
+<span class="sd">        product_loc : `array_like`</span>
+<span class="sd">            List specifying whether the individual products are volume (0) or surface (1) molecules </span>
+<span class="sd">        product_direction : `array_like`</span>
+<span class="sd">            Specifies whether, in case of a surface particle releasing products into the volume, the realease occurs inside (-1) or outside (1) the mesh compartment.</span>
+<span class="sd">        radius : `float64`</span>
+<span class="sd">            The radius within which molecules are distributed upon a successfull release reaction.</span>
+<span class="sd">            </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Uni-particle reactions are evaluated using a variant of the Gillespie stochastic simulation algorithm. Thereby, for a particle type, the time point of the </span>
+<span class="sd">        next uni-particle reaction occuring is calculated in advance and executed when the simualtion reaches the respective time point. </span>
+<span class="sd">        For unimolecular reactions we can draw the time point of the next reaction from a distribution using a variant of the Gillespie Stochastic </span>
+<span class="sd">        Simulation Algorithm (SSA) :cite:t:`Stiles2001`, :cite:t:`Erban2007`. For a single molecule having :math:`n` possible transition reactions/reaction paths each </span>
+<span class="sd">        having a reaction rate :math:`k_i`, let :math:`k_t = \sum_i^n k_i` be the total reaction rate. </span>
+<span class="sd">        </span>
+<span class="sd">        Now, let :math:`\\rho(\\tau) d\\tau` be the probability that the next reaction occurs within :math:`[t+\\tau,t+\\tau+d\\tau)` and let :math:`g(\\tau)` </span>
+<span class="sd">        be the probability that no reaction occurs within :math:`[t,t+\\tau)`. The probability that a reaction occurs within the time interval :math:`d\\tau` </span>
+<span class="sd">        is simply :math:`k_t d\\tau`. Thereby</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            </span>
+<span class="sd">            \\rho(\\tau) d\\tau = g(\\tau) k_t d\\tau</span>
+<span class="sd">        </span>
+<span class="sd">        where :math:`g(\\tau) = e^{-k_t \\tau}` (see also Poisson process).</span>
+<span class="sd">        From the above equation we easily find :math:`P(\\tau) = 1-e^{-k_t \\tau}` by integration.</span>
+<span class="sd">        To sample from this distribution, we can use the inverse distribution function.</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            </span>
+<span class="sd">            \\tau = P^{-1}(U)</span>
+<span class="sd">            </span>
+<span class="sd">        where :math:`U` i uniformly distributed in :math:`(0,1)`. </span>
+<span class="sd">        Given that :math:`U = P(\\tau) = 1-e^{-k_t \\tau}`, we find :math:`P^{-1}(U) = \\frac{-log(1-U)}{k_t}`. Since </span>
+<span class="sd">        :math:`U` is uniformly distributed in 0,1, so is :math:`1-U`. Thereby, we can draw the time point of the next reaction from:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            \\tau = \\frac{1}{k_t} \ln\Big[\\frac{1}{U}\Big],</span>
+<span class="sd">        </span>
+<span class="sd">        With the above method, we accurately sample from the distribution of expected molecule lifetimes :math:`\\rho(\\tau) = k_t e^{-k_t \\tau}`.</span>
+<span class="sd">        </span>
+<span class="sd">        A uni-particle reaction can consist of several reaction paths. Each particle type has exactly one uni-particle reaction id registered for which </span>
+<span class="sd">        the time point is drawn randomly based on the total reaction rate which is the sum of all path reaction rates. At the time point of the reaction occurring, </span>
+<span class="sd">        a path is randomly drawn from the set of possible paths weighted by the individual path reaction rates. </span>
+<span class="sd">        To get the reaction path we compare a second random number, uninformly distributed in (0,k_t), with the cumulative set of reaction rates :math:`(k_1, k_1+k_2, ..., k_t)`. </span>
+<span class="sd">        The comparison is done via a bisection algorithm (see rand_util.random_util.bisect_right()).</span>
+<span class="sd">        </span>
+<span class="sd">        To illustrate the above by an example: For particle &#39;A&#39; a we may define two convcersion reactions where A -k1-&gt; B, A -k2-&gt; C. </span>
+<span class="sd">        In addition, we define a release reaction A -k3-&gt; 2*D+5*E. The next reaction will occur at a time point T that is calculated based on the total rate k1+k2+k3. At time T, </span>
+<span class="sd">        one of the three reactions is executed. The probability for each reaction to be selected being k1/(k1+k2+k3), k2/(k1+k2+k3), k3/(k1+k2+k3).</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">reaction_type</span> <span class="o">==</span> <span class="s1">&#39;release&#39;</span><span class="p">:</span>
             <span class="n">product_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">product_loc</span><span class="p">])</span>
             <span class="n">product_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">product_direction</span><span class="p">])</span>
@@ -480,11 +769,42 @@
         <span class="k">if</span> <span class="n">product_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">product_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_direction</span><span class="p">)</span>
             
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_up_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">product_loc</span><span class="p">,</span> <span class="n">product_direction</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_up_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">product_loc</span><span class="p">,</span> <span class="n">product_direction</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
             
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">add_um_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_direction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.add_um_reaction"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_um_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_um_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">product_direction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Registeres a Uni-Molecular (UM) reaction for an educt Molecule. Calls :func:`pyrid.system.system_util.System.add_um_reaction`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reaction_type : `str` {&#39;production&#39;, &#39;fission&#39;, &#39;conversion_mol&#39;, &#39;decay&#39;}</span>
+<span class="sd">            Name of the reaction type</span>
+<span class="sd">        educt_type : `str`</span>
+<span class="sd">            Name of the educt molecule type</span>
+<span class="sd">        rate : `float64`</span>
+<span class="sd">            Reaction rate</span>
+<span class="sd">        product_types : `array_like`</span>
+<span class="sd">            List of products</span>
+<span class="sd">        product_loc : `array_like`</span>
+<span class="sd">            List specifying whether the individual products are volume (0) or surface (1) molecules </span>
+<span class="sd">        product_direction : `array_like`</span>
+<span class="sd">            Specifies whether, in case of a surface molecule releasing products into the volume, the realease occurs inside (-1) or outside (1) the mesh compartment.</span>
+<span class="sd">        radius : `float64`</span>
+<span class="sd">            The radius within which molecules are distributed upon a successfull release reaction.</span>
+<span class="sd">            </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Uni-molecular reactions are evaluated using the Gillespie stochastic simulation algorithm. Thereby, for a molecule type, the time point of the next </span>
+<span class="sd">        uni-molecular reaction occuring is calculated in advance and executed when the simualtion reaches the respective time point. A uni-molecular reaction can </span>
+<span class="sd">        consist of several reaction paths. Each molecule type has exactly one uni-molecular reaction id registered for which the time point is drawn randomly based </span>
+<span class="sd">        on the total reaction rate which is the sum of all path reaction rates. At the time point of the reaction occuring, a path is randomly drawn from the set of </span>
+<span class="sd">        possible paths weighted by the individual path reaction rates. To illustrate the above by an example: For Molecule &#39;A&#39; a we may define two convcersion reactions </span>
+<span class="sd">        where A -k1-&gt; B, A -k2-&gt; C. In addition, we define a fission reaction A -k3-&gt; D+E. The next reaction will occur at a time point T that is calculated based on the </span>
+<span class="sd">        total rate k1+k2+k3. At time T, one of the three reactions is executed. The probability for each reaction to be selected being k1/(k1+k2+k3), k2/(k1+k2+k3), k3/(k1+k2+k3).</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="n">product_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">product_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">)</span>
@@ -493,11 +813,49 @@
         <span class="k">if</span> <span class="n">product_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">product_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_direction</span><span class="p">)</span>
             
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">product_loc</span><span class="p">,</span> <span class="n">product_direction</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">product_loc</span><span class="p">,</span> <span class="n">product_direction</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
             
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">add_bp_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">interaction_type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">interaction_parameters</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.add_bp_reaction"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_bp_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_bp_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">interaction_type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">interaction_parameters</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Registeres a Bi-Particle (BP) reaction for an educt particle. Calls :func:`pyrid.system.system_util.System.add_bp_reaction`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reaction_type : `str` {&#39;bind&#39;, &#39;absorption&#39;, &#39;enzymatic&#39;}</span>
+<span class="sd">            Name of the reaction type</span>
+<span class="sd">        educt_type : `array_like`</span>
+<span class="sd">            Names of the educt particle types</span>
+<span class="sd">        product_types : `array_like`</span>
+<span class="sd">            List of products (only used for binding reactions)</span>
+<span class="sd">        rate : `float64`</span>
+<span class="sd">            Reaction rate</span>
+<span class="sd">        radius : `float64`</span>
+<span class="sd">            Reaction radius.</span>
+<span class="sd">        interaction_type : `str`</span>
+<span class="sd">            Name of the energy potential function in case &#39;reaction_type&#39; is a binding reaction.</span>
+<span class="sd">        interaction_parameters : `dict`</span>
+<span class="sd">            Parameters for the interaction function in case &#39;reaction_type&#39; is a binding reaction.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Bi-particle reactions are evaluated using the Doi scheme. Thereby, two educt particles react with a reaction rate k if the inter-particle distance is below </span>
+<span class="sd">        the reaction radius.</span>
+<span class="sd">        </span>
+<span class="sd">        `Binding Reactions`</span>
+<span class="sd">        </span>
+<span class="sd">        A particle pair will only enter a bound state if the binding reaction was succesfull. Otherwise two particles won&#39;t experience any pairwise interaction force! </span>
+<span class="sd">        A reaction occurs if two particles for whose type a binding reaction has been defined are within the reaction radius. The reaction probability is evaluated as:</span>
+<span class="sd">            </span>
+<span class="sd">        .. math::</span>
+<span class="sd">            </span>
+<span class="sd">            1-exp(\lambda \cdot \Delta t),</span>
+<span class="sd">        </span>
+<span class="sd">        where :math:`\lambda` is the reaction rate and :math:`\Delta t` is the integration time step.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">educt_1_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="n">educt_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
         <span class="n">educt_2_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="n">educt_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
@@ -508,11 +866,48 @@
         <span class="k">if</span> <span class="n">interaction_parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">interaction_parameters</span> <span class="o">=</span> <span class="n">convert_dict</span><span class="p">(</span><span class="n">interaction_parameters</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">educt_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">),</span> <span class="n">rate</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">,</span> <span class="n">interaction_parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_bp_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">educt_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">),</span> <span class="n">rate</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">,</span> <span class="n">interaction_parameters</span><span class="p">)</span></div>
         
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">add_bm_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">particle_pairs</span><span class="p">,</span> <span class="n">pair_rates</span><span class="p">,</span> <span class="n">pair_radii</span><span class="p">,</span> <span class="n">placement_factor</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.add_bm_reaction"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_bm_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_bm_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">particle_pairs</span><span class="p">,</span> <span class="n">pair_rates</span><span class="p">,</span> <span class="n">pair_radii</span><span class="p">,</span> <span class="n">placement_factor</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Registeres a Bi-Molecular (BM) reaction for an educt molecule. Calls :func:`pyrid.system.system_util.System.add_bm_reaction`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reaction_type : `str` {&#39;fusion&#39;, &#39;enzymatic_mol&#39;}</span>
+<span class="sd">            Name of the reaction type</span>
+<span class="sd">        educt_type : `array_like`</span>
+<span class="sd">            Names of the educt molecule types</span>
+<span class="sd">        particle_pairs : `array_like`</span>
+<span class="sd">            List of educt particle pairs belonging to each of the two educt molecules</span>
+<span class="sd">        pair_rates : `array_like`</span>
+<span class="sd">            List of reaction rates for each particle pair</span>
+<span class="sd">        pair_Radii : `array_like`</span>
+<span class="sd">            List of reaction radii for each particle pair</span>
+<span class="sd">        placement_factor : `float64` [0,1]</span>
+<span class="sd">            Only for fusion reactions: Affects where between the educt molecules the product molecule is placed. A factor of 0.5 means in the middle. </span>
+<span class="sd">            A smaller factor will shift the product towards the first educt, a larger value towards the second educt molecule. </span>
+<span class="sd">            A value different from 0.5 may increase accuracy in the case of a strong size difference between the two educts (a strong difference in the diffusion tensors). </span>
+<span class="sd">            Default = 0.5</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Bi-molecular reactions are evaluated using the Doi scheme. Thereby, two educt particles react with a reaction rate k if the inter-particle distance is </span>
+<span class="sd">        below the reaction radius. PyRID only evaluates the eucludean distances between particles but not molecule centers. Thereby, also for bi-molecular reactions </span>
+<span class="sd">        educt particles need to be set. Since molecules can consist of several particles, a list of particle pairs can be passed and for each particle pair a reaction </span>
+<span class="sd">        rate and radius is defined. If one of the pair particle reactions is successful, the corresponding molecule that the particle belongs to is converted as defined </span>
+<span class="sd">        by the reaction type. If the molecule cosnsists of a single particle, the reaction will be handled just as the bi-particle reactions. The user needs to take care </span>
+<span class="sd">        of calculating accurate reaction radii and rates such that the desired reaction dynamics are simulated, which can become difficult for large molecules. </span>
+<span class="sd">        Therefore it is sometimes more convenient to place an interaction free particle at the origin of the molecule and execute the bimolecular reaction via this particle. </span>
+<span class="sd">        This method is equivalent to the case where one would evaluate reactions based on the distance between molecule centers.</span>
+<span class="sd">        As for the uni-molecular reactions, several reaction paths can be defined. Each reaction path may involve different particle pairs of the educt molecules. </span>
+<span class="sd">        On a side note: Thereby, orientation dependent bimolecular reactions are in principle possible. However, since the reaction probability does not scale with </span>
+<span class="sd">        the distance, directionality is only really accounted for if the reaction radius is small compared to the molecule size.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">particle_types</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle_pairs</span><span class="p">):</span>
             <span class="n">educt_1_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="n">particle_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
@@ -521,18 +916,62 @@
             <span class="k">if</span> <span class="n">pair_radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">educt_1_radius</span><span class="o">+</span><span class="n">educt_2_radius</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: The reaction radius for the particle pair </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1"> is smaller than the sum of their radii. The reaction radius should not be smaller than </span><span class="si">{2:.3g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">particle_types</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">particle_types</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">educt_1_radius</span><span class="o">+</span><span class="n">educt_2_radius</span><span class="p">))</span>
             
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">educt_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">particle_pairs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_rates</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_radii</span><span class="p">),</span> <span class="n">placement_factor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">add_bm_reaction</span><span class="p">(</span><span class="n">reaction_type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">educt_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">product_types</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">particle_pairs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_rates</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pair_radii</span><span class="p">),</span> <span class="n">placement_factor</span><span class="p">)</span></div>
             
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">register_molecule_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">particle_pos</span><span class="p">,</span> <span class="n">particle_types</span><span class="p">,</span> <span class="n">collision_type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h_membrane</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.register_molecule_type"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.register_molecule_type">[docs]</a>    <span class="k">def</span> <span class="nf">register_molecule_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">particle_pos</span><span class="p">,</span> <span class="n">particle_types</span><span class="p">,</span> <span class="n">collision_type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h_membrane</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Regsiters a molecule type. Calls :func:`pyrid.system.system_util.System.register_molecule_type`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        molecule_name : `str`</span>
+<span class="sd">            Name of the molecule.</span>
+<span class="sd">        particle_pos : `int[:,3]`</span>
+<span class="sd">            Positions of each of the molecule&#39;s particles.</span>
+<span class="sd">        particle_types : `array_like (dtype = &#39;U20&#39;)`</span>
+<span class="sd">            Array of names for each of the molecule&#39;s particles.</span>
+<span class="sd">        collision_type : `int {0,1}`</span>
+<span class="sd">            Collision type of the molecule (Default = 0). 0: Collisions with compartments are handled via interaction force. </span>
+<span class="sd">            1: Collisions with compartments are handled by raytracing algorithm (recommended for molcules whose diffusion speed and/or interaction radius </span>
+<span class="sd">            is small compared to the chosen integration time step).</span>
+<span class="sd">        h_membrane : `float64`</span>
+<span class="sd">            Distance of the molecules´ center of diffusion from the membrane surface. Default = None</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">particle_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">particle_pos</span><span class="p">)</span>
         <span class="n">particle_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">particle_types</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;U20&#39;</span><span class="p">))</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="n">molecule_name</span><span class="p">,</span> <span class="n">particle_pos</span><span class="p">,</span> <span class="n">particle_types</span><span class="p">,</span> <span class="n">collision_type</span><span class="p">,</span> <span class="n">h_membrane</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">register_molecule_type</span><span class="p">(</span><span class="n">molecule_name</span><span class="p">,</span> <span class="n">particle_pos</span><span class="p">,</span> <span class="n">particle_types</span><span class="p">,</span> <span class="n">collision_type</span><span class="p">,</span> <span class="n">h_membrane</span><span class="p">)</span></div>
         
-    <span class="k">def</span> <span class="nf">set_diffusion_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.set_diffusion_tensor"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.set_diffusion_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">set_diffusion_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Checks whether a given diffusion tensor is valid (physically meaningful) and sets the diffusion tensor for a given molecule type. </span>
+<span class="sd">        Calls :func:`pyrid.system.system_util.System.set_diffusion_tensor`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        molecule_name : `str`</span>
+<span class="sd">            Some Information</span>
+<span class="sd">        D_tt : `float[3,3]`</span>
+<span class="sd">            Translational diffusion tensor ()</span>
+<span class="sd">        D_rr : `float[3,3]`</span>
+<span class="sd">            Rotational diffusion tensor</span>
+
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        PyRID offers a module for the calculation of the diffusion tensors of rigid bead models (see molecules_util.hydro_util). It uses the Kirkwood-Riseman calculation with modified Oseen tensor as introduced by :cite:t:`Carrasco1999`, :cite:t:`Carrasco1999a`. The same method has been implemented in the `HYDRO++ &lt;http://leonardo.inf.um.es/macromol/programs/hydro++/hydro++.htm&gt;`_ tool, which is free to use but not open source! As such, you may also use HYDRO++ for the calculation of the diffusion tensors. Or even better, use both and tell me if you you get inconsistent results ;) !</span>
+<span class="sd">        </span>
+<span class="sd">        .. admonition:: Note</span>
+<span class="sd">        </span>
+<span class="sd">            Diffusion tensor should be a real positive semidefinite matrix!</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">D_tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">D_tt</span><span class="p">)</span>
         <span class="n">D_rr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">D_rr</span><span class="p">)</span>
@@ -549,37 +988,73 @@
         <span class="n">mu_rb_sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">mu_rb_sqrt</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
         <span class="n">mu_tb_sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">mu_tb_sqrt</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="n">molecule_name</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">mu_tb</span><span class="p">,</span> <span class="n">mu_rb</span><span class="p">,</span> <span class="n">mu_tb_sqrt</span><span class="p">,</span> <span class="n">mu_rb_sqrt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">set_diffusion_tensor</span><span class="p">(</span><span class="n">molecule_name</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">mu_tb</span><span class="p">,</span> <span class="n">mu_rb</span><span class="p">,</span> <span class="n">mu_tb_sqrt</span><span class="p">,</span> <span class="n">mu_rb_sqrt</span><span class="p">)</span></div>
+
         
-    <span class="k">def</span> <span class="nf">fixed_concentration_at_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.fixed_concentration_at_boundary"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.fixed_concentration_at_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">fixed_concentration_at_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.</span>
+<span class="sd">        Calls :func:`pyrid.system.system_util.System.fixed_concentration_at_boundary`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        molecule_name : `str`</span>
+<span class="sd">            Name of the molecule</span>
+<span class="sd">        C : `float`</span>
+<span class="sd">            concentration of molecule type outside simulation box (&#39;virtual molecules&#39;)</span>
+<span class="sd">        comp_name : `str`</span>
+<span class="sd">            Name of the compartment</span>
+<span class="sd">        location : `int {0,1}`</span>
+<span class="sd">            Location of the molecule. 0: Volume, 1: Surface</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        fixed_concentration_at_boundary() calculates some properties that are necessary to properly distribute molecules inside the simulation box that hit </span>
+<span class="sd">        the simulation box boundary from the outside (Thereby, &#39;virtual molecules&#39; become `real` molecules in our simualtion). The number of hits per time step </span>
+<span class="sd">        a boundary of area A experiences is :math:`N = l_{perp}*A*C`. Where :math:`C` is the concentration in molecules per volume and :math:`l_{perp}` is the </span>
+<span class="sd">        average net displacement in one tiem step towards or away from any plane, where :math:`l_{perp} = \sqrt{(4*D*\Delta t/\pi)}` :cite:t:`Stiles2001`.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="n">location</span> <span class="o">==</span> <span class="s1">&#39;Volume&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">fixed_concentration_at_boundary</span><span class="p">(</span><span class="n">molecule_name</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">location</span> <span class="o">==</span> <span class="s1">&#39;Surface&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">fixed_concentration_at_boundary</span><span class="p">(</span><span class="n">molecule_name</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Location must be either Volume or Surface!&#39;</span><span class="p">)</span>            
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Location must be either Volume or Surface!&#39;</span><span class="p">)</span>            </div>
         
 <div class="viewcode-block" id="Simulation.add_molecules"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_molecules">[docs]</a>    <span class="k">def</span> <span class="nf">add_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Location</span><span class="p">,</span> <span class="n">Compartment_Number</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">points_type</span><span class="p">,</span> <span class="n">face_ids</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Places molecules in the simulation box given their location, orientation, type, and compartment number.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        Location : &#39;Volume&#39; or &#39;Surface&#39;&#39;</span>
+<span class="sd">            Determines whether the molecules are surface or volume molecules.</span>
+<span class="sd">        Compartment_Number : `int64`</span>
+<span class="sd">            The number of the compartment in which to place the molecules</span>
+<span class="sd">        points : `float64[:,3]`</span>
+<span class="sd">            Molecule coordinates</span>
+<span class="sd">        quaternion : `float64[:,4]`</span>
+<span class="sd">            Orientation of the molecules represented by rotation /orientation quaternions.</span>
+<span class="sd">        points_type : `int64[:]`</span>
+<span class="sd">            Molecule type ids.</span>
+<span class="sd">        face_ids : `int64[:]`</span>
+<span class="sd">            Indices of the mesh triangle/faces on which the molecules are placed. Default = None</span>
+
 <span class="sd">        </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        raise IndexError(&#39;Compartment number must be a positive integer!&#39;)</span>
+<span class="sd">            Compartment number must be an integer value.</span>
+<span class="sd">        raise IndexError(&#39;Compartment number must be greater zero!&#39;)</span>
+<span class="sd">            Compartment numbers must be greater than zero.</span>
+<span class="sd">        raise TypeError(&#39;Missing required argument face_ids&#39;)</span>
+<span class="sd">            In the case of Location = &#39;Surface&#39; face_ids must be passed.</span>
+<span class="sd">        NameError(&#39;Location must be either Volume or Surface!&#39;)</span>
+<span class="sd">            There are only two locations a molecule can assigned to: the surface or the volume of a compartment.</span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -595,7 +1070,7 @@
             <span class="k">elif</span> <span class="n">Compartment_Number</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
                 <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">id</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Compartment number must be a positive interger!&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Compartment number must be a positive integer!&#39;</span><span class="p">)</span>
                 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)):</span>
                 
@@ -632,19 +1107,56 @@
             
 <div class="viewcode-block" id="Simulation.distribute"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.distribute">[docs]</a>    <span class="k">def</span> <span class="nf">distribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Method</span><span class="p">,</span> <span class="n">Location</span><span class="p">,</span> <span class="n">Compartment_Number</span><span class="p">,</span> <span class="n">Types</span><span class="p">,</span> <span class="n">Number</span><span class="p">,</span> <span class="n">clustering_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_trials</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">jitter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">triangle_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">facegroup</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the distribution of molecules in the simulation box / the surface or volume of a compartment using one of several different methods.</span>
+<span class="sd">        The available methods are: </span>
+
+<span class="sd">        * &#39;PDS&#39;: The &#39;PDS&#39; (Poisson-Disc-Sampling) method does resolve collisions based on the molecule radius but can only reach volume fractions of &lt;30% for mono-disperse systems. Note that computation times can become very long if the target number of molecules is much larger than would fit into the compartment. The molecule density can also be increased by increasing max_trials at the cost of longer runtimes.In additions one can play around with the clustering factor that affects the distribution of molecules. A larger clustering factor will result in a more uniform distribution of molecules. See :func:`pyrid.system.distribute_vol_util.pds`</span>
+<span class="sd">        * &#39;PDS_unfiform&#39;: The same holds true for &#39;PDS_unfiform&#39; method, however, with the addition that the molecules are uniformly distributed. The method first creates a large number of uniformly distributed points (using the &#39;MC&#39; method). From this sampling pool only those points that are a minimum distance apart from each other are kept. The molecule density can be increased by the multiplier parameter at the cost of longer runtimes.See :func:`pyrid.system.distribute_vol_util.pds_uniform` and :func:`pyrid.system.distribute_surface_util.pds`</span>
+<span class="sd">        * &#39;Gauss&#39;: The &#39;Gauss&#39; method can be used to normally distribute molecules around the centroid of a triangle (given by triangle_id) on a mesh surface. The distribution width can be set by the jitter parameter. See :func:`pyrid.system.distribute_surface_util.normal`</span>
+<span class="sd">        * &#39;MC&#39;: The &#39;MC&#39; (Monte-Carlo) method is fast and can reach arbitrary molecule densities, however, it does not resolve any collision. See :func:`pyrid.system.distribute_surface_util.mc` and :func:`pyrid.system.distribute_vol_util.mc`</span>
 <span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        Method : &#39;PDS&#39;, &#39;PDS uniform&#39;, &#39;Gauss&#39;, &#39;MC&#39;</span>
+<span class="sd">            Method for calculating the molecule distribution. </span>
+<span class="sd">        Location : &#39;Volume&#39; or &#39;Surface&#39;</span>
+<span class="sd">            Determines of whether the molecules are distributed on the compartment surface or in its volume. </span>
+<span class="sd">            Note that the method &#39;pds_uniform&#39; is only available for Location=&#39;Volume&#39; and the method &#39;Gauss&#39; only for Location=&#39;Surface&#39;.</span>
+<span class="sd">        Compartment_Number : `int64`</span>
+<span class="sd">            Number of the mesh compartment. 0 means simulation box, i.e. outside any mesh compartment.</span>
+<span class="sd">        Types : `int64[:]`</span>
+<span class="sd">            List of molecule type ids.</span>
+<span class="sd">        Number : `int64[:]`</span>
+<span class="sd">            Number of molecules to distribute per type.</span>
+<span class="sd">        clustering_factor : `float64`</span>
+<span class="sd">            Only for Location=&#39;Volume&#39; and Method=&#39;PDS&#39;. The clustering factor affects the distribution of molecules. A larger clustering factor will result in a </span>
+<span class="sd">            more uniform distribution of molecules.</span>
+<span class="sd">        max_trials : `int64`</span>
+<span class="sd">            Only for Location=&#39;Volume&#39; and Method=&#39;PDS&#39;. Increases the number attempts to randomly place a molecule in the vicinity of another molecule.</span>
+<span class="sd">        jitter : `float64`</span>
+<span class="sd">            Only for Location=&#39;Surface&#39; and Method=&#39;Gauss&#39;. Width of the normal distribution.</span>
+<span class="sd">        triangle_id : `int64`</span>
+<span class="sd">            Only for Location=&#39;Surface&#39; and Method=&#39;Gauss&#39;. Index of the triangle around whose centroid molecules are normally distributed.</span>
+<span class="sd">        multiplier : `int64`</span>
+<span class="sd">            Only for (Location=&#39;Volume&#39; and Method=&#39;PDS_uniform&#39;) or (Location=&#39;Surface&#39; and Method=&#39;PDS&#39;). Increases the sampling pool size.</span>
+<span class="sd">        facegroup : `string`</span>
+<span class="sd">            Only for Location=&#39;Surface&#39; and Method=&#39;PDS&#39; or &#39;MC&#39;. Name of the face group on whose triangles to distribute the molecules.</span>
+
+
 <span class="sd">        </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        raise NameError(&#39;Method {} does not exist!&#39;.format(Method))</span>
+<span class="sd">            Available methods are &#39;PDS&#39;, &#39;PDS uniform&#39;, &#39;Gauss&#39;, &#39;MC&#39;.</span>
+<span class="sd">        raise IndexError(&#39;Compartment number must be a positive integer!&#39;)</span>
+<span class="sd">            Compartment number must be an integer value.</span>
+<span class="sd">        raise IndexError(&#39;Compartment number must be greater zero!&#39;)</span>
+<span class="sd">            Compartment numbers must be greater than zero.</span>
+<span class="sd">        raise TypeError(&#39;Missing required argument face_ids&#39;)</span>
+<span class="sd">            In the case of Location = &#39;Surface&#39; face_ids must be passed.</span>
+<span class="sd">        NameError(&#39;Location must be either Volume or Surface!&#39;)</span>
+<span class="sd">            There are only two locations a molecule can assigned to: the surface or the volume of a compartment.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -740,26 +1252,31 @@
         
     <span class="c1">#%%</span>
     
-<div class="viewcode-block" id="Simulation.observe"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">reactions</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bin_width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_bins</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">binned</span><span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.observe"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">reactions</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">obs_stride</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">binned</span><span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Sets up an observer for a certain system property / measure.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        Measure : &#39;Position&#39;, &#39;Energy&#39;, &#39;Pressure&#39;, &#39;Volume&#39;, &#39;Virial&#39;, &#39;Virial Tensor&#39;, &#39;Number&#39;, &#39;Orientation&#39;, &#39;Bonds&#39;, &#39;Reactions&#39;, &#39;Force&#39;, &#39;Torque&#39;</span>
+<span class="sd">            System property which to observe.</span>
+<span class="sd">        molecules : `list` or &#39;All&#39;</span>
+<span class="sd">            List of molecule types. Default = &#39;All&#39;</span>
+<span class="sd">        reactions : `list` or &#39;All&#39;</span>
+<span class="sd">            List of reaction types to observe. Default = &#39;All&#39;</span>
+<span class="sd">        obs_stride : `int64`</span>
+<span class="sd">            Stride by which observables are saved to the hdf5 file.</span>
+<span class="sd">        stepwise : `boolean`</span>
+<span class="sd">            If True, observables are saved in a stepwise manner, i.e. the current value at the respective timestep is saved. Default = True</span>
+<span class="sd">        binned : `boolean`</span>
+<span class="sd">            If True, observables are binned where the bin size is equal to stride.</span>
+
 <span class="sd">        </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        warnings.warn(&#39;Warning: Binning is not supported for property {0}. PyRID will instead sample {0} stepwise!&#39;.format(Measure))</span>
+<span class="sd">            Binning is not supported for &#39;Force&#39;, &#39;Torque&#39;, &#39;Orientation&#39;, &#39;Position&#39;.</span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -771,7 +1288,7 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Measure </span><span class="si">{}</span><span class="s1"> not known!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Measure</span><span class="p">))</span>
           
             
-        <span class="k">if</span> <span class="n">Measure</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="s1">&#39;Troque&#39;</span><span class="p">,</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="s1">&#39;Position&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Measure</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span> <span class="s1">&#39;Torque&#39;</span><span class="p">,</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">,</span> <span class="s1">&#39;Position&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">binned</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">binned</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: Binning is not supported for property </span><span class="si">{0}</span><span class="s1">. PyRID will instead sample </span><span class="si">{0}</span><span class="s1"> stepwise!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Measure</span><span class="p">))</span>
@@ -793,43 +1310,70 @@
         
         
            
-    <span class="k">def</span> <span class="nf">observe_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf_pairs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rdf_bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.observe_rdf"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.observe_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">observe_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf_pairs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rdf_bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rdf_cutoff</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Sets up an observer for the radial distribution function.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rdf_pairs : `nested list`</span>
+<span class="sd">            List of molecule type pairs for which to calculate the radial distribution function. Example: [[&#39;A&#39;,&#39;A&#39;],[&#39;A&#39;,&#39;B&#39;]].</span>
+<span class="sd">        rdf_bins : `int64[:]`</span>
+<span class="sd">            Number of bins used for each respective molecule pair (resolution of the rdf histogram).</span>
+<span class="sd">        rdf_cutoff : `float64[:]`</span>
+<span class="sd">            Cutoff distance for each respective molecule pair (choose wisely).</span>
+<span class="sd">        stride : `int64`</span>
+<span class="sd">            Stride by which radial distribution function is sampled and saved to the hdf5 file. Note: calculation of the rdf is computationally expensive!</span>
+
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span> <span class="o">=</span> <span class="n">Observables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             
         <span class="bp">self</span><span class="o">.</span><span class="n">Observer</span><span class="o">.</span><span class="n">observe_rdf</span><span class="p">(</span><span class="n">rdf_pairs</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">,</span> <span class="n">rdf_cutoff</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observing RDF.&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observing RDF.&#39;</span><span class="p">)</span></div>
         
         
     <span class="c1">#%%</span>
                 
-<div class="viewcode-block" id="Simulation.add_release_site"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_release_site">[docs]</a>    <span class="k">def</span> <span class="nf">add_release_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Location</span><span class="p">,</span> <span class="n">timepoint</span><span class="p">,</span> <span class="n">compartment_id</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">jitter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Molecules_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Positions</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Quaternion</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">triangle_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.add_release_site"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.add_release_site">[docs]</a>    <span class="k">def</span> <span class="nf">add_release_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Location</span><span class="p">,</span> <span class="n">timepoint</span><span class="p">,</span> <span class="n">compartment_number</span><span class="p">,</span> <span class="n">Number</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">jitter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Molecules_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Positions</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Quaternion</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">triangle_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Adds a molecule release site that releases a number of molecules at a defined time point into the system. </span>
+<span class="sd">        The molecules are distributed normally around a point in the volume or a mesh surface.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        Location : &#39;Volume&#39; or &#39;Surface&#39;</span>
+<span class="sd">            Determines of whether the molecules are released on the compartment surface or in its volume.</span>
+<span class="sd">        timepoint : `int64`</span>
+<span class="sd">            Time step at which to release the molecules.</span>
+<span class="sd">        compartment_number : `int64`</span>
+<span class="sd">            Number of the mesh compartment. 0 means simulation box, i.e. outside any mesh compartment.</span>
+<span class="sd">        Number : `int64[:]`</span>
+<span class="sd">            Number of molecules per molecule type.</span>
+<span class="sd">        Types : `list of strings`</span>
+<span class="sd">            List of molecule types to release.</span>
+<span class="sd">        origin : `float64[3]`</span>
+<span class="sd">            Only if Location = &#39;Volume&#39;. Position around which to distribute the molecules upon release.</span>
+<span class="sd">        jitter : `float64`</span>
+<span class="sd">            Initial width of the molecule distribution. Molecules are distributed normally around the origin.</span>
+<span class="sd">        triangle_id : `int64`</span>
+<span class="sd">            Only if Location=&#39;Surface&#39;. Index of the triangle around whose centroid the molecules are distributed.</span>
+<span class="sd">        Molecules_id : `int64[:]`</span>
+<span class="sd">            Only for Location=&#39;Volume&#39;. In case you want a custom distribution of molecules this list contains the type id of each molecule.</span>
+<span class="sd">        Positions : `float64[:,3]`</span>
+<span class="sd">            Only for Location=&#39;Volume&#39;. In case you want a custom distribution of molecules this list contains the coordinates of each molecule.</span>
+<span class="sd">        Quaternion : `float64[:,4]`</span>
+<span class="sd">            Only for Location=&#39;Volume&#39;. In case you want a custom distribution of molecules this list contains the orientation of each molecule.</span>
+
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">release_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">release_dict</span><span class="p">[</span><span class="s1">&#39;compartment_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compartment_id</span>
+        <span class="n">release_dict</span><span class="p">[</span><span class="s1">&#39;compartment_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compartment_number</span>
         <span class="n">release_dict</span><span class="p">[</span><span class="s1">&#39;timepoint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timepoint</span>
         <span class="n">release_dict</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Location</span>
         <span class="n">release_dict</span><span class="p">[</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triangle_id</span>
@@ -900,24 +1444,36 @@
     
 <div class="viewcode-block" id="Simulation.progress"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.progress">[docs]</a>    <span class="k">def</span> <span class="nf">progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_time</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">time_passed</span><span class="p">,</span> <span class="n">it_per_s</span><span class="p">,</span> <span class="n">Np</span><span class="p">,</span> <span class="n">Pressure_total</span><span class="p">,</span> <span class="n">N_bonds</span><span class="p">,</span> <span class="n">Volume</span><span class="p">,</span> <span class="n">out_linebreak</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;prints / logs several different simulation parameters such as iterations per second, molecule number and pressure.</span>
+<span class="sd">        Also prints a progress bar.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        sim_time : `float64`</span>
+<span class="sd">            Target simulation runtime.</span>
+<span class="sd">        nsteps : `int64`</span>
+<span class="sd">            Target number of simulation steps.</span>
+<span class="sd">        j : `int64`</span>
+<span class="sd">            Current time step.</span>
+<span class="sd">        time_passed : `float`</span>
+<span class="sd">            Current simulation runtime.</span>
+<span class="sd">        it_per_s : `float64`</span>
+<span class="sd">            Iterations per second.</span>
+<span class="sd">        Np : `int64`</span>
+<span class="sd">            Number of particles / beads in the system.</span>
+<span class="sd">        Pressure_total : `float64`</span>
+<span class="sd">            Current pressure.</span>
+<span class="sd">        N_bonds : `int64`</span>
+<span class="sd">            Current number of particle-particle bonds.</span>
+<span class="sd">        Volume : `float64`</span>
+<span class="sd">             Current simulation box volume.</span>
+<span class="sd">        out_linebreak : `boolean`</span>
+<span class="sd">            If True, after each progress print there is a line break.</span>
+<span class="sd">        N : `int64`</span>
+<span class="sd">            Current number of molecules in the system.</span>
+<span class="sd">        width : `int64`</span>
+<span class="sd">            Width of the progress bar.</span>
+
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -1006,24 +1562,17 @@
 
 <div class="viewcode-block" id="Simulation.load_checkpoint"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.load_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">directory</span> <span class="o">=</span> <span class="s1">&#39;checkpoints/&#39;</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Loads a system state from a checkpoint file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        file_name : `string`</span>
+<span class="sd">            Checkpoint file name.</span>
+<span class="sd">        index : `int64`</span>
+<span class="sd">            Index of the checkpoint file (index goes from 0 to maximum number of saves).</span>
+<span class="sd">        directory : `string`</span>
+<span class="sd">            Directory of the checkpoint files. Default = &#39;checkpoints/&#39;</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -1042,24 +1591,29 @@
     
 <div class="viewcode-block" id="Simulation.run"><a class="viewcode-back" href="../../Developers/Developer%20API/run.html#pyrid.run.Simulation.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_stride</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">keep_time</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">out_linebreak</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">progress_bar_properties</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start_reactions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Simulation loop. Runs the simulation.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        progress_stride : `int64`</span>
+<span class="sd">            Stride by which the progress bar is updated. Default = 100</span>
+<span class="sd">        keep_time : `boolean`</span>
+<span class="sd">            If true, different parts of the simulation loop are timed such as integration of the equations of motion or writing data to files. Default = False</span>
+<span class="sd">        out_linebreak</span>
+<span class="sd">            If True, after each progress print there is a line break. Default = False</span>
+<span class="sd">        progress_bar_properties : `list of strings`</span>
+<span class="sd">            List of properties to print/log with the progress bar during simulation. Available are: </span>
+<span class="sd">            &#39;it/s&#39;, &#39;pu/s&#39;, &#39;Time passed&#39;, &#39;step&#39;, &#39;N&#39;, &#39;Pressure&#39;, &#39;Volume&#39;, &#39;Vol_Frac&#39;, &#39;Bonds&#39; or &#39;All&#39;.</span>
+<span class="sd">        start_reactions = `int64`</span>
+<span class="sd">            Set the time step from which reactions are allowed. Default = 0</span>
 <span class="sd">        </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        raise ValueError(&#39;progress_bar_properties must be a list of strings!&#39;)</span>
+<span class="sd">            If progress_bar_properties is not None or &#39;All&#39; a list of strings must be passed.</span>
+<span class="sd">        raise ValueError(str(prop)+&#39;is not a supported property to be displayed in the progress bar!&#39;)</span>
+<span class="sd">            A progress bar property has been passed that is not available.</span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         

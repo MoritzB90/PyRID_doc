@@ -584,6 +584,8 @@
 <span class="sd">        concentration of molecule on surface of each compartment outside simulation box (Needed for simulation with fixed concentration boundary)</span>
 <span class="sd">    l_perp : `float64`</span>
 <span class="sd">        Mean diffusive displacement of molecule perpendicular to a plane.</span>
+<span class="sd">    h_membrane : `float64`</span>
+<span class="sd">        Distance of the molecules´ center of diffusion from the membrane surface.</span>
 <span class="sd">    </span>
 <span class="sd">    </span>
 <span class="sd">    </span>
@@ -995,6 +997,8 @@
 <span class="sd">        Calculates properties of the system cell grid.</span>
 <span class="sd">    add_barostat_berendsen(Tau_P, P0, start)</span>
 <span class="sd">        Adds a berendsen barostat to the system.</span>
+<span class="sd">    update_rb_barostat(self, RBs, Particles)</span>
+<span class="sd">        Updates the rigid bead molecule positions according to the scaling factor :math:`\\mu` of the Berendsen barostat.</span>
 <span class="sd">    register_molecule_type(molecule_name, particle_pos, particle_types, collision_type = 0)</span>
 <span class="sd">        Regsiters a molecule type.</span>
 <span class="sd">    set_diffusion_tensor(molecule_name, D_tt, D_rr, mu_tb, mu_rb, mu_tb_sqrt, mu_rb_sqrt)</span>
@@ -1264,24 +1268,15 @@
         
     <span class="k">def</span> <span class="nf">update_rb_barostat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Updates the rigid bead molecule positions according to the scaling factor :math:`\\mu` of the Berendsen barostat.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        RBs : `object`</span>
+<span class="sd">            Instance of the RBs class.</span>
+<span class="sd">        Particles : `object`</span>
+<span class="sd">            Instance of the Particles class.</span>
 <span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -1306,7 +1301,9 @@
 <span class="sd">            Array of names for each of the molecule&#39;s particles.</span>
 <span class="sd">        collision_type : `int {0,1}`</span>
 <span class="sd">            Collision type of the molecule (Default = 0). 0: Collisions with compartments are handled via interaction force. 1: Collisions with compartments are handled by raytracing algorithm (recommended for molcules whose diffusion speed and/or interaction radius is small compared to the chosen integration time step).</span>
-<span class="sd">        </span>
+<span class="sd">        h_membrane : `float64`</span>
+<span class="sd">            Distance of the molecules´ center of diffusion from the membrane surface. Default = None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="n">collision_type</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_condition</span> <span class="o">==</span> <span class="s1">&#39;repulsive&#39;</span><span class="p">):</span>
@@ -1346,7 +1343,7 @@
         
 <div class="viewcode-block" id="System.set_diffusion_tensor"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.set_diffusion_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">set_diffusion_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">mu_tb</span><span class="p">,</span> <span class="n">mu_rb</span><span class="p">,</span> <span class="n">mu_tb_sqrt</span><span class="p">,</span> <span class="n">mu_rb_sqrt</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Sets the diffusion tensor for a given molecule type.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1586,6 +1583,8 @@
 <span class="sd">            Triangle ids of the faces that make up the simulation box border (To be excluded from self.triangle_ids)</span>
 <span class="sd">        triangle_ids_transparent : `int64[:]`</span>
 <span class="sd">            Triangle ids of any transparent faces (To be excluded from self.triangle_ids)</span>
+<span class="sd">        adapt_box : `boolean`</span>
+<span class="sd">            If true, the simulation box size is adapted such that the mesh fits exactly in the simulation box. Default = False</span>
 <span class="sd">        </span>
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -2390,6 +2389,11 @@
 <span class="sd">            List of reaction rates for each particle pair</span>
 <span class="sd">        pair_Radii : `array_like`</span>
 <span class="sd">            List of reaction radii for each particle pair</span>
+<span class="sd">        placement_factor : `float64` [0,1]</span>
+<span class="sd">            Only for fusion reactions: Affects where between the educt molecules the product molecule is placed. A factor of 0.5 means in the middle. </span>
+<span class="sd">            A smaller factor will shift the product towards the first educt, a larger value towards the second educt molecule. </span>
+<span class="sd">            A value different from 0.5 may increase accuracy in the case of a strong size difference between the two educts (a strong difference in the diffusion tensors). </span>
+<span class="sd">            Default = 0.5</span>
 <span class="sd">        </span>
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>

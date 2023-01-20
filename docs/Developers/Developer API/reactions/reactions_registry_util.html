@@ -231,6 +231,11 @@ A very nice introduction/overview to the kind of data structures used here has b
 </dd>
 <dt><strong>radius</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Reaction radius in case of a bimolecular/biparticle reaction. Default = None</p>
 </dd>
+<dt><strong>placement_factor</strong><span class="classifier"><cite>float64</cite> [0,1]</span></dt><dd><p>Only for fusion reactions: Affects where between the educt molecules the product molecule is placed. A factor of 0.5 means in the middle. 
+A smaller factor will shift the product towards the first educt, a larger value towards the second educt molecule. 
+A value different from 0.5 may increase accuracy in the case of a strong size difference between the two educts (a strong difference in the diffusion tensors). 
+Default = 0.5</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
