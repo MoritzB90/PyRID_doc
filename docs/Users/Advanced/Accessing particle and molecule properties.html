@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessing particle and molecule properties &mdash; PyRID 15.06.2022 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Overview" href="../../Developers/Overview.html" />
+    <link rel="prev" title="Advanced" href="Contents.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> PyRID
+            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Users</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User_Guide/Contents.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Advanced</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Accessing particle and molecule properties</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Developer%20API/Contents.html">Developer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Theory/Contents.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developers/Validation/Contents.html">Validation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../References.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MoritzB90/PyRID">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/channel/UC4o41QLwsfeh0g981MZPl7w">Youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">license</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyRID</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="Contents.html">Advanced</a> &raquo;</li>
+      <li>Accessing particle and molecule properties</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Users/Advanced/Accessing particle and molecule properties.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="accessing-particle-and-molecule-properties">
+<h1>Accessing particle and molecule properties<a class="headerlink" href="#accessing-particle-and-molecule-properties" title="Permalink to this heading"></a></h1>
+<p>PyRID allows users to sample certain properties/observables and writes these to a local file (see <a class="reference internal" href="../User_Guide/Observables.html#userguide-observables"><span class="std std-ref">Observables</span></a>).
+However, sometimes you may want to access some system properties directly and write your own Python scripts to analyze data or similar.
+You can do so via the Simulation class and its attributes. Tip: If you want to have a look at all the different attributes of the Simulation class, use <code class="code highlight python docutils literal highlight-python"><span class="nb">dir</span><span class="p">(</span><span class="n">Simulation</span><span class="p">)</span></code>.</p>
+<p><strong>Particles</strong></p>
+<p>All particle properties, are kept in a data structure that can be accessed by the Particles attribute</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span>
+</pre></div>
+</div>
+<p>To get the properties of the particle with index 0, write</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span> <span class="o">-</span><span class="mf">8.01000665242636</span><span class="p">,</span>  <span class="mf">49.9969587092104</span> <span class="p">,</span> <span class="o">-</span><span class="mf">10.31255250585599</span><span class="p">],</span>
+                        <span class="p">[</span><span class="o">-</span><span class="mf">2.0197198684247195</span><span class="p">,</span>  <span class="mf">0.2506851204932846</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4518569569533009</span><span class="p">],</span>
+                        <span class="p">[</span><span class="o">-</span><span class="mf">1.1785113019775793</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.041241452319315</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.8333333333333333</span><span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>  <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">],</span>
+                        <span class="mi">12876</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">9745</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.e+10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What is returned is a numpy structured array. The datatype of a structured array is a composition of simpler datatypes (float, int, string ,…) organized as a sequence of named fields.
+Structured arrays are designed to be able to mimic ‘structs’ in the C language. The problem with what is returned above is that we currently don’t know how to interpret the data.
+Therefore, we first need to take a look at the field names of the structured array datatype. We can do so by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;pos_local&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;coord_local&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;force&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;rb_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;number_reactions&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;reactions_head&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;bound&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;bound_with&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;cutoff&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;h&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;next_transition&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first field is just a ‘next’ pointer, which is not of any interest for the user. Its value is 1.
+The second field is ‘pos’. As such, [ -8.01000665242636,  49.9969587092104 , -10.31255250585599] are the coordinates (x,y,z) of particle 1 at the current point in time.
+There is also a field called ‘force’ at index 4, i.e. [ 40.96887479809036   , -27.908936738251054  ,  -0.14310326836228807] is the force vector acting on particle 0.
+We can access individual fields via their name or index:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>
+<span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
+
+<span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>
+<span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Molecules</strong></p>
+<p>Similarly, the properties of all the molecules (Rigid Bead molecules: RBs) in the simulation can be accessed by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>As for the particles dta structure, a numpy structured array is returned. Its field names are</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;dX&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;force&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;torque&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;topology&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;topology_N&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;q&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;dq&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;B&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;orientation_quat&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Dtrans&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Drot&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;loc_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;compartment&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;triangle_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;pos_last&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Theta_t&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Theta_r&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;posL&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;collision_type&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;next_transition&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;h&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, the RBs data structure is a bit more complex. We can again access the value of the different properties via the field name.
+As such, ‘name’, e.g., returns the name of the molecule:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="s1">&#39;IgG3&#39;</span>
+</pre></div>
+</div>
+<p>‘torque’ returns the torque:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;torque&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">17.089577893521152</span> <span class="p">,</span>   <span class="mf">1.0869521370881923</span><span class="p">,</span>   <span class="mf">0.6020275734384415</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>and ‘q’ returns the rotation/orientation quaternion</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.43285676412556806</span><span class="p">,</span>  <span class="mf">0.07211461325989324</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.18277302147641378</span><span class="p">,</span> <span class="mf">0.879788910435623</span>  <span class="p">])</span>
+</pre></div>
+</div>
+<p>We can also have a look at the molecule’s topology, i.e. the particles that the molecule is composited of using the ‘topology field’:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int64</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Returned is an array of length 20 (20 is the default maximum number of particle a molecule can consist of).
+However, the actual molecule may consist of less than 20 particles. The field ‘topology_N’ keeps the total number of particles.
+Therefore, the proper way to get the particle indices of the molecule is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;topology&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;topology_N&#39;</span><span class="p">]]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int64</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Contents.html" class="btn btn-neutral float-left" title="Advanced" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../Developers/Overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Moritz F P Becker.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
