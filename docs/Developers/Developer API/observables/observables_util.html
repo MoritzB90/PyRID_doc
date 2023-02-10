@@ -122,13 +122,46 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.observables.observables_util.Observables">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.observables.observables_util.</span></span><span class="sig-name descname"><span class="pre">Observables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/observables_util.html#Observables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.observables_util.Observables" title="Permalink to this definition"></a></dt>
-<dd><p>The Observables class keeps track of all the observables and writes these to an hdf5 file.</p>
+<dd><p>The Observables class keeps track of all the observables. It contains methods to sample specific quantities, e.g. pressure, and to write these to an hdf5 file.
+Sampling can be done in what is here called a stepwise manner. Thereby, the value that the quantity/property has at the current simulation step (current point in time) is saved.
+However, sometimes it is more convenient to save not the current value but the average over some time window/bin. 
+This is true in particular for event based properties like the number of reactions. 
+Therefore, in PyRID, observables can also be binned and only then their value will be saved/written to the file.</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>binned</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Some Information</p>
+<dt><strong>binned</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary containing for each quantity the binned values.</p>
 </dd>
-<dt><strong>attribute_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Observing</strong><span class="classifier"><cite>array like</cite></span></dt><dd><p>Structured array with boolean fields for each observable. If a field’s value is True, the corresponding quantity is observed.</p>
+</dd>
+<dt><strong>observables_setup</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary containing for each observed quantity the information needed for the sampling process. 
+This information includes the stride, the items (molecules, particles, reaction type, …) to be included, the total number of sampling steps (int((Simulation.nsteps)/stride)),
+whether the quantity is sampled in a stepwise manner or by binning or both, the current sampling step.</p>
+</dd>
+<dt><strong>bond_pairs: `list`</strong></dt><dd><p>List of particle type pairs for which the number of bonds is observed.</p>
+</dd>
+<dt><strong>observing_rdf: `boolean`</strong></dt><dd><p>If True, the radial distribution function is observed.</p>
+</dd>
+<dt><strong>rdf_nsteps: `int`</strong></dt><dd><p>The total number of sampling steps (int((Simulation.nsteps)/stride)) for the RDF.</p>
+</dd>
+<dt><strong>rdf_current_step: `int`</strong></dt><dd><p>Current sampling step of the RDF.</p>
+</dd>
+<dt><strong>rdf_cutoff: `float64[N]`</strong></dt><dd><p>The cutoff distances for each of the N molecule pairs for which the RDF is calculated.</p>
+</dd>
+<dt><strong>rdf_bins: `int64[N]`</strong></dt><dd><p>The number of bins (spatial resolution of the RDF) for each of the N molecule pairs for which the RDF is calculated.</p>
+</dd>
+<dt><strong>rdf_stride</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Stride with which the RDF is sampled.</p>
+</dd>
+<dt><strong>rdf_pairs: `list`</strong></dt><dd><p>List of molecule type pairs for which the RDF is calculated.</p>
+</dd>
+<dt><strong>rdf_molecules: `set`</strong></dt><dd><p>Set of molecules types for which the RDF is calculated.</p>
+</dd>
+<dt><strong>rdf_hgrid: `array like`</strong></dt><dd><p>Hierarchical grid data structure for the different molecule types. 
+The hierarchical grid allows for an efficient calculation of the pairwise distances between the molecules.</p>
+</dd>
+<dt><strong>rdf_measure_pair: `int64[N,N]`</strong></dt><dd><p>Matrix of molecule type indices indicating which molecule pairs are observed.</p>
+</dd>
+<dt><strong>rdf_hist: `dict`</strong></dt><dd><p>Dictionary containing for each observed molecule pair the rdf histogram.</p>
 </dd>
 </dl>
 </dd>
@@ -136,8 +169,20 @@
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>method_1(arguments)</strong></p></td>
-<td><p>Some general information about this method</p></td>
+<tr class="row-odd"><td><p><strong>update_bins(self, Simulation)</strong></p></td>
+<td><p>Updates the values of all quantities which are sampled using data binning.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>observe(self, Property, stride, Simulation, types = None, reactions = None, stepwise = True, binned= False)</strong></p></td>
+<td><p>Registers a quantity/property for observation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>observe_rdf(self, rdf_pairs, rdf_bins, rdf_cutoff, stride, Simulation)</strong></p></td>
+<td><p>Registers a molecule pair for observation of the corresponding radial distribution function.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>update(self, Simulation, hdf, RBs)</strong></p></td>
+<td><p>Updates the values of all observed quantities by writing these to an hdf5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>update_rdf(self, Simulation, hdf):</strong></p></td>
+<td><p>Calculates the radial distribution function (rdf histogram) for a range of molecule pairs and writes these to the hdf5 file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -147,27 +192,61 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrid.observables.observables_util.Observables.observe">
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stepwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/observables_util.html#Observables.observe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.observables_util.Observables.observe" title="Permalink to this definition"></a></dt>
+<dd><p>Registers a quantity/property for observation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Property</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the quantity/property to observe. 
+Supported are ‘Force’, ‘Torque’, ‘Orientation’, ‘Position’, ‘Volume’, 
+‘Energy’,’Pressure’, ‘Virial’, ‘Number’, ‘Virial Tensor’, ‘Reactions’, ‘Bonds’.</p>
+</dd>
+<dt><strong>stride</strong><span class="classifier"><cite>ìnt</cite></span></dt><dd><p>Stride with which the selected quantity is sampled.</p>
+</dd>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the SImulation class.</p>
+</dd>
+<dt><strong>types</strong><span class="classifier"><cite>list[string]</cite></span></dt><dd><p>Names of the particle or molecule types for which to observe a certain property/quantity. Default = None</p>
+</dd>
+<dt><strong>reactions</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List of reaction type indices. Default = None</p>
+</dd>
+<dt><strong>stepwise</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Indicates whether the selected quantity is sampled in a stepwise manner. Default = True</p>
+</dd>
+<dt><strong>binned</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>Indicates whether the selected quantity is sampled using data binning. Default = False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>KeyError (‘Molecule type not found’)</dt><dd><p>A molecule type name has been passed that has not yet been defined.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrid.observables.observables_util.Observables.observe_rdf">
 <span class="sig-name descname"><span class="pre">observe_rdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rdf_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdf_bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdf_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/observables_util.html#Observables.observe_rdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.observables_util.Observables.observe_rdf" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Registers a molecule pair for observation of the corresponding radial distribution function.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>rdf_pairs</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>List of molecule type pairs for which the RDF is calculated.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>rdf_bins: `int64[N]`</strong></dt><dd><p>The number of bins (spatial resolution of the RDF) for each of the N molecule pairs for which the RDF is calculated.</p>
+</dd>
+<dt><strong>rdf_cutoff: `float64[N]`</strong></dt><dd><p>The cutoff distances for each of the N molecule pairs for which the RDF is calculated.</p>
+</dd>
+<dt><strong>stride</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Stride with which the RDF is sampled.</p>
+</dd>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the SImulation class.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>KeyError (‘Molecule type not found’)</dt><dd><p>A molecule type name has been passed that has not yet been defined.</p>
 </dd>
 </dl>
 </dd>
@@ -177,25 +256,15 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrid.observables.observables_util.Observables.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/observables_util.html#Observables.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.observables_util.Observables.update" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Updates the values of all observed quantities by writing these to an hdf5 file.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the SImulation class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>hdf</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>hdf5 file.</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>RBs</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the RBs class.</p>
 </dd>
 </dl>
 </dd>
@@ -205,25 +274,27 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrid.observables.observables_util.Observables.update_bins">
 <span class="sig-name descname"><span class="pre">update_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/observables_util.html#Observables.update_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.observables_util.Observables.update_bins" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Updates the values of all quantities which are sampled using data binning.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
-</dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the SImulation class.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrid.observables.observables_util.Observables.update_rdf">
+<span class="sig-name descname"><span class="pre">update_rdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/observables_util.html#Observables.update_rdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.observables_util.Observables.update_rdf" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the radial distribution function (rdf histogram) for a range of molecule pairs and writes these to the hdf5 file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the SImulation class.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>hdf</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>hdf5 file.</p>
 </dd>
 </dl>
 </dd>

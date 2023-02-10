@@ -190,25 +190,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_cell_grid">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_cell_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_cell_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_cell_grid" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Visualization of the cell grid that divides the simulation box into different cells/voxels.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is exported to a .png file.</p>
 </dd>
-</dl>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the figure</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Path to which the figure is exported</p>
 </dd>
-</dl>
+<dt><strong>Compartments</strong><span class="classifier"><cite>nb.types.DictType(nb.int64, Compartment.class_type.instance_type)</cite></span></dt><dd><p>Dictionary keeping the index of each compartment in the simulation and the corresponding instances of the Compartment class.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simulation has ended.</p>
 </dd>
 </dl>
 </dd>
@@ -218,25 +214,45 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_compartment_0">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_compartment_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_normals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_traj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'orthographic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_cube</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-xz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_compartment_0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_compartment_0" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Plots a compartment mesh and highlights any face groups and borders/edges using the plotly library. Also plots the triangle normal vectors.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class</p>
 </dd>
-</dl>
+<dt><strong>vertices</strong><span class="classifier"><cite>float64[N,3]</cite></span></dt><dd><p>Coordinates of the N vertices in each dimension.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt><strong>triangles</strong><span class="classifier"><cite>int64[N,3]</cite></span></dt><dd><p>Indices of the vertices that make up each triangle (3 vertices per triangle).</p>
 </dd>
-</dl>
+<dt><strong>Compartments</strong><span class="classifier"><cite>nb.types.DictType(nb.int64, Compartment.class_type.instance_type)</cite></span></dt><dd><p>Dictionary keeping the index of each compartment in the simulation and the corresponding instances of the Compartment class.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is exported to a .png file.</p>
+</dd>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the figure</p>
+</dd>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Path to which the figure is exported</p>
+</dd>
+<dt><strong>comp_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the compartment which to plot</p>
+</dd>
+<dt><strong>face_groups</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the face groups of the compartment are highlighted</p>
+</dd>
+<dt><strong>show_normals</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the triangle normal vectors are plotted</p>
+</dd>
+<dt><strong>mol_traj</strong><span class="classifier"><cite>float64[T,N,3]</cite></span></dt><dd><p>Molecule trajectories can be passed which are then plotted as lines in 3D. T is the number of time steps, N the number of molecules. Molecules whose trajectory to plot can also be selected in addition by the parameter indces.</p>
+</dd>
+<dt><strong>indices</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Indices of the molecules whose trajectory to plot</p>
+</dd>
+<dt><strong>projection</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Projection type. Default = <cite>orthographic</cite></p>
+</dd>
+<dt><strong>plot_cube = `boolean`</strong></dt><dd><p>If True, the simulation box is visualized in addition to the selected compartment</p>
+</dd>
+<dt><strong>plane</strong><span class="classifier"><cite>string</cite> (‘-xy’, ‘xy’, ‘-yz’, ‘yz’, ‘-xz’, ‘xz’)</span></dt><dd><p>Defines the plane to which the camera is oriented. Default = <cite>-xz</cite></p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><cite>float64</cite> in [0,1]</span></dt><dd><p>Sets the opacity of the mesh faces.</p>
+</dd>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simualtion has ended.</p>
 </dd>
 </dl>
 </dd>
@@ -270,13 +286,13 @@
 </dd>
 <dt><strong>projection</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Projection type. Default = <cite>orthographic</cite></p>
 </dd>
-<dt><strong>plot_cube = `boolean`</strong></dt><dd><p>If True, the simualtion box is visualized in addition to the selected compartment</p>
+<dt><strong>plot_cube = `boolean`</strong></dt><dd><p>If True, the simulation box is visualized in addition to the selected compartment</p>
 </dd>
 <dt><strong>plane</strong><span class="classifier"><cite>string</cite> (‘-xy’, ‘xy’, ‘-yz’, ‘yz’, ‘-xz’, ‘xz’)</span></dt><dd><p>Defines the plane to which the camera is oriented. Default = <cite>-xz</cite></p>
 </dd>
 <dt><strong>alpha</strong><span class="classifier"><cite>float64</cite> in [0,1]</span></dt><dd><p>Sets the opacity of the mesh faces.</p>
 </dd>
-<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simualtion has ended.</p>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simulation has ended.</p>
 </dd>
 </dl>
 </dd>
@@ -286,25 +302,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_concentration_profile">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_concentration_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_concentration_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_concentration_profile" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Plots the concentration/density profile of molecules along a given axes.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>axis</strong><span class="classifier">0, 1 or 2</span></dt><dd><p>Axes along which to plot the concentration profile.</p>
 </dd>
-</dl>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is exported to a .png file.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the figure</p>
 </dd>
-</dl>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Path to which the figure is exported</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simulation has ended.</p>
 </dd>
 </dl>
 </dd>
@@ -314,25 +326,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_mobility_matrix">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_mobility_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'colored'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_mobility_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_mobility_matrix" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Plots the mobility tensor (also see diffusion tensor) of a molecule type.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-</dl>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is exported to a .png file.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the figure</p>
 </dd>
-</dl>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Path to which the figure is exported</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>color_scheme</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Available color schemes: ‘colored’, ‘flat’. Default = ‘colored’</p>
+</dd>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simulation has ended.</p>
 </dd>
 </dl>
 </dd>
@@ -342,25 +352,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_path">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_path" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Plots the trajectory of one or several molecules of a specific type in 3D.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>file_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Directory of the hdf5 file that contains the molecule trajectory data.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
 </dd>
-</dl>
+<dt><strong>indices</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List of molecule indices for which to plot the molecule trajectory</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If False, the plot is not shown. Default = True</p>
 </dd>
 </dl>
 </dd>
@@ -370,25 +372,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_path_mesh">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_path_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_path_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_path_mesh" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Plots the trajectory of one or several molecules of a specific type in 3D and includes a 3d mesh compartment.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>file_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Directory of the hdf5 file that contains the molecule trajectory data.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>molecule</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the molecule type.</p>
 </dd>
-</dl>
+<dt><strong>indices</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List of molecule indices for which to plot the molecule trajectory</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If False, the plot is not shown. Default = True</p>
 </dd>
 </dl>
 </dd>
@@ -398,25 +392,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_potential">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Potentials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yU_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yF_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_potential" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Plots a range of given energy potential functions and the corresponding force functions.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Potentials</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>List of functions which to plot.</p>
 </dd>
-</dl>
+<dt><strong>yU_limits</strong><span class="classifier"><cite>float64[2]</cite></span></dt><dd><p>Lower and upper limits for the y axes of the potential energy plot. Default = None</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt><strong>yF_limits</strong><span class="classifier"><cite>float64[2]</cite></span></dt><dd><p>Lower and upper limits for the y axes of the force plot. Default = None</p>
 </dd>
-</dl>
+<dt><strong>r_limits</strong><span class="classifier"><cite>float64[2]</cite></span></dt><dd><p>Lower and upper limits for the inter-particle distance. Default = None</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simulation has ended.</p>
+</dd>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is exported to a .png file.</p>
 </dd>
 </dl>
 </dd>
@@ -426,7 +418,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_scene">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'orthographic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-xz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_scene" title="Permalink to this definition"></a></dt>
-<dd><p>Plots the simulation scence with all its compartments and molecule positions. Molecule positions are represented by a scatter plot.</p>
+<dd><p>Plots the simulation scene with all its compartments and molecule positions. Molecule positions are represented by a scatter plot.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -452,25 +444,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_sphere_packing">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_sphere_packing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment_Number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_sphere_packing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_sphere_packing" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Visualization of the molecule distribution where molecules are represented as spheres.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Compartments</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the compartment which to include in the plot.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-</dl>
+<dt><strong>points</strong><span class="classifier"><cite>float64[:,3]</cite></span></dt><dd><p>Coordinates of the molecules.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
+<dt><strong>ptype</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>List of molecule type indices corresponding to the molecule coordinates given by the parameter points.</p>
 </dd>
-</dl>
+<dt><strong>save_fig</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is exported to a .png file.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>fig_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of the figure</p>
+</dd>
+<dt><strong>fig_path</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Path to which the figure is exported</p>
+</dd>
+<dt><strong>show</strong><span class="classifier"><cite>boolean</cite></span></dt><dd><p>If True, the plot is shown directly, otherwise only after the simulation has ended.</p>
 </dd>
 </dl>
 </dd>
@@ -491,6 +483,22 @@
 <dt><strong>p2</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 3</p>
 </dd>
 <dt><strong>ax</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Axis object of a matplotlib figure</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyrid.observables.plot_util.plot_triangles">
+<span class="sig-prename descclassname"><span class="pre">pyrid.observables.plot_util.</span></span><span class="sig-name descname"><span class="pre">plot_triangles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/plot_util.html#plot_triangles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.plot_util.plot_triangles" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a range of triangles in 3D.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class</p>
+</dd>
+<dt><strong>triangles_ids</strong><span class="classifier"><cite>int64[N]</cite></span></dt><dd><p>Triangle indices.</p>
 </dd>
 </dl>
 </dd>

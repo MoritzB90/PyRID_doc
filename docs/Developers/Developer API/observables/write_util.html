@@ -118,25 +118,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.write_util.data_id">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.write_util.</span></span><span class="sig-name descname"><span class="pre">data_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/write_util.html#data_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.write_util.data_id" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Extracts (for each particle in the simulation) the particle index and the index of the corresponding parent molecule from an instance of the Particles class.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Particles class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>array_like</dt><dd><p>Structured array containing, for each particle, fields for the index and the index of the parent molecule.</p>
 </dd>
 </dl>
 </dd>
@@ -146,25 +140,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.write_util.pos_data">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.write_util.</span></span><span class="sig-name descname"><span class="pre">pos_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/write_util.html#pos_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.write_util.pos_data" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Extracts (for each particle in the simulation) the particle type name and coordinates from an instance of the Particles class.
+If a Particle is bound to another particle, the particle’s type name is extended by ‘_True’, otherwise by ‘_False’.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Particles class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>array_like</dt><dd><p>Structured array containing fields for the name, x-, y-, and z-coordinates of each particle.</p>
 </dd>
 </dl>
 </dd>
@@ -174,25 +163,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.write_util.read_xyz">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.write_util.</span></span><span class="sig-name descname"><span class="pre">read_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/write_util.html#read_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.write_util.read_xyz" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Reads an .xyz file and returns a structured array containing molecule ids, molecule type ids and the corresponding molecule trajectories/coordinates. 
+In addition a set of the different molecule types is returned.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>file_path_pos</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Directory of the .xyz file</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>file_path_id</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>file index. Default = None</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt>tuple(array_like, set)</dt><dd><p>Structured array containing molecule ids, molecule type ids and the corresponding molecule trajectories/coordinates. Set of the different molecule types.</p>
 </dd>
 </dl>
 </dd>
@@ -202,25 +186,18 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.write_util.write">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.write_util.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/write_util.html#write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.write_util.write" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Writes the trajectories/coordinates of the particles in the simulation to an .xyz file. 
+This .xyz file can then be read by the PyRID Blender-addon.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>j</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>current simulation time step.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-</dl>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Particles class.</p>
 </dd>
 </dl>
 </dd>
@@ -230,25 +207,18 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyrid.observables.write_util.write_init">
 <span class="sig-prename descclassname"><span class="pre">pyrid.observables.write_util.</span></span><span class="sig-name descname"><span class="pre">write_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/observables/write_util.html#write_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.observables.write_util.write_init" title="Permalink to this definition"></a></dt>
-<dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
-<dl class="field-list simple">
+<dd><p>Initializes the write to file process by creating the .xyz, .prop, .pid and .box files.
+The .xyz file contains teh particle trajectories. 
+The .prop file contains information about system properties such as the simulation box size, particle radii, interaction radii, Boltzmann constant, Temperature, 
+viscosity, integration step size dt, and 3D mesh scale.
+The .box file contains the size of the simulation box at each time step. The .box file is only of interest in case the Berendsen barostat is used.
+The .pid file contains for each particle index the corresponding index of the parent molecule.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
+<dd class="field-odd"><dl>
+<dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
-<dt><strong>parameter_2</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>dtype</dt><dd><p>Some information</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
+<dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class.</p>
 </dd>
 </dl>
 </dd>

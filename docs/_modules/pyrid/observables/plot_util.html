@@ -44,6 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Advanced/Contents.html">Advanced</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers</span></p>
 <ul>
@@ -205,13 +206,13 @@
 <span class="sd">    projection : `string`</span>
 <span class="sd">        Projection type. Default = `orthographic`</span>
 <span class="sd">    plot_cube = `boolean`</span>
-<span class="sd">        If True, the simualtion box is visualized in addition to the selected compartment</span>
+<span class="sd">        If True, the simulation box is visualized in addition to the selected compartment</span>
 <span class="sd">    plane : `string` (&#39;-xy&#39;, &#39;xy&#39;, &#39;-yz&#39;, &#39;yz&#39;, &#39;-xz&#39;, &#39;xz&#39;)</span>
 <span class="sd">        Defines the plane to which the camera is oriented. Default = `-xz`</span>
 <span class="sd">    alpha : `float64` in [0,1]</span>
 <span class="sd">        Sets the opacity of the mesh faces.</span>
 <span class="sd">    show : `boolean`</span>
-<span class="sd">        If True, the plot is shown directly, otherwise only after the simualtion has ended.</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simulation has ended.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -228,30 +229,52 @@
 
 <div class="viewcode-block" id="plot_compartment_0"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_compartment_0">[docs]</a><span class="k">def</span> <span class="nf">plot_compartment_0</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">Compartments</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">face_groups</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show_normals</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mol_traj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;orthographic&#39;</span><span class="p">,</span> <span class="n">plot_cube</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">plane</span> <span class="o">=</span> <span class="s1">&#39;-xz&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Plots a compartment mesh and highlights any face groups and borders/edges using the plotly library. Also plots the triangle normal vectors.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class</span>
+<span class="sd">    System : `object`</span>
+<span class="sd">        Instance of the System class</span>
+<span class="sd">    vertices : `float64[N,3]`</span>
+<span class="sd">        Coordinates of the N vertices in each dimension.</span>
+<span class="sd">    triangles : `int64[N,3]`</span>
+<span class="sd">        Indices of the vertices that make up each triangle (3 vertices per triangle).</span>
+<span class="sd">    Compartments : `nb.types.DictType(nb.int64, Compartment.class_type.instance_type)`</span>
+<span class="sd">        Dictionary keeping the index of each compartment in the simulation and the corresponding instances of the Compartment class.</span>
+<span class="sd">    save_fig : `boolean`</span>
+<span class="sd">        If True, the plot is exported to a .png file.</span>
+<span class="sd">    fig_name : `string`</span>
+<span class="sd">        Name of the figure</span>
+<span class="sd">    fig_path : `string`</span>
+<span class="sd">        Path to which the figure is exported</span>
+<span class="sd">    comp_name : `string`</span>
+<span class="sd">        Name of the compartment which to plot</span>
+<span class="sd">    face_groups : `boolean`</span>
+<span class="sd">        If True, the face groups of the compartment are highlighted</span>
+<span class="sd">    show_normals : `boolean`</span>
+<span class="sd">        If True, the triangle normal vectors are plotted</span>
+<span class="sd">    mol_traj : `float64[T,N,3]`</span>
+<span class="sd">        Molecule trajectories can be passed which are then plotted as lines in 3D. T is the number of time steps, N the number of molecules. Molecules whose trajectory to plot can also be selected in addition by the parameter indces.</span>
+<span class="sd">    indices : `int64[:]`</span>
+<span class="sd">        Indices of the molecules whose trajectory to plot</span>
+<span class="sd">    projection : `string`</span>
+<span class="sd">        Projection type. Default = `orthographic`</span>
+<span class="sd">    plot_cube = `boolean`</span>
+<span class="sd">        If True, the simulation box is visualized in addition to the selected compartment</span>
+<span class="sd">    plane : `string` (&#39;-xy&#39;, &#39;xy&#39;, &#39;-yz&#39;, &#39;yz&#39;, &#39;-xz&#39;, &#39;xz&#39;)</span>
+<span class="sd">        Defines the plane to which the camera is oriented. Default = `-xz`</span>
+<span class="sd">    alpha : `float64` in [0,1]</span>
+<span class="sd">        Sets the opacity of the mesh faces.</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simualtion has ended.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    https://chart-studio.plotly.com/~empet/14749/mesh3d-with-intensities-and-flatshading/#/</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># https://chart-studio.plotly.com/~empet/14749/mesh3d-with-intensities-and-flatshading/#/</span>
+    
     
     <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">box_lengths</span><span class="p">)</span>
     
@@ -723,7 +746,7 @@
 
 <div class="viewcode-block" id="plot_scene"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_scene">[docs]</a><span class="k">def</span> <span class="nf">plot_scene</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;orthographic&#39;</span><span class="p">,</span> <span class="n">plane</span> <span class="o">=</span> <span class="s1">&#39;-xz&#39;</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;Plots the simulation scence with all its compartments and molecule positions. Molecule positions are represented by a scatter plot.</span>
+    <span class="sd">&quot;&quot;&quot;Plots the simulation scene with all its compartments and molecule positions. Molecule positions are represented by a scatter plot.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1165,8 +1188,20 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
     
 
-<span class="k">def</span> <span class="nf">plot_triangles</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">triangle_ids</span><span class="p">,</span> <span class="n">points</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_triangles"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_triangles">[docs]</a><span class="k">def</span> <span class="nf">plot_triangles</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">triangle_ids</span><span class="p">,</span> <span class="n">points</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     
+    <span class="sd">&quot;&quot;&quot;Plots a range of triangles in 3D.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class</span>
+<span class="sd">    triangles_ids : `int64[N]`</span>
+<span class="sd">        Triangle indices.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">vertices</span>
     <span class="n">triangle_ids</span>
     <span class="n">triangles</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">triangle_ids</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
@@ -1285,30 +1320,25 @@
                     <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="p">)</span>
     
-    <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
     
 <span class="c1">#%%</span>
 
 <div class="viewcode-block" id="plot_path"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_path">[docs]</a><span class="k">def</span> <span class="nf">plot_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Plots the trajectory of one or several molecules of a specific type in 3D.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    file_path : `string`</span>
+<span class="sd">        Directory of the hdf5 file that contains the molecule trajectory data.</span>
+<span class="sd">    molecule : `string`</span>
+<span class="sd">        Name of the molecule type.</span>
+<span class="sd">    indices : `int64[:]`</span>
+<span class="sd">        List of molecule indices for which to plot the molecule trajectory</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If False, the plot is not shown. Default = True</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -1341,24 +1371,18 @@
 
 <div class="viewcode-block" id="plot_path_mesh"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_path_mesh">[docs]</a><span class="k">def</span> <span class="nf">plot_path_mesh</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Plots the trajectory of one or several molecules of a specific type in 3D and includes a 3d mesh compartment.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    file_path : `string`</span>
+<span class="sd">        Directory of the hdf5 file that contains the molecule trajectory data.</span>
+<span class="sd">    molecule : `string`</span>
+<span class="sd">        Name of the molecule type.</span>
+<span class="sd">    indices : `int64[:]`</span>
+<span class="sd">        List of molecule indices for which to plot the molecule trajectory</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If False, the plot is not shown. Default = True</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -1391,24 +1415,22 @@
 
 <div class="viewcode-block" id="plot_cell_grid"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_cell_grid">[docs]</a><span class="k">def</span> <span class="nf">plot_cell_grid</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Compartments</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Visualization of the cell grid that divides the simulation box into different cells/voxels.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    save_fig : `boolean`</span>
+<span class="sd">        If True, the plot is exported to a .png file.</span>
+<span class="sd">    fig_name : `string`</span>
+<span class="sd">        Name of the figure</span>
+<span class="sd">    fig_path : `string`</span>
+<span class="sd">        Path to which the figure is exported</span>
+<span class="sd">    Compartments : `nb.types.DictType(nb.int64, Compartment.class_type.instance_type)`</span>
+<span class="sd">        Dictionary keeping the index of each compartment in the simulation and the corresponding instances of the Compartment class.</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simulation has ended.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -1498,24 +1520,26 @@
 
 <div class="viewcode-block" id="plot_sphere_packing"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_sphere_packing">[docs]</a><span class="k">def</span> <span class="nf">plot_sphere_packing</span><span class="p">(</span><span class="n">Compartment_Number</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Visualization of the molecule distribution where molecules are represented as spheres.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
+<span class="sd">    Compartments : `int64`</span>
+<span class="sd">        Index of the compartment which to include in the plot.</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    points : `float64[:,3]`</span>
+<span class="sd">        Coordinates of the molecules.</span>
+<span class="sd">    ptype : `int64[:]`</span>
+<span class="sd">        List of molecule type indices corresponding to the molecule coordinates given by the parameter points.</span>
+<span class="sd">    save_fig : `boolean`</span>
+<span class="sd">        If True, the plot is exported to a .png file.</span>
+<span class="sd">    fig_name : `string`</span>
+<span class="sd">        Name of the figure</span>
+<span class="sd">    fig_path : `string`</span>
+<span class="sd">        Path to which the figure is exported</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simulation has ended.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -1650,24 +1674,25 @@
 
 <div class="viewcode-block" id="plot_mobility_matrix"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_mobility_matrix">[docs]</a><span class="k">def</span> <span class="nf">plot_mobility_matrix</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">color_scheme</span> <span class="o">=</span> <span class="s1">&#39;colored&#39;</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Plots the mobility tensor (also see diffusion tensor) of a molecule type.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    molecule : `string`</span>
+<span class="sd">        Name of the molecule type</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    save_fig : `boolean`</span>
+<span class="sd">        If True, the plot is exported to a .png file.</span>
+<span class="sd">    fig_name : `string`</span>
+<span class="sd">        Name of the figure</span>
+<span class="sd">    fig_path : `string`</span>
+<span class="sd">        Path to which the figure is exported</span>
+<span class="sd">    color_scheme : `string`</span>
+<span class="sd">        Available color schemes: &#39;colored&#39;, &#39;flat&#39;. Default = &#39;colored&#39;</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simulation has ended.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -1795,25 +1820,26 @@
 
 <div class="viewcode-block" id="plot_potential"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_potential">[docs]</a><span class="k">def</span> <span class="nf">plot_potential</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">Potentials</span><span class="p">,</span> <span class="n">yU_limits</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">yF_limits</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">r_limits</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Plots a range of given energy potential functions and the corresponding force functions.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    Potentials : `list`</span>
+<span class="sd">        List of functions which to plot.</span>
+<span class="sd">    yU_limits : `float64[2]`</span>
+<span class="sd">        Lower and upper limits for the y axes of the potential energy plot. Default = None</span>
+<span class="sd">    yF_limits : `float64[2]`</span>
+<span class="sd">        Lower and upper limits for the y axes of the force plot. Default = None</span>
+<span class="sd">    r_limits : `float64[2]`</span>
+<span class="sd">        Lower and upper limits for the inter-particle distance. Default = None</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simulation has ended.</span>
+<span class="sd">    save_fig : `boolean`</span>
+<span class="sd">        If True, the plot is exported to a .png file.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
@@ -1882,24 +1908,23 @@
 
 <div class="viewcode-block" id="plot_concentration_profile"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/plot_util.html#pyrid.observables.plot_util.plot_concentration_profile">[docs]</a><span class="k">def</span> <span class="nf">plot_concentration_profile</span><span class="p">(</span><span class="n">Simulation</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
-    <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+    <span class="sd">&quot;&quot;&quot;Plots the concentration/density profile of molecules along a given axes.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parameter_1 : dtype</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    parameter_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">    Simulation : `object`</span>
+<span class="sd">        Instance of the Simulation class.</span>
+<span class="sd">    axis : 0, 1 or 2</span>
+<span class="sd">        Axes along which to plot the concentration profile.</span>
+<span class="sd">    save_fig : `boolean`</span>
+<span class="sd">        If True, the plot is exported to a .png file.</span>
+<span class="sd">    fig_name : `string`</span>
+<span class="sd">        Name of the figure</span>
+<span class="sd">    fig_path : `string`</span>
+<span class="sd">        Path to which the figure is exported</span>
+<span class="sd">    show : `boolean`</span>
+<span class="sd">        If True, the plot is shown directly, otherwise only after the simulation has ended.</span>
 <span class="sd">    </span>
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    NotImplementedError (just an example)</span>
-<span class="sd">        Brief explanation of why/when this exception is raised</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dtype</span>
-<span class="sd">        Some information</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     

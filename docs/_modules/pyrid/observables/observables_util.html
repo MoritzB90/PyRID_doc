@@ -44,6 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Advanced/Contents.html">Advanced</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers</span></p>
 <ul>
@@ -108,19 +109,63 @@
 <div class="viewcode-block" id="Observables"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables">[docs]</a><span class="k">class</span> <span class="nc">Observables</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The Observables class keeps track of all the observables and writes these to an hdf5 file.</span>
+<span class="sd">    The Observables class keeps track of all the observables. It contains methods to sample specific quantities, e.g. pressure, and to write these to an hdf5 file.</span>
+<span class="sd">    Sampling can be done in what is here called a stepwise manner. Thereby, the value that the quantity/property has at the current simulation step (current point in time) is saved.</span>
+<span class="sd">    However, sometimes it is more convenient to save not the current value but the average over some time window/bin. </span>
+<span class="sd">    This is true in particular for event based properties like the number of reactions. </span>
+<span class="sd">    Therefore, in PyRID, observables can also be binned and only then their value will be saved/written to the file. </span>
+
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    binned : `dict`</span>
-<span class="sd">        Some Information</span>
-<span class="sd">    attribute_2 : dtype</span>
-<span class="sd">        Some Information</span>
+<span class="sd">        Dictionary containing for each quantity the binned values.</span>
+<span class="sd">    Observing : `array like`</span>
+<span class="sd">        Structured array with boolean fields for each observable. If a field&#39;s value is True, the corresponding quantity is observed.</span>
+<span class="sd">    observables_setup : `dict`</span>
+<span class="sd">        Dictionary containing for each observed quantity the information needed for the sampling process. </span>
+<span class="sd">        This information includes the stride, the items (molecules, particles, reaction type, ...) to be included, the total number of sampling steps (int((Simulation.nsteps)/stride)),</span>
+<span class="sd">        whether the quantity is sampled in a stepwise manner or by binning or both, the current sampling step.</span>
+<span class="sd">    bond_pairs: `list`</span>
+<span class="sd">        List of particle type pairs for which the number of bonds is observed.</span>
+<span class="sd">    observing_rdf: `boolean`</span>
+<span class="sd">        If True, the radial distribution function is observed.</span>
+<span class="sd">    rdf_nsteps: `int`</span>
+<span class="sd">        The total number of sampling steps (int((Simulation.nsteps)/stride)) for the RDF.</span>
+<span class="sd">    rdf_current_step: `int`</span>
+<span class="sd">        Current sampling step of the RDF.</span>
+<span class="sd">    rdf_cutoff: `float64[N]`</span>
+<span class="sd">        The cutoff distances for each of the N molecule pairs for which the RDF is calculated.</span>
+<span class="sd">    rdf_bins: `int64[N]`</span>
+<span class="sd">        The number of bins (spatial resolution of the RDF) for each of the N molecule pairs for which the RDF is calculated.</span>
+<span class="sd">    rdf_stride : `int`</span>
+<span class="sd">        Stride with which the RDF is sampled.</span>
+<span class="sd">    rdf_pairs: `list`</span>
+<span class="sd">        List of molecule type pairs for which the RDF is calculated.</span>
+<span class="sd">    rdf_molecules: `set`</span>
+<span class="sd">        Set of molecules types for which the RDF is calculated.</span>
+<span class="sd">    rdf_hgrid: `array like`</span>
+<span class="sd">        Hierarchical grid data structure for the different molecule types. </span>
+<span class="sd">        The hierarchical grid allows for an efficient calculation of the pairwise distances between the molecules.</span>
+<span class="sd">    rdf_measure_pair: `int64[N,N]`</span>
+<span class="sd">        Matrix of molecule type indices indicating which molecule pairs are observed.</span>
+<span class="sd">    rdf_hist: `dict`</span>
+<span class="sd">        Dictionary containing for each observed molecule pair the rdf histogram.</span>
+
+
 <span class="sd">    </span>
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    method_1(arguments)</span>
-<span class="sd">        Some general information about this method</span>
+<span class="sd">    update_bins(self, Simulation)</span>
+<span class="sd">        Updates the values of all quantities which are sampled using data binning.</span>
+<span class="sd">    observe(self, Property, stride, Simulation, types = None, reactions = None, stepwise = True, binned= False)</span>
+<span class="sd">        Registers a quantity/property for observation.</span>
+<span class="sd">    observe_rdf(self, rdf_pairs, rdf_bins, rdf_cutoff, stride, Simulation)</span>
+<span class="sd">        Registers a molecule pair for observation of the corresponding radial distribution function.</span>
+<span class="sd">    update(self, Simulation, hdf, RBs)</span>
+<span class="sd">        Updates the values of all observed quantities by writing these to an hdf5 file.</span>
+<span class="sd">    update_rdf(self, Simulation, hdf):</span>
+<span class="sd">        Calculates the radial distribution function (rdf histogram) for a range of molecule pairs and writes these to the hdf5 file.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -216,24 +261,12 @@
 
 <div class="viewcode-block" id="Observables.update_bins"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.update_bins">[docs]</a>    <span class="k">def</span> <span class="nf">update_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Updates the values of all quantities which are sampled using data binning.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the SImulation class.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -276,9 +309,37 @@
                     
     <span class="c1">#%%</span>
     
-    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reactions</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">binned</span><span class="o">=</span> <span class="kc">False</span><span class="p">):</span><span class="c1">#, save = True, keep_list = False):</span>
+<div class="viewcode-block" id="Observables.observe"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reactions</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stepwise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">binned</span><span class="o">=</span> <span class="kc">False</span><span class="p">):</span><span class="c1">#, save = True, keep_list = False):</span>
         
-        
+        <span class="sd">&quot;&quot;&quot;Registers a quantity/property for observation.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Property : `string`</span>
+<span class="sd">            Name of the quantity/property to observe. </span>
+<span class="sd">            Supported are &#39;Force&#39;, &#39;Torque&#39;, &#39;Orientation&#39;, &#39;Position&#39;, &#39;Volume&#39;, </span>
+<span class="sd">            &#39;Energy&#39;,&#39;Pressure&#39;, &#39;Virial&#39;, &#39;Number&#39;, &#39;Virial Tensor&#39;, &#39;Reactions&#39;, &#39;Bonds&#39;.</span>
+<span class="sd">        stride : `ìnt`</span>
+<span class="sd">            Stride with which the selected quantity is sampled.</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the SImulation class.</span>
+<span class="sd">        types : `list[string]`</span>
+<span class="sd">            Names of the particle or molecule types for which to observe a certain property/quantity. Default = None</span>
+<span class="sd">        reactions : `int64[:]`</span>
+<span class="sd">            List of reaction type indices. Default = None</span>
+<span class="sd">        stepwise : `boolean`</span>
+<span class="sd">            Indicates whether the selected quantity is sampled in a stepwise manner. Default = True</span>
+<span class="sd">        binned : `boolean`</span>
+<span class="sd">            Indicates whether the selected quantity is sampled using data binning. Default = False</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError (&#39;Molecule type not found&#39;)</span>
+<span class="sd">            A molecule type name has been passed that has not yet been defined.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
         <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">Property</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">binned</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Observing</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">Property</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -447,31 +508,33 @@
         <span class="c1"># if save==True:</span>
         <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>    
             
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observing </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Property</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observing </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Property</span><span class="p">))</span></div>
         
     <span class="c1">#%%</span>
             
             
 <div class="viewcode-block" id="Observables.observe_rdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.observe_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">observe_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf_pairs</span><span class="p">,</span> <span class="n">rdf_bins</span><span class="p">,</span> <span class="n">rdf_cutoff</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">):</span> <span class="c1">#, save = True, keep_list = False):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Registers a molecule pair for observation of the corresponding radial distribution function.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
+<span class="sd">        rdf_pairs : `list`</span>
+<span class="sd">            List of molecule type pairs for which the RDF is calculated.</span>
+<span class="sd">        rdf_bins: `int64[N]`</span>
+<span class="sd">            The number of bins (spatial resolution of the RDF) for each of the N molecule pairs for which the RDF is calculated.</span>
+<span class="sd">        rdf_cutoff: `float64[N]`</span>
+<span class="sd">            The cutoff distances for each of the N molecule pairs for which the RDF is calculated.</span>
+<span class="sd">        stride : `int`</span>
+<span class="sd">            Stride with which the RDF is sampled.</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the SImulation class.</span>
 <span class="sd">        </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
+<span class="sd">        KeyError (&#39;Molecule type not found&#39;)</span>
+<span class="sd">            A molecule type name has been passed that has not yet been defined.</span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -516,24 +579,16 @@
     
 <div class="viewcode-block" id="Observables.update"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">hdf</span><span class="p">,</span> <span class="n">RBs</span><span class="p">):</span>
         
-        <span class="sd">&quot;&quot;&quot;A brief description of what the function (method in case of classes) is and what it’s used for</span>
+        <span class="sd">&quot;&quot;&quot;Updates the values of all observed quantities by writing these to an hdf5 file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_1 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        parameter_2 : dtype</span>
-<span class="sd">            Some Information</span>
-<span class="sd">        </span>
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        NotImplementedError (just an example)</span>
-<span class="sd">            Brief explanation of why/when this exception is raised</span>
-<span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dtype</span>
-<span class="sd">            Some information</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the SImulation class.</span>
+<span class="sd">        hdf : `object`</span>
+<span class="sd">            hdf5 file.</span>
+<span class="sd">        RBs : `object`</span>
+<span class="sd">            Instance of the RBs class.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -714,9 +769,20 @@
     <span class="c1">#%%</span>
     
     
-    <span class="k">def</span> <span class="nf">update_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">hdf</span><span class="p">):</span>
+<div class="viewcode-block" id="Observables.update_rdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/observables/observables_util.html#pyrid.observables.observables_util.Observables.update_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">update_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">hdf</span><span class="p">):</span>
         
-        
+        <span class="sd">&quot;&quot;&quot;Calculates the radial distribution function (rdf histogram) for a range of molecule pairs and writes these to the hdf5 file.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Simulation : `object`</span>
+<span class="sd">            Instance of the SImulation class.</span>
+<span class="sd">        hdf : `object`</span>
+<span class="sd">            hdf5 file.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
         <span class="k">if</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">current_step</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdf_stride</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rdf_pairs</span><span class="p">)):</span>
@@ -752,7 +818,7 @@
                 <span class="n">dataset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;RDF/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol2</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">step_id</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">rdf_hist</span><span class="p">)</span>
                 <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;time step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">current_step</span>
                 
-            <span class="bp">self</span><span class="o">.</span><span class="n">rdf_current_step</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rdf_current_step</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
             
             
             

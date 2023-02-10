@@ -110,10 +110,10 @@ You can do so via the Simulation class and its attributes. Tip: If you want to h
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span> <span class="o">-</span><span class="mf">8.01000665242636</span><span class="p">,</span>  <span class="mf">49.9969587092104</span> <span class="p">,</span> <span class="o">-</span><span class="mf">10.31255250585599</span><span class="p">],</span>
-                        <span class="p">[</span><span class="o">-</span><span class="mf">2.0197198684247195</span><span class="p">,</span>  <span class="mf">0.2506851204932846</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4518569569533009</span><span class="p">],</span>
-                        <span class="p">[</span><span class="o">-</span><span class="mf">1.1785113019775793</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.041241452319315</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.8333333333333333</span><span class="p">],</span>
-                        <span class="p">[</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>  <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">],</span>
-                        <span class="mi">12876</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">9745</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.e+10</span><span class="p">)</span>
+        <span class="p">[</span><span class="o">-</span><span class="mf">2.0197198684247195</span><span class="p">,</span>  <span class="mf">0.2506851204932846</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4518569569533009</span><span class="p">],</span>
+        <span class="p">[</span><span class="o">-</span><span class="mf">1.1785113019775793</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.041241452319315</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.8333333333333333</span><span class="p">],</span>
+        <span class="p">[</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>  <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">],</span>
+        <span class="mi">12876</span><span class="p">,</span> <span class="s1">&#39;Patch_3&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">9745</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.e+10</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>What is returned is a numpy structured array. The datatype of a structured array is a composition of simpler datatypes (float, int, string ,…) organized as a sequence of named fields.
@@ -122,21 +122,21 @@ Therefore, we first need to take a look at the field names of the structured arr
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;pos_local&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;coord_local&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;force&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;rb_id&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;number_reactions&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;reactions_head&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;bound&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;bound_with&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;cutoff&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;h&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;next_transition&#39;</span><span class="p">)</span>
+        <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pos_local&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;coord_local&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;force&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;rb_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;number_reactions&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;reactions_head&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bound&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bound_with&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cutoff&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;h&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;next_transition&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The first field is just a ‘next’ pointer, which is not of any interest for the user. Its value is 1.
@@ -145,13 +145,11 @@ There is also a field called ‘force’ at index 4, i.e. [ 40.96887479809036   
 We can access individual fields via their name or index:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;force&#39;</span><span class="p">]</span>
 
-<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>
-<span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
 
 <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
 
-<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span>
-<span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
 </pre></div>
 </div>
 <p><strong>Molecules</strong></p>
@@ -163,36 +161,36 @@ We can access individual fields via their name or index:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;name&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;id&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;dX&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;force&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;torque&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;topology&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;topology_N&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;q&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;dq&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;B&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;orientation_quat&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Dtrans&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Drot&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;loc_id&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;compartment&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;triangle_id&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;pos_last&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Theta_t&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Theta_r&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;posL&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;collision_type&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;next_transition&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;h&#39;</span><span class="p">)</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dX&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;force&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;torque&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;topology&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;topology_N&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;q&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dq&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;B&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;orientation_quat&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Dtrans&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Drot&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;loc_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;compartment&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;triangle_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pos_last&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Theta_t&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Theta_r&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;posL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;collision_type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;next_transition&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;h&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>As you can see, the RBs data structure is a bit more complex. We can again access the value of the different properties via the field name.
