@@ -44,6 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Advanced/Contents.html">Advanced</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers</span></p>
 <ul>
@@ -105,7 +106,7 @@
 <span class="c1">#%%</span>
 
     
-<span class="n">item_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;pos_local&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;coord_local&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;rb_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;U20&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;number_reactions&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;reactions_head&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span> <span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;bound&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;bound_with&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;cutoff&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;next_transition&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">item_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;pos_local&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;coord_local&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))),</span> <span class="p">(</span><span class="s1">&#39;rb_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;U20&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;number_reactions&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;reactions_head&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span> <span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;bound&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;bound_with&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;cutoff&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;next_transition&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="n">spec_holes_array</span> <span class="o">=</span> <span class="p">[</span>
@@ -119,13 +120,13 @@
 <span class="p">]</span>
 
 <span class="n">spec_particles</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;current_unique_id&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_holes_array</span><span class="o">+</span><span class="n">spec_particles</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Particles</span><span class="p">(</span><span class="n">HolesArray</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Particles class stored all data for the particles in the simulation. Particles are the &#39;atoms&#39; in PyRID. Molecules can be constructed from combining several particles to a rigid bead model. Particles can interact with each other via energy potentials and react with each other by user defined bimolecular reactions.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
@@ -175,11 +176,13 @@
     <span class="n">__init__HolesArray</span> <span class="o">=</span> <span class="n">HolesArray</span><span class="o">.</span><span class="fm">__init__</span>
     
 <div class="viewcode-block" id="Particles.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__init__HolesArray</span><span class="p">(</span><span class="n">item_t</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__init__HolesArray</span><span class="p">(</span><span class="n">item_t</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_unique_id</span> <span class="o">=</span> <span class="mi">0</span></div>
         
 <div class="viewcode-block" id="Particles.add_particle"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.add_particle">[docs]</a>    <span class="k">def</span> <span class="nf">add_particle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Adds a new particle to the array</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a new particle to the array</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -189,7 +192,10 @@
 <span class="sd">            Name of particle type</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-    
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;unique_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unique_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_unique_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;bound_with&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         
@@ -200,8 +206,8 @@
     <span class="c1">############################################</span>
 
 <div class="viewcode-block" id="Particles.next_up_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.next_up_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">next_up_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the time point of the next uni-particle reaction.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the time point of the next uni-particle reaction.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -229,7 +235,7 @@
             
 <div class="viewcode-block" id="Particles.set_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.set_pos">[docs]</a>    <span class="k">def</span> <span class="nf">set_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Sets the position of particle i given x,y,z</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the position of particle i given x,y,z</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -252,7 +258,7 @@
         
 <div class="viewcode-block" id="Particles.increase_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.increase_pos">[docs]</a>    <span class="k">def</span> <span class="nf">increase_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">,</span><span class="n">dz</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Incerases the particle position by dx,dy,dz</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Incerases the particle position by dx,dy,dz</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -276,7 +282,7 @@
     <span class="c1">############################################</span>
 <div class="viewcode-block" id="Particles.set_pos_local"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.set_pos_local">[docs]</a>    <span class="k">def</span> <span class="nf">set_pos_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">xl</span><span class="p">,</span><span class="n">yl</span><span class="p">,</span><span class="n">zl</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Sets the position of particle i in the local coordinate frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the position of particle i in the local coordinate frame</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -300,7 +306,7 @@
         
 <div class="viewcode-block" id="Particles.increase_pos_local"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.increase_pos_local">[docs]</a>    <span class="k">def</span> <span class="nf">increase_pos_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">dxl</span><span class="p">,</span><span class="n">dyl</span><span class="p">,</span><span class="n">dzl</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Increases the position of particle i in the local coordinate frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Increases the position of particle i in the local coordinate frame</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -326,8 +332,8 @@
         
 
 <div class="viewcode-block" id="Particles.set_force"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.set_force">[docs]</a>    <span class="k">def</span> <span class="nf">set_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">fz</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets the force vector of particle i</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the force vector of particle i</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -351,7 +357,7 @@
         
 <div class="viewcode-block" id="Particles.clear_force"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.clear_force">[docs]</a>    <span class="k">def</span> <span class="nf">clear_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Resets the force vector of particle i to [0,0,0]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the force vector of particle i to [0,0,0]</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -366,7 +372,7 @@
 
 <div class="viewcode-block" id="Particles.increase_force"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.increase_force">[docs]</a>    <span class="k">def</span> <span class="nf">increase_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">dfx</span><span class="p">,</span> <span class="n">dfy</span><span class="p">,</span> <span class="n">dfz</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Increases the force vector of particle i by dfx, dfy, dfz</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Increases the force vector of particle i by dfx, dfy, dfz</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -391,7 +397,7 @@
     
 <div class="viewcode-block" id="Particles.set_coord"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.set_coord">[docs]</a>    <span class="k">def</span> <span class="nf">set_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span><span class="n">yc</span><span class="p">,</span> <span class="n">zc</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Sets the coordinates of particle i in the local reference frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the coordinates of particle i in the local reference frame</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -414,7 +420,7 @@
     
 <div class="viewcode-block" id="Particles.set_rb_id"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.set_rb_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_rb_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rb_id</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Sets the id of the rigid bead molecule that particle i is part of</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the id of the rigid bead molecule that particle i is part of</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -432,7 +438,7 @@
         
 <div class="viewcode-block" id="Particles.set_type"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.set_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span>  <span class="n">particle_type</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Sets the type name and id of particle i</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the type name and id of particle i</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -457,7 +463,7 @@
     
 <div class="viewcode-block" id="Particles.increase_number_reactions"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.increase_number_reactions">[docs]</a>    <span class="k">def</span> <span class="nf">increase_number_reactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Increases the number of reactions particle i partakes in by 1</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Increases the number of reactions particle i partakes in by 1</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -472,7 +478,7 @@
 
 <div class="viewcode-block" id="Particles.decrease_number_reactions"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.decrease_number_reactions">[docs]</a>    <span class="k">def</span> <span class="nf">decrease_number_reactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Decreases the number of reactions particle i partakes in by 1</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decreases the number of reactions particle i partakes in by 1</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -487,7 +493,7 @@
         
 <div class="viewcode-block" id="Particles.clear_number_reactions"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/particles_util.html#pyrid.molecules.particles_util.Particles.clear_number_reactions">[docs]</a>    <span class="k">def</span> <span class="nf">clear_number_reactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Sets the number of reactions particle i partakes in to zero</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the number of reactions particle i partakes in to zero</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

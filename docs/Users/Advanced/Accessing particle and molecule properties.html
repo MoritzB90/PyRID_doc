@@ -123,6 +123,7 @@ Therefore, we first need to take a look at the field names of the structured arr
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;unique_id&#39;</span><span class="p">,</span>
         <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
         <span class="s1">&#39;pos_local&#39;</span><span class="p">,</span>
         <span class="s1">&#39;coord_local&#39;</span><span class="p">,</span>
@@ -153,17 +154,24 @@ We can access individual fields via their name or index:</p>
 <span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>Each particle has assigned a unique id by which they can by identified unambiguously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;unique_id&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">10352</span>
+</pre></div>
+</div>
 <p><strong>Molecules</strong></p>
 <p>Similarly, the properties of all the molecules (Rigid Bead molecules: RBs) in the simulation can be accessed by</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>As for the particles dta structure, a numpy structured array is returned. Its field names are</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span>
         <span class="s1">&#39;name&#39;</span><span class="p">,</span>
         <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;unique_id&#39;</span><span class="p">,</span>
         <span class="s1">&#39;type_id&#39;</span><span class="p">,</span>
         <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
         <span class="s1">&#39;dX&#39;</span><span class="p">,</span>
@@ -226,6 +234,16 @@ Therefore, the proper way to get the particle indices of the molecule is:</p>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int64</span><span class="p">)</span>
 </pre></div>
+</div>
+<p>Each molecule has assigned a unique id that can be accessed via the ‘unique_id’ field. This is not to be confused with the ‘id’ field, which is not an unambigous identifier!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;unique_id&#39;</span><span class="p">]</span>
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">548</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The value of the ‘id’ field is not an unambigous identifier of a molecule and may be reassigned to other molecules during simulation. Use the ‘unique_id’ field to unambigously identify a molecule!</p>
 </div>
 </section>
 

@@ -107,7 +107,7 @@
 <span class="c1">#%%</span>
 
     
-<span class="n">item_t_RB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;U20&#39;</span><span class="p">),(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;type_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;dX&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;torque&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;topology&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,)),(</span><span class="s1">&#39;topology_N&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;dq&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)),(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)),(</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;Dtrans&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">&#39;Drot&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;loc_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;compartment&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos_last&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;Theta_t&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;Theta_r&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;posL&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;collision_type&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;next_transition&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">item_t_RB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;U20&#39;</span><span class="p">),(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;type_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;dX&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;torque&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;topology&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,)),(</span><span class="s1">&#39;topology_N&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;dq&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)),(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)),(</span><span class="s1">&#39;orientation_quat&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_tb&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_rb&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_tb_sqrt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;mu_rb_sqrt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)),(</span><span class="s1">&#39;Dtrans&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">&#39;Drot&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;loc_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;compartment&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;triangle_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;pos_last&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;Theta_t&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;Theta_r&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;posL&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;collision_type&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;next_transition&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">spec_holes_array</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
@@ -121,13 +121,13 @@
 <span class="p">]</span>
 
 <span class="n">spec_RBs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;current_unique_id&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_holes_array</span><span class="o">+</span><span class="n">spec_RBs</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">RBs</span><span class="p">(</span><span class="n">HolesArray</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A rigid body/bead model object is defined by a set of particles with fixed positions relative to the body center. </span>
 <span class="sd">    In our framework we use rigid bodies as a course grained representation of molecules.</span>
 <span class="sd">    A rigid bead model has a center of diffusion around which the rigid bead model rotates in response to torque and rotational diffusion. </span>
@@ -184,12 +184,13 @@
     <span class="n">__init__HolesArray</span> <span class="o">=</span> <span class="n">HolesArray</span><span class="o">.</span><span class="fm">__init__</span>
     
 <div class="viewcode-block" id="RBs.__init__"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__init__HolesArray</span><span class="p">(</span><span class="n">item_t_RB</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__init__HolesArray</span><span class="p">(</span><span class="n">item_t_RB</span><span class="p">)</span>
         
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_unique_id</span> <span class="o">=</span> <span class="mi">0</span></div>
         
 <div class="viewcode-block" id="RBs.add_RB"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.add_RB">[docs]</a>    <span class="k">def</span> <span class="nf">add_RB</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">compartment</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">vol_surf_id</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Adds a rigid bead molecule to the system.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a rigid bead molecule to the system.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -206,6 +207,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_RB</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;unique_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_unique_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_unique_id</span> <span class="o">+=</span> <span class="mi">1</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="p">][</span><span class="s1">&#39;compartment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compartment</span>
@@ -233,8 +237,8 @@
         
         
 <div class="viewcode-block" id="RBs.next_um_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.next_um_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">next_um_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Draws the time point of the next unimolecular diffusion for moelcule i.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draws the time point of the next unimolecular diffusion for moelcule i.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -269,8 +273,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;next_transition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e10</span></div>
     
 <div class="viewcode-block" id="RBs.set_triangle"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.set_triangle">[docs]</a>    <span class="k">def</span> <span class="nf">set_triangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tri_id</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets the triangle id for surface molecule i.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the triangle id for surface molecule i.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -287,8 +291,8 @@
         
         
 <div class="viewcode-block" id="RBs.add_particle"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.add_particle">[docs]</a>    <span class="k">def</span> <span class="nf">add_particle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Adds a new particle to the rigid bead molecule topology.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a new particle to the rigid bead molecule topology.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -315,8 +319,8 @@
             
         
 <div class="viewcode-block" id="RBs.update_topology"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_topology">[docs]</a>    <span class="k">def</span> <span class="nf">update_topology</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the positions of the particles that make up the topology of molecule i.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the positions of the particles that make up the topology of molecule i.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -354,8 +358,8 @@
                         
                         
 <div class="viewcode-block" id="RBs.place_particles"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.place_particles">[docs]</a>    <span class="k">def</span> <span class="nf">place_particles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">h_membrane</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Places all the particles that make up the topology of rigid bead molecule i given a list of partcile types, positions and radii.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Places all the particles that make up the topology of rigid bead molecule i given a list of partcile types, positions and radii.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -410,8 +414,8 @@
             
             
 <div class="viewcode-block" id="RBs.set_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.set_pos">[docs]</a>    <span class="k">def</span> <span class="nf">set_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets the position of rigid bead molecule i.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the position of rigid bead molecule i.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -452,8 +456,8 @@
                     
 
     <span class="k">def</span> <span class="nf">update_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -479,8 +483,8 @@
 
                     
 <div class="viewcode-block" id="RBs.update_force_torque"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_force_torque">[docs]</a>    <span class="k">def</span> <span class="nf">update_force_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -511,8 +515,8 @@
         
         
 <div class="viewcode-block" id="RBs.update_B"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_B">[docs]</a>    <span class="k">def</span> <span class="nf">update_B</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates matrix B used in the quaternion propagator (see RBs.dq()).</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates matrix B used in the quaternion propagator (see RBs.dq()).</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -565,8 +569,8 @@
         
     
 <div class="viewcode-block" id="RBs.calc_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.calc_orientation_quat">[docs]</a>    <span class="k">def</span> <span class="nf">calc_orientation_quat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the orientation/rotation matrix of moelcule i from it&#39;s rotational quaternion q.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the orientation/rotation matrix of moelcule i from it&#39;s rotational quaternion q.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -610,8 +614,8 @@
             
         
 <div class="viewcode-block" id="RBs.set_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.set_orientation_quat">[docs]</a>    <span class="k">def</span> <span class="nf">set_orientation_quat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets the orientation of rigid bead molecule i given a rotation quaternion q.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the orientation of rigid bead molecule i given a rotation quaternion q.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -636,8 +640,8 @@
             
 
 <div class="viewcode-block" id="RBs.update_orientation_quat"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_orientation_quat">[docs]</a>    <span class="k">def</span> <span class="nf">update_orientation_quat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the rotation matrix of rigid bead molecule i, however, without updating the molecule and particle positions.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the rotation matrix of rigid bead molecule i, however, without updating the molecule and particle positions.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -652,8 +656,8 @@
         
     
 <div class="viewcode-block" id="RBs.update_dq"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_dq">[docs]</a>    <span class="k">def</span> <span class="nf">update_dq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the rotational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by :cite:t:`Ilie2015`.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the rotational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by :cite:t:`Ilie2015`.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -754,8 +758,8 @@
 
 
 <div class="viewcode-block" id="RBs.update_dX"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_dX">[docs]</a>    <span class="k">def</span> <span class="nf">update_dX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the translational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by :cite:t:`Ilie2015`.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the translational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by :cite:t:`Ilie2015`.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -824,8 +828,8 @@
                 
             
 <div class="viewcode-block" id="RBs.update_particle_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_particle_pos">[docs]</a>    <span class="k">def</span> <span class="nf">update_particle_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the position of volume molecule i. </span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the position of volume molecule i. </span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -986,8 +990,8 @@
     <span class="c1">#%%</span>
 
 <div class="viewcode-block" id="RBs.update_particle_pos_2D"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.update_particle_pos_2D">[docs]</a>    <span class="k">def</span> <span class="nf">update_particle_pos_2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the position of surface molecule i. </span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the position of surface molecule i. </span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1023,8 +1027,8 @@
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="RBs.rescale_pos"><a class="viewcode-back" href="../../../Developers/Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.rescale_pos">[docs]</a>    <span class="k">def</span> <span class="nf">rescale_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Particles</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Rescales the position of molecule i by a multiplicative factor mu. This method is only used for the Berendsen barostat.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rescales the position of molecule i by a multiplicative factor mu. This method is only used for the Berendsen barostat.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

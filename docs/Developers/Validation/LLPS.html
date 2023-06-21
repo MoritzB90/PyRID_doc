@@ -134,13 +134,13 @@ The third parameter is an integer index that we use to get different values of t
 <span class="c1">#SBATCH -n 1</span>
 <span class="c1">#SBATCH -c 1</span>
 
-module purge
-module load anaconda3
-<span class="nb">source</span> activate pyrid-env
+module<span class="w"> </span>purge
+module<span class="w"> </span>load<span class="w"> </span>anaconda3
+<span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>pyrid-env
 
-python3 -u /scratch/users/mbecker3/PyRID/Espinosa/LLPS.py <span class="nv">$1</span> <span class="s1">&#39;NPT&#39;</span> -1
+python3<span class="w"> </span>-u<span class="w"> </span>/scratch/users/mbecker3/PyRID/Espinosa/LLPS.py<span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="s1">&#39;NPT&#39;</span><span class="w"> </span>-1
 
-conda deactivate
+conda<span class="w"> </span>deactivate
 </pre></div>
 </div>
 </div>
@@ -158,13 +158,13 @@ At last, we run our script LLPS.py and pass the three parameters: $1 is actually
 <span class="c1">#SBATCH -c 11</span>
 <span class="c1">#SBATCH -a 0-10</span>
 
-module purge
-module load anaconda3
-<span class="nb">source</span> activate pypatch-env
+module<span class="w"> </span>purge
+module<span class="w"> </span>load<span class="w"> </span>anaconda3
+<span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>pypatch-env
 
-python3 -u /scratch/users/mbecker3/PyPatch/Espinosa/LLPS.py <span class="nv">$1</span> <span class="s1">&#39;NVT&#39;</span> <span class="nv">$SLURM_ARRAY_TASK_ID</span>
+python3<span class="w"> </span>-u<span class="w"> </span>/scratch/users/mbecker3/PyPatch/Espinosa/LLPS.py<span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="s1">&#39;NVT&#39;</span><span class="w"> </span><span class="nv">$SLURM_ARRAY_TASK_ID</span>
 
-conda deactivate
+conda<span class="w"> </span>deactivate
 </pre></div>
 </div>
 </div>
@@ -175,10 +175,10 @@ $SLURM_ARRAY_TASK_ID is an array of integers that we defined by -a 0-10. This me
 <div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">Main</span><a class="headerlink" href="#id7" title="Permalink to this code"></a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
-<span class="k">for</span> exp <span class="k">in</span> <span class="s1">&#39;5_sites&#39;</span> <span class="s1">&#39;4_sites&#39;</span> <span class="s1">&#39;3_sites&#39;</span>
+<span class="k">for</span><span class="w"> </span>exp<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s1">&#39;5_sites&#39;</span><span class="w"> </span><span class="s1">&#39;4_sites&#39;</span><span class="w"> </span><span class="s1">&#39;3_sites&#39;</span>
 <span class="k">do</span>
-        <span class="nv">my_id</span><span class="o">=</span><span class="k">$(</span>sbatch --parsable run_NPT.sh <span class="nv">$exp</span><span class="k">)</span>
-        sbatch -d afterok:<span class="nv">$my_id</span> run_NVT.sh <span class="nv">$exp</span>
+<span class="w">        </span><span class="nv">my_id</span><span class="o">=</span><span class="k">$(</span>sbatch<span class="w"> </span>--parsable<span class="w"> </span>run_NPT.sh<span class="w"> </span><span class="nv">$exp</span><span class="k">)</span>
+<span class="w">        </span>sbatch<span class="w"> </span>-d<span class="w"> </span>afterok:<span class="nv">$my_id</span><span class="w"> </span>run_NVT.sh<span class="w"> </span><span class="nv">$exp</span>
 <span class="k">done</span>
 </pre></div>
 </div>
