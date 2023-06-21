@@ -48,7 +48,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../User_Guide/Contents.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Examples/Contents.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="Contents.html">Advanced</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Accessing particle and molecule properties</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Accessing particle and molecule properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#particles">Particles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#particle-id">Particle ID</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#molecules">Molecules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#molecule-id">Molecule ID</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="Increasing%20the%20maximum%20molecule%20size.html">Increasing the maximum molecule size</a></li>
 </ul>
 </li>
@@ -102,7 +112,8 @@
 <p>PyRID allows users to sample certain properties/observables and writes these to a local file (see <a class="reference internal" href="../User_Guide/Observables.html#userguide-observables"><span class="std std-ref">Observables</span></a>).
 However, sometimes you may want to access some system properties directly and write your own Python scripts to analyze data or similar.
 You can do so via the Simulation class and its attributes. Tip: If you want to have a look at all the different attributes of the Simulation class, use <code class="code highlight python docutils literal highlight-python"><span class="nb">dir</span><span class="p">(</span><span class="n">Simulation</span><span class="p">)</span></code>.</p>
-<p><strong>Particles</strong></p>
+<section id="particles">
+<h2>Particles<a class="headerlink" href="#particles" title="Permalink to this heading"></a></h2>
 <p>All particle properties, are kept in a data structure that can be accessed by the Particles attribute</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span>
 </pre></div>
@@ -154,13 +165,18 @@ We can access individual fields via their name or index:</p>
 <span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span> <span class="mf">40.96887479809036</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">27.908936738251054</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">0.14310326836228807</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Each particle has assigned a unique id by which they can by identified unambiguously:</p>
+<section id="particle-id">
+<h3>Particle ID<a class="headerlink" href="#particle-id" title="Permalink to this heading"></a></h3>
+<p>Each particle has assigned a unique id by which it can be identified unambiguously:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">Particles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;unique_id&#39;</span><span class="p">]</span>
 
 <span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">10352</span>
 </pre></div>
 </div>
-<p><strong>Molecules</strong></p>
+</section>
+</section>
+<section id="molecules">
+<h2>Molecules<a class="headerlink" href="#molecules" title="Permalink to this heading"></a></h2>
 <p>Similarly, the properties of all the molecules (Rigid Bead molecules: RBs) in the simulation can be accessed by</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
@@ -235,6 +251,8 @@ Therefore, the proper way to get the particle indices of the molecule is:</p>
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int64</span><span class="p">)</span>
 </pre></div>
 </div>
+<section id="molecule-id">
+<h3>Molecule ID<a class="headerlink" href="#molecule-id" title="Permalink to this heading"></a></h3>
 <p>Each molecule has assigned a unique id that can be accessed via the ‘unique_id’ field. This is not to be confused with the ‘id’ field, which is not an unambigous identifier!</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">RBs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;unique_id&#39;</span><span class="p">]</span>
 
@@ -245,6 +263,8 @@ Therefore, the proper way to get the particle indices of the molecule is:</p>
 <p class="admonition-title">Warning</p>
 <p>The value of the ‘id’ field is not an unambigous identifier of a molecule and may be reassigned to other molecules during simulation. Use the ‘unique_id’ field to unambigously identify a molecule!</p>
 </div>
+</section>
+</section>
 </section>
 
 
