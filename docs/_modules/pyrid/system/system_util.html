@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyrid.system.system_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -28,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -44,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Advanced/Contents.html">Advanced</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers</span></p>
 <ul>
@@ -77,9 +84,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pyrid.system.system_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyrid.system.system_util</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -115,8 +122,59 @@
             <span class="n">in_array</span> <span class="o">=</span> <span class="kc">True</span>
             
     <span class="k">return</span> <span class="n">in_array</span>
-        
+
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">stack_dim1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> 
+            
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">stack_dim2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> 
+        
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="k">return</span> <span class="n">y</span>
+    
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">stack_dim1_setval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    
+    <span class="n">y</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
+            
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">stack_dim2_setval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> 
+    
+    <span class="n">y</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="n">value</span>
+    
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span>
+<span class="k">def</span> <span class="nf">stack_dim2_setval_id</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> 
+    
+    <span class="n">y</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="n">value</span>
+    
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="k">return</span> <span class="n">y</span>
+
 <span class="c1">#%%</span>
 
 <span class="n">item_t_border_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;edge_id&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;triangle_ids&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;direction_normal&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="p">(</span><span class="s1">&#39;edge_length&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;cum_edge_length&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),],</span>  <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -154,10 +212,10 @@
     <span class="p">(</span><span class="s1">&#39;box_overlap&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">boolean</span><span class="p">),</span>
 <span class="p">]</span>
 
-<span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<div class="viewcode-block" id="Compartment"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.Compartment">[docs]</a><span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Compartment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compartment class contains attributes and methods used to describe a triangulated mesh compartment.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
@@ -230,7 +288,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">box_overlap</span> <span class="o">=</span> <span class="kc">False</span>
         
 <div class="viewcode-block" id="Compartment.calc_centroid_radius_AABB"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.Compartment.calc_centroid_radius_AABB">[docs]</a>    <span class="k">def</span> <span class="nf">calc_centroid_radius_AABB</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculates some general properties of the mesh compartment</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates some general properties of the mesh compartment</span>
 <span class="sd">        </span>
 <span class="sd">             - area</span>
 <span class="sd">             - volume</span>
@@ -310,8 +368,8 @@
         
     
 <div class="viewcode-block" id="Compartment.add_border_2d"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.Compartment.add_border_2d">[docs]</a>    <span class="k">def</span> <span class="nf">add_border_2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangle_ids_border</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registers the edge of intersection (if exists) between compartment mesh and simulation box. The intersection line is needed for fixed concdentration simulations as new molecules enter the simualtion box along this intersection line.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers the edge of intersection (if exists) between compartment mesh and simulation box. The intersection line is needed for fixed concdentration simulations as new molecules enter the simualtion box along this intersection line.</span>
 <span class="sd">        </span>
 <span class="sd">        .. admonition:: Note</span>
 <span class="sd">        </span>
@@ -346,8 +404,8 @@
             <span class="c1"># Find the edge that aligns with one of the box faces:</span>
             <span class="n">edges</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">tri_id</span><span class="p">][</span><span class="s1">&#39;edges&#39;</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-                
-                <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">                </span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                edge:   [0,1]</span>
 <span class="sd">                        [1,2]</span>
 <span class="sd">                        [0,2]</span>
@@ -409,8 +467,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">border_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">border_2d</span><span class="p">[</span><span class="s1">&#39;edge_length&#39;</span><span class="p">])</span></div>
             
 <div class="viewcode-block" id="Compartment.add_border_3d"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.Compartment.add_border_3d">[docs]</a>    <span class="k">def</span> <span class="nf">add_border_3d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangle_ids_border</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registers the area of intersection (if exists) between compartment mesh and simulation box. The intersection area is needed for fixed concdentration simulations as new molecules enter the simualtion box along the faces of the intersection.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers the area of intersection (if exists) between compartment mesh and simulation box. The intersection area is needed for fixed concdentration simulations as new molecules enter the simualtion box along the faces of the intersection.</span>
 <span class="sd">        </span>
 <span class="sd">        .. admonition:: Note</span>
 <span class="sd">        </span>
@@ -453,8 +511,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">box_overlap</span> <span class="o">=</span> <span class="kc">True</span></div>
             
 <div class="viewcode-block" id="Compartment.add_group"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.Compartment.add_group">[docs]</a>    <span class="k">def</span> <span class="nf">add_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">triangle_ids_group</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registers any triangle/face group that has been defined in the mesh ob file that is not a 2d or 3d border of intersectioj with the simulation box </span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers any triangle/face group that has been defined in the mesh ob file that is not a 2d or 3d border of intersectioj with the simulation box </span>
 <span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">        .. admonition:: Note</span>
@@ -477,7 +535,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triangle_ids_group</span><span class="p">)):</span>
 
             <span class="n">tri_id</span> <span class="o">=</span> <span class="n">triangle_ids_group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">group_name</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tri_id</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">group_name</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;triangle_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tri_id</span></div></div>
         
 
 <span class="c1">#%%</span>
@@ -521,10 +579,10 @@
     <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
     <span class="p">]</span>
 
-<span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_moltype</span><span class="p">)</span>
+<div class="viewcode-block" id="MoleculeType"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.MoleculeType">[docs]</a><span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec_moltype</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MoleculeType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A brief summary of the classes purpose and behavior</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
@@ -652,8 +710,8 @@
         
         
 <div class="viewcode-block" id="MoleculeType.update_um_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.MoleculeType.update_um_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">update_um_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the the total transitaion rate for unimolecular reactions of this molecule type.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the the total transitaion rate for unimolecular reactions of this molecule type.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -694,7 +752,7 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">number_umr</span> <span class="o">+=</span> <span class="mi">1</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">transition_rate_total</span> <span class="o">+=</span> <span class="n">rate</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transition_rate_total</span> <span class="o">+=</span> <span class="n">rate</span></div></div>
         
 <span class="c1">#%%</span>
 
@@ -825,10 +883,10 @@
     <span class="p">(</span><span class="s1">&#39;adapt_box&#39;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">boolean</span><span class="p">),</span>
 <span class="p">]</span>
 
-<span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<div class="viewcode-block" id="System"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System">[docs]</a><span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">System</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A brief summary of the classes purpose and behavior</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
@@ -1192,6 +1250,16 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_2d</span> <span class="o">=</span> <span class="kc">False</span>
         
+        <span class="bp">self</span><span class="o">.</span><span class="n">up_reaction_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bp_reaction_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_bpr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_inter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reaction_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_react</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_bonds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_defined</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pair_interaction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">um_reaction_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;System initialized&#39;</span><span class="p">)</span>
         
     
@@ -1202,8 +1270,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">compartments_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Box&#39;</span><span class="p">)</span>
         
 <div class="viewcode-block" id="System.add_system_grid"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_system_grid">[docs]</a>    <span class="k">def</span> <span class="nf">add_system_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates properties of the system cell grid.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates properties of the system cell grid.</span>
 <span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1240,8 +1308,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">AABB_centers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_AABB_centers</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="System.add_barostat_berendsen"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_barostat_berendsen">[docs]</a>    <span class="k">def</span> <span class="nf">add_barostat_berendsen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tau_P</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Adds a berendsen barostat to the system.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a berendsen barostat to the system.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1267,8 +1335,8 @@
         
         
     <span class="k">def</span> <span class="nf">update_rb_barostat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RBs</span><span class="p">,</span> <span class="n">Particles</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Updates the rigid bead molecule positions according to the scaling factor :math:`\\mu` of the Berendsen barostat.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the rigid bead molecule positions according to the scaling factor :math:`\\mu` of the Berendsen barostat.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1288,8 +1356,8 @@
             
         
 <div class="viewcode-block" id="System.register_molecule_type"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.register_molecule_type">[docs]</a>    <span class="k">def</span> <span class="nf">register_molecule_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">particle_pos</span><span class="p">,</span> <span class="n">particle_types</span><span class="p">,</span> <span class="n">collision_type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h_membrane</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Regsiters a molecule type.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Regsiters a molecule type.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1315,15 +1383,19 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">molecule_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">MoleculeType</span><span class="p">(</span><span class="n">particle_pos</span><span class="p">,</span> <span class="n">particle_types</span><span class="p">,</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">collision_type</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">h_membrane</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">um_reaction_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">um_reaction_id</span><span class="p">[:]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="c1"># self.um_reaction_id = np.empty(self.ntypes, dtype = np.int64)</span>
+        <span class="c1"># self.um_reaction_id[:] = -1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">um_reaction_id</span> <span class="o">=</span> <span class="n">stack_dim1_setval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">um_reaction_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         
         
-        <span class="n">molecule_id_to_name0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;U20&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">):</span>
-            <span class="n">molecule_id_to_name0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">molecule_id_to_name0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="p">]</span> <span class="o">=</span> <span class="n">molecule_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">molecule_id_to_name</span> <span class="o">=</span> <span class="n">molecule_id_to_name0</span>
+        <span class="c1"># molecule_id_to_name0 = np.empty(self.ntypes_rb+1, dtype = &#39;U20&#39;)</span>
+        <span class="c1"># for i,name in enumerate(self.molecule_id_to_name):</span>
+        <span class="c1">#     molecule_id_to_name0[i] = name</span>
+        <span class="c1"># molecule_id_to_name0[self.ntypes_rb] = molecule_name</span>
+        <span class="c1"># self.molecule_id_to_name = molecule_id_to_name0</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecule_id_to_name</span> <span class="o">=</span> <span class="n">stack_dim1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecule_id_to_name</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="p">]</span> <span class="o">=</span> <span class="n">molecule_name</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">virial_scalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">virial_scalar_Wall</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes_rb</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -1342,8 +1414,8 @@
         
         
 <div class="viewcode-block" id="System.set_diffusion_tensor"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.set_diffusion_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">set_diffusion_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">D_tt</span><span class="p">,</span> <span class="n">D_rr</span><span class="p">,</span> <span class="n">mu_tb</span><span class="p">,</span> <span class="n">mu_rb</span><span class="p">,</span> <span class="n">mu_tb_sqrt</span><span class="p">,</span> <span class="n">mu_rb_sqrt</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets the diffusion tensor for a given molecule type.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the diffusion tensor for a given molecule type.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1394,8 +1466,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">molecule_types</span><span class="p">[</span><span class="n">molecule_name</span><span class="p">]</span><span class="o">.</span><span class="n">Drot_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">D_rr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span></div>
         
 <div class="viewcode-block" id="System.fixed_concentration_at_boundary"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.fixed_concentration_at_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">fixed_concentration_at_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1453,8 +1525,8 @@
 
         
 <div class="viewcode-block" id="System.register_particle_type"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.register_particle_type">[docs]</a>    <span class="k">def</span> <span class="nf">register_particle_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registers a particle type.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers a particle type.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1469,27 +1541,39 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="n">Type</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="n">Type</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
         
-        <span class="n">particle_id_to_name0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;U20&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">types</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">):</span>
-            <span class="n">particle_id_to_name0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">types</span>
-        <span class="n">particle_id_to_name0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">]</span> <span class="o">=</span> <span class="n">Type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">particle_id_to_name</span> <span class="o">=</span> <span class="n">particle_id_to_name0</span>
+        <span class="c1"># particle_id_to_name0 = np.empty(self.ntypes+1, dtype = &#39;U20&#39;)</span>
+        <span class="c1"># for i,types in enumerate(self.particle_id_to_name):</span>
+        <span class="c1">#     particle_id_to_name0[i] = types</span>
+        <span class="c1"># particle_id_to_name0[self.ntypes] = Type</span>
+        <span class="c1"># self.particle_id_to_name = particle_id_to_name0</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span> <span class="o">+=</span> <span class="mi">1</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">up_reaction_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">up_reaction_id</span><span class="p">[:]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bp_reaction_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_bpr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">particle_id_to_name</span> <span class="o">=</span> <span class="n">stack_dim1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">particle_id_to_name</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Type</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_inter</span><span class="p">)</span>
+        <span class="c1"># self.up_reaction_id = np.empty(self.ntypes, dtype = np.int64)</span>
+        <span class="c1"># self.up_reaction_id[:] = -1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up_reaction_id</span> <span class="o">=</span> <span class="n">stack_dim1_setval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up_reaction_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">reaction_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">item_t_react</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reaction_args</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">][:,:]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="c1"># self.bp_reaction_ids = np.zeros(self.ntypes, dtype = item_t_bpr)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bp_reaction_ids</span> <span class="o">=</span> <span class="n">stack_dim1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bp_reaction_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">N_bonds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="c1"># self.interaction_args = np.zeros((self.ntypes, self.ntypes), dtype = item_t_inter)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_args</span> <span class="o">=</span> <span class="n">stack_dim2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interaction_args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_defined</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pair_interaction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+        <span class="c1"># self.reaction_args = np.zeros((self.ntypes, self.ntypes), dtype = item_t_react)</span>
+        <span class="c1"># self.reaction_args[&#39;id&#39;][:,:] = -1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reaction_args</span> <span class="o">=</span> <span class="n">stack_dim2_setval_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reaction_args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># self.N_bonds = np.zeros((self.ntypes, self.ntypes), dtype = np.int64)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_bonds</span> <span class="o">=</span> <span class="n">stack_dim2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_bonds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span>
+        
+        <span class="c1"># self.interaction_defined  = np.zeros((self.ntypes, self.ntypes), dtype = nb.types.bool_)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_defined</span> <span class="o">=</span> <span class="n">stack_dim2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interaction_defined</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span>
+        
+        <span class="c1"># self.pair_interaction = np.zeros(self.ntypes, dtype = nb.types.bool_)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pair_interaction</span> <span class="o">=</span> <span class="n">stack_dim1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pair_interaction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span>
         
         <span class="c1"># self.force_measure = np.zeros(self.ntypes, dtype = np.int64)</span>
         
@@ -1498,8 +1582,8 @@
 
     
 <div class="viewcode-block" id="System.set_compartments"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.set_compartments">[docs]</a>    <span class="k">def</span> <span class="nf">set_compartments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">triangle_ids</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Sets a compartment given its triangle ids.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets a compartment given its triangle ids.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1534,8 +1618,8 @@
         
 
 <div class="viewcode-block" id="System.add_border_3d"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_border_3d">[docs]</a>    <span class="k">def</span> <span class="nf">add_border_3d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangle_ids_border</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registers the border faces of an intersection between compartments and the simulation box (Needed for fixed concentration boundary condition)</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers the border faces of an intersection between compartments and the simulation box (Needed for fixed concentration boundary condition)</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1568,8 +1652,8 @@
         
         
 <div class="viewcode-block" id="System.add_mesh"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">add_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="n">mesh_scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">box_triangle_ids</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">triangle_ids_transparent</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">adapt_box</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Set up the mesh for the mesh compartments.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the mesh for the mesh compartments.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1716,7 +1800,7 @@
 
     <span class="k">def</span> <span class="nf">update_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">triangle_ids_list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates mesh properties. Should be called whever the mesh topology changes, i.e. the position of a vertex is changed after the mesh has been initialized (System.add_mesh()).</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
@@ -1779,8 +1863,8 @@
             <span class="c1"># print(&#39;Simulation box has been updated. box_lengths = &#39;, self.box_lengths)</span>
 
 <div class="viewcode-block" id="System.add_edges"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_edges">[docs]</a>    <span class="k">def</span> <span class="nf">add_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Finds the edges of each triangle and adds them to the Mesh struct.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds the edges of each triangle and adds them to the Mesh struct.</span>
 <span class="sd">        </span>
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -1816,8 +1900,8 @@
             
             
 <div class="viewcode-block" id="System.add_neighbours"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_neighbours">[docs]</a>    <span class="k">def</span> <span class="nf">add_neighbours</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Finds the neighbours of each triangle and adds them to the Mesh struct.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds the neighbours of each triangle and adds them to the Mesh struct.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -1837,16 +1921,37 @@
                 
                 <span class="n">a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Vertex</span><span class="p">[</span><span class="n">k1</span><span class="p">])</span><span class="o">-</span><span class="nb">set</span><span class="p">([</span><span class="n">tri_id</span><span class="p">])</span>
                 <span class="n">b</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Vertex</span><span class="p">[</span><span class="n">k2</span><span class="p">])</span><span class="o">-</span><span class="nb">set</span><span class="p">([</span><span class="n">tri_id</span><span class="p">])</span>
-                <span class="n">neighb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
                 
-                <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">tri_id</span><span class="p">][</span><span class="s1">&#39;neighbours&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">neighb</span></div>
+                <span class="n">neighb</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">))</span>
+                
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">neighb</span><span class="p">:</span> <span class="c1"># len(neighb) == 0</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;triangle vertex positions:&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> 
+                    <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The mesh provided is not a manifold mesh! There exists a triangle with at least 1 edge that lacks a neighbouring triangle.&#39;</span><span class="p">)</span>
+                    
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighb</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set of triangle neighbours: &#39;</span><span class="p">,</span> <span class="n">neighb</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Vertex positions:&#39;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">triid</span> <span class="ow">in</span> <span class="n">neighb</span><span class="p">:</span>
+                        <span class="n">tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">triid</span><span class="p">][</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">tr</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> 
+                        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">tr</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The mesh provided is not a true manifold mesh! There exists a triangle with at least 1 edge that has more than 1 neighbouring triangle.&#39;</span><span class="p">)</span>
+                    
+                <span class="c1"># neighb = list(a-(a-b))[0]</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="p">[</span><span class="n">tri_id</span><span class="p">][</span><span class="s1">&#39;neighbours&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">neighb</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
                 
     
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="System.get_AABB_centers"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.get_AABB_centers">[docs]</a>    <span class="k">def</span> <span class="nf">get_AABB_centers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the center of each cell of the system grid.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the center of each cell of the system grid.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -1865,8 +1970,8 @@
     
     
 <div class="viewcode-block" id="System.create_cell_list"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.create_cell_list">[docs]</a>    <span class="k">def</span> <span class="nf">create_cell_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Creates the linked cell list for the triangulated meshes by calling system_util.CellList_util.create_cell_list_mesh() (Used during collision detection).</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the linked cell list for the triangulated meshes by calling system_util.CellList_util.create_cell_list_mesh() (Used during collision detection).</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -1881,8 +1986,8 @@
 <span class="c1">#%%</span>
 
 <div class="viewcode-block" id="System.add_up_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_up_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_up_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">product_loc</span><span class="p">,</span> <span class="n">product_direction</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registeres a Uni-Particle (UP) reaction for an educt particle.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registeres a Uni-Particle (UP) reaction for an educt particle.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1982,8 +2087,8 @@
 
 
 <div class="viewcode-block" id="System.add_um_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_um_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_um_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_type</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">product_loc</span><span class="p">,</span> <span class="n">product_direction</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Registeres a Uni-Molecular (UM) reaction for an educt Molecule.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registeres a Uni-Molecular (UM) reaction for an educt Molecule.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2066,7 +2171,7 @@
 
 <div class="viewcode-block" id="System.add_bp_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_bp_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_bp_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">interaction_type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">interaction_parameters</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Registeres a Bi-Particle (BP) reaction for an educt particle.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registeres a Bi-Particle (BP) reaction for an educt particle.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2220,8 +2325,8 @@
 <span class="c1">#%%</span>
 
 <div class="viewcode-block" id="System.add_interaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_interaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">,</span> <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">bond</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">breakable</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-         
-        <span class="sd">&quot;&quot;&quot;Assigns a particle-particle interaction potential to a particle type pair.</span>
+<span class="w">         </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assigns a particle-particle interaction potential to a particle type pair.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2375,7 +2480,7 @@
 
 <div class="viewcode-block" id="System.add_bm_reaction"><a class="viewcode-back" href="../../../Developers/Developer%20API/system/system_util.html#pyrid.system.system_util.System.add_bm_reaction">[docs]</a>    <span class="k">def</span> <span class="nf">add_bm_reaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reaction_type</span><span class="p">,</span> <span class="n">educt_types</span><span class="p">,</span> <span class="n">product_types</span><span class="p">,</span> <span class="n">particle_pairs</span><span class="p">,</span> <span class="n">pair_rates</span><span class="p">,</span> <span class="n">pair_Radii</span><span class="p">,</span> <span class="n">placement_factor</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Registeres a Bi-Molecular (BM) reaction for an educt molecule.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registeres a Bi-Molecular (BM) reaction for an educt molecule.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2495,7 +2600,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">educt_particle_types</span><span class="p">[</span><span class="mi">0</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span><span class="o">/</span><span class="mi">2</span>
     
             <span class="k">if</span> <span class="n">radius</span><span class="o">/</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">educt_particle_types</span><span class="p">[</span><span class="mi">1</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">educt_particle_types</span><span class="p">[</span><span class="mi">1</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span><span class="o">/</span><span class="mi">2</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">particle_types</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">educt_particle_types</span><span class="p">[</span><span class="mi">1</span><span class="p">])][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;cutoff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span><span class="o">/</span><span class="mi">2</span></div></div>
             
         <span class="c1"># print(&#39;Particle enzymatic reaction added (&#39;+type1+&#39;+&#39;+type2+&#39;-&gt;&#39;+type3+&#39;+&#39;+type2+&#39;)&#39;)           </span>
 
