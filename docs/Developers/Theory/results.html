@@ -261,7 +261,7 @@ simulate, e.g., a sub-region within a larger system without the need to
 simulate the dynamics of the molecules outside simulation box directly.
 As an example system we take a 3d model of synapse. The post- and
 presynaptic spine are both contained inside the simulation volume
-whereas dendrite and axon are cutoff at the simulation box border (<a class="reference internal" href="#fig-fixed-concentration-val"><span class="std std-numref">Fig. 28</span></a> A).
+whereas dendrite and axon are cutoff at the simulation box boundary (<a class="reference internal" href="#fig-fixed-concentration-val"><span class="std std-numref">Fig. 28</span></a> A).
 We define three molecular species: Species A diffuses in the volume outside the spines (in the
 extracellular space), species B is located inside the postsynaptic spine
 and species C on the surface (within the membrane) of the postsynaptic
@@ -278,7 +278,7 @@ molecules of each species in the volume and on the surface of each
 compartment as soon as the system has reached its equilibrium state.
 Indeed, after about <span class="math notranslate nohighlight">\(0.5\,ms\)</span> the system has reached equilibrium
 and the number of each species fluctuates around the number 1000 (<a class="reference internal" href="#fig-fixed-concentration-val"><span class="std std-numref">Fig. 28</span></a> B).
-As one would expect, species A fills the simulation volume the fastest as the border area is the
+As one would expect, species A fills the simulation volume the fastest as the boundary area is the
 largest. Species B and C which are located in the volume and on the
 surfaces of the postsynaptic compartment fill the simulation volume at
 about the same rate.</p>
@@ -326,7 +326,7 @@ mixed system. Therefore, the simulation results are also only directly
 comparable with the ODE approach, if the reactions are reaction rate
 limited, not diffusion limited such that the system has enough time to
 equilibrate in between reactions. Let us take a very simple example
-where <span class="math notranslate nohighlight">\(\ce{A + B -&gt; C }\)</span>. If the reaction kinetics are rate
+where <span class="math notranslate nohighlight">\(\ce{A + B -&gt; C }\)</span>. If the reaction kinetics are diffusion
 limited, the reaction products do not have enough time to mix with the
 rest of the system. Thereby, regions of low educt concentration evolve
 where reactions had occurred, while in the regions where no reactions
@@ -370,26 +370,26 @@ described by two exponential functions instead of one.</span><a class="headerlin
 </figcaption>
 </figure>
 <p>Given a reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>, we would like to know at what
-reaction rate <span class="math notranslate nohighlight">\(k_t\)</span> a simulation would match an experimentally
+microscopic reaction rate <span class="math notranslate nohighlight">\(k\)</span> a simulation would match an experimentally
 measured macroscopic reaction rate <span class="math notranslate nohighlight">\(k^{macro}\)</span>. For two
 non-interacting molecule species <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> with
 translational diffusion constants <span class="math notranslate nohighlight">\(D^t_A\)</span> and <span class="math notranslate nohighlight">\(D^t_B\)</span> and
 <span class="math notranslate nohighlight">\(\lambda_{AB}&lt;&lt;R_{react}\)</span>, <span class="math notranslate nohighlight">\(k_{macro}\)</span> is given by
 <span id="id10">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span></p>
 <div class="math notranslate nohighlight" id="equation-eq-k-macro">
-<span class="eqno">(56)<a class="headerlink" href="#equation-eq-k-macro" title="Permalink to this equation"></a></span>\[k_{macro} = 4 \pi (D^t_A+D^t_B) \left[R_{react}-\sqrt{\frac{D^t_A+D^t_B}{k_t}} \, \tanh\left(R_{react} \, \sqrt{\frac{k_t}{D^t_A+D^t_B}}\right)\right]\]</div>
+<span class="eqno">(56)<a class="headerlink" href="#equation-eq-k-macro" title="Permalink to this equation"></a></span>\[k_{macro} = 4 \pi (D^t_A+D^t_B) \left[R_{react}-\sqrt{\frac{D^t_A+D^t_B}{k}} \, \tanh\left(R_{react} \, \sqrt{\frac{k}{D^t_A+D^t_B}}\right)\right]\]</div>
 <p>Equation <a class="reference internal" href="#equation-eq-k-macro">(56)</a> can solved numerically for
-<span class="math notranslate nohighlight">\(k_t\)</span>. Also, if the <span class="math notranslate nohighlight">\(k_t \rightarrow \infty\)</span>,
+<span class="math notranslate nohighlight">\(k\)</span>. Also, if the <span class="math notranslate nohighlight">\(k \rightarrow \infty\)</span>,
 <a class="reference internal" href="#equation-eq-k-macro">(56)</a> simplifies to the Smoluchowski equation
 where we can express the reaction radius in terms of the macroscopic
 reaction rate <span id="id11">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-k-macro2">
 <span class="eqno">(57)<a class="headerlink" href="#equation-eq-k-macro2" title="Permalink to this equation"></a></span>\[R_{react} = \frac{k_{macro}}{4 \pi (D^t_A + D^t_B)}\]</div>
-<p>In the limit where <span class="math notranslate nohighlight">\(k_t &lt;&lt; \frac{D_A^t+D_B^t}{R_{react}^2}\)</span>, Eq.
+<p>In the limit where <span class="math notranslate nohighlight">\(k &lt;&lt; \frac{D_A^t+D_B^t}{R_{react}^2}\)</span>, Eq.
 <a class="reference internal" href="#equation-eq-k-macro">(56)</a> can be Taylor expanded and simplifies to
 <span id="id12">[<a class="reference internal" href="../../References.html#id11" title="Radek Erban and S Jonathan Chapman. Stochastic modelling of reaction–diffusion processes: algorithms for bimolecular reactions. Physical Biology, 6(4):046001, aug 2009. doi:10.1088/1478-3975/6/4/046001.">94</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-k-macro3">
-<span class="eqno">(58)<a class="headerlink" href="#equation-eq-k-macro3" title="Permalink to this equation"></a></span>\[k_t = \frac{k_{macro}}{4/3 \pi R_{react}^3}\]</div>
+<span class="eqno">(58)<a class="headerlink" href="#equation-eq-k-macro3" title="Permalink to this equation"></a></span>\[k = \frac{k_{macro}}{4/3 \pi R_{react}^3}\]</div>
 <p>The above equations are, however, only valid in the case where molecules
 are represented by single particles and also only in 3 dimensions. PyRID
 has a build in method to calculate the reaction rates and radii based on
@@ -422,6 +422,7 @@ different pair permutations of the available beads:</p>
    \ce{A(a_1) + B(b_1) -&gt;[\ce{k_2, R_2}] D } \\
    \ce{A(a_1) + B(b_2) -&gt;[\ce{k_3, R_3}] C } \\
    \ce{A(a_2) + B(b_2) -&gt;[\ce{k_4, R_4}] C } \\
+   \ce{C -&gt;[\ce{k_{-1}, R_{-1}}] A + B } \\
 \end{split}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(k_i\)</span> are the microscopic reaction rates and <span class="math notranslate nohighlight">\(R_i\)</span> the
 reaction radii. For better visualization, also see <a class="reference internal" href="#fig-reactionkinetics-rbm"><span class="std std-numref">Fig. 30</span></a> A and B. As such, molecules
@@ -431,7 +432,7 @@ three pathways, defined by three bead pairs
 pairs <span class="math notranslate nohighlight">\((a_1, b_2)\)</span> and <span class="math notranslate nohighlight">\((a_2, b_2)\)</span> only one reaction
 pathway is defined respectively, for the particle pair
 <span class="math notranslate nohighlight">\((a_1, b_1)\)</span> a second reaction path has been defined for the
-fusion of molecules <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> to molecule <span class="math notranslate nohighlight">\(C\)</span>. We
+fusion of molecules <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> to molecule <span class="math notranslate nohighlight">\(D\)</span>. We
 may also describe this system in terms of a system of ODEs:</p>
 <div class="math notranslate nohighlight" id="equation-eq-bimol-reaction-rb-ode">
 <span class="eqno">(60)<a class="headerlink" href="#equation-eq-bimol-reaction-rb-ode" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
