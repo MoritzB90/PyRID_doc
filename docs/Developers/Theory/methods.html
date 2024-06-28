@@ -256,7 +256,7 @@ molecule.</p>
 <p class="sd-card-text"><a class="reference internal" href="../Developer%20API/system/update_pos.html#pyrid.system.update_pos.update_rb" title="pyrid.system.update_pos.update_rb"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.update_pos.update_rb</span></code></a>
 <a class="reference internal" href="../Developer%20API/system/update_pos.html#pyrid.system.update_pos.update_rb_compartments" title="pyrid.system.update_pos.update_rb_compartments"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.update_pos.update_rb_compartments</span></code></a></p>
 </div>
-</details><p>The motion of an isolated rigid bead molecule j in solution can be
+</details><p>The motion of an isolated rigid bead molecule in solution can be
 described in terms of the Langevin equation for translational and
 rotational motion. Note that we are always considering isolated
 molecules in dispersion and do not account for the hydrodynamic
@@ -266,20 +266,20 @@ the most general case the Langevin equation for translational and
 rotational motion reads
 <span id="id6">[<a class="reference internal" href="../../References.html#id43" title="Donald L. Ermak and J. A. McCammon. Brownian dynamics with hydrodynamic interactions. The Journal of Chemical Physics, 69(4):1352–1360, aug 1978. doi:10.1063/1.436761.">76</a>, <a class="reference internal" href="../../References.html#id46" title="Eric Dickinson, Stuart A. Allison, and J. Andrew McCammon. Brownian dynamics with rotation–translation coupling. J. Chem. Soc., Faraday Trans. 2, 81(4):591–601, 1985. doi:10.1039/f29858100591.">77</a>, <a class="reference internal" href="../../References.html#id45" title="R B Jones and P N Pusey. Dynamics of suspended colloidal spheres. Annual Review of Physical Chemistry, 42(1):137–169, oct 1991. doi:10.1146/annurev.pc.42.100191.001033.">78</a>]</span>:</p>
 <div class="math notranslate nohighlight">
-\[m \frac{d^2\boldsymbol{r}_j(t)}{dt^2} = \boldsymbol{F}_j - \Big(\boldsymbol{\Xi}^{tt} \frac{d\boldsymbol{r}_j}{dt} + \boldsymbol{\Xi}^{tr} \frac{d\boldsymbol{\phi}_j}{dt}\Big) + \boldsymbol{R}^t\]</div>
+\[m \frac{d^2\boldsymbol{r}(t)}{dt^2} = \boldsymbol{F} - \Big(\boldsymbol{\Xi}^{tt} \frac{d\boldsymbol{r}}{dt} + \boldsymbol{\Xi}^{tr} \frac{d\boldsymbol{\phi}}{dt}\Big) + \boldsymbol{R}^t\]</div>
 <div class="math notranslate nohighlight">
-\[\frac{d}{dt} \Big( I \frac{d \boldsymbol{\phi}_j(t)}{dt} \Big) = \boldsymbol{T}_j - \Big(\boldsymbol{\Xi}^{rr} \frac{d\boldsymbol{\phi}_j}{dt} + \boldsymbol{\Xi}^{rt} \frac{d\boldsymbol{r}_j}{dt}\Big) + \boldsymbol{R}^r,\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{r}_j(t)\)</span> is the position of the molecule center
-and <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_j(t)\)</span> the rotation angle.
-<span class="math notranslate nohighlight">\(\boldsymbol{F}_j\)</span> is the total force exerted on molecule j and
-<span class="math notranslate nohighlight">\(\boldsymbol{T}_j\)</span> is the torque. <span class="math notranslate nohighlight">\(\boldsymbol{R}^t\)</span> and
+\[\frac{d}{dt} \Big( I \frac{d \boldsymbol{\phi}(t)}{dt} \Big) = \boldsymbol{T} - \Big(\boldsymbol{\Xi}^{rr} \frac{d\boldsymbol{\phi}}{dt} + \boldsymbol{\Xi}^{rt} \frac{d\boldsymbol{r}}{dt}\Big) + \boldsymbol{R}^r,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{r}(t)\)</span> is the position of the molecule center
+and <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(t)\)</span> the rotation angle.
+<span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> is the total force exerted on the molecule and
+<span class="math notranslate nohighlight">\(\boldsymbol{T}\)</span> is the torque. <span class="math notranslate nohighlight">\(\boldsymbol{R}^t\)</span> and
 <span class="math notranslate nohighlight">\(\boldsymbol{R}^r\)</span> describe the random, erratic movement of the
 molecule due to collisions with the solvent molecules where</p>
 <div class="math notranslate nohighlight">
 \[\langle \boldsymbol{R}^a(t)\rangle = 0\]</div>
 <div class="math notranslate nohighlight">
-\[\langle \boldsymbol{R}^a(t) \boldsymbol{R}^b(t')\rangle = 2 k_B T \boldsymbol{\Xi}_{ij}^{ab} \delta(t-t'),\]</div>
-<p>with <span class="math notranslate nohighlight">\(a,b \in \{t,r\}\)</span>. Here,
+\[\langle R^a_i(t) R^b_j(t')\rangle = 2 k_B T \Xi_{ij}^{ab} \delta(t-t'),\]</div>
+<p>with <span class="math notranslate nohighlight">\(a,b \in \{t,r\}\)</span>. <span class="math notranslate nohighlight">\(\Xi_{ij}^{ab}\)</span> are the components of the 3 x 3 friction tensors. Here,
 <span class="math notranslate nohighlight">\(\boldsymbol{\Xi}^{tt}, \boldsymbol{\Xi}^{rr}, \boldsymbol{\Xi}^{tr}, \boldsymbol{\Xi}^{rt}\)</span>
 are the translational, rotational and translation-rotation coupling
 friction tensors of the rigid body in the lab frame. Also,
@@ -291,21 +291,21 @@ acceleration of the molecules can be neglected in the description of the
 diffusion process. As such it is convenient to describe the motion of
 molecules by overdamped Langevin dynamics also called Brownian motion
 where
-<span class="math notranslate nohighlight">\(I \frac{d^2 \phi_j(t)}{dt^2} = m \frac{d^2 x_j(t)}{dt^2} = 0\)</span>:</p>
+<span class="math notranslate nohighlight">\(I \frac{d^2 \phi(t)}{dt^2} = m \frac{d^2 x(t)}{dt^2} = 0\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\frac{d\boldsymbol{r}_j(t)}{dt} = \boldsymbol{M}_{j}^{tt} \boldsymbol{F}_j + \boldsymbol{M}_{j}^{tr} \boldsymbol{T}_j + \boldsymbol{S}^t\]</div>
+\[\frac{d\boldsymbol{r}(t)}{dt} = \boldsymbol{M}^{tt} \boldsymbol{F} + \boldsymbol{M}^{tr} \boldsymbol{T} + \boldsymbol{S}^t\]</div>
 <div class="math notranslate nohighlight">
-\[\frac{d \boldsymbol{\phi}_j(t)}{dt} = \boldsymbol{M}_{j}^{rr} \boldsymbol{T}_j + \boldsymbol{M}_{j}^{rt} \boldsymbol{F}_j + \boldsymbol{S}^r.\]</div>
+\[\frac{d \boldsymbol{\phi}(t)}{dt} = \boldsymbol{M}^{rr} \boldsymbol{T} + \boldsymbol{M}^{rt} \boldsymbol{F} + \boldsymbol{S}^r.\]</div>
 <p>with</p>
 <div class="math notranslate nohighlight">
 \[\langle \boldsymbol{S}^a(t)\rangle = 0\]</div>
 <div class="math notranslate nohighlight">
-\[\langle \boldsymbol{S}^a(t) \boldsymbol{S}^b(t')\rangle = 2 k_B T \boldsymbol{M}_{ij}^{ab} \delta(t-t'),\]</div>
+\[\langle S^a_i(t) S^b_j(t')\rangle = 2 k_B T M_{ij}^{ab} \delta(t-t'),\]</div>
 <p>where
 <span class="math notranslate nohighlight">\(\boldsymbol{M}^{tt}, \boldsymbol{M}^{rr}, \boldsymbol{M}^{tr}, \boldsymbol{M}^{rt}\)</span>
 are the translational, rotational and translation-rotation coupling
 mobility tensors of the rigid body in the lab frame and
-<span class="math notranslate nohighlight">\(\boldsymbol{M}^{ab} = \frac{\boldsymbol{D}^{ab}}{k_B T}\)</span>. Also
+<span class="math notranslate nohighlight">\(\boldsymbol{M}^{ab} = \frac{\boldsymbol{D}^{ab}}{k_B T}\)</span>. <span class="math notranslate nohighlight">\(M_{ij}^{ab}\)</span> are the components of the 3 x 3 mobility tensors. Also
 <span class="math notranslate nohighlight">\(\boldsymbol{M}^{rt} = \boldsymbol{M}^{tr,T}\)</span>. In most cases, the
 effect of the translation-rotation coupling on the molecular dynamics is
 negligible. However, translation-rotation coupling increases the
@@ -315,9 +315,9 @@ rotation as being independent. In this case, the propagator for the
 Cartesian coordinates as well as the orientation angle can be formulated
 as <span id="id7">[<a class="reference internal" href="../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span></p>
 <div class="math notranslate nohighlight" id="equation-eq-drdt">
-<span class="eqno">(32)<a class="headerlink" href="#equation-eq-drdt" title="Permalink to this equation"></a></span>\[\boldsymbol{r}_j(t) = \boldsymbol{r}_j(t-\Delta t) + \boldsymbol{A}_j \boldsymbol{M}_{j}^{tt,b} \boldsymbol{A}_j^T \boldsymbol{F}_j \Delta t + \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{tt,b} k_B T}\, \boldsymbol{W}^t(\Delta t)\]</div>
+<span class="eqno">(32)<a class="headerlink" href="#equation-eq-drdt" title="Permalink to this equation"></a></span>\[\boldsymbol{r}(t) = \boldsymbol{r}(t-\Delta t) + \boldsymbol{A} \boldsymbol{M}^{tt,b} \boldsymbol{A}^T \boldsymbol{F} \Delta t + \boldsymbol{A} \sqrt{2 \boldsymbol{M}^{tt,b} k_B T}\, \boldsymbol{W}^t(\Delta t)\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-dphidt">
-<span class="eqno">(33)<a class="headerlink" href="#equation-eq-dphidt" title="Permalink to this equation"></a></span>\[\boldsymbol{\phi}_j(t) = \boldsymbol{\phi}_j(t-\Delta t) + \boldsymbol{A}_j \boldsymbol{M}_{j}^{rr,b} \boldsymbol{A}_j^T \boldsymbol{T}_j \Delta t + \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{rr,b} k_B T}\, \boldsymbol{W}^r(\Delta t).\]</div>
+<span class="eqno">(33)<a class="headerlink" href="#equation-eq-dphidt" title="Permalink to this equation"></a></span>\[\boldsymbol{\phi}(t) = \boldsymbol{\phi}(t-\Delta t) + \boldsymbol{A} \boldsymbol{M}^{rr,b} \boldsymbol{A}^T \boldsymbol{T} \Delta t + \boldsymbol{A} \sqrt{2 \boldsymbol{M}^{rr,b} k_B T}\, \boldsymbol{W}^r(\Delta t).\]</div>
 <p>Here, <span class="math notranslate nohighlight">\(\boldsymbol{W}(\Delta t)\)</span> is a 3-dimensional Wiener
 process, i.e.
 <span class="math notranslate nohighlight">\(\boldsymbol{W}(t+\Delta t) - \boldsymbol{W}(t) \sim \mathcal{N}(0, \Delta t)\)</span>,
@@ -327,7 +327,7 @@ all directions. The superscript <span class="math notranslate nohighlight">\(b\)
 tensors <span class="math notranslate nohighlight">\(\boldsymbol{M}^{ab,b}\)</span> are given in terms of the
 body/local frame of the molecule, which is much more convenient when we
 talk about the propagation algorithm. In this context,
-<span class="math notranslate nohighlight">\(\boldsymbol{A}_j\)</span> is the rotation matrix of molecule j. One
+<span class="math notranslate nohighlight">\(\boldsymbol{A}\)</span> is the rotation matrix of the molecule. One
 problem with the rotational equation of motion is that several issues
 arise depending on how rotations are represented. Propagating the
 rotation in terms of Euler angles, e.g., will result in numerical drift
@@ -359,10 +359,9 @@ be thought of as an extension to complex numbers and were introduced in
 1844 by Sir William Rowan Hamilton <span id="id10">[<a class="reference internal" href="../../References.html#id117" title="William Rowan Hamilton. II. $\less $i$\greater $on quaternions$\mathsemicolon $ or on a new system of imaginaries in algebra$\less $/i$\greater $. The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 25(163):10–13, jul 1844. doi:10.1080/14786444408644923.">81</a>]</span>.
 The rotation quaternion <span class="math notranslate nohighlight">\(\boldsymbol{q}(t)\)</span> propagates in response
 to the torque
-<span class="math notranslate nohighlight">\(\boldsymbol{T}_i(t) = \boldsymbol{F}_i(t) \times \boldsymbol{r}_{ij}\)</span>
-exerted by the external forces, where <span class="math notranslate nohighlight">\(\boldsymbol{r}_{ij}\)</span> is the
-distance vector between bead i and the center of diffusion of molecule
-j. The rotation matrix can be represented in terms of rotation
+<span class="math notranslate nohighlight">\(\boldsymbol{T}_i(t) = \boldsymbol{F}_i(t) \times \boldsymbol{r}_{i}\)</span>
+exerted by the external forces, where <span class="math notranslate nohighlight">\(\boldsymbol{r}_{i}\)</span> is the
+distance vector between bead i and the center of diffusion of molecule. The rotation matrix can be represented in terms of rotation
 quaternions by <span id="id11">[<a class="reference internal" href="../../References.html#id30" title="David Baraff. Physically based modeling: rigid body simulation. SIGGRAPH Course Notes, 2001. doi:10.1145/97880.97881.">79</a>]</span> (<a class="reference internal" href="../Developer%20API/molecules/rigidbody_util.html#pyrid.molecules.rigidbody_util.RBs.calc_orientation_quat" title="pyrid.molecules.rigidbody_util.RBs.calc_orientation_quat"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.molecules.rigidbody_util.RBs.calc_orientation_quat</span></code></a>):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{split}\boldsymbol{A}
@@ -391,7 +390,7 @@ quaternion velocity is <span id="id12">[<a class="reference internal" href="../.
     \end{split}\end{split}\]</div>
 <p>Inserting <a class="reference internal" href="#equation-eq-dphidt">(33)</a> into <a class="reference internal" href="#equation-eq-dg-dphi">(34)</a>, we get:</p>
 <div class="math notranslate nohighlight" id="equation-eq-dqdt">
-<span class="eqno">(35)<a class="headerlink" href="#equation-eq-dqdt" title="Permalink to this equation"></a></span>\[\boldsymbol{q}_j(t) = \boldsymbol{q}_j(t-\Delta t) + \boldsymbol{B}_j\boldsymbol{A}_j \boldsymbol{M}_{j}^{rr,b} \boldsymbol{A}_j^T \boldsymbol{T}_j \Delta t + \boldsymbol{B}_j \boldsymbol{A}_j \sqrt{2 \boldsymbol{M}_{j}^{rr,b} k_B T}\, \boldsymbol{W}^r(\Delta t).\]</div>
+<span class="eqno">(35)<a class="headerlink" href="#equation-eq-dqdt" title="Permalink to this equation"></a></span>\[\boldsymbol{q}(t) = \boldsymbol{q}(t-\Delta t) + \boldsymbol{B}\boldsymbol{A} \boldsymbol{M}^{rr,b} \boldsymbol{A}^T \boldsymbol{T} \Delta t + \boldsymbol{B} \boldsymbol{A} \sqrt{2 \boldsymbol{M}^{rr,b} k_B T}\, \boldsymbol{W}^r(\Delta t).\]</div>
 <p>The factor <span class="math notranslate nohighlight">\(\boldsymbol{B}\boldsymbol{A}\)</span> can, however, be
 simplified:</p>
 <div class="math notranslate nohighlight">
