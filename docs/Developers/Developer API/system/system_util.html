@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>system_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -106,10 +112,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../system.html">system</a> &raquo;</li>
-      <li>system_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../system.html">system</a></li>
+      <li class="breadcrumb-item active">system_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/system/system_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -126,10 +132,10 @@
 <h2>Compartment<a class="headerlink" href="#compartment" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.system.system_util.Compartment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.system.system_util.</span></span><span class="sig-name descname"><span class="pre">Compartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.system.system_util.Compartment" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.system.system_util.</span></span><span class="sig-name descname"><span class="pre">Compartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#Compartment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.Compartment" title="Permalink to this definition"></a></dt>
 <dd><p>Compartment class contains attributes and methods used to describe a triangulated mesh compartment.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_ids</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>triangle indices of the compartment mesh.</p>
 </dd>
@@ -169,6 +175,10 @@
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 66%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>calc_centroid_radius_AABB(self, System):</strong></p></td>
 <td><p>calculates some general properties of the mesh compartment</p></td>
@@ -187,7 +197,7 @@
 <p>See naming conventions for face groups!</p>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_ids_border</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>triangle ids of the mesh triangle along the border</p>
 </dd>
@@ -207,7 +217,7 @@
 <p>See naming conventions for face groups!</p>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_ids_border</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>triangle ids of the mesh triangle along the border</p>
 </dd>
@@ -227,7 +237,7 @@
 <p>See naming conventions for face groups!</p>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>group_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>name of the group</p>
 </dd>
@@ -255,7 +265,7 @@
 <p>The centroid (geometric center) of the mesh is calculated by averaging over
 all triangles centroids, weighted by their area.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of System class</p>
 </dd>
@@ -271,10 +281,10 @@ all triangles centroids, weighted by their area.</p>
 <h2>MoleculeType<a class="headerlink" href="#moleculetype" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.system.system_util.MoleculeType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.system.system_util.</span></span><span class="sig-name descname"><span class="pre">MoleculeType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.system.system_util.MoleculeType" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.system.system_util.</span></span><span class="sig-name descname"><span class="pre">MoleculeType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#MoleculeType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.MoleculeType" title="Permalink to this definition"></a></dt>
 <dd><p>A brief summary of the classes purpose and behavior</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of molecule</p>
 </dd>
@@ -338,6 +348,10 @@ all triangles centroids, weighted by their area.</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>update_um_reaction(rate)</strong></p></td>
 <td><p>Updates the the total transitaion rate for unimolecular reactions of this molecule type.</p></td>
@@ -349,7 +363,7 @@ all triangles centroids, weighted by their area.</p>
 <span class="sig-name descname"><span class="pre">update_um_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#MoleculeType.update_um_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.MoleculeType.update_um_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the the total transitaion rate for unimolecular reactions of this molecule type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>rate</strong><span class="classifier">float64</span></dt><dd><p>Reaction rate</p>
 </dd>
@@ -383,10 +397,10 @@ In case a bimolecular reaction is picked before the unimolecular reaction and in
 <h2>System<a class="headerlink" href="#system" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.system.system_util.System">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.system.system_util.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.system.system_util.System" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.system.system_util.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System" title="Permalink to this definition"></a></dt>
 <dd><p>A brief summary of the classes purpose and behavior</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>N</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Total number of molecules in simulation</p>
 </dd>
@@ -548,6 +562,10 @@ In case a bimolecular reaction is picked before the unimolecular reaction and in
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 49%" />
+<col style="width: 51%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>add_system_grid()</strong></p></td>
 <td><p>Calculates properties of the system cell grid.</p></td>
@@ -628,7 +646,7 @@ In case a bimolecular reaction is picked before the unimolecular reaction and in
 <span class="sig-name descname"><span class="pre">add_barostat_berendsen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tau_P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_barostat_berendsen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_barostat_berendsen" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a berendsen barostat to the system.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Tau_P</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Time constant of berendsen barostat</p>
 </dd>
@@ -649,7 +667,7 @@ Note: <span id="id4">Baruffi <em>et al.</em> [<a class="reference internal" href
 <span class="sig-name descname"><span class="pre">add_bm_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_Radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">placement_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_bm_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_bm_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Bi-Molecular (BM) reaction for an educt molecule.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘fusion’, ‘enzymatic_mol’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -679,7 +697,7 @@ As for the uni-moelcular reactions, several reaction paths can be defined. Each 
 <span class="sig-name descname"><span class="pre">add_border_3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangle_ids_border</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_border_3d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_border_3d" title="Permalink to this definition"></a></dt>
 <dd><p>Registers the border faces of an intersection between compartments and the simulation box (Needed for fixed concentration boundary condition)</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_ids_border</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>IDs of the triangles making up the compartment-simulation box border.</p>
 </dd>
@@ -693,7 +711,7 @@ As for the uni-moelcular reactions, several reaction paths can be defined. Each 
 <span class="sig-name descname"><span class="pre">add_bp_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_bp_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_bp_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Bi-Particle (BP) reaction for an educt particle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘bind’, ‘absorption’, ‘enzymatic’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -743,7 +761,7 @@ As for the uni-moelcular reactions, several reaction paths can be defined. Each 
 <span class="sig-name descname"><span class="pre">add_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breakable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_interaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_interaction" title="Permalink to this definition"></a></dt>
 <dd><p>Assigns a particle-particle interaction potential to a particle type pair.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>interaction_type</strong><span class="classifier"><cite>str</cite> {‘harmonic_repulsion’, ‘PHS’, ‘harmonic_attraction’, ‘CSW’}</span></dt><dd><p>Type of interaction potential</p>
 </dd>
@@ -769,7 +787,7 @@ As for the uni-moelcular reactions, several reaction paths can be defined. Each 
 <span class="sig-name descname"><span class="pre">add_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_triangle_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_ids_transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapt_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_mesh" title="Permalink to this definition"></a></dt>
 <dd><p>Set up the mesh for the mesh compartments.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>vertices</strong><span class="classifier"><cite>float64[:,3]</cite></span></dt><dd><p>Position of mesh vertices in each dimension.</p>
 </dd>
@@ -858,7 +876,7 @@ when a particle hops between two triangles. We may take the same data structure 
 <span class="sig-name descname"><span class="pre">add_um_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_um_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_um_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Uni-Molecular (UM) reaction for an educt Molecule.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘production’, ‘fission’, ‘conversion_mol’, ‘decay’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -886,7 +904,7 @@ when a particle hops between two triangles. We may take the same data structure 
 <span class="sig-name descname"><span class="pre">add_up_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.add_up_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.add_up_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Uni-Particle (UP) reaction for an educt particle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘relase’, ‘conversion’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -938,7 +956,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 <span class="sig-name descname"><span class="pre">fixed_concentration_at_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.fixed_concentration_at_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.fixed_concentration_at_boundary" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>molecule_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the molecule</p>
 </dd>
@@ -966,7 +984,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 <span class="sig-name descname"><span class="pre">register_molecule_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_membrane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.register_molecule_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.register_molecule_type" title="Permalink to this definition"></a></dt>
 <dd><p>Regsiters a molecule type.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>molecule_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the molecule.</p>
 </dd>
@@ -988,7 +1006,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 <span class="sig-name descname"><span class="pre">register_particle_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.register_particle_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.register_particle_type" title="Permalink to this definition"></a></dt>
 <dd><p>Registers a particle type.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Type</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the particle type.</p>
 </dd>
@@ -1004,7 +1022,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 <span class="sig-name descname"><span class="pre">set_compartments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.set_compartments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.set_compartments" title="Permalink to this definition"></a></dt>
 <dd><p>Sets a compartment given its triangle ids.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>comp_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the compartment.</p>
 </dd>
@@ -1020,7 +1038,7 @@ To get the reaction path we compare a second random number, uninformly distribut
 <span class="sig-name descname"><span class="pre">set_diffusion_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tb_sqrt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rb_sqrt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/system_util.html#System.set_diffusion_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.system_util.System.set_diffusion_tensor" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the diffusion tensor for a given molecule type.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>molecule_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Some Information</p>
 </dd>

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ray_march_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -31,12 +33,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -98,10 +104,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../geometry.html">geometry</a> &raquo;</li>
-      <li>ray_march_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../geometry.html">geometry</a></li>
+      <li class="breadcrumb-item active">ray_march_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/geometry/ray_march_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -120,7 +126,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.ray_march_util.</span></span><span class="sig-name descname"><span class="pre">nearest_triangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/ray_march_util.html#nearest_triangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.ray_march_util.nearest_triangle" title="Permalink to this definition"></a></dt>
 <dd><p>Updates a position vector to the plane of the nearest triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>position vector</p>
 </dd>
@@ -128,7 +134,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>int64</cite></dt><dd><p>Triangle id of the closest triangle.</p>
 </dd>
@@ -142,7 +148,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.ray_march_util.</span></span><span class="sig-name descname"><span class="pre">ray_march_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_quat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/ray_march_util.html#ray_march_surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.ray_march_util.ray_march_surface" title="Permalink to this definition"></a></dt>
 <dd><p>Ray marches a direction vector across the surface of a triangulated mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -156,7 +162,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>int64</cite></dt><dd><p>Index of the triangle the direction vector ended up on.</p>
 </dd>
@@ -170,7 +176,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.ray_march_util.</span></span><span class="sig-name descname"><span class="pre">ray_march_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/ray_march_util.html#ray_march_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.ray_march_util.ray_march_volume" title="Permalink to this definition"></a></dt>
 <dd><p>Ray marches along a direction vector and tests and resolves triangle collisions. The algorithm is based on <span id="id1">[<a class="reference internal" href="../../../References.html#id38" title="John Amanatides and Andrew Woo. A fast voxel traversal algorithm for ray tracing. In In Eurographics ’87, 3–10. 1987.">5</a>]</span> : Amanatides et al. 1987 “A Fast Voxel Traversal Algorithm for Ray Tracing” Also see <span id="id2">[<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">6</a>]</span> : Ericson “Real-Time Collision Detection”, chapter 7.4.2 and 7.7</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -180,7 +186,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if ray marching was successfull, False if absorptive boundary has been hit.</p>
 </dd>
@@ -200,7 +206,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.ray_march_util.</span></span><span class="sig-name descname"><span class="pre">update_to_nearest_triangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/ray_march_util.html#update_to_nearest_triangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.ray_march_util.update_to_nearest_triangle" title="Permalink to this definition"></a></dt>
 <dd><p>Updates a position vector to the plane of the nearest triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -212,7 +218,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>int64</cite></dt><dd><p>Triangle id of the closest triangle.</p>
 </dd>

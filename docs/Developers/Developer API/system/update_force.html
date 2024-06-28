@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>update_force &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -101,10 +107,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../system.html">system</a> &raquo;</li>
-      <li>update_force</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../system.html">system</a></li>
+      <li class="breadcrumb-item active">update_force</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/system/update_force.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -123,7 +129,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.update_force.</span></span><span class="sig-name descname"><span class="pre">react_interact_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc_type_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_idx_j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_idx_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/update_force.html#react_interact_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.update_force.react_interact_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if two particles are valid interaction or reaction partners.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>comp_i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Compartment index of molecule i</p>
 </dd>
@@ -176,7 +182,7 @@
 <dd><p>Updates the pair interaction forces between the particle pairs and between particles and the compartemnt meshes (and the simulation box boundary in case of repulsive boundary conditions).
 Also adds the bimolecular and unimolecular particle reactions to the reactions list.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of System class.</p>
 </dd>

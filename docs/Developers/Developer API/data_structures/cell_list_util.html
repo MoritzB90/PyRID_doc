@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cell_list_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -31,12 +33,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -100,10 +106,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../data_structures.html">data_structures</a> &raquo;</li>
-      <li>cell_list_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../data_structures.html">data_structures</a></li>
+      <li class="breadcrumb-item active">cell_list_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/data_structures/cell_list_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -122,7 +128,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">create_cell_list_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_per_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_length_per_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid_in_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loose_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#create_cell_list_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.create_cell_list_mesh" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a cell list for a triangulated 3D mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class.</p>
 </dd>
@@ -140,7 +146,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(object, float64[:,3])</dt><dd><p>An instance of the CellList class keeping the cell list of the 3D mesh, a list of each cell’s center coordinates.</p>
 </dd>
@@ -154,7 +160,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">create_cell_list_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#create_cell_list_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.create_cell_list_points" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a cell list for a set of points.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>rc</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>cutoff radius</p>
 </dd>
@@ -164,7 +170,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(list, int64[:], list, int64, int64[3])</dt><dd><p>cell list, array with the number of samples in each cell, list with all indices of nonempty cells, Total number of cells, cells per dimension</p>
 </dd>
@@ -178,7 +184,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">reverse_cell_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_per_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#reverse_cell_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.reverse_cell_mapping" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the indices of a cell  in 3 dimensions given the flattened 1D cell index and the total number of cells per dimension.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>cell</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Cell index of the flattened array (1D).</p>
 </dd>
@@ -186,7 +192,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(int64, int64, int64)</dt><dd><p>Indices of the cell in 3 dimensions cx, cy, cz</p>
 </dd>
@@ -199,10 +205,10 @@
 <h2>CellListMesh<a class="headerlink" href="#celllistmesh" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.data_structures.cell_list_util.CellListMesh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">CellListMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.cell_list_util.</span></span><span class="sig-name descname"><span class="pre">CellListMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh" title="Permalink to this definition"></a></dt>
 <dd><p>Dynamic array keeping a cell list for the triangles of a triangulated mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of elements in the dynamic array</p>
 </dd>
@@ -220,6 +226,10 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 62%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>allocate_slot(self)</strong></p></td>
 <td><p>Allocates a new slot.</p></td>
@@ -248,7 +258,7 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh._resize" title="Permalink to this definition"></a></dt>
 <dd><p>Resize internal array to a new capacity (new_cap).</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
 </dd>
@@ -262,7 +272,7 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <span class="sig-name descname"><span class="pre">allocate_slot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.allocate_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.allocate_slot" title="Permalink to this definition"></a></dt>
 <dd><p>Allocates a new slot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>int64</dt><dd><p>slot index</p>
 </dd>
@@ -276,13 +286,13 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <span class="sig-name descname"><span class="pre">get_triangles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.get_triangles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.get_triangles" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a list of triangles intersecting a cell.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>cell</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Cell index at which to look for any intersecting triangles.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>list</dt><dd><p>List of triangles intersecting the cell.</p>
 </dd>
@@ -296,13 +306,13 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with new_cap capacity</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>array like</dt><dd><p>cell list array of dtype self.item_t.</p>
 </dd>
@@ -316,7 +326,7 @@ dtype: np.dtype([(‘next’, np.int64), (‘id’, np.int64)],  align=True)</p>
 <span class="sig-name descname"><span class="pre">make_head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ncell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/cell_list_util.html#CellListMesh.make_head"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.cell_list_util.CellListMesh.make_head" title="Permalink to this definition"></a></dt>
 <dd><p>Creates the head vector.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>NCell</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of cells.</p>
 </dd>

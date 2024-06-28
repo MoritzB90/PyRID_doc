@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>run &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> PyRID
-            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +99,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="Contents.html">Developer API</a> &raquo;</li>
-      <li>run</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Contents.html">Developer API</a></li>
+      <li class="breadcrumb-item active">run</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/Developers/Developer API/run.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -117,7 +123,7 @@ The Simulation class thereby represents the biggest part of the user API.
 By creating an instance of the Simulation class and calling its methods, the user can define molecule types, setup the simulation volume, 
 define reactions etc. and, last but not least, start the simulation.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the System class</p>
 </dd>
@@ -174,6 +180,10 @@ If this list is not empty this is always a sign that some system parameters need
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 52%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>print_timer(self)</strong></p></td>
 <td><p>Prints the runtime of different parts of the simulation loop such as integration, reaction handling and writing data to files.</p></td>
@@ -251,7 +261,7 @@ If this list is not empty this is always a sign that some system parameters need
 <span class="sig-name descname"><span class="pre">add_barostat_berendsen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tau_P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_barostat_berendsen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_barostat_berendsen" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a Berendsen barostat. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.add_barostat_berendsen" title="pyrid.system.system_util.System.add_barostat_berendsen"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.add_barostat_berendsen</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Tau_P</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Time constant of berendsen barostat</p>
 </dd>
@@ -272,7 +282,7 @@ Note: <span id="id2">Baruffi <em>et al.</em> [<a class="reference internal" href
 <span class="sig-name descname"><span class="pre">add_bm_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">placement_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_bm_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_bm_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Bi-Molecular (BM) reaction for an educt molecule. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.add_bm_reaction" title="pyrid.system.system_util.System.add_bm_reaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.add_bm_reaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘fusion’, ‘enzymatic_mol’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -311,7 +321,7 @@ the distance, directionality is only really accounted for if the reaction radius
 <span class="sig-name descname"><span class="pre">add_bp_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_bp_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_bp_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Bi-Particle (BP) reaction for an educt particle. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.add_bp_reaction" title="pyrid.system.system_util.System.add_bp_reaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.add_bp_reaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘bind’, ‘absorption’, ‘enzymatic’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -346,7 +356,7 @@ A reaction occurs if two particles for whose type a binding reaction has been de
 <span class="sig-name descname"><span class="pre">add_checkpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_saves</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_checkpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_checkpoints" title="Permalink to this definition"></a></dt>
 <dd><p>Registers the parameters for saving checkpoints such as stride, maximum number of saves and target directory.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride for making checkpoints.</p>
 </dd>
@@ -364,7 +374,7 @@ A reaction occurs if two particles for whose type a binding reaction has been de
 <span class="sig-name descname"><span class="pre">add_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_interaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_interaction" title="Permalink to this definition"></a></dt>
 <dd><p>Assigns a particle-particle interaction potential to a particle type pair. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.add_interaction" title="pyrid.system.system_util.System.add_interaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.add_interaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>interaction_type</strong><span class="classifier"><cite>str</cite> {‘harmonic_repulsion’, ‘PHS’, ‘harmonic_attraction’, ‘CSW’}</span></dt><dd><p>Type of interaction potential</p>
 </dd>
@@ -390,7 +400,7 @@ A reaction occurs if two particles for whose type a binding reaction has been de
 <span class="sig-name descname"><span class="pre">add_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Compartment_Number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_molecules" title="Permalink to this definition"></a></dt>
 <dd><p>Places molecules in the simulation box given their location, orientation, type, and compartment number.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Location</strong><span class="classifier">‘Volume’ or ‘Surface’’</span></dt><dd><p>Determines whether the molecules are surface or volume molecules.</p>
 </dd>
@@ -406,7 +416,7 @@ A reaction occurs if two particles for whose type a binding reaction has been de
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><dl class="simple">
 <dt>raise IndexError(‘Compartment number must be a positive integer!’)</dt><dd><p>Compartment number must be an integer value.</p>
 </dd>
@@ -427,7 +437,7 @@ A reaction occurs if two particles for whose type a binding reaction has been de
 <dd><p>Adds a molecule release site that releases a number of molecules at a defined time point into the system. 
 The molecules are distributed normally around a point in the volume or a mesh surface.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Location</strong><span class="classifier">‘Volume’ or ‘Surface’</span></dt><dd><p>Determines of whether the molecules are released on the compartment surface or in its volume.</p>
 </dd>
@@ -461,7 +471,7 @@ The molecules are distributed normally around a point in the volume or a mesh su
 <span class="sig-name descname"><span class="pre">add_um_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_um_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_um_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Uni-Molecular (UM) reaction for an educt Molecule. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.add_um_reaction" title="pyrid.system.system_util.System.add_um_reaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.add_um_reaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘production’, ‘fission’, ‘conversion_mol’, ‘decay’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -495,7 +505,7 @@ total rate k1+k2+k3. At time T, one of the three reactions is executed. The prob
 <span class="sig-name descname"><span class="pre">add_up_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">educt_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.add_up_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.add_up_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Registeres a Uni-Particle (UP) reaction for an educt particle. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.add_up_reaction" title="pyrid.system.system_util.System.add_up_reaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.add_up_reaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>reaction_type</strong><span class="classifier"><cite>str</cite> {‘relase’, ‘conversion’}</span></dt><dd><p>Name of the reaction type</p>
 </dd>
@@ -558,7 +568,7 @@ The available methods are:</p>
 <li><p>‘MC’: The ‘MC’ (Monte-Carlo) method is fast and can reach arbitrary molecule densities, however, it does not resolve any collision. See <a class="reference internal" href="system/distribute_surface_util.html#pyrid.system.distribute_surface_util.mc" title="pyrid.system.distribute_surface_util.mc"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.distribute_surface_util.mc</span></code></a> and <a class="reference internal" href="system/distribute_vol_util.html#pyrid.system.distribute_vol_util.mc" title="pyrid.system.distribute_vol_util.mc"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.distribute_vol_util.mc</span></code></a></p></li>
 </ul>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Method</strong><span class="classifier">‘PDS’, ‘PDS uniform’, ‘Gauss’, ‘MC’</span></dt><dd><p>Method for calculating the molecule distribution.</p>
 </dd>
@@ -586,13 +596,13 @@ more uniform distribution of molecules.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>raise NameError(‘Method {} does not exist!’.format(Method))</dt><dd><p>Available methods are ‘PDS’, ‘PDS uniform’, ‘Gauss’, ‘MC’.</p>
 </dd>
@@ -615,7 +625,7 @@ more uniform distribution of molecules.</p>
 <dd><p>Sets the fixed concentration boundary given a concentartion for each defined molecule type and for each compartents volume and surface.
 Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.fixed_concentration_at_boundary" title="pyrid.system.system_util.System.fixed_concentration_at_boundary"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.fixed_concentration_at_boundary</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>molecule_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the molecule</p>
 </dd>
@@ -641,7 +651,7 @@ average net displacement in one tiem step towards or away from any plane, where 
 <dd><p>Calculates the macroscopic reaction rate from a given microscopic rate, reaction radius and the educts´ diffusion coefficients. 
 Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.reactions.reactions_util.k_macro" title="pyrid.reactions.reactions_util.k_macro"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.reactions.reactions_util.k_macro</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>D1</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Translational diffusion coefficient of educt 1.</p>
 </dd>
@@ -653,7 +663,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Macroscopic reaction rate</p>
 </dd>
@@ -668,7 +678,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 <dd><p>Calculates the microscopic reaction rate from a given macroscopic rate, reaction radius and the educts´ diffusion coefficients. 
 Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.reactions.reactions_util.k_micro" title="pyrid.reactions.reactions_util.k_micro"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.reactions.reactions_util.k_micro</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>mol_type_1</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Name of educt moelcule 1.</p>
 </dd>
@@ -682,7 +692,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64</cite></dt><dd><p>Microscopic reaction rate</p>
 </dd>
@@ -698,7 +708,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 <span class="sig-name descname"><span class="pre">load_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'checkpoints/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.load_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.load_checkpoint" title="Permalink to this definition"></a></dt>
 <dd><p>Loads a system state from a checkpoint file.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>file_name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Checkpoint file name.</p>
 </dd>
@@ -716,7 +726,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 <span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'All'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stepwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.observe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.observe" title="Permalink to this definition"></a></dt>
 <dd><p>Sets up an observer for a certain system property / measure.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Measure</strong><span class="classifier">‘Position’, ‘Energy’, ‘Pressure’, ‘Volume’, ‘Virial’, ‘Virial Tensor’, ‘Number’, ‘Orientation’, ‘Bonds’, ‘Reactions’, ‘Force’, ‘Torque’</span></dt><dd><p>System property which to observe.</p>
 </dd>
@@ -732,7 +742,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><dl class="simple">
 <dt>warnings.warn(‘Warning: Binning is not supported for property {0}. PyRID will instead sample {0} stepwise!’.format(Measure))</dt><dd><p>Binning is not supported for ‘Force’, ‘Torque’, ‘Orientation’, ‘Position’.</p>
 </dd>
@@ -746,7 +756,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 <span class="sig-name descname"><span class="pre">observe_rdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rdf_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdf_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdf_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.observe_rdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.observe_rdf" title="Permalink to this definition"></a></dt>
 <dd><p>Sets up an observer for the radial distribution function.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>rdf_pairs</strong><span class="classifier"><cite>nested list</cite></span></dt><dd><p>List of molecule type pairs for which to calculate the radial distribution function. Example: [[‘A’,’A’],[‘A’,’B’]].</p>
 </dd>
@@ -773,7 +783,7 @@ Calls <a class="reference internal" href="reactions/reactions_util.html#pyrid.re
 <dd><p>prints / logs several different simulation parameters such as iterations per second, molecule number and pressure.
 Also prints a progress bar.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>sim_time</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Target simulation runtime.</p>
 </dd>
@@ -809,7 +819,7 @@ Also prints a progress bar.</p>
 <span class="sig-name descname"><span class="pre">register_molecule_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_membrane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.register_molecule_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.register_molecule_type" title="Permalink to this definition"></a></dt>
 <dd><p>Regsiters a molecule type. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.register_molecule_type" title="pyrid.system.system_util.System.register_molecule_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.register_molecule_type</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>molecule_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the molecule.</p>
 </dd>
@@ -833,7 +843,7 @@ is small compared to the chosen integration time step).</p>
 <span class="sig-name descname"><span class="pre">register_particle_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.register_particle_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.register_particle_type" title="Permalink to this definition"></a></dt>
 <dd><p>Registers a particle type. Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.register_particle_type" title="pyrid.system.system_util.System.register_particle_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.register_particle_type</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Type</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Name of the particle type.</p>
 </dd>
@@ -849,7 +859,7 @@ is small compared to the chosen integration time step).</p>
 <span class="sig-name descname"><span class="pre">release_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">release_event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.release_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.release_molecules" title="Permalink to this definition"></a></dt>
 <dd><p>A brief description of what the function (method in case of classes) is and what it’s used for</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -857,13 +867,13 @@ is small compared to the chosen integration time step).</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -877,7 +887,7 @@ is small compared to the chosen integration time step).</p>
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_linebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar_properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.run" title="Permalink to this definition"></a></dt>
 <dd><p>Simulation loop. Runs the simulation.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>progress_stride</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Stride by which the progress bar is updated. Default = 100</p>
 </dd>
@@ -892,7 +902,7 @@ is small compared to the chosen integration time step).</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><dl class="simple">
 <dt>raise ValueError(‘progress_bar_properties must be a list of strings!’)</dt><dd><p>If progress_bar_properties is not None or ‘All’ a list of strings must be passed.</p>
 </dd>
@@ -908,7 +918,7 @@ is small compared to the chosen integration time step).</p>
 <span class="sig-name descname"><span class="pre">set_compartments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapt_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#Simulation.set_compartments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.Simulation.set_compartments" title="Permalink to this definition"></a></dt>
 <dd><p>Sets up 3d mesh compartments.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartments</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary containing for each compartment number the triangle indices and face groups. Also see <a class="reference internal" href="geometry/load_wavefront.html#pyrid.geometry.load_wavefront.load_compartments" title="pyrid.geometry.load_wavefront.load_compartments"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.geometry.load_wavefront.load_compartments</span></code></a>.</p>
 </dd>
@@ -931,7 +941,7 @@ is small compared to the chosen integration time step).</p>
 <dd><p>Checks whether a given diffusion tensor is valid (physically meaningful) and sets the diffusion tensor for a given molecule type. 
 Calls <a class="reference internal" href="system/system_util.html#pyrid.system.system_util.System.set_diffusion_tensor" title="pyrid.system.system_util.System.set_diffusion_tensor"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.system.system_util.System.set_diffusion_tensor</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>molecule_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Some Information</p>
 </dd>
@@ -957,19 +967,19 @@ Calls <a class="reference internal" href="system/system_util.html#pyrid.system.s
 <span class="sig-prename descclassname"><span class="pre">pyrid.run.</span></span><span class="sig-name descname"><span class="pre">convert_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">untyped_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#convert_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.convert_dict" title="Permalink to this definition"></a></dt>
 <dd><p>Converts a python dictionary to a Numba typed dictionary.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>untyped_dict</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Untyped python dictionary</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>nb.types.DictType</dt><dd><p>Numba typed dictionary</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -983,7 +993,7 @@ Calls <a class="reference internal" href="system/system_util.html#pyrid.system.s
 <span class="sig-prename descclassname"><span class="pre">pyrid.run.</span></span><span class="sig-name descname"><span class="pre">random_quaternion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#random_quaternion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.random_quaternion" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random rotation quaternion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>float64[4]</dt><dd><p>Unit quaternion representing a uniformly distributed random rotation / orientation.</p>
 </dd>
@@ -1004,13 +1014,13 @@ Calls <a class="reference internal" href="system/system_util.html#pyrid.system.s
 <span class="sig-prename descclassname"><span class="pre">pyrid.run.</span></span><span class="sig-name descname"><span class="pre">update_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyrid/run.html#update_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.run.update_pressure" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the pressure from the virial tensor.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Simulation</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of the Simulation class.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float, float64[3,3])</dt><dd><p>Total pressure and pressure tensor.</p>
 </dd>

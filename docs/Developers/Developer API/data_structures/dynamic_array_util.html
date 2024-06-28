@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dynamic_array_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -31,12 +33,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -103,10 +109,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../data_structures.html">data_structures</a> &raquo;</li>
-      <li>dynamic_array_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../data_structures.html">data_structures</a></li>
+      <li class="breadcrumb-item active">dynamic_array_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/data_structures/dynamic_array_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -123,7 +129,7 @@
 <h2>DenseArray<a class="headerlink" href="#densearray" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.DenseArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">DenseArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">DenseArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray" title="Permalink to this definition"></a></dt>
 <dd><p>Implementation of a dense dynamics array.</p>
 <p class="rubric">Notes</p>
 <p>A dense dynamic array is a dynamic array (similar to lists in python or vectors in C++) where elements can be quickly deleted via a pop and swap mechanism. The problem with standard numpy arrays but also lsist and C++ vectors is that deletion of elements is very expensive. If we want to delete an element at index m of a numpy array of size n, numpy would create a new array that is one element smaller and copy all te data from the original array to the new array. ALso, if we want to increase the size of a numpy array by appending an element, again, a new array would need to be created and all data needs to be copied. This is extremely computationaly expensive. One way to create a dynamic array (and python lists work in that way) is, to not increase the array size each time an element is added but invcrease the array size by some multiplicative factor (usually 2). This consumes more memory but saves us from creating new arrays all the time. Now we simply need to keep track of the number of elements in the array (the length of the array) and the actual capacity which can be much larger.
@@ -133,7 +139,7 @@ To delete elements from the array, one strait forward method is to just take the
 <div class="line"><br /></div>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Count actual elements in the array.</p>
 </dd>
@@ -150,6 +156,10 @@ To delete elements from the array, one strait forward method is to just take the
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>add(self, pid)</strong></p></td>
 <td><p>Adds a particle index to the array.</p></td>
@@ -184,7 +194,7 @@ To delete elements from the array, one strait forward method is to just take the
 <span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray._resize" title="Permalink to this definition"></a></dt>
 <dd><p>Resize internal data array to a new capacity (new_cap).</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
 </dd>
@@ -198,7 +208,7 @@ To delete elements from the array, one strait forward method is to just take the
 <span class="sig-name descname"><span class="pre">_resize_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray._resize_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray._resize_index" title="Permalink to this definition"></a></dt>
 <dd><p>Resize the index array to a new capacity (new_cap).</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
 </dd>
@@ -212,7 +222,7 @@ To delete elements from the array, one strait forward method is to just take the
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.add" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a particle index to the array.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pid</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>particle index</p>
 </dd>
@@ -232,13 +242,13 @@ To delete elements from the array, one strait forward method is to just take the
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with capacity new_cap</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>int64[:]</dt><dd><p>numpy zeros array of size new_cap.</p>
 </dd>
@@ -252,13 +262,13 @@ To delete elements from the array, one strait forward method is to just take the
 <span class="sig-name descname"><span class="pre">make_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.make_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.make_index" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with capacity new_cap</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>New array capacity.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>int64[:]</dt><dd><p>numpy zeros array of size new_cap.</p>
 </dd>
@@ -272,7 +282,7 @@ To delete elements from the array, one strait forward method is to just take the
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArray.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArray.remove" title="Permalink to this definition"></a></dt>
 <dd><p>Removes the element with index k from the array. Attention: k does not refer to the index of the array but the id of a specific element!</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index</p>
 </dd>
@@ -298,7 +308,7 @@ As with the dense dynamic array, the array size is increased by a multiplicative
 <div class="line"><br /></div>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Count actual elements in the array.</p>
 </dd>
@@ -318,6 +328,10 @@ As with the dense dynamic array, the array size is increased by a multiplicative
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>len(self)</strong></p></td>
 <td><p>Returns the length of the array. The length is defined by the number of elements in the array not counting the holes.</p></td>
@@ -354,13 +368,13 @@ operation is too expensive.
 Also, there will be no test, whether the index is within bounds, as this can also reduce speed by up to 25%.
 To get a list of all items which are not holes, use the occupied attribute!</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>array like</dt><dd><p>Value of the structured array at index k (actually k+1)</p>
 </dd>
@@ -380,7 +394,7 @@ To get a list of all items which are not holes, use the occupied attribute!</p>
 <dd><p>Sets the value of the array at index k+1. Index 0 is reserved for the head of the free list 
 which is used to find the holes in the array.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>k</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index</p>
 </dd>
@@ -396,7 +410,7 @@ which is used to find the holes in the array.</p>
 <span class="sig-name descname"><span class="pre">_append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray._append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray._append" title="Permalink to this definition"></a></dt>
 <dd><p>Appends an item to the end of the array. If the capacity of the array is reached, the array is resized.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>value</strong><span class="classifier">self.item_t</span></dt><dd><p>value to insert at index k. The data type is whatever has been set for the np.dtype of the structured array that is the Data attribute. The data type is kept by the item_t attribute.</p>
 </dd>
@@ -410,7 +424,7 @@ which is used to find the holes in the array.</p>
 <span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray._resize" title="Permalink to this definition"></a></dt>
 <dd><p>Resizes the Data array to capacity new_cap.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Array capacity.</p>
 </dd>
@@ -424,7 +438,7 @@ which is used to find the holes in the array.</p>
 <span class="sig-name descname"><span class="pre">add_to_occupied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.add_to_occupied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.add_to_occupied" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a slot index to the occupied indices list.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>slot</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Slot index.</p>
 </dd>
@@ -440,7 +454,7 @@ which is used to find the holes in the array.</p>
 A hole is created by removing the item from the list of of occupied indices and updating the free linked list:
 The head of the free linked list now points to the deleted item and the next pointer at the index of the deleted item points to the hole where the head originally pointed to.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index</p>
 </dd>
@@ -458,7 +472,7 @@ The head of the free linked list now points to the deleted item and the next poi
 The method does so by accessing the next pointer of the head element. If the next pointer is 0, i.e. it points to the head element itself, no empty slots are available and the 
 new item is appended to the array by calling the _append method. If the next pointer is greater zero, the new item is added at the index the next pointer points to.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>value</strong><span class="classifier">self.item_t</span></dt><dd><p>value to insert at index k. The data type is whatever has been set for the np.dtype of the structured array that is the Data attribute. The data type is kept by the item_t attribute.</p>
 </dd>
@@ -484,7 +498,7 @@ new item is appended to the array by calling the _append method. If the next poi
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArray.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArray.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with new_cap capacity</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Array capacity.</p>
 </dd>
@@ -500,11 +514,11 @@ new item is appended to the array by calling the _append method. If the next poi
 <h2>HolesArrayReact<a class="headerlink" href="#holesarrayreact" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.data_structures.dynamic_array_util.HolesArrayReact">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">HolesArrayReact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">HolesArrayReact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact" title="Permalink to this definition"></a></dt>
 <dd><p>Implementation of a dynamics array “with holes” that is used for the index attribute in PyRIDs Reaction class. 
 In the Reaction class this array keeps track of the reaction indices <a class="reference internal" href="../reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction" title="pyrid.reactions.reactions_registry_util.Reaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.reactions.reactions_registry_util.Reaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Count actual elements in the array.</p>
 </dd>
@@ -523,6 +537,10 @@ In the Reaction class this array keeps track of the reaction indices <a class="r
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>allocate_slot()</strong></p></td>
 <td><p>Allocates a new slot by finding the next hole in the array.</p></td>
@@ -548,7 +566,7 @@ In the Reaction class this array keeps track of the reaction indices <a class="r
 <span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact._resize" title="Permalink to this definition"></a></dt>
 <dd><p>Increases the size of the array to capacity new_cap.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
 </dd>
@@ -562,7 +580,7 @@ In the Reaction class this array keeps track of the reaction indices <a class="r
 <span class="sig-name descname"><span class="pre">allocate_slot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact.allocate_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact.allocate_slot" title="Permalink to this definition"></a></dt>
 <dd><p>Allocates a new slot by finding the next hole in the array. If no empty slot/hole is available the array is resized.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>int64</dt><dd><p>Index of the next available slot in the array.</p>
 </dd>
@@ -586,13 +604,13 @@ the free linked list and resizes the array (in case no holes are available and t
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#HolesArrayReact.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.HolesArrayReact.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with new_cap capacity</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>array_like</dt><dd><p>array with dtype = self.item_t</p>
 </dd>
@@ -611,7 +629,7 @@ the free linked list and resizes the array (in case no holes are available and t
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.data_structures.dynamic_array_util.</span></span><span class="sig-name descname"><span class="pre">DenseArrayReact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_t_main</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact" title="Permalink to this definition"></a></dt>
 <dd><p>Implementation of a dense dynamics array that is used as a parent class for PyRIDs Reaction class <a class="reference internal" href="../reactions/reactions_registry_util.html#pyrid.reactions.reactions_registry_util.Reaction" title="pyrid.reactions.reactions_registry_util.Reaction"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyrid.reactions.reactions_registry_util.Reaction</span></code></a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n</strong><span class="classifier"><cite>nb.int64</cite></span></dt><dd><p>Number of reactions in list.</p>
 </dd>
@@ -637,6 +655,10 @@ the free linked list and resizes the array (in case no holes are available and t
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>_resize(new_cap)</strong></p></td>
 <td><p>Increases the size of the array to capacity new_cap.</p></td>
@@ -659,7 +681,7 @@ the free linked list and resizes the array (in case no holes are available and t
 <span class="sig-name descname"><span class="pre">_resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact._resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact._resize" title="Permalink to this definition"></a></dt>
 <dd><p>Increases the size of the array to capacity new_cap.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
 </dd>
@@ -679,13 +701,13 @@ the free linked list and resizes the array (in case no holes are available and t
 <span class="sig-name descname"><span class="pre">make_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/data_structures/dynamic_array_util.html#DenseArrayReact.make_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.data_structures.dynamic_array_util.DenseArrayReact.make_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new array with new_cap capacity</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_cap</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>array size</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>array_like</dt><dd><p>array with dtype = self.item_t</p>
 </dd>

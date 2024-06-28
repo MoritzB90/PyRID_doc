@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Introduction &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> PyRID
-            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +99,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="Contents.html">Theory</a> &raquo;</li>
-      <li>Introduction</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Contents.html">Theory</a></li>
+      <li class="breadcrumb-item active">Introduction</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/Developers/Theory/introduction.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -121,9 +127,9 @@ Depending on the research question at hand, we would like to be able to
 account for any of these features in a model.</p>
 <p>As an example, synaptic plasticity at excitatory synapses is mediated
 mainly by a change in AMPA receptor number at the postsynaptic density
-(PSD) (Fig. <a class="reference external" href="#fig:ampar_trafficking">1.1</a>). Of the different forms of
+(PSD) (<a class="reference internal" href="#fig-ampar-trafficking"><span class="std std-numref">Fig. 11</span></a>). Of the different forms of
 synaptic plasticity that have been discovered, long-term potentiation
-(LTP) is the most noted (Fig. <a class="reference external" href="#fig:synpl_processes">1.2</a>).
+(LTP) is the most noted (<a class="reference internal" href="#fig-synpl-processes"><span class="std std-numref">Fig. 12</span></a>).
 Therefore, it is of great interest to understand how AMPARs are
 trafficked. However, this question is not easily answered as AMPARs have
 a multitude of interaction partners which are important for AMPAR
@@ -257,7 +263,7 @@ and spatial scales at which these processes occur as well as the large
 number of complex molecules involved. A number of cell processes can be
 simulated on the required time scale by using simplifications. Various
 methods utilizing different approximations have therefore been developed
-(Fig. <a class="reference external" href="#fig:modelling_methods">1.3</a>). For example, large signaling
+(<a class="reference internal" href="#fig-modelling-methods"><span class="std std-numref">Fig. 13</span></a>). For example, large signaling
 pathways can be formulated in terms of systems of ODEs, also termed
 reaction rate equations in this setting, or in terms of chemical master
 equations which can be solved efficiently using stochastic simulation
@@ -330,7 +336,7 @@ interacting particles. PyRID runs about as fast as ReaDDy, is flexible
 and modifiable and supports 3D mesh geometries, surface diffusion, rigid
 bead models and many types of uni and bimolecular reactions. A
 comparison of features between PyRID, ReaDDy, MCell and Smoldyn is shown
-in Fig. <a class="reference external" href="#fig:FeatureComparison">1.4</a>.</p>
+in <a class="reference internal" href="#fig-featurecomparison"><span class="std std-numref">Fig. 14</span></a>.</p>
 <figure class="align-default" id="fig-modelling-methods">
 <a class="reference internal image-reference" href="../../_images/Modelling_Methods.png"><img alt="../../_images/Modelling_Methods.png" src="../../_images/Modelling_Methods.png" style="width: 50%;" /></a>
 <figcaption>

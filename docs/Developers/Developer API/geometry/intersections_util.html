@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>intersections_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -31,12 +33,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -98,10 +104,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../geometry.html">geometry</a> &raquo;</li>
-      <li>intersections_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../geometry.html">geometry</a></li>
+      <li class="breadcrumb-item active">intersections_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/geometry/intersections_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -120,7 +126,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">any_ray_mesh_intersection_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX_O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#any_ray_mesh_intersection_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.any_ray_mesh_intersection_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if their is any intersection of a line segment with the mesh. Returns as soon as the first intersection is detected. The algorithm is based on <span id="id1">[<a class="reference internal" href="../../../References.html#id38" title="John Amanatides and Andrew Woo. A fast voxel traversal algorithm for ray tracing. In In Eurographics ’87, 3–10. 1987.">5</a>]</span> : Amanatides et al. 1987 “A Fast Voxel Traversal Algorithm for Ray Tracing” Also see <span id="id2">[<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">6</a>]</span> : Ericson “Real-Time Collision Detection”, chapter 7.4.2 and 7.7</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>origin</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -130,7 +136,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if any intersection is found.</p>
 </dd>
@@ -144,7 +150,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">edge_intersection_barycentric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#edge_intersection_barycentric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.edge_intersection_barycentric" title="Permalink to this definition"></a></dt>
 <dd><p>Tests intersection of a line segment with triangle edges in barycentric coordinates and returns the edge index and distance to the edge. Edges must be numbered counter clockwise.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>u</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Barycentric u coordinate</p>
 </dd>
@@ -156,7 +162,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>tuple(int64, float64)</cite></dt><dd><p>Edge index, distance to edge</p>
 </dd>
@@ -170,7 +176,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">mesh_inside_box_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#mesh_inside_box_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.mesh_inside_box_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a mesh intersects at some point with the simulation box.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
 </dd>
@@ -178,7 +184,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if mesh intersects with simulation box.</p>
 </dd>
@@ -192,7 +198,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">point_in_triangle_barycentric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#point_in_triangle_barycentric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.point_in_triangle_barycentric" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a point given in barycentric coordinates is inside the triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>u</strong><span class="classifier"><cite>float64</cite></span></dt><dd><p>Barycentric u coordinate</p>
 </dd>
@@ -200,7 +206,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if point is inside the triangle.</p>
 </dd>
@@ -214,7 +220,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">point_inside_AABB_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AABB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#point_inside_AABB_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.point_inside_AABB_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests is a point is inside an AABB</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -222,7 +228,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if point inside AABB</p>
 </dd>
@@ -236,7 +242,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">point_inside_mesh_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangle_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#point_inside_mesh_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.point_inside_mesh_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a point is inside or outside a mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_ids</strong><span class="classifier"><cite>int64[:]</cite></span></dt><dd><p>Triangle ids of the mesh</p>
 </dd>
@@ -248,7 +254,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>bolean</cite></dt><dd><p>True if point is inside mesh.</p>
 </dd>
@@ -265,7 +271,7 @@ The algorithm casts a ray from the given point and counts the number of times it
 If the ray passes an odd number of triangles, it is in the mesh compartment (see ‘point in polygon problem’). 
 For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -275,7 +281,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>boolean</dt><dd><p>True if the point is inside the mesh.</p>
 </dd>
@@ -289,7 +295,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">point_inside_triangle_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#point_inside_triangle_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.point_inside_triangle_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a point is inside a triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -299,7 +305,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if point is inside triangle, otherwise False.</p>
 </dd>
@@ -313,7 +319,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">ray_mesh_intersection_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_stamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#ray_mesh_intersection_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.ray_mesh_intersection_count" title="Permalink to this definition"></a></dt>
 <dd><p>Counts the number of times a line segments collides/intersects with a mesh surface. Can  be used, e.g., to test whether a point sites inside or outside a mesh if we know that the end point of the line segment is outside the mesh. If the intersection count is odd, the point is located inside the mesh.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -329,7 +335,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>int64</cite></dt><dd><p>Number of intersections</p>
 </dd>
@@ -349,7 +355,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">ray_mesh_intersection_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_of_intersection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_triangle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#ray_mesh_intersection_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.ray_mesh_intersection_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a line segment intersects with a mesh within a given cell by looping over all triangles in the cell and doing a ray triangle collision test.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector</p>
 </dd>
@@ -367,7 +373,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>tuple(boolean, float64, int64)</cite></dt><dd><p>intersection_in_cell, t_min, triangle_of_intersection</p>
 </dd>
@@ -389,7 +395,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">ray_triangle_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#ray_triangle_intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.ray_triangle_intersection" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a ray intersects with a triangle using the Möller–Trumbore intersection algorithm <span id="id4">[<a class="reference internal" href="../../../References.html#id56" title="Tomas Möller and Ben Trumbore. Fast, minimum storage ray-triangle intersection. Journal of Graphics Tools, 2(1):21–28, jan 1997. doi:10.1080/10867651.1997.10487468.">7</a>]</span>. For reference see also <a class="reference external" href="http://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm">http://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm</a>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Position vector.</p>
 </dd>
@@ -405,13 +411,13 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>tuple(boolean, float64)</cite></dt><dd><p>True if there is an intersection, distance to triangle plane.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -425,7 +431,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.geometry.intersections_util.</span></span><span class="sig-name descname"><span class="pre">triangle_cell_intersection_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_center</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_extent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/geometry/intersections_util.html#triangle_cell_intersection_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.geometry.intersections_util.triangle_cell_intersection_test" title="Permalink to this definition"></a></dt>
 <dd><p>Tests if a triangle intersects with a cell. Based on <span id="id5">[<a class="reference internal" href="../../../References.html#id40" title="Christer Ericson. Real-Time Collision Detection. CRC Press, dec 2004. doi:10.1201/b14581.">6</a>]</span>, <span id="id6">[<a class="reference internal" href="../../../References.html#id57" title="Tomas Akenine-Möllser. Fast 3d triangle-box overlap testing. Journal of Graphics Tools, 6(1):29–33, jan 2001. doi:10.1080/10867651.2001.10487535.">8</a>]</span> (See “Real-Time Collision Detection”, Chapter 5.2.9 “Testing AAB Against Triangle”, p.169 ff). The algorithm is used to create the cell list for the mesh compartment triangles.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>
@@ -439,7 +445,7 @@ For efficiency, we divide space into cells and do a fast voxel traversal.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>boolean</cite></dt><dd><p>True if triangle intersects with cell.</p>
 </dd>

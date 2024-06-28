@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reactions &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> PyRID
-            <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -101,9 +107,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="Contents.html">User Guide</a> &raquo;</li>
-      <li>Reactions</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Contents.html">User Guide</a></li>
+      <li class="breadcrumb-item active">Reactions</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/Users/User_Guide/Reactions.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -115,7 +121,7 @@
              
   <section id="reactions">
 <span id="userguide-reactions"></span><h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this heading"></a></h1>
-<p>PyRID supports various uni- and bimolecular reactions. For bimolecular reactions, PyRID uses the Doi scheme. Thereby, two particles/molecules react with some rate <span class="math notranslate nohighlight">\(k\)</span> if the inter-particle distance is below a certain reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>. Unimolecular reactions are handled using a variant of the Gillespie stochastic simulation algorithm, i.e. the time point of the next reaction is sampled from the expected lifetime distribution of the particle/molecule. Figure <a class="reference internal" href="#fig-reactions-graph"><span class="std std-numref">Fig. 3</span></a> gives an overview over the possible reactions that are supported by PyRID.</p>
+<p>PyRID supports various uni- and bimolecular reactions. For bimolecular reactions, PyRID uses the Doi scheme. Thereby, two particles/molecules react with some rate <span class="math notranslate nohighlight">\(k\)</span> if the inter-particle distance is below a certain reaction radius <span class="math notranslate nohighlight">\(R_{react}\)</span>. Unimolecular reactions are handled using a variant of the Gillespie stochastic simulation algorithm, i.e. the time point of the next reaction is sampled from the expected lifetime distribution of the particle/molecule. <a class="reference internal" href="#fig-reactions-graph"><span class="std std-numref">Fig. 3</span></a> gives an overview over the possible reactions that are supported by PyRID.</p>
 <figure class="align-default" id="fig-reactions-graph">
 <a class="reference internal image-reference" href="../../_images/Reactions_Graph1.png"><img alt="../../_images/Reactions_Graph1.png" src="../../_images/Reactions_Graph1.png" style="width: 70%;" /></a>
 <figcaption>
@@ -223,7 +229,7 @@ Another thing to keep in mind is that not all bimolecular reactions are allowed.
 <p><strong>Molecule fission</strong></p>
 <p>A fission reaction is the inverse of the molecule fusion reaction and thereby limited to two products.
 Also, if the educt is a surface molecule, we need to define whether to place the product on the surface or in the volume. If the product is placed in the volume, we also need to define for each product, if it is placed inside or outside the compartment. For volume molecules the situation is a bit easier as PyRID only allows for the products to also be volume molecules.
-The fission reaction <span class="math notranslate nohighlight">\(\ce{C-&gt;[\ce{k_{-1}] A + B}\)</span> is setup as follows:</p>
+The fission reaction <span class="math notranslate nohighlight">\(\ce{C-&gt;[\ce{k_{-1}}] A + B}\)</span> is setup as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">educt_molecule</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span>
 <span class="n">product_molecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
 <span class="n">products_location</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -278,7 +284,7 @@ The fission reaction <span class="math notranslate nohighlight">\(\ce{C-&gt;[\ce
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Simulation</span><span class="o">.</span><span class="n">add_um_reaction</span><span class="p">(</span><span class="s1">&#39;decay&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Due to the many possible combinations of reactions and other interactions it can become difficult keep to keep track over all the different relations in the system. Therefore, PyRID enables you to create interaction graphs (based on the pyvis library) for better visualization and analysis of the model (see figure <a class="reference internal" href="#fig-reactionsgraph2"><span class="std std-numref">Fig. 4</span></a>). This feature is available via PyRIDs evaluation module that is introduced in detail later on.
+<p>Due to the many possible combinations of reactions and other interactions it can become difficult keep to keep track over all the different relations in the system. Therefore, PyRID enables you to create interaction graphs (based on the pyvis library) for better visualization and analysis of the model (see <a class="reference internal" href="#fig-reactionsgraph2"><span class="std std-numref">Fig. 4</span></a>). This feature is available via PyRIDs evaluation module that is introduced in detail later on.
 To create reaction graphs, first create an instance of PyRIDs EValuation class:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Evaluation</span> <span class="o">=</span> <span class="n">prd</span><span class="o">.</span><span class="n">Evaluation</span><span class="p">()</span>
 </pre></div>

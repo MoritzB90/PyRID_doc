@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyrid.evaluation.evaluation_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -28,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -44,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/User_Guide/Contents.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Users/Examples/Contents.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Users/Advanced/Contents.html">Advanced</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers</span></p>
 <ul>
@@ -77,9 +84,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pyrid.evaluation.evaluation_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyrid.evaluation.evaluation_util</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -128,8 +135,8 @@
 <span class="c1"># from ..observables_util.plot_util import plot_observable</span>
 
 <div class="viewcode-block" id="Evaluation"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation">[docs]</a><span class="k">class</span> <span class="nc">Evaluation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Evaluation class has several methods that are useful for evaluating simulation results such as reading observables from hdf5 files, calculating MSDs </span>
 <span class="sd">    and plotting observables and reactions graphs.</span>
 <span class="sd">    </span>
@@ -305,7 +312,7 @@
         
 <div class="viewcode-block" id="Evaluation.load_file"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.load_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Loads an hdf5 file and extracts simulation properties such as temperature and simulation box size.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads an hdf5 file and extracts simulation properties such as temperature and simulation box size.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -338,7 +345,7 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">measure</span> <span class="ow">in</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="n">measure</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="n">measure</span><span class="p">][()]</span><span class="c1">#.decode()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="n">measure</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="n">measure</span><span class="p">][()]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
             
         
         <span class="bp">self</span><span class="o">.</span><span class="n">Temp</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s1">&#39;Setup&#39;</span><span class="p">][</span><span class="s1">&#39;Temp&#39;</span><span class="p">][()]</span>
@@ -353,8 +360,8 @@
         <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
         
 <div class="viewcode-block" id="Evaluation.read_molecule_data"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.read_molecule_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_molecule_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Reads molecule data from the hdf5 file (mobility tensor, bead position and radii, etc.)</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads molecule data from the hdf5 file (mobility tensor, bead position and radii, etc.)</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -376,16 +383,16 @@
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="Evaluation.load_hdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.load_hdf">[docs]</a>    <span class="k">def</span> <span class="nf">load_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Loads any hdf5 file from self.path directory.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads any hdf5 file from self.path directory.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">track_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="Evaluation.close_hdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.close_hdf">[docs]</a>    <span class="k">def</span> <span class="nf">close_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Closes the hdf5 file.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the hdf5 file.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -395,8 +402,8 @@
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="Evaluation.MSD"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.MSD">[docs]</a>    <span class="k">def</span> <span class="nf">MSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the Mean Squared Distance (MSD) from the molecule positions and from theory.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the Mean Squared Distance (MSD) from the molecule positions and from theory.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -426,8 +433,8 @@
         
 
 <div class="viewcode-block" id="Evaluation.plot_MSD"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_MSD">[docs]</a>    <span class="k">def</span> <span class="nf">plot_MSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Plots the molecules&#39; Mean Squared Distance (MSD).</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots the molecules&#39; Mean Squared Distance (MSD).</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -474,8 +481,8 @@
     <span class="c1">#%%</span>
 
 <div class="viewcode-block" id="Evaluation.P2"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.P2">[docs]</a>    <span class="k">def</span> <span class="nf">P2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">Delta_t</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Calculates the rotational time correlation function P2 from the molecule orientations and from theory.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the rotational time correlation function P2 from the molecule orientations and from theory.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -518,8 +525,8 @@
         
     
 <div class="viewcode-block" id="Evaluation.plot_P2"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_P2">[docs]</a>    <span class="k">def</span> <span class="nf">plot_P2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">theory_only</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fig_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limits</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Plots the rotational time correlation function P2.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots the rotational time correlation function P2.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -585,8 +592,8 @@
         
         
 <div class="viewcode-block" id="Evaluation.plot_rdf"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">plot_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_pairs</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">average</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Plots the radial distribution function (RDF) from the hdf5 file.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots the radial distribution function (RDF) from the hdf5 file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -685,8 +692,8 @@
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="Evaluation.read_observable"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.read_observable">[docs]</a>    <span class="k">def</span> <span class="nf">read_observable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measure</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">educts</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">file_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Reads an observable / measure from the hdf5 file.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads an observable / measure from the hdf5 file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -836,8 +843,8 @@
     <span class="c1">#%%</span>
     
 <div class="viewcode-block" id="Evaluation.plot_observable"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_observable">[docs]</a>    <span class="k">def</span> <span class="nf">plot_observable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measure</span><span class="p">,</span> <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">Reaction_Type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">educt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bond_pairs</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="n">particle_educt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">save_fig</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fig_name</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span> <span class="n">fig_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sampling</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;png&#39;</span><span class="p">],</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Plots an observable / measure found in the hdf5 file.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots an observable / measure found in the hdf5 file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -919,8 +926,11 @@
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Observables</span><span class="p">[</span><span class="n">sampling</span><span class="p">][</span><span class="n">measure</span><span class="p">][</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">step</span><span class="p">])</span>
             <span class="c1"># df.columns = [&#39;x&#39;, &#39;y&#39;, &#39;z&#39;]</span>
             
-            <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span> <span class="n">palette</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_pallete</span><span class="p">[</span><span class="n">measure</span><span class="p">])</span>
-            
+            <span class="k">if</span> <span class="n">measure</span> <span class="o">==</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;q0&#39;</span><span class="p">,</span><span class="s1">&#39;q1&#39;</span><span class="p">,</span><span class="s1">&#39;q2&#39;</span><span class="p">,</span><span class="s1">&#39;q3&#39;</span><span class="p">]],</span> <span class="n">palette</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_pallete</span><span class="p">[</span><span class="n">measure</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">]],</span> <span class="n">palette</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_pallete</span><span class="p">[</span><span class="n">measure</span><span class="p">])</span>
+                
             <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Molecule: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Molecules&#39;</span><span class="p">)</span>
                 
@@ -1003,8 +1013,8 @@
     <span class="c1">#%%</span>
             
 <div class="viewcode-block" id="Evaluation.plot_reactions_graph"><a class="viewcode-back" href="../../../Developers/Developer%20API/evaluation/evaluation_util.html#pyrid.evaluation.evaluation_util.Evaluation.plot_reactions_graph">[docs]</a>    <span class="k">def</span> <span class="nf">plot_reactions_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">graph_type</span> <span class="o">=</span> <span class="s1">&#39;Bimolecular&#39;</span><span class="p">,</span> <span class="n">graph_subtype</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
-        
-        <span class="sd">&quot;&quot;&quot;Plots a reactions graph using the pyvis library.</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots a reactions graph using the pyvis library.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rigidbody_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -101,10 +107,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../molecules.html">molecules</a> &raquo;</li>
-      <li>rigidbody_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../molecules.html">molecules</a></li>
+      <li class="breadcrumb-item active">rigidbody_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/molecules/rigidbody_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -121,14 +127,14 @@
 <h2>RBs<a class="headerlink" href="#rbs" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrid.molecules.rigidbody_util.RBs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.molecules.rigidbody_util.</span></span><span class="sig-name descname"><span class="pre">RBs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrid.molecules.rigidbody_util.</span></span><span class="sig-name descname"><span class="pre">RBs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs" title="Permalink to this definition"></a></dt>
 <dd><p>A rigid body/bead model object is defined by a set of particles with fixed positions relative to the body center. 
 In our framework we use rigid bodies as a course grained representation of molecules.
 A rigid bead model has a center of diffusion around which the rigid bead model rotates in response to torque and rotational diffusion. 
 By default a surface molecule is bound to the mesh surface at the center of diffusion or shifted by an offset passed by the user.
 A rigid bodies topology is described by a list of particle indices. A RBs instance is initializeed without any molecules. Use the add_RB method to add molecules to the list.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Data</strong><span class="classifier"><cite>array_like</cite></span></dt><dd><p>Numpy structured array containing all data that define a moelcules state.
 <cite>dtype = np.dtype([(‘next’, np.uint64),(‘name’, ‘U20’),(‘id’, np.int32),(‘type_id’, np.int32), (‘pos’, np.float64, (3,)), (‘dX’, np.float64, (3,)), (‘force’, np.float64, (3,)), (‘torque’, np.float64, (3,)), (‘topology’, np.int32, (20,)),(‘topology_N’, np.int32),(‘q’, np.float64, (4,)), (‘dq’, np.float64, (4,)),(‘B’, np.float64, (4,4)),(‘orientation_quat’, np.float64, (3,3)),(‘mu_tb’, np.float64, (3,3)),(‘mu_rb’, np.float64, (3,3)),(‘mu_tb_sqrt’, np.float64, (3,3)),(‘mu_rb_sqrt’, np.float64, (3,3)),(‘Dtrans’, np.float64),(‘Drot’, np.float64),(‘radius’, np.float64), (‘loc_id’, np.int32), (‘compartment’, np.int64), (‘triangle_id’, np.int32), (‘pos_last’, np.float64, (3,)), (‘Theta_t’, np.float64, (3,)), (‘Theta_r’, np.float64, (3,)), (‘posL’, np.float64, (3,)), (‘collision_type’, np.int64), (‘next_transition’, np.float64), ],  align=True)</cite></p>
@@ -140,6 +146,10 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 </dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>add_RB(name, compartment, System, Particles, vol_surf_id)</strong></p></td>
 <td><p>Adds a new rigid body molecule to the Data array.</p></td>
@@ -204,7 +214,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">add_RB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vol_surf_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.add_RB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.add_RB" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a rigid bead molecule to the system.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>name</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>name of the molecule type</p>
 </dd>
@@ -224,7 +234,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">add_particle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.add_particle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.add_particle" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a new particle to the rigid bead molecule topology.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pi</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Particle index</p>
 </dd>
@@ -232,7 +242,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><dl class="simple">
 <dt>IndexError(‘Maximum number of particles per molecule (20) reached! To change this, currently you have to manualy set the maximum size in rigidbody_util.py’)</dt><dd><p>by default, currenztly, a maximum number of 20 particles per rigid bead molecule type is allowed. The user may incerase this limit by increasing the size of the field ‘topology’ in the structured numpy array dtype ‘item_t_RB’ (see rigi_body_util.py)</p>
 </dd>
@@ -246,7 +256,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">calc_orientation_quat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.calc_orientation_quat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.calc_orientation_quat" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the orientation/rotation matrix of moelcule i from it’s rotational quaternion q.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Molecule index</p>
 </dd>
@@ -271,7 +281,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">next_um_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.next_um_reaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.next_um_reaction" title="Permalink to this definition"></a></dt>
 <dd><p>Draws the time point of the next unimolecular diffusion for moelcule i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
 </dd>
@@ -292,7 +302,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">place_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_membrane</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.place_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.place_particles" title="Permalink to this definition"></a></dt>
 <dd><p>Places all the particles that make up the topology of rigid bead molecule i given a list of partcile types, positions and radii.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>pos</strong><span class="classifier"><cite>float64[:,3]</cite></span></dt><dd><p>Array of particle positions</p>
 </dd>
@@ -318,7 +328,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">rescale_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.rescale_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.rescale_pos" title="Permalink to this definition"></a></dt>
 <dd><p>Rescales the position of molecule i by a multiplicative factor mu. This method is only used for the Berendsen barostat.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
 </dd>
@@ -330,13 +340,13 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>dtype</dt><dd><p>Some information</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -350,7 +360,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">set_orientation_quat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.set_orientation_quat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.set_orientation_quat" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the orientation of rigid bead molecule i given a rotation quaternion q.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
 </dd>
@@ -370,7 +380,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.set_pos" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the position of rigid bead molecule i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
 </dd>
@@ -390,7 +400,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">set_triangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tri_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.set_triangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.set_triangle" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the triangle id for surface molecule i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the triangle</p>
 </dd>
@@ -406,7 +416,7 @@ A rigid bodies topology is described by a list of particle indices. A RBs instan
 <span class="sig-name descname"><span class="pre">update_B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_B"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_B" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates matrix B used in the quaternion propagator (see RBs.dq()).</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Molecule index.</p>
 </dd>
@@ -433,7 +443,7 @@ q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\
 <span class="sig-name descname"><span class="pre">update_dX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_dX"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_dX" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the translational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by <span id="id4">Ilie <em>et al.</em> [<a class="reference internal" href="../../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of System class.</p>
 </dd>
@@ -457,7 +467,7 @@ R_{\alpha}(t+\Delta t) - R_{\alpha}(t) = &amp; A_{\alpha \gamma} \mu_{\gamma \de
 <span class="sig-name descname"><span class="pre">update_dq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_dq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_dq" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the rotational displacemnt of molecule i using the Brownian dynamics algorithm for anisotropic particles introduced by <span id="id7">Ilie <em>et al.</em> [<a class="reference internal" href="../../../References.html#id20" title="Ioana M. Ilie, Wim J. Briels, and Wouter K. den Otter. An elementary singularity-free rotational brownian dynamics algorithm for anisotropic particles. The Journal of Chemical Physics, 142(11):114103, mar 2015. doi:10.1063/1.4914322.">13</a>]</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of System class.</p>
 </dd>
@@ -495,7 +505,7 @@ q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\
 <span class="sig-name descname"><span class="pre">update_force_torque</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_force_torque"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_force_torque" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the total force and torque acting on rigid bead molecule i by summing over all forces and torques of its particles.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
 </dd>
@@ -511,7 +521,7 @@ q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\
 <span class="sig-name descname"><span class="pre">update_orientation_quat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_orientation_quat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_orientation_quat" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the rotation matrix of rigid bead molecule i, however, without updating the molecule and particle positions.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>i</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Molecule index</p>
 </dd>
@@ -525,7 +535,7 @@ q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\
 <span class="sig-name descname"><span class="pre">update_particle_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_particle_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_particle_pos" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the position of volume molecule i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
 </dd>
@@ -549,7 +559,7 @@ q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\
 <span class="sig-name descname"><span class="pre">update_particle_pos_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_particle_pos_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_particle_pos_2D" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the position of surface molecule i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Particles</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Particles class</p>
 </dd>
@@ -573,7 +583,7 @@ q_3 &amp; -q_2 &amp; q_1 &amp; q_0 \\
 <span class="sig-name descname"><span class="pre">update_topology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/rigidbody_util.html#RBs.update_topology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.rigidbody_util.RBs.update_topology" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the positions of the particles that make up the topology of molecule i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
 </dd>

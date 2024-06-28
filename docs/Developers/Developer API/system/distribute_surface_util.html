@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>distribute_surface_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -101,10 +107,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../system.html">system</a> &raquo;</li>
-      <li>distribute_surface_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../system.html">system</a></li>
+      <li class="breadcrumb-item active">distribute_surface_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/system/distribute_surface_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -123,7 +129,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">add_molecule_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#add_molecule_single"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.add_molecule_single" title="Permalink to this definition"></a></dt>
 <dd><p>Places a single new molecule into a compartment, given its position, orientation, triangle id and type.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>id of the compartment</p>
 </dd>
@@ -151,7 +157,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">add_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#add_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.add_molecules" title="Permalink to this definition"></a></dt>
 <dd><p>Places new molecules on teh surface of a compartment, given their positions, orientations, triangle ids and types.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>id of the compartment</p>
 </dd>
@@ -181,7 +187,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">evenly_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#evenly_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.evenly_on_sphere" title="Permalink to this definition"></a></dt>
 <dd><p>Approximately distributes n points evenly on the sphere surface.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Number of points.</p>
 </dd>
@@ -189,7 +195,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float64[n,3]</dt><dd><p>Array of n points that are approximatels evenly distributed on a sphere surface.</p>
 </dd>
@@ -227,7 +233,7 @@ G = \frac{1 + \sqrt{5}}{2} \\
 <dd><p>Does Monte Carlo sampling for N molecules on the surface of a triangulated mesh compartment returning vectors for the molecule positions, types and orientations 
 and triangle indices.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
 </dd>
@@ -239,7 +245,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[:,3], int64[:], float64[:,4], int64[:])</dt><dd><p>molecule positions, molecule types, molecule orientations in quaternion representation</p>
 </dd>
@@ -253,7 +259,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">monte_carlo_distribution_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facegroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#monte_carlo_distribution_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.monte_carlo_distribution_2D" title="Permalink to this definition"></a></dt>
 <dd><p>Does Monte Carlo sampling for N points inside a compartment.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
 </dd>
@@ -265,7 +271,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float64[:,3]</dt><dd><p>Array of positions</p>
 </dd>
@@ -279,7 +285,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jitter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.normal" title="Permalink to this definition"></a></dt>
 <dd><p>Distributes molecules spherically around a point on a mesh surface by a gaussian distribution and using a ray marching algorithm.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>triangle id around whose centroid the molecules are distributed</p>
 </dd>
@@ -293,7 +299,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[N,3], float64[N,4], int64[N])</dt><dd><p>Positions, Quaternions, and Molecule ids</p>
 </dd>
@@ -307,7 +313,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">pds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facegroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#pds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.pds" title="Permalink to this definition"></a></dt>
 <dd><p>Uniformly distributes molecules of different types on the mesh surface of a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id1">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">25</a>]</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
 </dd>
@@ -323,7 +329,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[:,3], int64[:], float64[:,4])</dt><dd><p>Returns arrays of the positions, molecule types, and rotation quaternions of the distributed moelcules.</p>
 </dd>
@@ -337,7 +343,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">point_in_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#point_in_disc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.point_in_disc" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random point uniformly distributed inside a disc with radius r that lies within the plane of given mesh triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>triangle_id</strong><span class="classifier"><cite>int64</cite></span></dt><dd><p>Index of the triangle from where the point is distributed</p>
 </dd>
@@ -347,7 +353,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><cite>float64[3]</cite></dt><dd><p>Random point uniformly distributed in a disc.</p>
 </dd>
@@ -361,12 +367,12 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">point_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#point_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.point_on_sphere" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random point uniformly distributed on the surface of a sphere with radius r.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>radius</strong><span class="classifier"><cite>float</cite></span></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float, float, float)</dt><dd><p>Uniformly distributed random point on sphere surface</p>
 </dd>
@@ -380,7 +386,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">poisson_disc_sampling_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Compartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_type_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facegroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#poisson_disc_sampling_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.poisson_disc_sampling_2D" title="Permalink to this definition"></a></dt>
 <dd><p>Uniformly distributes spheres of different radii inside a compartment using a blue noise/poisson disc sampling algorithm originaly introduced by <span id="id2">Corsini <em>et al.</em> [<a class="reference internal" href="../../../References.html#id37" title="M. Corsini, P. Cignoni, and R. Scopigno. Efficient and flexible sampling with blue noise properties of triangular meshes. IEEE Transactions on Visualization and Computer Graphics, 18(6):914–924, jun 2012. doi:10.1109/tvcg.2012.34.">25</a>]</span> to distribute points on triangulated mesh surfaces but that has been adapted here for volume distributions. PyRID also uses a variant of the original algorithm to distribute molecules on mesh surfaces.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>Compartment</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of Compartment class</p>
 </dd>
@@ -400,13 +406,13 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[:,3], int64[:], float64[:,4], int64)</dt><dd><p>Returns arrays of the positions, types and rotations quaternions. Also return the total count of distributed spheres.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>ValueError(‘There is no overlap of the Compartment with the Simulation box! Unable to distribute points in Compartment!’)</dt><dd><p>Raised if the selected compartment does not overlap with the simulation box.</p>
 </dd>
@@ -435,7 +441,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">random_point_in_triangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#random_point_in_triangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.random_point_in_triangle" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random point uniformly distributed in a triangle.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Triangle vertex 1</p>
 </dd>
@@ -445,7 +451,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float64[3]</dt><dd><p>Uniformly, random point in triangle</p>
 </dd>
@@ -464,7 +470,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">random_point_on_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#random_point_on_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.random_point_on_edge" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random point uniformly distributed on a line segment/edge between two vertices.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>p0</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Vertex 1</p>
 </dd>
@@ -472,7 +478,7 @@ and triangle indices.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float64[3]</dt><dd><p>Random point on edge</p>
 </dd>
@@ -486,7 +492,7 @@ and triangle indices.</p>
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">release_molecules_boundary_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RBs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Particles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#release_molecules_boundary_2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.release_molecules_boundary_2d" title="Permalink to this definition"></a></dt>
 <dd><p>Releases molecules into the volume at the simulation box boundary given an outside concentration of the different molecule types.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>System</strong><span class="classifier"><cite>object</cite></span></dt><dd><p>Instance of System class</p>
 </dd>
@@ -521,7 +527,7 @@ The boundary crossing of molecules can be described as a poisson process. As suc
 <span class="sig-prename descclassname"><span class="pre">pyrid.system.distribute_surface_util.</span></span><span class="sig-name descname"><span class="pre">trace_direction_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">System</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/system/distribute_surface_util.html#trace_direction_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.system.distribute_surface_util.trace_direction_vector" title="Permalink to this definition"></a></dt>
 <dd><p>Traces the path along a direction vector, and, depending on the boundary conditions and the presence of mesh compartments updates the direction vector. If the direction vector hits an absorptive boundary (fixed concentration boundary conditions) triangle id -1 is returned.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>dX</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Direction vector</p>
 </dd>
@@ -533,7 +539,7 @@ The boundary crossing of molecules can be described as a poisson process. As suc
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[3], float64[4], int64)</dt><dd><p>Returns position, quaternion, and triangle_id of the new position. If path hit an absorptive boundary triangle_id = -1 is returned.</p>
 </dd>

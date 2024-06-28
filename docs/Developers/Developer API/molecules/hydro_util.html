@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hydro_util &mdash; PyRID 15.06.2022 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/my_theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/my_theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyRID
-            <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyRID
+              <img src="../../../_static/PyRID_Logo_Render2_cropped.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -98,10 +104,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../Contents.html">Developer API</a> &raquo;</li>
-          <li><a href="../molecules.html">molecules</a> &raquo;</li>
-      <li>hydro_util</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Contents.html">Developer API</a></li>
+          <li class="breadcrumb-item"><a href="../molecules.html">molecules</a></li>
+      <li class="breadcrumb-item active">hydro_util</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/Developers/Developer API/molecules/hydro_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -120,7 +126,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#A"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.A" title="Permalink to this definition"></a></dt>
 <dd><p>Returns matrix A which turns the cross product rxw into a dot product A.w.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>r</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Bead position</p>
 </dd>
@@ -143,13 +149,13 @@ z &amp; 0 &amp; -x\\
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">P</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rij</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#P"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.P" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the normalized tensor/outer product <span class="math notranslate nohighlight">\(\frac{\boldsymbol{r}_{ij} \otimes \boldsymbol{r}_{ij}}{r_{ij}}\)</span> for the hydrodynamic interaction tensor (Oseen tensor).</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>rij</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Distance between partcile i and j</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float[3,3]</dt><dd><p>Normalized outer product of r_ij</p>
 </dd>
@@ -163,7 +169,7 @@ z &amp; 0 &amp; -x\\
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_CoD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_tr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_CoD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_CoD" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the center of diffusion of a rigid bead molecule.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>D_rr</strong><span class="classifier"><cite>float64[3,3]</cite></span></dt><dd><p>Rotational diffusion tensor.</p>
 </dd>
@@ -171,7 +177,7 @@ z &amp; 0 &amp; -x\\
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float64[3]</dt><dd><p>Center of diffusion.</p>
 </dd>
@@ -209,7 +215,7 @@ D_{tr}^{yx}-D_{tr}^{xy}
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xi_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xi_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xi_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xi_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Temp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_D" title="Permalink to this definition"></a></dt>
 <dd><p>Caclulates the diffusion tensor from  the supermatrix inverse of the friction tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>parameter_1</strong><span class="classifier">dtype</span></dt><dd><p>Some Information</p>
 </dd>
@@ -217,7 +223,7 @@ D_{tr}^{yx}-D_{tr}^{xy}
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3])</dt><dd><p>Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_tr, D_rt, D_rr.</p>
 </dd>
@@ -243,7 +249,7 @@ D_{tr}^{yx}-D_{tr}^{xy}
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_Xi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_Xi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_Xi" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the friction tensors (3,3) of a ridig bead molecule from the friction super matricies (3N,3N) of its individiual beads.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>zeta_tt</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translational friction matrix.</p>
 </dd>
@@ -257,13 +263,13 @@ D_{tr}^{yx}-D_{tr}^{xy}
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float[3,3], float[3,3], float[3,3], float[3,3])</dt><dd><p>Returns the friction tensors Xi_tt, Xi_rt, Xi_tr, Xi_rr of the molecule.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -348,7 +354,7 @@ Thereby, all beads move together with some translational velocity <span class="m
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_mu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta_0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_mu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_mu" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the transtalional, rotational and translation-rotation coupling parts of the mobility super matrix <span class="math notranslate nohighlight">\(\mu_{tt}, \mu_{rr}, \mu_{tr} = \mu_{rt}\)</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
 </dd>
@@ -356,7 +362,7 @@ Thereby, all beads move together with some translational velocity <span class="m
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float[N,N,3,3], float[N,N,3,3], float[N,N,3,3], float[N,N,3,3])</dt><dd><p>mu_tt, mu_rt, mu_tr, mu_rr</p>
 </dd>
@@ -406,7 +412,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">calc_zeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#calc_zeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.calc_zeta" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the friction tensors <span class="math notranslate nohighlight">\(\zeta^{tt}, \zeta^{rr}, \zeta^{tr}, \zeta^{rt}\)</span> from the inverse of the mobility supermatrix <span class="math notranslate nohighlight">\([[\mu^{tt}, \mu^{rr}], [\mu^{tr}, \mu^{rt}]]\)</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>mu_tt</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translational mobility tensor.</p>
 </dd>
@@ -418,13 +424,13 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[3N,3N], float64[3N,3N], float64[3N,3N], float64[3N,3N])</dt><dd><p>The friction tensors <span class="math notranslate nohighlight">\(\zeta^{tt}, \zeta^{rr}, \zeta^{tr}, \zeta^{rt}\)</span>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NotImplementedError (just an example)</dt><dd><p>Brief explanation of why/when this exception is raised</p>
 </dd>
@@ -438,7 +444,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">center_of_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#center_of_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.center_of_mass" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the center of mass of the molecule assuming equal mass density for all paricles with radius a_i.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
 </dd>
@@ -446,7 +452,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float64[3]</dt><dd><p>Center of mass</p>
 </dd>
@@ -465,7 +471,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">diffusion_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_CoD</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_CoM</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_coupling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#diffusion_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.diffusion_tensor" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the diffusion tensor, accounting for the center of diffusion of the rigid bead molecule. The origin of the molecule is automatically updated to the center of diffusion <span class="math notranslate nohighlight">\(r_{OD}\)</span>!</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
 </dd>
@@ -473,7 +479,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3], float64)</dt><dd><p>Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_rr, D_tr, D_rt and the center of diffusion r_CoD, center of mass r_CoM.</p>
 </dd>
@@ -487,7 +493,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">diffusion_tensor_off_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#diffusion_tensor_off_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.diffusion_tensor_off_center" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the diffusion tensor (off the center of diffusion) from the moelcule structure, the fluid viscosity and temperature.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>my_molecule</strong><span class="classifier"><cite>obj</cite></span></dt><dd><p>Instance of molecule containing the position data of each bead.</p>
 </dd>
@@ -499,7 +505,7 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[3,3], float64[3,3], float64[3,3], float64[3,3])</dt><dd><p>Translation, rotational and rotation-translation coupling diffusion tensors D_tt, D_tr, D_rt, D_rr.</p>
 </dd>
@@ -513,13 +519,13 @@ The mobility tensor for rotation, not correcting for the beads volume, reads <sp
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">levi_civita</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rij</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#levi_civita"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.levi_civita" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the product of the Levi-Civita tensor with vector rij.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>rij</strong><span class="classifier"><cite>float64[3]</cite></span></dt><dd><p>Distance between partcile i and j</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float[3,3]</dt><dd><p>Levi-Civita tensor</p>
 </dd>
@@ -542,7 +548,7 @@ y_{ij} &amp; -x_{ij} &amp; 0
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">supermatrix_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#supermatrix_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.supermatrix_inverse" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the inverse of a 2x2 supermatrix.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>M1</strong><span class="classifier">float64[3N,3N]</span></dt><dd><p>submatrix at (0,0)</p>
 </dd>
@@ -554,7 +560,7 @@ y_{ij} &amp; -x_{ij} &amp; 0
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float64[3N,3N], float64[3N,3N], float64[3N,3N], float64[3N,3N])</dt><dd><p>Some information</p>
 </dd>
@@ -578,7 +584,7 @@ The inverse of a (2x2) supermatrix can be calculated by <span id="id13">[<a clas
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">transform_reverse_supermatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_tt_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_tr_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rt_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_rr_Tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#transform_reverse_supermatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.transform_reverse_supermatrix" title="Permalink to this definition"></a></dt>
 <dd><p>Transforms a (3N,3N) matrix into a (N,N,3,3) matrix.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>zeta_tt_Tr</strong><span class="classifier"><cite>float64[3N,3N]</cite></span></dt><dd><p>Translational friction matrix.</p>
 </dd>
@@ -590,7 +596,7 @@ The inverse of a (2x2) supermatrix can be calculated by <span id="id13">[<a clas
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float[N,N,3,3], float[N,N,3,3], float[N,N,3,3], float[N,N,3,3])</dt><dd><p>zeta_tt, zeta_tr, zeta_rt, zeta_rr</p>
 </dd>
@@ -604,7 +610,7 @@ The inverse of a (2x2) supermatrix can be calculated by <span id="id13">[<a clas
 <span class="sig-prename descclassname"><span class="pre">pyrid.molecules.hydro_util.</span></span><span class="sig-name descname"><span class="pre">transform_supermatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_rr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pyrid/molecules/hydro_util.html#transform_supermatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrid.molecules.hydro_util.transform_supermatrix" title="Permalink to this definition"></a></dt>
 <dd><p>Transforms a (N,N,3,3) matrix into a (3N,3N) matrix.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>mu_tt</strong><span class="classifier"><cite>float64[N,N,3,3]</cite></span></dt><dd><p>Translational mobility tensor.</p>
 </dd>
@@ -616,7 +622,7 @@ The inverse of a (2x2) supermatrix can be calculated by <span id="id13">[<a clas
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple(float[3N,3N], float[3N,3N], float[3N,3N], float[3N,3N])</dt><dd><p>mu_tt_Tf, mu_tr_Tf, mu_rt_Tf, mu_rr_Tf</p>
 </dd>
