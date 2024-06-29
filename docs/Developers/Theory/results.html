@@ -159,16 +159,16 @@ squared displacement (MSD) is given by</p>
 <p>The rotational time correlation function is given by
 <span id="id2">[<a class="reference internal" href="../../References.html#id51" title="J. Garc\'ıa de la Torre, Stephen E. Harding, and Beatriz Carrasco. Calculation of NMR relaxation, covolume, and scattering-related properties of bead models using the SOLPRO computer program. European Biophysics Journal, 28(2):119–132, jan 1999. doi:10.1007/s002490050191.">92</a>]</span>:</p>
 <div class="math notranslate nohighlight">
-\[MSD = \frac{3}{2} \langle (\hat{\boldsymbol{n}}(t+\Delta t)\hat{\boldsymbol{n}}(t))^2 \rangle - \frac{1}{2},\]</div>
-<p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}(t)\)</span> is some unitary vector that
-describes the current orientation of the molecule at time point
-<span class="math notranslate nohighlight">\(t\)</span>. <a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 25</span></a> compares the simulation results to
+\[P_{l} = \frac{3}{2} \langle (\hat{\boldsymbol{n}}_l(t+\Delta t)\hat{\boldsymbol{n}}_l(t))^2 \rangle - \frac{1}{2},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_l(t)\)</span> are the unitary vectors that
+describe the current orientation of the molecule at time point
+<span class="math notranslate nohighlight">\(t\)</span> for each of the 3 rotation axis (<span class="math notranslate nohighlight">\(l \in {1,2,3}\)</span>). <a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 25</span></a> compares the simulation results to
 the theoretical prediction, which, for the rotational time correlation
 function, is given by a multi-exponential decay function
 <span id="id3">[<a class="reference internal" href="../../References.html#id51" title="J. Garc\'ıa de la Torre, Stephen E. Harding, and Beatriz Carrasco. Calculation of NMR relaxation, covolume, and scattering-related properties of bead models using the SOLPRO computer program. European Biophysics Journal, 28(2):119–132, jan 1999. doi:10.1007/s002490050191.">92</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-p2">
-<span class="eqno">(54)<a class="headerlink" href="#equation-eq-p2" title="Permalink to this equation"></a></span>\[P_{2,l}(t) = \sum_{i=1}^5 a_{i,l} exp(-t/\tau_i),\]</div>
-<p>where <span class="math notranslate nohighlight">\(l \in {1,2,3}\)</span>. The relaxation times are given by</p>
+<span class="eqno">(54)<a class="headerlink" href="#equation-eq-p2" title="Permalink to this equation"></a></span>\[P_{l}(t) = \sum_{i=1}^5 a_{i,l} exp(-t/\tau_i),\]</div>
+<p>The relaxation times are given by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{split}
     \tau_1 = (6D - 2 \Delta)^{-1} \\
@@ -187,21 +187,21 @@ given by <span class="math notranslate nohighlight">\(D = \frac{Tr(\boldsymbol{D
 <p>The amplitudes of the individual exponential decays are given by</p>
 <div class="math notranslate nohighlight" id="equation-eq-amplitude-rotrelax">
 <span class="eqno">(55)<a class="headerlink" href="#equation-eq-amplitude-rotrelax" title="Permalink to this equation"></a></span>\[\begin{split}\begin{split}
-a_{1,l} = \frac{3}{4}(F+G) \\
+a_{1,l} = \frac{3}{4}(F_l+G_l) \\
 a_{2,l} = 3 \hat{n}_{l,2}^2 \hat{n}_{l,3}^2 \\
 a_{3,l} = 3 \hat{n}_{l,1}^2 \hat{n}_{l,3}^2 \\
 a_{4,l} = 3 \hat{n}_{l,1}^2 \hat{n}_{l,2}^2 \\
-a_{5,l} = \frac{3}{4}(F-G),
+a_{5,l} = \frac{3}{4}(F_l-G_l),
 \end{split}\end{split}\]</div>
-<p>with <span class="math notranslate nohighlight">\(F = - \frac{1}{3} + \sum_{k=1}^3 \hat{n}_k^4\)</span> and
-<span class="math notranslate nohighlight">\(G=\frac{1}{\Delta}\Big( -D + \sum_{k=1}^3 D^{rr,b}_k \Big[ \hat{n}_k^4 + 2 \hat{n}_m^2 \hat{n}_n^2 \Big] \Big)\)</span>,
+<p>with <span class="math notranslate nohighlight">\(F_l = - \frac{1}{3} + \sum_{k=1}^3 \hat{n}_{l,k}^4\)</span> and
+<span class="math notranslate nohighlight">\(G_l=\frac{1}{\Delta}\Big( -D + \sum_{k=1}^3 D^{rr,b}_k \Big[ \hat{n}_{l,k}^4 + 2 \hat{n}_{l,m}^2 \hat{n}_{l,n}^2 \Big] \Big)\)</span>,
 where <span class="math notranslate nohighlight">\(m, n \in \{1,2,3\}-\{k\}\)</span>.</p>
 <p>If we choose the normal vectors of each axis
 <span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_l\)</span> such that these are identical with the
 basis vectors of the local frame, i.e.
-<span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_1 = \boldsymbol{e}_x = [1,0,0]\)</span>,
-<span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_2 = \boldsymbol{e}_y = [0,1,0]\)</span>,
-<span class="math notranslate nohighlight">\(\hat{\boldsymbol{u}}_3 = \boldsymbol{e}_z = [0,0,1]\)</span>,
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_1 = \boldsymbol{e}_x = [1,0,0]\)</span>,
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_2 = \boldsymbol{e}_y = [0,1,0]\)</span>,
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{n}}_3 = \boldsymbol{e}_z = [0,0,1]\)</span>,
 <span class="math notranslate nohighlight">\(a_2-a_3\)</span> vanish such that we end up with a double exponential
 decay (<a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 25</span></a> B).</p>
 <p><a class="reference internal" href="#fig-diff"><span class="std std-numref">Fig. 25</span></a> shows that the rotation and translation
